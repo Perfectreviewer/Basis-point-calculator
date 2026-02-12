@@ -507,7 +507,7 @@ export const prerender = false;
     }
   }
 
-  function showError(msg) {
+  function showError(msg: string) {
     const errContent = `<div class="empty-state" style="color: var(--accent-red)">Error: ${msg}</div>`;
     if (headerEditor) headerEditor.innerHTML = errContent;
     if (footerEditor) footerEditor.innerHTML = errContent;
@@ -633,7 +633,9 @@ export const prerender = false;
 
     // Live Review Update
     // When inputs vary, update the "visible" collapsed state title
-    const labelInput = settings.querySelector(".edit-label") as HTMLInputElement;
+    const labelInput = settings.querySelector(
+      ".edit-label",
+    ) as HTMLInputElement;
     const urlInput = settings.querySelector(".edit-url") as HTMLInputElement;
     const labelDisplay = content.querySelector(".item-label-display");
     const urlDisplay = content.querySelector(".item-url-display");
