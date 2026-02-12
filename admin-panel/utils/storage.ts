@@ -165,7 +165,12 @@ export function listSitePages(dir?: string, prefix?: string): { relativePath: st
     const currentPrefix = prefix || '';
     const results: { relativePath: string; fullPath: string }[] = [];
 
-    if (!existsSync(baseDir)) return results;
+    if (!dir) console.log('DEBUG: listSitePages baseDir:', baseDir);
+
+    if (!existsSync(baseDir)) {
+        if (!dir) console.log('DEBUG: baseDir does not exist:', baseDir);
+        return results;
+    }
 
     const entries = readdirSync(baseDir, { withFileTypes: true });
     for (const entry of entries) {
