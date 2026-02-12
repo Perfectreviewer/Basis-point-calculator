@@ -9,13 +9,13 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const IS_VERCEL = !!process.env.VERCEL;
 
 // On Vercel, only /tmp is writable. Use it for all mutable data.
-const BUNDLED_DATA_DIR = join(__dirname, '..', 'data');
+const BUNDLED_DATA_DIR = join(process.cwd(), 'admin-panel', 'data');
 const DATA_DIR = IS_VERCEL ? '/tmp/admin-data' : BUNDLED_DATA_DIR;
-const BLOG_DIR = IS_VERCEL ? '/tmp/admin-blog' : join(__dirname, '..', '..', 'src', 'blog');
+const BLOG_DIR = IS_VERCEL ? '/tmp/admin-blog' : join(process.cwd(), 'src', 'blog');
 const PAGES_DIR = IS_VERCEL ? '/tmp/admin-data/pages' : join(BUNDLED_DATA_DIR, 'pages');
-const SITE_PAGES_DIR = join(__dirname, '..', '..', 'src', 'pages', '[...lang]');
-const SEO_CONFIG_PATH = join(__dirname, '..', '..', 'src', 'config', 'page-seo.json');
-const I18N_DIR = join(__dirname, '..', '..', 'src', 'i18n');
+const SITE_PAGES_DIR = join(process.cwd(), 'src', 'pages', '[...lang]');
+const SEO_CONFIG_PATH = join(process.cwd(), 'src', 'config', 'page-seo.json');
+const I18N_DIR = join(process.cwd(), 'src', 'i18n');
 
 export function ensureDir(dir: string) {
     if (!existsSync(dir)) {
@@ -165,12 +165,7 @@ export function listSitePages(dir?: string, prefix?: string): { relativePath: st
     const currentPrefix = prefix || '';
     const results: { relativePath: string; fullPath: string }[] = [];
 
-    if (!dir) console.log('DEBUG: listSitePages baseDir:', baseDir);
-
-    if (!existsSync(baseDir)) {
-        if (!dir) console.log('DEBUG: baseDir does not exist:', baseDir);
-        return results;
-    }
+    if (!existsSync(baseDir)) return results;
 
     const entries = readdirSync(baseDir, { withFileTypes: true });
     for (const entry of entries) {
