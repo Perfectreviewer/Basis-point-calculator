@@ -1,0 +1,503 @@
+---
+import AdminLayout from "@admin/components/AdminLayout.astro";
+
+export const prerender = false;
+// Force rebuild
+---
+
+<AdminLayout title="Menu Management" activeNav="menus">
+  <div class="page-header">
+    <h1>Menu Management</h1>
+    <p class="text-muted">
+      Manage header and footer menus with drag-and-drop reordering.
+    </p>
+  </div>
+
+  <div class="menu-manager-container">
+    <!-- Tabs -->
+    <div class="tabs">
+      <button class="tab-btn active" data-tab="header">Header Menu</button>
+      <button class="tab-btn" data-tab="footer">Footer Menu</button>
+    </div>
+
+    <div class="menu-workspace">
+      <!-- Left: Add/Edit Items -->
+      <div class="menu-controls card">
+        <h3>Add Custom Link</h3>
+        <form id="add-link-form" class="menu-form">
+          <div class="form-group">
+            <label for="link-label">Navigation Label</label>
+            <input
+              type="text"
+              id="link-label"
+              class="form-input"
+              placeholder="e.g. Home"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="link-url">URL</label>
+            <input
+              type="text"
+              id="link-url"
+              class="form-input"
+              placeholder="e.g. / or https://..."
+              required
+            />
+          </div>
+          <button type="submit" class="btn-primary w-full">Add to Menu</button>
+        </form>
+
+        <div class="divider"></div>
+
+        <div class="tips">
+          <h4>💡 Tips</h4>
+          <ul>
+            <li>Drag items to reorder</li>
+            <li>Drag right to nest as child</li>
+            <li>Click <span class="icon-edit">✎</span> to edit</li>
+            <li>Click <span class="icon-trash">×</span> to remove</li>
+          </ul>
+        </div>
+
+        <div class="divider"></div>
+
+        <button id="save-menu-btn" class="btn-primary success w-full">
+          <span class="btn-text">Save Menu</span>
+          <span class="loader" style="display:none"></span>
+        </button>
+      </div>
+
+      <!-- Right: Tree Editor -->
+      <div class="menu-tree-wrapper card">
+        <div id="header-editor" class="menu-editor active">
+          <div class="empty-state">Loading header menu...</div>
+        </div>
+        <div id="footer-editor" class="menu-editor" style="display: none;">
+          <div class="empty-state">Loading footer menu...</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</AdminLayout>
+
+<style>
+  .page-header {
+    margin-bottom: 24px;
+  }
+  .page-header h1 {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+
+  .menu-manager-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .tabs {
+    display: flex;
+    gap: 2px;
+    border-bottom: 1px solid var(--border-subtle);
+    margin-bottom: 0;
+  }
+  .tab-btn {
+    padding: 12px 24px;
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid transparent;
+    color: var(--text-muted);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .tab-btn:hover {
+    color: var(--text-primary);
+  }
+  .tab-btn.active {
+    color: var(--accent-blue);
+    border-bottom-color: var(--accent-blue);
+  }
+
+  .menu-workspace {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    gap: 24px;
+    align-items: start;
+  }
+
+  .menu-controls {
+    position: sticky;
+    top: 88px;
+  }
+
+  .menu-form {
+    margin-top: 16px;
+  }
+  .divider {
+    height: 1px;
+    background: var(--border-subtle);
+    margin: 24px 0;
+  }
+  .w-full {
+    width: 100%;
+  }
+
+  .tips ul {
+    padding-left: 20px;
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+
+  /* Sortable Styles */
+  .menu-editor {
+    min-height: 200px;
+  }
+  .sortable-list {
+    list-style: none;
+    padding: 0;
+    min-height: 10px;
+  }
+  .sortable-item {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    margin-bottom: 8px;
+    border-radius: 6px;
+    transition: all 0.2s;
+  }
+  .item-content {
+    display: flex;
+    align-items: center;
+    padding: 10px 14px;
+    gap: 12px;
+    cursor: move;
+  }
+  .item-handle {
+    color: var(--text-muted);
+    cursor: grab;
+  }
+  .item-details {
+    flex: 1;
+  }
+  .item-label {
+    font-weight: 600;
+    display: block;
+    font-size: 14px;
+  }
+  .item-url {
+    font-size: 11px;
+    color: var(--text-muted);
+    display: block;
+  }
+
+  .item-actions {
+    display: flex;
+    gap: 8px;
+    opacity: 0.6;
+    transition: opacity 0.2s;
+  }
+  .sortable-item:hover .item-actions {
+    opacity: 1;
+  }
+  .action-btn {
+    padding: 4px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: var(--text-muted);
+  }
+  .action-btn:hover {
+    color: var(--text-primary);
+  }
+  .action-btn.delete:hover {
+    color: var(--accent-red);
+  }
+
+  /* Nested Lists */
+  .sub-menu {
+    margin-left: 30px;
+    border-left: 2px solid var(--border-subtle);
+    padding-left: 10px;
+    min-height: 5px; /* Drop zone for empty nested lists */
+    padding-top: 8px;
+  }
+
+  /* Dragging States */
+  .sortable-ghost {
+    opacity: 0.4;
+    background: var(--bg-hover);
+    border-style: dashed;
+  }
+  .sortable-drag {
+    cursor: grabbing;
+    opacity: 1;
+    background: var(--bg-elevated);
+    box-shadow: var(--shadow-lg);
+    transform: scale(1.02);
+  }
+
+  @media (max-width: 768px) {
+    .menu-workspace {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+
+<script>
+  import Sortable from "sortablejs";
+
+  let menuData = { header: [], footer: [] };
+  let activeTab = "header";
+
+  // DOM Elements
+  const headerEditor = document.getElementById("header-editor");
+  const footerEditor = document.getElementById("footer-editor");
+  const addForm = document.getElementById("add-link-form");
+  const labelInput = document.getElementById("link-label") as HTMLInputElement;
+  const urlInput = document.getElementById("link-url") as HTMLInputElement;
+  const saveBtn = document.getElementById("save-menu-btn");
+  const tabBtns = document.querySelectorAll(".tab-btn");
+
+  // Initialize
+  async function init() {
+    await fetchMenuData();
+    renderMenu("header", menuData.header, headerEditor);
+    renderMenu("footer", menuData.footer, footerEditor);
+    setupTabs();
+    setupForm();
+    setupSave();
+  }
+
+  async function fetchMenuData() {
+    try {
+      const res = await fetch("/api/admin/menu");
+      if (res.ok) {
+        menuData = await res.json();
+      } else {
+        console.error("Failed to load menu");
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+  function setupTabs() {
+    tabBtns.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        tabBtns.forEach((b) => b.classList.remove("active"));
+        btn.classList.add("active");
+        activeTab = btn.getAttribute("data-tab") || "header";
+
+        if (activeTab === "header") {
+          headerEditor!.style.display = "block";
+          footerEditor!.style.display = "none";
+        } else {
+          headerEditor!.style.display = "none";
+          footerEditor!.style.display = "block";
+        }
+      });
+    });
+  }
+
+  function setupForm() {
+    addForm?.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const label = labelInput.value.trim();
+      const url = urlInput.value.trim();
+
+      if (!label || !url) return;
+
+      // Create new item DOM - append to currently active list
+      const newItem = createMenuItem(label, url);
+      const activeContainer =
+        activeTab === "header" ? headerEditor : footerEditor;
+      const list = activeContainer?.querySelector(".sortable-list");
+
+      if (list) {
+        list.appendChild(newItem);
+      } else {
+        // If it's empty state
+        activeContainer!.innerHTML = `<ul class="sortable-list"></ul>`;
+        activeContainer!.querySelector(".sortable-list")!.appendChild(newItem);
+        initSortable(
+          activeContainer!.querySelector(".sortable-list") as HTMLElement,
+        );
+      }
+
+      // Reset form
+      labelInput.value = "";
+      urlInput.value = "";
+    });
+  }
+
+  function createMenuItem(name: string, url: string, children: any[] = []) {
+    const li = document.createElement("li");
+    li.className = "sortable-item";
+    li.dataset.name = name;
+    li.dataset.url = url;
+
+    const content = document.createElement("div");
+    content.className = "item-content";
+    content.innerHTML = `
+            <span class="item-handle">☰</span>
+            <div class="item-details">
+                <span class="item-label">${name}</span>
+                <span class="item-url">${url}</span>
+            </div>
+            <div class="item-actions">
+                <button type="button" class="action-btn edit" title="Edit">✎</button>
+                <button type="button" class="action-btn delete" title="Remove">×</button>
+            </div>
+        `;
+    li.appendChild(content);
+
+    // Sub-menu container
+    const subMenu = document.createElement("ul");
+    subMenu.className = "sortable-list sub-menu";
+
+    // Render children if any
+    if (children && children.length > 0) {
+      children.forEach((child) => {
+        subMenu.appendChild(
+          createMenuItem(child.name, child.url, child.children),
+        );
+      });
+    }
+
+    li.appendChild(subMenu);
+
+    // Make submenu sortable immediately
+    initSortable(subMenu);
+
+    // Add event listeners for edit/delete
+    content.querySelector(".delete")?.addEventListener("click", () => {
+      if (confirm("Remove this item?")) li.remove();
+    });
+
+    content.querySelector(".edit")?.addEventListener("click", () => {
+      const newName = prompt("Edit Label:", name);
+      const newUrl = prompt("Edit URL:", url);
+      if (newName && newUrl) {
+        li.dataset.name = newName;
+        li.dataset.url = newUrl;
+        content.querySelector(".item-label")!.textContent = newName;
+        content.querySelector(".item-url")!.textContent = newUrl;
+      }
+    });
+
+    return li;
+  }
+
+  function renderMenu(
+    type: string,
+    data: any[],
+    container: HTMLElement | null,
+  ) {
+    if (!container) return;
+    container.innerHTML = "";
+    const ul = document.createElement("ul");
+    ul.className = "sortable-list root-list";
+
+    if (data && data.length > 0) {
+      data.forEach((item) => {
+        ul.appendChild(createMenuItem(item.name, item.url, item.children));
+      });
+    }
+
+    container.appendChild(ul);
+    initSortable(ul);
+  }
+
+  function initSortable(el: HTMLElement) {
+    new Sortable(el, {
+      group: "nested", // allow dragging between lists
+      animation: 150,
+      fallbackOnBody: true,
+      swapThreshold: 0.65,
+      handle: ".item-handle",
+      ghostClass: "sortable-ghost",
+      dragClass: "sortable-drag",
+      onEnd: function (evt: any) {
+        // Potential logic to handle drops
+      },
+    });
+  }
+
+  function setupSave() {
+    saveBtn?.addEventListener("click", async () => {
+      const btn = saveBtn as HTMLButtonElement;
+      const originalText = btn.innerHTML;
+      btn.innerHTML = "Saving...";
+      btn.disabled = true;
+
+      const headerData = serializeMenu(headerEditor!);
+      const footerData = serializeMenu(footerEditor!);
+
+      try {
+        const res = await fetch("/api/admin/menu", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ header: headerData, footer: footerData }),
+        });
+
+        if (res.ok) {
+          alert("Menu saved successfully!");
+        } else {
+          alert("Failed to save menu.");
+        }
+      } catch (e) {
+        console.error(e);
+        alert("An error occurred.");
+      } finally {
+        btn.innerHTML = originalText;
+        btn.disabled = false;
+      }
+    });
+  }
+
+  function serializeMenu(container: HTMLElement) {
+    const rootUl = container.querySelector(".root-list");
+    if (!rootUl) return [];
+    return serializeList(rootUl as HTMLElement);
+  }
+
+  function serializeList(ul: HTMLElement) {
+    const items: any[] = [];
+    Array.from(ul.children).forEach((li: any) => {
+      // Only process direct children that are LI
+      if (li.tagName === "LI") {
+        const item = {
+          name: li.dataset.name,
+          url: li.dataset.url,
+          children: [] as any[],
+        };
+
+        // Find the sub-menu UL within this LI
+        const subMenu = li.querySelector(".sub-menu");
+        if (subMenu && subMenu.children.length > 0) {
+          // Check if it has actual list items
+          // Filter out non-LI children just in case
+          const hasChildren = Array.from(subMenu.children).some(
+            (c: any) => c.tagName === "LI",
+          );
+          if (hasChildren) {
+            item.children = serializeList(subMenu as HTMLElement);
+          }
+        }
+
+        if (item.children.length === 0) {
+          delete (item as any).children;
+        }
+
+        items.push(item);
+      }
+    });
+    return items;
+  }
+
+  // Run
+  init();
+</script>
