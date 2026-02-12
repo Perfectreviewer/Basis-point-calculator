@@ -72,11 +72,11 @@
 		},
 		{
 			"name": "About",
-			"url": "/about/",
+			"url": "/about-us/",
 			"children": [
 				{
 					"name": "About Us",
-					"url": "/about/about-us/"
+					"url": "/about-us/"
 				},
 				{
 					"name": "Editorial Policy",
@@ -84,7 +84,7 @@
 				},
 				{
 					"name": "Contact",
-					"url": "/about/contact/"
+					"url": "/contact-us/"
 				}
 			]
 		},
@@ -130,11 +130,11 @@
 		},
 		{
 			"name": "About Us",
-			"url": "/about/about-us/"
+			"url": "/about-us/"
 		},
 		{
 			"name": "Contact",
-			"url": "/about/contact/"
+			"url": "/contact-us/"
 		},
 		{
 			"name": "Privacy Policy",
