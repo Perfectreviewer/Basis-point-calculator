@@ -3,7 +3,7 @@
     "id": "1",
     "username": "admin",
     "email": "admin@example.com",
-    "passwordHash": "7608745becd38f2255ea61dc6d8f9e0a:a9003b1b8fa8f4f4fbb3692322c0b3b9db309954ad10e66ba921d413dd7b29ba",
+    "passwordHash": "a5472e90df13c81da5cc0c3320fa790a:dcbdc09d2cd534e71c4527f62d62a5b2eacf83d38a97e4ba2bbe95ed28360508",
     "role": "admin",
     "createdAt": "2026-02-11T00:00:00Z"
   }

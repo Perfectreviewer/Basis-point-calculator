@@ -26,10 +26,10 @@ if (session) {
   user = await validateSessionToken(session);
 }
 
-// if (!user) return Astro.redirect("/admin/login");
-if (!user) {
-  user = { username: "Guest", role: "admin", userId: "guest" }; // Mock user
-}
+if (!user) return Astro.redirect("/admin/login");
+// if (!user) {
+//   user = { username: "Guest", role: "admin", userId: "guest" }; // Mock user
+// }
 
 const canManageUsers = hasPermission(user.role as Role, "users:write");
 
