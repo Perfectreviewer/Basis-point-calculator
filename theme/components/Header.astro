@@ -6,69 +6,6 @@ const locale = getLocaleFromUrl(Astro.url);
 const t = getTranslations(locale);
 
 const siteTitle = t.site_title;
-
-// Calculator mega menu structure
-const calculatorCategories = [
-  {
-    name: t.bp_section_title || "Basis Point Calculators",
-    url: "/basis-point-calculators/",
-    items: [
-      { name: t.bp_to_pct_title || "BPS to Percentage", url: "/basis-point-calculators/basis-point-to-percentage/" },
-      { name: t.pct_to_bp_title || "Percentage to BPS", url: "/basis-point-calculators/percentage-to-basis-point/" },
-      { name: t.bp_change_title || "Change Calculator", url: "/basis-point-calculators/basis-point-change-calculator/" },
-      { name: t.bp_diff_title || "Difference Calculator", url: "/basis-point-calculators/basis-point-difference-calculator/" },
-    ]
-  },
-  {
-    name: t.interest_section_title || "Interest Rate Calculators",
-    url: "/interest-rate-calculators/",
-    items: [
-      { name: t.simple_interest_title || "Simple Interest", url: "/interest-rate-calculators/simple-interest-calculator/" },
-      { name: t.compound_interest_title || "Compound Interest", url: "/interest-rate-calculators/compound-interest-calculator/" },
-      { name: t.apr_calc_title || "APR Calculator", url: "/interest-rate-calculators/apr-calculator/" },
-      { name: t.apy_calc_title || "APY Calculator", url: "/interest-rate-calculators/apy-calculator/" },
-    ]
-  },
-  {
-    name: "Loan Calculators",
-    url: "/loan-calculators/",
-    items: [
-      { name: "Loan Payment", url: "/loan-calculators/loan-payment-calculator/" },
-      { name: "Mortgage Calculator", url: "/loan-calculators/mortgage-calculator/" },
-      { name: "Auto Loan", url: "/loan-calculators/auto-loan-calculator/" },
-      { name: "Amortization", url: "/loan-calculators/loan-amortization-calculator/" },
-    ]
-  },
-  {
-    name: "Bond Calculators",
-    url: "/bond-calculators/",
-    items: [
-      { name: "Bond Yield", url: "/bond-calculators/bond-yield-calculator/" },
-      { name: "Yield to Maturity", url: "/bond-calculators/yield-to-maturity-calculator/" },
-      { name: "Bond Price", url: "/bond-calculators/bond-price-calculator/" },
-      { name: "Bond Duration", url: "/bond-calculators/bond-duration-calculator/" },
-    ]
-  },
-  {
-    name: "Investment Calculators",
-    url: "/investment-calculators/",
-    items: [
-      { name: "ROI Calculator", url: "/investment-calculators/roi-calculator/" },
-      { name: "Future Value", url: "/investment-calculators/future-value-calculator/" },
-      { name: "Present Value", url: "/investment-calculators/present-value-calculator/" },
-      { name: "Inflation Calculator", url: "/investment-calculators/inflation-calculator/" },
-    ]
-  },
-  {
-    name: "Financial Guides",
-    url: "/guides/",
-    items: [
-      { name: "What are Basis Points?", url: "/guides/what-are-basis-points/" },
-      { name: "How Interest Rates Work", url: "/guides/how-interest-rates-work/" },
-      { name: "APR vs Interest Rate", url: "/guides/apr-vs-interest-rate/" },
-    ]
-  },
-];
 ---
 
 <header class="bg-white border-slate-100 border-b relative z-50">
@@ -104,16 +41,16 @@ const calculatorCategories = [
               <div class="absolute top-full left-1/2 -translate-x-1/2 pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
                 <div class="bg-white rounded-xl shadow-xl border border-slate-200 p-6 min-w-[720px]">
                   <div class="grid grid-cols-3 gap-6">
-                    {calculatorCategories.map((category) => (
+                    {item.children && item.children.map((category) => (
                       <div>
                         <a 
                           href={getLocalizedUrl(category.url, locale)}
                           class="font-semibold text-slate-900 text-sm flex items-center gap-2 mb-3 hover:text-sky-600"
                         >
-                          {category.name}
+                          {t[category.name] || category.name}
                         </a>
                         <ul class="space-y-2">
-                          {category.items.map((subItem) => (
+                          {category.children && category.children.map((subItem) => (
                             <li>
                               <a 
                                 href={getLocalizedUrl(subItem.url, locale)}
@@ -122,7 +59,7 @@ const calculatorCategories = [
                                 <svg class="w-3 h-3 text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
                                 </svg>
-                                {subItem.name}
+                                {t[subItem.name] || subItem.name}
                               </a>
                             </li>
                           ))}
@@ -229,17 +166,17 @@ const calculatorCategories = [
                   </svg>
                 </button>
                 <div class="mobile-accordion-content hidden mt-3 ml-4 space-y-3">
-                  {calculatorCategories.map((category) => (
+                  {item.children && item.children.map((category) => (
                     <div class="space-y-2">
-                      <span class="text-sm font-semibold text-slate-700">{category.name}</span>
+                      <span class="text-sm font-semibold text-slate-700">{t[category.name] || category.name}</span>
                       <ul class="space-y-2 ml-2">
-                        {category.items.map((subItem) => (
+                        {category.children && category.children.map((subItem) => (
                           <li>
                             <a 
                               href={getLocalizedUrl(subItem.url, locale)}
                               class="text-sm mobile-nav-link text-slate-600"
                             >
-                              {subItem.name}
+                              {t[subItem.name] || subItem.name}
                             </a>
                           </li>
                         ))}

@@ -1,0 +1,148 @@
+{
+	"header": [
+		{
+			"name": "Home",
+			"url": "/"
+		},
+		{
+			"name": "Calculators",
+			"url": "/calculators/"
+		},
+		{
+			"name": "Guides",
+			"url": "/guides/",
+			"children": [
+				{
+					"name": "What are Basis Points?",
+					"url": "/guides/what-are-basis-points/"
+				},
+				{
+					"name": "How Interest Rates Work",
+					"url": "/guides/how-interest-rates-work/"
+				},
+				{
+					"name": "Central Bank Rate Changes",
+					"url": "/guides/central-bank-rate-changes/"
+				},
+				{
+					"name": "Impact of Basis Points on Loans",
+					"url": "/guides/basis-points-impact-on-loans/"
+				},
+				{
+					"name": "APR vs Interest Rate",
+					"url": "/guides/apr-vs-interest-rate/"
+				}
+			]
+		},
+		{
+			"name": "Blog",
+			"url": "/blog/",
+			"children": [
+				{
+					"name": "Basis Point Articles",
+					"url": "/blog/basis-point-articles/"
+				},
+				{
+					"name": "Interest Rate Articles",
+					"url": "/blog/interest-rate-articles/"
+				},
+				{
+					"name": "Investment Articles",
+					"url": "/blog/investment-articles/"
+				}
+			]
+		},
+		{
+			"name": "FAQ",
+			"url": "/faq/",
+			"children": [
+				{
+					"name": "Basis Point FAQ",
+					"url": "/faq/basis-point-faq/"
+				},
+				{
+					"name": "Calculator Usage FAQ",
+					"url": "/faq/calculator-usage-faq/"
+				},
+				{
+					"name": "Financial Disclaimer",
+					"url": "/faq/financial-disclaimer/"
+				}
+			]
+		},
+		{
+			"name": "About",
+			"url": "/about-us/",
+			"children": [
+				{
+					"name": "About Us",
+					"url": "/about-us/"
+				},
+				{
+					"name": "Contact",
+					"url": "/contact-us/"
+				}
+			]
+		},
+		{
+			"name": "Legal",
+			"url": "/legal/",
+			"children": [
+				{
+					"name": "Privacy Policy",
+					"url": "/legal/privacy-policy/"
+				},
+				{
+					"name": "Terms & Conditions",
+					"url": "/legal/terms-and-conditions/"
+				},
+				{
+					"name": "Disclaimer",
+					"url": "/legal/disclaimer/"
+				}
+			]
+		}
+	],
+	"footer": [
+		{
+			"name": "Home",
+			"url": "/"
+		},
+		{
+			"name": "Calculators",
+			"url": "/calculators/"
+		},
+		{
+			"name": "Guides",
+			"url": "/guides/"
+		},
+		{
+			"name": "Blog",
+			"url": "/blog/"
+		},
+		{
+			"name": "FAQ",
+			"url": "/faq/"
+		},
+		{
+			"name": "About Us",
+			"url": "/about-us/"
+		},
+		{
+			"name": "Contact",
+			"url": "/contact-us/"
+		},
+		{
+			"name": "Privacy Policy",
+			"url": "/legal/privacy-policy/"
+		},
+		{
+			"name": "Terms & Conditions",
+			"url": "/legal/terms-and-conditions/"
+		},
+		{
+			"name": "Disclaimer",
+			"url": "/legal/disclaimer/"
+		}
+	]
+}
