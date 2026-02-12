@@ -1,14 +1,18 @@
 // Storage utility — JSON file I/O helpers for the admin panel
 // Works with both local filesystem and Vercel serverless
 
-import { existsSync, mkdirSync, readFileSync, writeFileSync, readdirSync, unlinkSync } from 'node:fs';
+import { existsSync, mkdirSync, readFileSync, writeFileSync, readdirSync, unlinkSync, copyFileSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const DATA_DIR = join(__dirname, '..', 'data');
-const BLOG_DIR = join(__dirname, '..', '..', 'src', 'blog');
-const PAGES_DIR = join(__dirname, '..', 'data', 'pages');
+const IS_VERCEL = !!process.env.VERCEL;
+
+// On Vercel, only /tmp is writable. Use it for all mutable data.
+const BUNDLED_DATA_DIR = join(__dirname, '..', 'data');
+const DATA_DIR = IS_VERCEL ? '/tmp/admin-data' : BUNDLED_DATA_DIR;
+const BLOG_DIR = IS_VERCEL ? '/tmp/admin-blog' : join(__dirname, '..', '..', 'src', 'blog');
+const PAGES_DIR = IS_VERCEL ? '/tmp/admin-data/pages' : join(BUNDLED_DATA_DIR, 'pages');
 const SITE_PAGES_DIR = join(__dirname, '..', '..', 'src', 'pages', '[...lang]');
 const SEO_CONFIG_PATH = join(__dirname, '..', '..', 'src', 'config', 'page-seo.json');
 const I18N_DIR = join(__dirname, '..', '..', 'src', 'i18n');
@@ -27,25 +31,37 @@ export function ensureDataDir() {
     // Create default users.json if missing
     const usersFile = join(DATA_DIR, 'users.json');
     if (!existsSync(usersFile)) {
-        // Default admin: admin / admin123 (should be changed on first login)
-        const defaultUsers = [
-            {
-                id: '1',
-                username: 'admin',
-                email: 'admin@example.com',
-                // This is a placeholder — actual hash is set on first startup via initDefaultAdmin()
-                passwordHash: '',
-                role: 'admin' as const,
-                createdAt: new Date().toISOString(),
-            },
-        ];
-        writeJSON(usersFile, defaultUsers);
+        // On Vercel, try to copy from bundled data first
+        const bundledUsersFile = join(BUNDLED_DATA_DIR, 'users.json');
+        if (IS_VERCEL && existsSync(bundledUsersFile)) {
+            copyFileSync(bundledUsersFile, usersFile);
+        } else {
+            // Default admin: admin / admin123 (should be changed on first login)
+            const defaultUsers = [
+                {
+                    id: '1',
+                    username: 'admin',
+                    email: 'admin@example.com',
+                    // This is a placeholder — actual hash is set on first startup via initDefaultAdmin()
+                    passwordHash: '',
+                    role: 'admin' as const,
+                    createdAt: new Date().toISOString(),
+                },
+            ];
+            writeJSON(usersFile, defaultUsers);
+        }
     }
 
     // Create default page-seo.json if missing
     const seoFile = join(DATA_DIR, 'page-seo.json');
     if (!existsSync(seoFile)) {
-        writeJSON(seoFile, {});
+        // On Vercel, try to copy from bundled data first
+        const bundledSeoFile = join(BUNDLED_DATA_DIR, 'page-seo.json');
+        if (IS_VERCEL && existsSync(bundledSeoFile)) {
+            copyFileSync(bundledSeoFile, seoFile);
+        } else {
+            writeJSON(seoFile, {});
+        }
     }
 }
 
