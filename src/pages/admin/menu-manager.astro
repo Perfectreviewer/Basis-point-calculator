@@ -273,7 +273,7 @@ export const prerender = false;
 
   async function fetchMenuData() {
     try {
-      const res = await fetch("/api/admin/menu");
+      const res = await fetch("/api/admin/menu/");
       if (res.ok) {
         menuData = await res.json();
       } else {
@@ -437,7 +437,7 @@ export const prerender = false;
       const footerData = serializeMenu(footerEditor!);
 
       try {
-        const res = await fetch("/api/admin/menu", {
+        const res = await fetch("/api/admin/menu/", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ header: headerData, footer: footerData }),

@@ -11,7 +11,11 @@ export const prerender = false;
 
 export const GET: APIRoute = async () => {
     try {
+        console.log("API: Attempting to read nav config from:", NAV_CONFIG_PATH);
         const navData = readJSON(NAV_CONFIG_PATH);
+        console.log("API: readJSON value type:", typeof navData);
+        if (navData) console.log("API: readJSON keys:", Object.keys(navData));
+        else console.log("API: readJSON returned null/undefined");
         return new Response(JSON.stringify(navData), {
             status: 200,
             headers: { 'Content-Type': 'application/json' },
