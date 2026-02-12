@@ -278,10 +278,18 @@ export const prerender = false;
         menuData = await res.json();
       } else {
         console.error("Failed to load menu");
+        showError("Server returned " + res.status);
       }
     } catch (e) {
       console.error(e);
+      showError("Network error: " + e);
     }
+  }
+
+  function showError(msg) {
+    const errContent = `<div class="empty-state" style="color: var(--accent-red)">Error: ${msg}</div>`;
+    if (headerEditor) headerEditor.innerHTML = errContent;
+    if (footerEditor) footerEditor.innerHTML = errContent;
   }
 
   function setupTabs() {

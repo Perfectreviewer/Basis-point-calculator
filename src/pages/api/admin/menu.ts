@@ -1,21 +1,21 @@
 import type { APIRoute } from 'astro';
-import { readJSON, writeJSON, ensureDataDir } from '@admin/utils/storage';
+import { writeJSON } from '@admin/utils/storage';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
+// Static import ensures data is available even if file system isn't matching src structure in prod
+// @ts-ignore
+import navData from '../../../../src/config/navigation.json';
+
 const __dirname = fileURLToPath(new URL('.', import.meta.url));
-// Initial Navigation JSON path - this is where the source of truth is
+// Attempt to write to the source path for local dev
 const NAV_CONFIG_PATH = join(__dirname, '../../../../src/config/navigation.json');
 
 export const prerender = false;
 
 export const GET: APIRoute = async () => {
     try {
-        console.log("API: Attempting to read nav config from:", NAV_CONFIG_PATH);
-        const navData = readJSON(NAV_CONFIG_PATH);
-        console.log("API: readJSON value type:", typeof navData);
-        if (navData) console.log("API: readJSON keys:", Object.keys(navData));
-        else console.log("API: readJSON returned null/undefined");
+        // Return statically imported data
         return new Response(JSON.stringify(navData), {
             status: 200,
             headers: { 'Content-Type': 'application/json' },
@@ -41,20 +41,9 @@ export const POST: APIRoute = async ({ request }) => {
             });
         }
 
-        // Write directly to the config file
-        // Note: In a real production environment with Vercel, writing to source files at runtime 
-        // won't persist between deployments. But for this specific requirement (admin panel managing local file), 
-        // or if using an external store (which we aren't yet), this is the way. 
-        // Given the constraints and previous patterns, we are writing to the file system.
-        // The storage utility 'writeJSON' writes to DATA_DIR (tmp on vercel), 
-        // but here we likely want to update the actual config file that drives the site.
-        // However, 'readJSON' in storage.ts checks DATA_DIR. 
-        // Let's use standard fs promises to write to the specific path we want to update.
-
-        // Wait, 'readJSON' from storage.ts uses DATA_DIR by default but allows absolute paths.
-        // Let's stick to the pattern used in 'menu.ts' to ensure we update the correct file.
-        // Actually, looking at 'storage.ts', 'writeJSON' handles absolute paths too.
-
+        // Write directly to the config file (best effort for local dev)
+        // On Vercel, this will likely write to ephemeral storage or fail silently if permissions deny
+        // But for this current architecture, it is the intended behavior.
         writeJSON(NAV_CONFIG_PATH, body);
 
         return new Response(JSON.stringify({ success: true }), {
