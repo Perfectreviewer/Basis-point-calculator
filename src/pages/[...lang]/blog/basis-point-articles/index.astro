@@ -1,0 +1,122 @@
+---
+import Layout from "@theme/layouts/Layout.astro";
+import {
+  getTranslations,
+  type Locale,
+  getLocalizedUrl,
+} from "@theme/i18n/utils";
+
+export function getStaticPaths() {
+  return [
+    { params: { lang: undefined } },
+    { params: { lang: "en" } },
+    { params: { lang: "es" } },
+    { params: { lang: "fr" } },
+    { params: { lang: "de" } },
+  ];
+}
+
+const locale = (Astro.params.lang || "en") as Locale;
+const t = getTranslations(locale);
+
+const pageTitle = "Basis Point Articles | Financial Education Blog";
+const pageDescription =
+  "Learn about basis points, how they're used in finance, and what they mean for your investments and loans.";
+
+const articles = [
+  {
+    title: "What 25 Basis Points Really Means for Your Wallet",
+    excerpt:
+      "When the Fed raises rates by 25 basis points, here's exactly how it affects your mortgage, savings, and credit cards.",
+    date: "2024-02-01",
+    readTime: "5 min read",
+    tag: "Fed Policy",
+  },
+  {
+    title: "Basis Points in Bond Trading: A Complete Guide",
+    excerpt:
+      "Understanding how basis points affect bond yields, prices, and your fixed-income portfolio returns.",
+    date: "2024-01-28",
+    readTime: "8 min read",
+    tag: "Bonds",
+  },
+  {
+    title: "Why Financial Pros Use Basis Points Instead of Percentages",
+    excerpt:
+      "The precision advantage of basis points and when you should use them in your own financial planning.",
+    date: "2024-01-20",
+    readTime: "4 min read",
+    tag: "Education",
+  },
+  {
+    title: "Historic Fed Rate Changes: A Basis Point Timeline",
+    excerpt:
+      "From Volcker to Powell: How Fed rate decisions in basis points have shaped the economy over 40 years.",
+    date: "2024-01-15",
+    readTime: "10 min read",
+    tag: "History",
+  },
+];
+---
+
+<Layout title={pageTitle} description={pageDescription}>
+  <main class="max-w-4xl mx-auto px-4 py-12">
+    <nav class="text-sm text-slate-500 mb-6">
+      <a href={getLocalizedUrl("/blog/", locale)} class="hover:text-sky-600"
+        >Blog</a
+      >
+      <span class="mx-2">/</span>
+      <span class="text-slate-800">Basis Point Articles</span>
+    </nav>
+
+    <div class="mb-12">
+      <h1 class="text-3xl font-bold text-slate-800 mb-4">
+        Basis Point Articles
+      </h1>
+      <p class="text-slate-600">
+        Deep dives into basis points, how they work, and why they matter for
+        your financial decisions.
+      </p>
+    </div>
+
+    <div class="space-y-6">
+      {
+        articles.map((article) => (
+          <article class="bg-white rounded-xl border border-slate-200 p-6 hover:shadow-lg transition-shadow">
+            <div class="flex items-start justify-between gap-4">
+              <div>
+                <span class="inline-block text-xs font-medium text-sky-600 bg-sky-50 px-2 py-1 rounded mb-3">
+                  {article.tag}
+                </span>
+                <h2 class="text-xl font-semibold text-slate-800 hover:text-sky-600 cursor-pointer">
+                  {article.title}
+                </h2>
+                <p class="text-slate-600 mt-2">{article.excerpt}</p>
+                <div class="flex items-center gap-4 mt-4 text-sm text-slate-500">
+                  <span>{article.date}</span>
+                  <span>•</span>
+                  <span>{article.readTime}</span>
+                </div>
+              </div>
+            </div>
+          </article>
+        ))
+      }
+    </div>
+
+    <div class="mt-12 p-6 bg-sky-50 rounded-xl border border-sky-200">
+      <h3 class="font-semibold text-slate-800 mb-2">
+        Try Our Basis Point Calculator
+      </h3>
+      <p class="text-slate-600 text-sm mb-4">
+        Convert between basis points and percentages instantly.
+      </p>
+      <a
+        href={getLocalizedUrl("/basis-point-calculators/", locale)}
+        class="inline-flex items-center gap-2 px-4 py-2 bg-sky-600 text-white rounded-lg hover:bg-sky-700 transition-colors text-sm"
+      >
+        Open Calculator →
+      </a>
+    </div>
+  </main>
+</Layout>

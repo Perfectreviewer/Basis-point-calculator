@@ -1,0 +1,177 @@
+---
+import CalculatorLayout, {
+  getStaticPaths as getStaticPathsCalc,
+} from "@theme/layouts/CalculatorLayout.astro";
+import {
+  getTranslations,
+  type Locale,
+  getLocalizedUrl,
+} from "@theme/i18n/utils";
+
+export const getStaticPaths = getStaticPathsCalc;
+
+const locale = (Astro.params.lang || "en") as Locale;
+const t = getTranslations(locale);
+
+const pageTitle = "APR vs Interest Rate";
+const pageDescription =
+  "Understand the key differences between APR and interest rate, and why APR gives you the true cost of borrowing.";
+
+const relatedCalculators = [
+  { name: "APR Calculator", url: "/interest-rate-calculators/apr-calculator/" },
+  { name: "APY Calculator", url: "/interest-rate-calculators/apy-calculator/" },
+  {
+    name: "Loan Payment Calculator",
+    url: "/loan-calculators/loan-payment-calculator/",
+  },
+];
+---
+
+<CalculatorLayout
+  title={pageTitle}
+  description={pageDescription}
+  calculatorType="guide"
+  relatedCalculators={relatedCalculators}
+  faqs={[]}
+>
+  <article class="prose prose-slate max-w-none">
+    <h1 class="text-3xl font-bold text-slate-800">{pageTitle}</h1>
+
+    <div class="not-prose bg-sky-50 rounded-xl p-6 my-6">
+      <p class="text-lg text-slate-700">
+        <strong>The Key Difference:</strong> Interest rate is just the cost of borrowing
+        the principal. APR includes the interest rate PLUS fees, giving you the true
+        annual cost.
+      </p>
+    </div>
+
+    <h2>Quick Comparison</h2>
+    <div class="not-prose grid grid-cols-1 md:grid-cols-2 gap-4 my-6">
+      <div class="bg-green-50 rounded-lg p-5 border-2 border-green-200">
+        <h3 class="font-bold text-green-800 text-lg">Interest Rate</h3>
+        <ul class="mt-3 space-y-2 text-sm text-green-700">
+          <li>✓ Cost of borrowing the principal only</li>
+          <li>✓ Does NOT include fees</li>
+          <li>✓ Makes loans look cheaper</li>
+          <li>✓ Used for monthly payment calculation</li>
+        </ul>
+      </div>
+      <div class="bg-purple-50 rounded-lg p-5 border-2 border-purple-200">
+        <h3 class="font-bold text-purple-800 text-lg">
+          APR (Annual Percentage Rate)
+        </h3>
+        <ul class="mt-3 space-y-2 text-sm text-purple-700">
+          <li>✓ True cost of borrowing</li>
+          <li>✓ INCLUDES fees and costs</li>
+          <li>✓ Better for comparing loans</li>
+          <li>✓ Required by law on disclosures</li>
+        </ul>
+      </div>
+    </div>
+
+    <h2>What's Included in APR</h2>
+    <p>APR incorporates various loan costs beyond just interest:</p>
+    <ul>
+      <li>
+        <strong>Origination fees:</strong> Lender charges to process the loan
+      </li>
+      <li>
+        <strong>Discount points:</strong> Prepaid interest to lower the rate
+      </li>
+      <li>
+        <strong>Mortgage insurance:</strong> If required for low down payments
+      </li>
+      <li><strong>Closing costs:</strong> Various fees at loan closing</li>
+      <li>
+        <strong>Other finance charges:</strong> Application fees, underwriting fees,
+        etc.
+      </li>
+    </ul>
+
+    <h2>Real Example: Why APR Matters</h2>
+    <div class="not-prose bg-amber-50 rounded-lg p-6 my-6">
+      <h4 class="font-medium text-amber-800 mb-3">
+        Two $300,000 Mortgage Offers:
+      </h4>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="bg-white rounded-lg p-4 border border-amber-200">
+          <div class="text-lg font-bold text-slate-800">Lender A</div>
+          <div class="mt-2 space-y-1 text-sm">
+            <div>Interest Rate: <span class="font-semibold">6.00%</span></div>
+            <div>Fees: <span class="font-semibold">$9,000</span></div>
+            <div class="text-amber-600 font-bold">APR: 6.28%</div>
+          </div>
+        </div>
+        <div class="bg-white rounded-lg p-4 border border-amber-200">
+          <div class="text-lg font-bold text-slate-800">Lender B</div>
+          <div class="mt-2 space-y-1 text-sm">
+            <div>Interest Rate: <span class="font-semibold">6.25%</span></div>
+            <div>Fees: <span class="font-semibold">$2,000</span></div>
+            <div class="text-green-600 font-bold">APR: 6.32%</div>
+          </div>
+        </div>
+      </div>
+      <p class="mt-4 text-sm text-amber-700">
+        <strong>Analysis:</strong> Lender A has a lower interest rate but higher APR
+        due to fees. If you keep the loan long-term, Lender A is cheaper. If you refinance
+        or sell within a few years, Lender B's lower fees make it the better choice.
+      </p>
+    </div>
+
+    <h2>APR vs APY</h2>
+    <p>Don't confuse APR with APY (Annual Percentage Yield):</p>
+    <div class="not-prose grid grid-cols-1 md:grid-cols-2 gap-4 my-6">
+      <div class="bg-slate-50 rounded-lg p-4">
+        <h4 class="font-medium text-slate-700">APR</h4>
+        <p class="text-sm text-slate-600 mt-1">
+          Used for <strong>loans</strong>. Doesn't include compounding effect.
+        </p>
+      </div>
+      <div class="bg-slate-50 rounded-lg p-4">
+        <h4 class="font-medium text-slate-700">APY</h4>
+        <p class="text-sm text-slate-600 mt-1">
+          Used for <strong>savings/investments</strong>. Includes compounding,
+          showing what you actually earn.
+        </p>
+      </div>
+    </div>
+
+    <h2>When to Focus on Interest Rate vs APR</h2>
+    <div class="not-prose my-6">
+      <div class="bg-sky-50 rounded-lg p-5">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm">
+          <div>
+            <h4 class="font-medium text-sky-800 mb-2">Focus on APR when:</h4>
+            <ul class="text-sky-700 space-y-1">
+              <li>• Comparing loan offers</li>
+              <li>• Planning to keep loan long-term</li>
+              <li>• Fees vary significantly between lenders</li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="font-medium text-sky-800 mb-2">
+              Focus on Interest Rate when:
+            </h4>
+            <ul class="text-sky-700 space-y-1">
+              <li>• Calculating monthly payments</li>
+              <li>• Planning to refinance soon</li>
+              <li>• Fees are similar across options</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="not-prose mt-8">
+      <a
+        href={getLocalizedUrl(
+          "/interest-rate-calculators/apr-calculator/",
+          locale,
+        )}
+        class="inline-flex items-center gap-2 px-6 py-3 bg-sky-600 text-white rounded-lg hover:bg-sky-700 transition-colors"
+      >
+        Calculate APR →
+      </a>
+    </div>
+  </article>
+</CalculatorLayout>

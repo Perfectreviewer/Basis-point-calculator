@@ -1,0 +1,132 @@
+---
+import Layout from "@theme/layouts/Layout.astro";
+import FAQs from "@theme/components/FAQs.astro";
+import {
+  getTranslations,
+  type Locale,
+  getLocalizedUrl,
+} from "@theme/i18n/utils.ts";
+
+import indexTranslations from "~/i18n/index.json";
+
+interface Props {
+  title: string;
+  description: string;
+  calculatorType?: string;
+  relatedCalculators?: Array<{ name: string; url: string }>;
+  faqs?: Array<{ question: string; answer: string }>;
+}
+
+// Generate static paths for all available locales
+export async function getStaticPaths() {
+  return Object.keys(indexTranslations).map((locale) => ({
+    params: { lang: locale === "en" ? undefined : locale },
+  }));
+}
+
+const locale = (Astro.params.lang || "en") as Locale;
+const t = getTranslations(locale);
+
+const {
+  title,
+  description,
+  calculatorType,
+  relatedCalculators = [],
+  faqs = [],
+} = Astro.props;
+
+const siteURL = Astro.url.origin;
+const pageURL = Astro.url.href;
+---
+
+<Layout title={`${title} | ${t.site_title}`} description={description}>
+  <!-- Calculator Schema -->
+  <script
+    is:inline
+    slot="head"
+    type="application/ld+json"
+    set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      name: title,
+      url: pageURL,
+      applicationCategory: "FinanceApplication",
+      operatingSystem: "All",
+      offers: {
+        "@type": "Offer",
+        price: "0",
+        priceCurrency: "USD",
+      },
+      description: description,
+      publisher: {
+        "@type": "Organization",
+        name: t.site_title,
+        url: siteURL,
+      },
+    })}
+  />
+
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+    <!-- Main Calculator Area -->
+    <div class="lg:col-span-2 space-y-6">
+      <slot />
+    </div>
+
+    <!-- Sidebar -->
+    <aside class="space-y-6">
+      {
+        relatedCalculators.length > 0 && (
+          <div class="bg-white rounded-2xl shadow-lg p-6">
+            <h3 class="font-semibold text-lg mb-4">
+              {t.related_calculators || "Related Calculators"}
+            </h3>
+            <ul class="space-y-2">
+              {relatedCalculators.map((calc) => (
+                <li>
+                  <a
+                    href={getLocalizedUrl(calc.url, locale)}
+                    class="text-sky-600 hover:text-sky-800 hover:underline flex items-center gap-2"
+                  >
+                    <svg
+                      class="w-4 h-4"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M9 5l7 7-7 7"
+                      />
+                    </svg>
+                    {calc.name}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )
+      }
+
+      <!-- Quick Info Card -->
+      <div class="bg-white rounded-2xl shadow p-6">
+        <h3 class="font-semibold">{t.quick_relations_title}</h3>
+        <ul class="list-disc pl-6 mt-2 text-sm text-slate-700 space-y-1">
+          <li>1 bps = 0.01% = 0.1‰ = 0.0001</li>
+          <li>10 bps = 0.10% = 1‰ = 0.001</li>
+          <li>100 bps = 1.00% = 10‰ = 0.01</li>
+          <li>250 bps = 2.50% = 25‰ = 0.025</li>
+        </ul>
+      </div>
+    </aside>
+  </div>
+
+  {
+    faqs.length > 0 && (
+      <div class="mt-10">
+        <FAQs faqs={faqs} />
+      </div>
+    )
+  }
+</Layout>

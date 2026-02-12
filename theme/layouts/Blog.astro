@@ -1,0 +1,142 @@
+---
+import type { PaginateFunction } from 'astro';
+import { getCollection } from 'astro:content';
+
+import Layout from '@theme/layouts/Layout.astro';
+import indexTranslations from '~/i18n/index.json';
+
+// Generate paginated routes.
+export async function getStaticPaths({ paginate }: { paginate: PaginateFunction }) {
+  const POSTS_PER_PAGE = 12;
+
+  // Sort newest → oldest (adjust if your schema uses a different field)
+  const allPosts = (await getCollection('blog')).sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime());
+
+  return paginate(allPosts, {
+    pageSize: POSTS_PER_PAGE,
+    // You can pass extra props if you like:
+    props: { pageSize: POSTS_PER_PAGE },
+  });
+}
+
+// `page` is provided by Astro's paginate() (items + metadata/urls)
+const { page } = Astro.props;
+
+// Convenience for building numbered links
+const firstUrl = page.url.first ?? '/blog/';
+const makeHref = (n: number) => (n === 1 ? firstUrl : `${firstUrl}${n}/`);
+
+const siteURL = Astro.url.origin;
+---
+
+<Layout title={`Blog | ${indexTranslations.en.site_title}`} description={`Guides, tips, and updates from ${indexTranslations.en.site_title}.`}>
+  <script
+    is:inline
+    type="application/ld+json"
+    slot="head"
+    set:html={JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'Blog',
+      name: indexTranslations.en.site_title,
+      url: `${siteURL}/blog/`,
+    })}
+  />
+  <script
+    is:inline
+    type="application/ld+json"
+    slot="head"
+    set:html={JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'ItemList',
+      itemListElement: page.data.map((p,i) => ({
+        '@type': 'ListItem',
+        position: i + 1,
+        item: {
+          '@type': 'BlogPosting',
+          headline: p.data.title,
+          url: `${siteURL}/blog/${p.id}/`,
+          image: p.data.image,
+          description: p.data.description,
+          mainEntityOfPage: `${siteURL}/blog/${p.id}/`,
+        },
+      })),
+    })}
+  />
+
+  <h1 class="font-semibold text-slate-800 text-3xl">Blog</h1>
+  <p class="mt-3 text-slate-600">Latest guides and updates from {indexTranslations.en.site_title}.</p>
+
+  <!-- Results meta -->
+  <p class="mt-6 text-slate-500 text-sm">
+    Showing {page.start + 1}&ndash;{page.end + 1} of {page.total} articles
+  </p>
+
+  <!-- Cards -->
+  <div class="gap-6 grid md:grid-cols-2 lg:grid-cols-3 mt-4">
+    {
+      page.data.map((post) => (
+        <article class="bg-white shadow-sm hover:shadow-md border border-slate-200 rounded-2xl overflow-hidden transition">
+          <a href={`/blog/${post.id}/`} class="block">
+            <div class="relative bg-slate-100 w-full aspect-[16/9]">
+              <img src={post.data.image} alt={post.data.title} class="absolute inset-0 w-full h-full object-cover" loading="lazy" decoding="async" />
+            </div>
+            <div class="p-5">
+              <h2 class="font-semibold text-slate-900 text-xl">{post.data.title}</h2>
+              <p class="mt-2 text-slate-600">{post.data.description}</p>
+              <span class="inline-flex items-center mt-4 font-medium text-indigo-600 hover:text-indigo-700 text-sm">
+                Read article
+                <svg class="ml-1 w-4 h-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                  <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l5 5a1 1 0 01-.027 1.415l-5 5a1 1 0 11-1.414-1.414L13.586 10H4a1 1 0 110-2h9.586l-3.293-3.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+                </svg>
+              </span>
+            </div>
+          </a>
+        </article>
+      ))
+    }
+  </div>
+
+  <!-- Pagination -->
+  <nav class="flex justify-between items-center mt-10" aria-label="Pagination">
+    <!-- Prev/Next -->
+    <div class="flex gap-2">
+      {
+        page.url.prev ? (
+          <a href={page.url.prev} class="hover:bg-slate-50 px-3 py-2 border border-slate-200 rounded-lg text-slate-700">
+            Previous
+          </a>
+        ) : (
+          <span class="px-3 py-2 border border-slate-100 rounded-lg text-slate-300 cursor-not-allowed">Previous</span>
+        )
+      }
+      {
+        page.url.next ? (
+          <a href={page.url.next} class="hover:bg-slate-50 px-3 py-2 border border-slate-200 rounded-lg text-slate-700">
+            Next
+          </a>
+        ) : (
+          <span class="px-3 py-2 border border-slate-100 rounded-lg text-slate-300 cursor-not-allowed">Next</span>
+        )
+      }
+    </div>
+
+    <!-- Numbered pages -->
+    <ul class="flex items-center gap-1" role="list">
+      {
+        Array.from({ length: page.lastPage }, (_, i) => i + 1).map((n) => (
+          <li>
+            {n === page.currentPage ? (
+              <span aria-current="page" class="bg-indigo-600 px-3 py-2 rounded-lg font-medium text-white">
+                {n}
+              </span>
+            ) : (
+              <a href={makeHref(n)} class="hover:bg-slate-50 px-3 py-2 border border-slate-200 rounded-lg text-slate-700" aria-label={`Go to page ${n}`}>
+                {n}
+              </a>
+            )}
+          </li>
+        ))
+      }
+    </ul>
+  </nav>
+</Layout>

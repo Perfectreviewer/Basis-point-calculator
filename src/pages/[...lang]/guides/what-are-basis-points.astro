@@ -1,0 +1,174 @@
+---
+import CalculatorLayout, {
+  getStaticPaths as getStaticPathsCalc,
+} from "@theme/layouts/CalculatorLayout.astro";
+import {
+  getTranslations,
+  type Locale,
+  getLocalizedUrl,
+} from "@theme/i18n/utils";
+
+export const getStaticPaths = getStaticPathsCalc;
+
+const locale = (Astro.params.lang || "en") as Locale;
+const t = getTranslations(locale);
+
+const pageTitle = "What are Basis Points?";
+const pageDescription =
+  "A complete guide to understanding basis points (bps), how they work, and why financial professionals use them.";
+
+const relatedCalculators = [
+  {
+    name: "BPS to Percentage",
+    url: "/basis-point-calculators/basis-point-to-percentage/",
+  },
+  {
+    name: "Percentage to BPS",
+    url: "/basis-point-calculators/percentage-to-basis-point/",
+  },
+  {
+    name: "Basis Point Guide",
+    url: "/basis-point-calculators/basis-point-guide/",
+  },
+];
+---
+
+<CalculatorLayout
+  title={pageTitle}
+  description={pageDescription}
+  calculatorType="guide"
+  relatedCalculators={relatedCalculators}
+  faqs={[]}
+>
+  <article class="prose prose-slate max-w-none">
+    <h1 class="text-3xl font-bold text-slate-800">{pageTitle}</h1>
+
+    <div class="not-prose bg-sky-50 rounded-xl p-6 my-6">
+      <p class="text-lg text-slate-700">
+        <strong>Quick Definition:</strong> A basis point (bp or bps) is one hundredth
+        of a percentage point (0.01%). 100 basis points = 1 percent.
+      </p>
+    </div>
+
+    <h2>Why Use Basis Points?</h2>
+    <p>
+      Financial professionals use basis points instead of percentages to avoid
+      confusion when discussing rate changes. When interest rates are already
+      expressed as percentages, saying "rates increased by 0.50%" is
+      ambiguous—is it a relative or absolute change?
+    </p>
+
+    <div class="not-prose bg-amber-50 border-l-4 border-amber-400 p-4 my-6">
+      <p class="font-medium text-amber-800">Example of Ambiguity:</p>
+      <p class="text-amber-700 mt-2">
+        If interest rates rise from 4% to 4.5%, this is a 0.5 percentage point
+        increase (50 basis points), but a 12.5% relative increase. Using "basis
+        points" clarifies the absolute change.
+      </p>
+    </div>
+
+    <h2>Common Basis Point Values</h2>
+    <div class="not-prose overflow-x-auto my-6">
+      <table class="w-full text-sm">
+        <thead class="bg-slate-100">
+          <tr>
+            <th class="px-4 py-2 text-left">Basis Points</th>
+            <th class="px-4 py-2 text-left">Percentage</th>
+            <th class="px-4 py-2 text-left">Decimal</th>
+            <th class="px-4 py-2 text-left">Common Usage</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="border-b"
+            ><td class="px-4 py-2">1 bps</td><td class="px-4 py-2">0.01%</td><td
+              class="px-4 py-2">0.0001</td
+            ><td class="px-4 py-2">Fine-tuning, small adjustments</td></tr
+          >
+          <tr class="border-b"
+            ><td class="px-4 py-2">10 bps</td><td class="px-4 py-2">0.10%</td
+            ><td class="px-4 py-2">0.0010</td><td class="px-4 py-2"
+              >Minor policy changes</td
+            ></tr
+          >
+          <tr class="border-b"
+            ><td class="px-4 py-2">25 bps</td><td class="px-4 py-2">0.25%</td
+            ><td class="px-4 py-2">0.0025</td><td class="px-4 py-2"
+              >Standard Fed rate change</td
+            ></tr
+          >
+          <tr class="border-b"
+            ><td class="px-4 py-2">50 bps</td><td class="px-4 py-2">0.50%</td
+            ><td class="px-4 py-2">0.0050</td><td class="px-4 py-2"
+              >Significant rate move</td
+            ></tr
+          >
+          <tr class="border-b"
+            ><td class="px-4 py-2">100 bps</td><td class="px-4 py-2">1.00%</td
+            ><td class="px-4 py-2">0.0100</td><td class="px-4 py-2"
+              >Major policy shift</td
+            ></tr
+          >
+        </tbody>
+      </table>
+    </div>
+
+    <h2>Where Basis Points are Used</h2>
+    <ul>
+      <li>
+        <strong>Central Bank Policy:</strong> Federal Reserve rate decisions are announced
+        in basis points
+      </li>
+      <li>
+        <strong>Bond Markets:</strong> Yield spreads and changes are quoted in bps
+      </li>
+      <li>
+        <strong>Mortgages:</strong> Loan rate differences are often discussed in basis
+        points
+      </li>
+      <li>
+        <strong>Investment Fees:</strong> Expense ratios are sometimes quoted in basis
+        points
+      </li>
+      <li>
+        <strong>Credit Markets:</strong> Credit spreads and risk premiums use basis
+        points
+      </li>
+    </ul>
+
+    <h2>How to Convert Basis Points</h2>
+    <div class="not-prose bg-slate-50 rounded-lg p-6 my-6">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <h4 class="font-medium text-slate-700 mb-2">BPS to Percentage</h4>
+          <code class="text-sky-600">Percentage = Basis Points ÷ 100</code>
+          <p class="text-sm text-slate-500 mt-2">
+            Example: 75 bps = 75 ÷ 100 = 0.75%
+          </p>
+        </div>
+        <div>
+          <h4 class="font-medium text-slate-700 mb-2">Percentage to BPS</h4>
+          <code class="text-sky-600">Basis Points = Percentage × 100</code>
+          <p class="text-sm text-slate-500 mt-2">
+            Example: 2.5% = 2.5 × 100 = 250 bps
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <h2>Real-World Impact</h2>
+    <p>
+      Even small basis point changes can have significant effects on large sums
+      of money. On a $300,000 mortgage, a 25 basis point increase in rate can
+      cost an additional $40+ per month, or nearly $15,000 over a 30-year term.
+    </p>
+
+    <div class="not-prose mt-8">
+      <a
+        href={getLocalizedUrl("/basis-point-calculators/", locale)}
+        class="inline-flex items-center gap-2 px-6 py-3 bg-sky-600 text-white rounded-lg hover:bg-sky-700 transition-colors"
+      >
+        Try Our Basis Point Calculators →
+      </a>
+    </div>
+  </article>
+</CalculatorLayout>

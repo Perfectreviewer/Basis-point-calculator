@@ -1,0 +1,119 @@
+---
+import Layout from "@theme/layouts/Layout.astro";
+import {
+  getTranslations,
+  type Locale,
+  getLocalizedUrl,
+} from "@theme/i18n/utils";
+
+export function getStaticPaths() {
+  return [
+    { params: { lang: undefined } },
+    { params: { lang: "en" } },
+    { params: { lang: "es" } },
+    { params: { lang: "fr" } },
+    { params: { lang: "de" } },
+  ];
+}
+
+const locale = (Astro.params.lang || "en") as Locale;
+const t = getTranslations(locale);
+
+const pageTitle = "Investment Articles | Financial Education Blog";
+const pageDescription =
+  "Learn smart investment strategies, understand ROI, and grow your wealth with expert guidance.";
+
+const articles = [
+  {
+    title: "The Power of Compound Interest: Your Greatest Wealth Tool",
+    excerpt:
+      "How compound interest works and why starting early can mean millions more in retirement.",
+    date: "2024-02-03",
+    readTime: "6 min read",
+    tag: "Fundamentals",
+  },
+  {
+    title: "Bond Investing Basics: Fixed Income for Beginners",
+    excerpt:
+      "Understanding bonds, yields, and how fixed income fits into a balanced portfolio.",
+    date: "2024-01-25",
+    readTime: "9 min read",
+    tag: "Bonds",
+  },
+  {
+    title: "ROI Explained: Measuring Your Investment Success",
+    excerpt:
+      "How to calculate and interpret return on investment for any asset class.",
+    date: "2024-01-19",
+    readTime: "5 min read",
+    tag: "Metrics",
+  },
+  {
+    title: "Inflation and Your Investments: Protecting Purchasing Power",
+    excerpt:
+      "Strategies to ensure your money grows faster than inflation erodes it.",
+    date: "2024-01-12",
+    readTime: "7 min read",
+    tag: "Strategy",
+  },
+];
+---
+
+<Layout title={pageTitle} description={pageDescription}>
+  <main class="max-w-4xl mx-auto px-4 py-12">
+    <nav class="text-sm text-slate-500 mb-6">
+      <a href={getLocalizedUrl("/blog/", locale)} class="hover:text-sky-600"
+        >Blog</a
+      >
+      <span class="mx-2">/</span>
+      <span class="text-slate-800">Investment Articles</span>
+    </nav>
+
+    <div class="mb-12">
+      <h1 class="text-3xl font-bold text-slate-800 mb-4">
+        Investment Articles
+      </h1>
+      <p class="text-slate-600">
+        Smart strategies and insights to help you grow and protect your wealth.
+      </p>
+    </div>
+
+    <div class="space-y-6">
+      {
+        articles.map((article) => (
+          <article class="bg-white rounded-xl border border-slate-200 p-6 hover:shadow-lg transition-shadow">
+            <div class="flex items-start justify-between gap-4">
+              <div>
+                <span class="inline-block text-xs font-medium text-purple-600 bg-purple-50 px-2 py-1 rounded mb-3">
+                  {article.tag}
+                </span>
+                <h2 class="text-xl font-semibold text-slate-800 hover:text-purple-600 cursor-pointer">
+                  {article.title}
+                </h2>
+                <p class="text-slate-600 mt-2">{article.excerpt}</p>
+                <div class="flex items-center gap-4 mt-4 text-sm text-slate-500">
+                  <span>{article.date}</span>
+                  <span>•</span>
+                  <span>{article.readTime}</span>
+                </div>
+              </div>
+            </div>
+          </article>
+        ))
+      }
+    </div>
+
+    <div class="mt-12 p-6 bg-purple-50 rounded-xl border border-purple-200">
+      <h3 class="font-semibold text-slate-800 mb-2">Plan Your Investments</h3>
+      <p class="text-slate-600 text-sm mb-4">
+        Calculate ROI, future value, and more.
+      </p>
+      <a
+        href={getLocalizedUrl("/investment-calculators/", locale)}
+        class="inline-flex items-center gap-2 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors text-sm"
+      >
+        Open Calculators →
+      </a>
+    </div>
+  </main>
+</Layout>

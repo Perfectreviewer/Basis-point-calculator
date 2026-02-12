@@ -1,0 +1,380 @@
+---
+import { getTranslations, getLocaleFromUrl, getLocalizedUrl } from '@theme/i18n/utils';
+import navigation from '~/config/navigation.json';
+
+const locale = getLocaleFromUrl(Astro.url);
+const t = getTranslations(locale);
+
+const siteTitle = t.site_title;
+
+// Calculator mega menu structure
+const calculatorCategories = [
+  {
+    name: t.bp_section_title || "Basis Point Calculators",
+    url: "/basis-point-calculators/",
+    items: [
+      { name: t.bp_to_pct_title || "BPS to Percentage", url: "/basis-point-calculators/basis-point-to-percentage/" },
+      { name: t.pct_to_bp_title || "Percentage to BPS", url: "/basis-point-calculators/percentage-to-basis-point/" },
+      { name: t.bp_change_title || "Change Calculator", url: "/basis-point-calculators/basis-point-change-calculator/" },
+      { name: t.bp_diff_title || "Difference Calculator", url: "/basis-point-calculators/basis-point-difference-calculator/" },
+    ]
+  },
+  {
+    name: t.interest_section_title || "Interest Rate Calculators",
+    url: "/interest-rate-calculators/",
+    items: [
+      { name: t.simple_interest_title || "Simple Interest", url: "/interest-rate-calculators/simple-interest-calculator/" },
+      { name: t.compound_interest_title || "Compound Interest", url: "/interest-rate-calculators/compound-interest-calculator/" },
+      { name: t.apr_calc_title || "APR Calculator", url: "/interest-rate-calculators/apr-calculator/" },
+      { name: t.apy_calc_title || "APY Calculator", url: "/interest-rate-calculators/apy-calculator/" },
+    ]
+  },
+  {
+    name: "Loan Calculators",
+    url: "/loan-calculators/",
+    items: [
+      { name: "Loan Payment", url: "/loan-calculators/loan-payment-calculator/" },
+      { name: "Mortgage Calculator", url: "/loan-calculators/mortgage-calculator/" },
+      { name: "Auto Loan", url: "/loan-calculators/auto-loan-calculator/" },
+      { name: "Amortization", url: "/loan-calculators/loan-amortization-calculator/" },
+    ]
+  },
+  {
+    name: "Bond Calculators",
+    url: "/bond-calculators/",
+    items: [
+      { name: "Bond Yield", url: "/bond-calculators/bond-yield-calculator/" },
+      { name: "Yield to Maturity", url: "/bond-calculators/yield-to-maturity-calculator/" },
+      { name: "Bond Price", url: "/bond-calculators/bond-price-calculator/" },
+      { name: "Bond Duration", url: "/bond-calculators/bond-duration-calculator/" },
+    ]
+  },
+  {
+    name: "Investment Calculators",
+    url: "/investment-calculators/",
+    items: [
+      { name: "ROI Calculator", url: "/investment-calculators/roi-calculator/" },
+      { name: "Future Value", url: "/investment-calculators/future-value-calculator/" },
+      { name: "Present Value", url: "/investment-calculators/present-value-calculator/" },
+      { name: "Inflation Calculator", url: "/investment-calculators/inflation-calculator/" },
+    ]
+  },
+  {
+    name: "Financial Guides",
+    url: "/guides/",
+    items: [
+      { name: "What are Basis Points?", url: "/guides/what-are-basis-points/" },
+      { name: "How Interest Rates Work", url: "/guides/how-interest-rates-work/" },
+      { name: "APR vs Interest Rate", url: "/guides/apr-vs-interest-rate/" },
+    ]
+  },
+];
+---
+
+<header class="bg-white border-slate-100 border-b relative z-50">
+  <div class="flex justify-between items-center mx-auto px-6 py-4 max-w-6xl">
+    <a aria-label={`${siteTitle} ${t['Home']}`} class="flex flex-1 items-center gap-3" href={getLocalizedUrl('/', locale)}>
+      <img src="/images/logo.png" width="50" height="50" alt={`${siteTitle} ${t['Logo']}`} loading="eager" />
+      <div class="leading-tight">
+        <span class="block font-semibold text-slate-900 text-xl">
+          {siteTitle}
+        </span>
+      </div>
+    </a>
+
+    <!-- Desktop nav -->
+    <nav class="hidden lg:flex items-center gap-6" aria-label="Primary">
+      {
+        navigation.header.map((item) => (
+          item.name === "Calculators" ? (
+            <!-- Calculators Dropdown -->
+            <div class="relative group">
+              <a 
+                href={getLocalizedUrl('/calculators/', locale)}
+                class="text-slate-700 hover:text-slate-900 text-sm flex items-center gap-1 py-2"
+                aria-haspopup="true"
+              >
+                {t[item.name] || item.name}
+                <svg class="w-4 h-4 transition-transform group-hover:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                </svg>
+              </a>
+              
+              <!-- Mega Menu Dropdown -->
+              <div class="absolute top-full left-1/2 -translate-x-1/2 pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
+                <div class="bg-white rounded-xl shadow-xl border border-slate-200 p-6 min-w-[720px]">
+                  <div class="grid grid-cols-3 gap-6">
+                    {calculatorCategories.map((category) => (
+                      <div>
+                        <a 
+                          href={getLocalizedUrl(category.url, locale)}
+                          class="font-semibold text-slate-900 text-sm flex items-center gap-2 mb-3 hover:text-sky-600"
+                        >
+                          {category.name}
+                        </a>
+                        <ul class="space-y-2">
+                          {category.items.map((subItem) => (
+                            <li>
+                              <a 
+                                href={getLocalizedUrl(subItem.url, locale)}
+                                class="text-sm flex items-center gap-2 text-slate-600 hover:text-sky-600 hover:translate-x-1 transition-all"
+                              >
+                                <svg class="w-3 h-3 text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                                </svg>
+                                {subItem.name}
+                              </a>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    ))}
+                  </div>
+
+                  
+                  <!-- View All Link -->
+                  <div class="mt-4 pt-4 border-t border-slate-100">
+                    <a 
+                      href={getLocalizedUrl('/calculators/', locale)}
+                      class="text-sm text-sky-600 hover:text-sky-700 font-medium flex items-center gap-1"
+                    >
+                      {t.view_all_calculators || "View All Calculators"}
+                      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                      </svg>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ) : item.children ? (
+            <!-- Dropdown for items with children (Legal) -->
+            <div class="relative group">
+              <a 
+                href={getLocalizedUrl(item.url, locale)}
+                class="text-slate-700 hover:text-slate-900 text-sm flex items-center gap-1 py-2"
+                aria-haspopup="true"
+              >
+                {t[item.name] || item.name}
+                <svg class="w-4 h-4 transition-transform group-hover:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                </svg>
+              </a>
+              <div class="absolute top-full right-0 pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
+                <div class="bg-white rounded-lg shadow-xl border border-slate-200 py-2 min-w-[180px]">
+                  {item.children.map((child) => (
+                    <a 
+                      href={getLocalizedUrl(child.url, locale)}
+                      class="block px-4 py-2 text-sm text-slate-600 hover:bg-slate-50 hover:text-sky-600"
+                    >
+                      {t[child.name] || child.name}
+                    </a>
+                  ))}
+                </div>
+              </div>
+            </div>
+          ) : (
+            <a class="text-slate-700 hover:text-slate-900 text-sm" href={getLocalizedUrl(item.url, locale)}>
+              {t[item.name] || item.name}
+            </a>
+          )
+        ))
+      }
+    </nav>
+
+    <!-- Mobile button -->
+    <div class="lg:hidden">
+      <button type="button" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu" class="bg-white p-2 border border-slate-300 rounded-md burger-menu" id="mobile-menu-toggle">
+        <!-- we'll swap icons with JS -->
+        <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M3 12h18M3 6h18M3 18h18" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile menu -->
+  <div id="mobile-menu" role="dialog" aria-modal="true" aria-hidden="true" class="lg:hidden z-50 fixed inset-0 transition-transform -translate-y-full duration-300 ease-in-out transform">
+    <div class="absolute inset-0 bg-white p-6 overflow-auto">
+      <div class="flex justify-between items-center mb-6">
+        <div class="flex items-center gap-3">
+          <img src="/images/logo.png" width="50" height="50" alt={`${siteTitle} ${t['Logo']}`} loading="eager" />
+          <div class="leading-tight">
+            <a class="font-semibold text-slate-900 text-lg" href={getLocalizedUrl('/', locale)} id="mobile-home-link">
+              {siteTitle}
+            </a>
+          </div>
+        </div>
+        <button type="button" class="bg-white p-2 border border-slate-300 rounded-md" aria-label="Close menu" id="mobile-menu-close">
+          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M6 18L18 6M6 6l12 12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path>
+          </svg>
+        </button>
+      </div>
+
+      <nav class="flex flex-col gap-4" aria-label="Mobile">
+        {
+          navigation.header.map((item) => (
+            item.name === "Calculators" ? (
+              <!-- Mobile Calculators Accordion -->
+              <div class="mobile-accordion">
+                <button 
+                  type="button"
+                  class="font-medium text-slate-900 text-lg flex items-center justify-between w-full mobile-accordion-btn"
+                  aria-expanded="false"
+                >
+                  {t[item.name] || item.name}
+                  <svg class="w-5 h-5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                  </svg>
+                </button>
+                <div class="mobile-accordion-content hidden mt-3 ml-4 space-y-3">
+                  {calculatorCategories.map((category) => (
+                    <div class="space-y-2">
+                      <span class="text-sm font-semibold text-slate-700">{category.name}</span>
+                      <ul class="space-y-2 ml-2">
+                        {category.items.map((subItem) => (
+                          <li>
+                            <a 
+                              href={getLocalizedUrl(subItem.url, locale)}
+                              class="text-sm mobile-nav-link text-slate-600"
+                            >
+                              {subItem.name}
+                            </a>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ) : item.children ? (
+              <!-- Mobile Accordion for items with children (Legal) -->
+              <div class="mobile-accordion">
+                <button 
+                  type="button"
+                  class="font-medium text-slate-900 text-lg flex items-center justify-between w-full mobile-accordion-btn"
+                  aria-expanded="false"
+                >
+                  {t[item.name] || item.name}
+                  <svg class="w-5 h-5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                  </svg>
+                </button>
+                <div class="mobile-accordion-content hidden mt-3 ml-4 space-y-2">
+                  {item.children.map((child) => (
+                    <a 
+                      href={getLocalizedUrl(child.url, locale)}
+                      class="block text-sm mobile-nav-link text-slate-600"
+                    >
+                      {t[child.name] || child.name}
+                    </a>
+                  ))}
+                </div>
+              </div>
+            ) : (
+              <a class="font-medium text-slate-900 text-lg mobile-nav-link" href={getLocalizedUrl(item.url, locale)}>
+                {t[item.name] || item.name}
+              </a>
+            )
+          ))
+        }
+      </nav>
+
+      <div class="mt-8 pt-6 border-slate-100 border-t text-slate-600 text-sm">
+        <p>
+          &copy; {new Date().getFullYear()}
+          {siteTitle}. {t['Built with ❤️ by']}
+          <span class="text-[#B96FFA]"> BigTechies</span>.
+        </p>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- simple client-side JS -->
+<script is:inline type="text/javascript">
+  const btn = document.getElementById('mobile-menu-toggle');
+  const closeBtn = document.getElementById('mobile-menu-close');
+  const mobileMenu = document.getElementById('mobile-menu');
+  const mobileLinks = document.querySelectorAll('.mobile-nav-link');
+  const homeLink = document.getElementById('mobile-home-link');
+  const accordionBtns = document.querySelectorAll('.mobile-accordion-btn');
+
+  const openMenu = () => {
+    mobileMenu.classList.remove('-translate-y-full');
+    mobileMenu.classList.add('translate-y-0');
+    mobileMenu.setAttribute('aria-hidden', 'false');
+    btn.setAttribute('aria-expanded', 'true');
+    document.body.style.overflow = 'hidden';
+
+    // swap icon to X
+    btn.innerHTML = `
+      <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none"
+        xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M6 18L18 6M6 6l12 12"
+          stroke="currentColor"
+          stroke-width="1.6"
+          stroke-linecap="round"
+          stroke-linejoin="round" />
+      </svg>
+    `;
+  };
+
+  const closeMenu = () => {
+    mobileMenu.classList.remove('translate-y-0');
+    mobileMenu.classList.add('-translate-y-full');
+    mobileMenu.setAttribute('aria-hidden', 'true');
+    btn.setAttribute('aria-expanded', 'false');
+    document.body.style.overflow = '';
+
+    // swap icon back to burger
+    btn.innerHTML = `
+      <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none"
+        xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M3 12h18M3 6h18M3 18h18"
+          stroke="currentColor"
+          stroke-width="1.6"
+          stroke-linecap="round"
+          stroke-linejoin="round" />
+      </svg>
+    `;
+  };
+
+  if (btn && mobileMenu) {
+    btn.addEventListener('click', () => {
+      const isOpen = mobileMenu.getAttribute('aria-hidden') === 'false';
+      if (isOpen) {
+        closeMenu();
+      } else {
+        openMenu();
+      }
+    });
+  }
+
+  if (closeBtn) {
+    closeBtn.addEventListener('click', closeMenu);
+  }
+
+  // close on any mobile link click
+  [...mobileLinks, homeLink].forEach((el) => {
+    if (el) el.addEventListener('click', closeMenu);
+  });
+
+  // Mobile accordion functionality
+  accordionBtns.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const content = btn.nextElementSibling;
+      const isExpanded = btn.getAttribute('aria-expanded') === 'true';
+      
+      btn.setAttribute('aria-expanded', !isExpanded);
+      content.classList.toggle('hidden');
+      
+      // Rotate arrow
+      const arrow = btn.querySelector('svg');
+      if (arrow) {
+        arrow.style.transform = isExpanded ? 'rotate(0deg)' : 'rotate(180deg)';
+      }
+    });
+  });
+</script>

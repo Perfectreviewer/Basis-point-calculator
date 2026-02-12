@@ -1,0 +1,177 @@
+---
+import CalculatorLayout, {
+  getStaticPaths as getStaticPathsCalc,
+} from "@theme/layouts/CalculatorLayout.astro";
+import {
+  getTranslations,
+  type Locale,
+  getLocalizedUrl,
+} from "@theme/i18n/utils";
+
+export const getStaticPaths = getStaticPathsCalc;
+
+const locale = (Astro.params.lang || "en") as Locale;
+const t = getTranslations(locale);
+
+const pageTitle = "How Interest Rates Work";
+const pageDescription =
+  "Understand how interest rates work, what influences them, and how they affect your finances.";
+
+const relatedCalculators = [
+  {
+    name: "Simple Interest Calculator",
+    url: "/interest-rate-calculators/simple-interest-calculator/",
+  },
+  {
+    name: "Compound Interest Calculator",
+    url: "/interest-rate-calculators/compound-interest-calculator/",
+  },
+  { name: "APR Calculator", url: "/interest-rate-calculators/apr-calculator/" },
+];
+---
+
+<CalculatorLayout
+  title={pageTitle}
+  description={pageDescription}
+  calculatorType="guide"
+  relatedCalculators={relatedCalculators}
+  faqs={[]}
+>
+  <article class="prose prose-slate max-w-none">
+    <h1 class="text-3xl font-bold text-slate-800">{pageTitle}</h1>
+
+    <div class="not-prose bg-green-50 rounded-xl p-6 my-6">
+      <p class="text-lg text-slate-700">
+        <strong>In Simple Terms:</strong> Interest rates are the cost of borrowing
+        money, or the reward for saving it. They're expressed as a percentage of the
+        principal over a specific time period.
+      </p>
+    </div>
+
+    <h2>Types of Interest Rates</h2>
+
+    <h3>Simple Interest</h3>
+    <p>
+      Simple interest is calculated only on the original principal amount. It's
+      straightforward but less common in modern finance. Formula: <code
+        >I = P × r × t</code
+      >
+    </p>
+
+    <h3>Compound Interest</h3>
+    <p>
+      Compound interest is calculated on both the principal and previously
+      earned interest. This creates exponential growth over time, making it
+      powerful for long-term savings but costly for debt.
+    </p>
+
+    <div class="not-prose bg-sky-50 rounded-lg p-6 my-6">
+      <h4 class="font-medium text-slate-700 mb-3">The Power of Compounding</h4>
+      <p class="text-slate-600 text-sm mb-4">
+        $10,000 invested at 7% annual return:
+      </p>
+      <div class="grid grid-cols-3 gap-4 text-center">
+        <div class="bg-white rounded p-3">
+          <div class="text-2xl font-bold text-sky-600">$14,026</div>
+          <div class="text-xs text-slate-500">After 5 years</div>
+        </div>
+        <div class="bg-white rounded p-3">
+          <div class="text-2xl font-bold text-sky-600">$19,672</div>
+          <div class="text-xs text-slate-500">After 10 years</div>
+        </div>
+        <div class="bg-white rounded p-3">
+          <div class="text-2xl font-bold text-sky-600">$76,123</div>
+          <div class="text-xs text-slate-500">After 30 years</div>
+        </div>
+      </div>
+    </div>
+
+    <h2>Key Interest Rate Terms</h2>
+    <div class="not-prose grid grid-cols-1 md:grid-cols-2 gap-4 my-6">
+      <div class="bg-slate-50 rounded-lg p-4">
+        <h4 class="font-medium text-slate-700">APR (Annual Percentage Rate)</h4>
+        <p class="text-sm text-slate-600 mt-1">
+          The annual cost of borrowing including fees. Used for loans and credit
+          cards.
+        </p>
+      </div>
+      <div class="bg-slate-50 rounded-lg p-4">
+        <h4 class="font-medium text-slate-700">
+          APY (Annual Percentage Yield)
+        </h4>
+        <p class="text-sm text-slate-600 mt-1">
+          The effective annual return including compounding. Used for savings
+          accounts.
+        </p>
+      </div>
+      <div class="bg-slate-50 rounded-lg p-4">
+        <h4 class="font-medium text-slate-700">Prime Rate</h4>
+        <p class="text-sm text-slate-600 mt-1">
+          The rate banks charge their best customers. Many loans are priced
+          relative to prime.
+        </p>
+      </div>
+      <div class="bg-slate-50 rounded-lg p-4">
+        <h4 class="font-medium text-slate-700">Federal Funds Rate</h4>
+        <p class="text-sm text-slate-600 mt-1">
+          The rate banks charge each other overnight. Set by the Federal
+          Reserve.
+        </p>
+      </div>
+    </div>
+
+    <h2>What Influences Interest Rates?</h2>
+    <ul>
+      <li>
+        <strong>Central Bank Policy:</strong> The Fed raises/lowers rates to control
+        inflation and employment
+      </li>
+      <li>
+        <strong>Inflation:</strong> Higher inflation typically leads to higher interest
+        rates
+      </li>
+      <li>
+        <strong>Economic Growth:</strong> Strong growth may push rates up; recessions
+        push rates down
+      </li>
+      <li>
+        <strong>Credit Risk:</strong> Higher risk borrowers pay higher rates
+      </li>
+      <li>
+        <strong>Loan Term:</strong> Longer terms often (but not always) have higher
+        rates
+      </li>
+    </ul>
+
+    <h2>How Rates Affect You</h2>
+    <div class="not-prose grid grid-cols-1 md:grid-cols-2 gap-4 my-6">
+      <div class="bg-green-50 rounded-lg p-4">
+        <h4 class="font-medium text-green-700">When Rates Rise ↑</h4>
+        <ul class="text-sm text-green-600 mt-2 space-y-1">
+          <li>✓ Higher savings yields</li>
+          <li>✓ CDs and bonds pay more</li>
+          <li>✗ Mortgages cost more</li>
+          <li>✗ Credit card debt grows faster</li>
+        </ul>
+      </div>
+      <div class="bg-orange-50 rounded-lg p-4">
+        <h4 class="font-medium text-orange-700">When Rates Fall ↓</h4>
+        <ul class="text-sm text-orange-600 mt-2 space-y-1">
+          <li>✓ Cheaper to borrow</li>
+          <li>✓ Refinancing opportunities</li>
+          <li>✗ Lower savings returns</li>
+          <li>✗ Retirees earn less on fixed income</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="not-prose mt-8">
+      <a
+        href={getLocalizedUrl("/interest-rate-calculators/", locale)}
+        class="inline-flex items-center gap-2 px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
+      >
+        Explore Interest Rate Calculators →
+      </a>
+    </div>
+  </article>
+</CalculatorLayout>

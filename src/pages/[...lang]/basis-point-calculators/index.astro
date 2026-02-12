@@ -1,0 +1,140 @@
+---
+import CalculatorLayout, {
+  getStaticPaths as getStaticPathsCalc,
+} from "@theme/layouts/CalculatorLayout.astro";
+import {
+  getTranslations,
+  type Locale,
+  getLocalizedUrl,
+} from "@theme/i18n/utils";
+
+export const getStaticPaths = getStaticPathsCalc;
+
+const locale = (Astro.params.lang || "en") as Locale;
+const t = getTranslations(locale);
+
+const pageTitle = t.bp_calculators_title || "Basis Point Calculators";
+const pageDescription =
+  t.bp_calculators_desc ||
+  "Free online basis point calculators. Convert between basis points and percentage, calculate changes, and learn about bps.";
+
+const calculators = [
+  {
+    name: t.bp_to_pct_title || "Basis Points to Percentage",
+    description: t.bp_to_pct_short || "Convert bps to percentage (%)",
+    url: "/basis-point-calculators/basis-point-to-percentage/",
+    icon: "📊",
+  },
+  {
+    name: t.pct_to_bp_title || "Percentage to Basis Points",
+    description: t.pct_to_bp_short || "Convert percentage (%) to bps",
+    url: "/basis-point-calculators/percentage-to-basis-point/",
+    icon: "📈",
+  },
+  {
+    name: t.bp_change_title || "Basis Point Change Calculator",
+    description: t.bp_change_short || "Calculate change between rates in bps",
+    url: "/basis-point-calculators/basis-point-change-calculator/",
+    icon: "📉",
+  },
+  {
+    name: t.bp_diff_title || "Basis Point Difference Calculator",
+    description: t.bp_diff_short || "Calculate spreads between values",
+    url: "/basis-point-calculators/basis-point-difference-calculator/",
+    icon: "🔀",
+  },
+  {
+    name: t.bp_examples_title || "Basis Point Examples",
+    description: t.bp_examples_short || "Reference table with conversions",
+    url: "/basis-point-calculators/basis-point-examples/",
+    icon: "📋",
+  },
+  {
+    name: t.bp_vs_pct_title || "Basis Points vs Percentage",
+    description: t.bp_vs_pct_short || "Learn when to use each",
+    url: "/basis-point-calculators/basis-point-vs-percentage/",
+    icon: "⚖️",
+  },
+  {
+    name: t.bp_guide_title || "Basis Point Guide",
+    description: t.bp_guide_short || "Complete guide to basis points",
+    url: "/basis-point-calculators/basis-point-guide/",
+    icon: "📚",
+  },
+];
+
+const faqs = t.bp_index_faqs || [
+  {
+    question: "What is a basis point?",
+    answer:
+      "A basis point (bps) is 1/100th of 1 percent (0.01%). 100 basis points equals 1%.",
+  },
+  {
+    question: "How do I convert basis points to percentage?",
+    answer: "Divide basis points by 100. For example, 50 bps ÷ 100 = 0.50%.",
+  },
+];
+---
+
+<CalculatorLayout
+  title={pageTitle}
+  description={pageDescription}
+  calculatorType="index"
+  relatedCalculators={[]}
+  faqs={faqs}
+>
+  <section class="bg-white rounded-2xl shadow-lg p-6">
+    <h1 class="text-2xl font-semibold text-slate-800">{pageTitle}</h1>
+    <p class="text-slate-600 mt-2">
+      {
+        t.bp_calculators_intro ||
+          "Free online tools to convert, calculate, and learn about basis points. Select a calculator below to get started."
+      }
+    </p>
+  </section>
+
+  <!-- Calculator Grid -->
+  <section class="mt-6">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      {
+        calculators.map((calc) => (
+          <a
+            href={getLocalizedUrl(calc.url, locale)}
+            class="bg-white rounded-xl shadow-md p-5 hover:shadow-lg transition-shadow border border-slate-100 hover:border-sky-200 group"
+          >
+            <div class="flex items-start gap-4">
+              <span class="text-3xl">{calc.icon}</span>
+              <div>
+                <h2 class="font-semibold text-slate-800 group-hover:text-sky-600 transition-colors">
+                  {calc.name}
+                </h2>
+                <p class="text-sm text-slate-500 mt-1">{calc.description}</p>
+              </div>
+            </div>
+          </a>
+        ))
+      }
+    </div>
+  </section>
+
+  <!-- Quick Info -->
+  <section class="bg-white rounded-2xl shadow-lg p-6 mt-6">
+    <h2 class="text-xl font-semibold text-slate-800">
+      {t.about_bp_calcs || "About Our Basis Point Calculators"}
+    </h2>
+    <div class="mt-4 text-slate-600 space-y-3 text-sm">
+      <p>
+        {
+          t.about_bp_calcs_p1 ||
+            "Our free basis point calculators help financial professionals, investors, and students quickly convert and calculate basis points. All calculations are performed instantly in your browser—no data is sent to any server."
+        }
+      </p>
+      <p>
+        {
+          t.about_bp_calcs_p2 ||
+            "Whether you're analyzing interest rate changes, comparing investment fees, or studying for a finance exam, our tools provide accurate results with clear explanations."
+        }
+      </p>
+    </div>
+  </section>
+</CalculatorLayout>

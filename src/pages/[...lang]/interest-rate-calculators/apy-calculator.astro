@@ -1,0 +1,296 @@
+---
+import CalculatorLayout, {
+  getStaticPaths as getStaticPathsCalc,
+} from "@theme/layouts/CalculatorLayout.astro";
+import { getTranslations, type Locale } from "@theme/i18n/utils";
+
+export const getStaticPaths = getStaticPathsCalc;
+
+const locale = (Astro.params.lang || "en") as Locale;
+const t = getTranslations(locale);
+
+const pageTitle = t.apy_calc_title || "APY Calculator";
+const pageDescription =
+  t.apy_calc_desc ||
+  "Calculate Annual Percentage Yield (APY) based on interest rate and compounding frequency. Compare savings account yields.";
+
+const relatedCalculators = [
+  {
+    name: t.apr_calc_title || "APR Calculator",
+    url: "/interest-rate-calculators/apr-calculator/",
+  },
+  {
+    name: t.compound_interest_title || "Compound Interest Calculator",
+    url: "/interest-rate-calculators/compound-interest-calculator/",
+  },
+  {
+    name: t.simple_interest_title || "Simple Interest Calculator",
+    url: "/interest-rate-calculators/simple-interest-calculator/",
+  },
+];
+
+const faqs = t.apy_faqs || [
+  {
+    question: "What is APY?",
+    answer:
+      "APY (Annual Percentage Yield) is the real rate of return earned on an investment or savings account, accounting for compound interest. It shows what you actually earn in a year.",
+  },
+  {
+    question: "How is APY different from APR?",
+    answer:
+      "APY includes the effects of compounding while APR does not. APY shows what you EARN on deposits; APR shows what you PAY on loans. A 5% APR compounded monthly equals 5.12% APY.",
+  },
+  {
+    question: "Why do banks advertise APY?",
+    answer:
+      "Banks advertise APY for savings accounts because compounding makes it higher than the base rate, making their rates look more attractive. APY gives customers a true picture of earnings.",
+  },
+];
+---
+
+<CalculatorLayout
+  title={pageTitle}
+  description={pageDescription}
+  calculatorType="interest"
+  relatedCalculators={relatedCalculators}
+  faqs={faqs}
+>
+  <section class="bg-white rounded-2xl shadow-lg p-6">
+    <h1 class="text-2xl font-semibold text-slate-800">{pageTitle}</h1>
+    <p class="text-sm text-slate-500 mt-1">
+      {
+        t.apy_subtitle ||
+          "Convert nominal interest rates to APY based on compounding frequency."
+      }
+    </p>
+
+    <div class="mt-6 space-y-5">
+      <!-- Input: Interest Rate -->
+      <div>
+        <label for="interest-rate" class="block text-sm mb-2 text-slate-600">
+          {t.nominal_rate || "Nominal Interest Rate (APR)"}
+        </label>
+        <div class="relative">
+          <input
+            id="interest-rate"
+            type="number"
+            inputmode="decimal"
+            step="0.01"
+            class="w-full bg-white border border-slate-200 rounded-lg py-3 px-4 pr-10 focus:outline-none focus:ring-2 focus:ring-sky-200"
+            placeholder="5"
+          />
+          <span
+            class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-slate-400"
+            >%</span
+          >
+        </div>
+      </div>
+
+      <!-- Input: Compounding Frequency -->
+      <div>
+        <label for="frequency" class="block text-sm mb-2 text-slate-600">
+          {t.compounding_frequency || "Compounding Frequency"}
+        </label>
+        <select
+          id="frequency"
+          class="w-full bg-white border border-slate-200 rounded-lg py-3 px-4 focus:outline-none focus:ring-2 focus:ring-sky-200"
+        >
+          <option value="365">{t.daily || "Daily (365)"}</option>
+          <option value="52">{t.weekly || "Weekly (52)"}</option>
+          <option value="26">{t.biweekly || "Bi-weekly (26)"}</option>
+          <option value="12" selected>{t.monthly || "Monthly (12)"}</option>
+          <option value="4">{t.quarterly || "Quarterly (4)"}</option>
+          <option value="2">{t.semiannually || "Semi-annually (2)"}</option>
+          <option value="1">{t.annually || "Annually (1)"}</option>
+          <option value="0">{t.continuous || "Continuous"}</option>
+        </select>
+      </div>
+
+      <!-- Results -->
+      <div class="grid grid-cols-2 gap-4 pt-4">
+        <div class="bg-sky-50 rounded-lg p-4">
+          <label class="block text-sm text-slate-600 mb-1"
+            >{t.nominal_apr || "Nominal Rate (APR)"}</label
+          >
+          <div id="apr-display" class="text-3xl font-bold text-slate-600">
+            0.00%
+          </div>
+        </div>
+        <div class="bg-green-50 rounded-lg p-4">
+          <label class="block text-sm text-slate-600 mb-1"
+            >{t.calculated_apy || "Calculated APY"}</label
+          >
+          <div id="apy-result" class="text-3xl font-bold text-green-600">
+            0.00%
+          </div>
+        </div>
+      </div>
+
+      <!-- Yield on $10,000 -->
+      <div class="bg-purple-50 rounded-lg p-4">
+        <label class="block text-sm text-slate-600 mb-1"
+          >{t.first_year_earnings || "First Year Earnings on $10,000"}</label
+        >
+        <div class="flex items-baseline gap-2">
+          <span id="earnings-result" class="text-2xl font-bold text-purple-600"
+            >$0.00</span
+          >
+          <span id="extra-earnings" class="text-sm text-purple-500"></span>
+        </div>
+      </div>
+
+      <!-- Formula Display -->
+      <div
+        id="formula-display"
+        class="p-4 bg-slate-50 rounded-lg border border-slate-100"
+      >
+        <p class="text-slate-700 text-sm font-mono" id="formula-text"></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- APY Formula Section -->
+  <section class="bg-white rounded-2xl shadow-lg p-6 mt-6">
+    <h2 class="text-xl font-semibold text-slate-800">
+      {t.apy_formula || "APY Formula"}
+    </h2>
+    <div class="mt-4 p-4 bg-slate-50 rounded-lg">
+      <code class="text-lg text-slate-800"> APY = (1 + r/n)^n - 1 </code>
+    </div>
+    <div class="mt-4 text-slate-600 text-sm space-y-2">
+      <p><strong>APY</strong> = Annual Percentage Yield</p>
+      <p><strong>r</strong> = Annual interest rate (as decimal)</p>
+      <p><strong>n</strong> = Number of compounding periods per year</p>
+    </div>
+    <div class="mt-4 p-4 bg-blue-50 rounded-lg">
+      <h3 class="font-medium text-blue-800 mb-2">Continuous Compounding</h3>
+      <code class="text-slate-800">APY = e^r - 1</code>
+      <p class="text-sm text-blue-700 mt-1">
+        Where e ≈ 2.71828 (Euler's number)
+      </p>
+    </div>
+  </section>
+
+  <!-- Comparison Table -->
+  <section class="bg-white rounded-2xl shadow-lg p-6 mt-6">
+    <h2 class="text-xl font-semibold text-slate-800">
+      {t.apy_comparison || "APY by Compounding Frequency"}
+    </h2>
+    <p class="text-sm text-slate-500 mt-1">At 5% nominal interest rate</p>
+    <div class="mt-4 overflow-x-auto">
+      <table class="w-full text-sm">
+        <thead>
+          <tr class="border-b border-slate-200">
+            <th class="text-left py-2 px-3 font-medium text-slate-600"
+              >Frequency</th
+            >
+            <th class="text-left py-2 px-3 font-medium text-slate-600"
+              >Periods/Year</th
+            >
+            <th class="text-left py-2 px-3 font-medium text-slate-600">APY</th>
+            <th class="text-left py-2 px-3 font-medium text-slate-600"
+              >Earnings on $10k</th
+            >
+          </tr>
+        </thead>
+        <tbody class="text-slate-700">
+          <tr class="border-b border-slate-100">
+            <td class="py-2 px-3">Annually</td>
+            <td class="py-2 px-3">1</td>
+            <td class="py-2 px-3">5.000%</td>
+            <td class="py-2 px-3">$500.00</td>
+          </tr>
+          <tr class="border-b border-slate-100">
+            <td class="py-2 px-3">Quarterly</td>
+            <td class="py-2 px-3">4</td>
+            <td class="py-2 px-3">5.095%</td>
+            <td class="py-2 px-3">$509.45</td>
+          </tr>
+          <tr class="border-b border-slate-100">
+            <td class="py-2 px-3">Monthly</td>
+            <td class="py-2 px-3">12</td>
+            <td class="py-2 px-3">5.116%</td>
+            <td class="py-2 px-3">$511.62</td>
+          </tr>
+          <tr class="border-b border-slate-100">
+            <td class="py-2 px-3">Daily</td>
+            <td class="py-2 px-3">365</td>
+            <td class="py-2 px-3">5.127%</td>
+            <td class="py-2 px-3">$512.67</td>
+          </tr>
+          <tr>
+            <td class="py-2 px-3">Continuous</td>
+            <td class="py-2 px-3">∞</td>
+            <td class="py-2 px-3">5.127%</td>
+            <td class="py-2 px-3">$512.71</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <script>
+    const interestRateInput = document.getElementById(
+      "interest-rate",
+    ) as HTMLInputElement;
+    const frequencySelect = document.getElementById(
+      "frequency",
+    ) as HTMLSelectElement;
+
+    const aprDisplay = document.getElementById("apr-display");
+    const apyResult = document.getElementById("apy-result");
+    const earningsResult = document.getElementById("earnings-result");
+    const extraEarnings = document.getElementById("extra-earnings");
+    const formulaText = document.getElementById("formula-text");
+
+    function formatCurrency(value: number): string {
+      return new Intl.NumberFormat("en-US", {
+        style: "currency",
+        currency: "USD",
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      }).format(value);
+    }
+
+    function calculate() {
+      const rate = parseFloat(interestRateInput.value) || 0;
+      const n = parseInt(frequencySelect.value);
+      const r = rate / 100;
+
+      let apy: number;
+      let formula: string;
+
+      if (n === 0) {
+        // Continuous compounding
+        apy = Math.exp(r) - 1;
+        formula = `APY = e^${r.toFixed(4)} - 1 = ${(apy * 100).toFixed(4)}%`;
+      } else {
+        // Standard compounding
+        apy = Math.pow(1 + r / n, n) - 1;
+        formula = `APY = (1 + ${r.toFixed(4)}/${n})^${n} - 1 = ${(apy * 100).toFixed(4)}%`;
+      }
+
+      const principal = 10000;
+      const earnings = principal * apy;
+      const simpleEarnings = principal * r;
+      const extraFromCompounding = earnings - simpleEarnings;
+
+      if (aprDisplay) aprDisplay.textContent = rate.toFixed(2) + "%";
+      if (apyResult) apyResult.textContent = (apy * 100).toFixed(3) + "%";
+      if (earningsResult) earningsResult.textContent = formatCurrency(earnings);
+      if (extraEarnings && extraFromCompounding > 0.01) {
+        extraEarnings.textContent = `(+${formatCurrency(extraFromCompounding)} from compounding)`;
+      } else if (extraEarnings) {
+        extraEarnings.textContent = "";
+      }
+      if (formulaText) formulaText.textContent = formula;
+    }
+
+    interestRateInput.addEventListener("input", calculate);
+    frequencySelect.addEventListener("change", calculate);
+
+    // Initialize with default values
+    interestRateInput.value = "5";
+    calculate();
+  </script>
+</CalculatorLayout>

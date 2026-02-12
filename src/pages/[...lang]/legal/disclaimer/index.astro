@@ -1,0 +1,149 @@
+---
+import Layout from "@theme/layouts/Layout.astro";
+import {
+  getTranslations,
+  type Locale,
+  getLocalizedUrl,
+} from "@theme/i18n/utils";
+
+export function getStaticPaths() {
+  return [
+    { params: { lang: undefined } },
+    { params: { lang: "en" } },
+    { params: { lang: "es" } },
+    { params: { lang: "fr" } },
+    { params: { lang: "de" } },
+  ];
+}
+
+const locale = (Astro.params.lang || "en") as Locale;
+const t = getTranslations(locale);
+
+const pageTitle = "Disclaimer | BasisPointCalculator.com";
+const pageDescription =
+  "Important disclaimers about the use of BasisPointCalculator.com calculators and content.";
+---
+
+<Layout title={pageTitle} description={pageDescription}>
+  <main class="max-w-4xl mx-auto px-4 py-12">
+    <nav class="text-sm text-slate-500 mb-6">
+      <a href={getLocalizedUrl("/legal/", locale)} class="hover:text-sky-600"
+        >Legal</a
+      >
+      <span class="mx-2">/</span>
+      <span class="text-slate-800">Disclaimer</span>
+    </nav>
+
+    <article class="prose prose-slate max-w-none">
+      <h1>Disclaimer</h1>
+      <p class="text-sm text-slate-500">Last updated: February 2024</p>
+
+      <div class="not-prose bg-amber-50 border-l-4 border-amber-400 p-4 my-6">
+        <p class="font-medium text-amber-800">Important Notice</p>
+        <p class="text-amber-700 mt-2">
+          The calculators and content on this website are for educational
+          purposes only and do not constitute financial advice.
+        </p>
+      </div>
+
+      <h2>General Disclaimer</h2>
+      <p>
+        The information provided by BasisPointCalculator.com ("we," "us," or "our") on our
+        website is for general informational and educational purposes only. All
+        information on the site is provided in good faith; however, we make no
+        representation or warranty of any kind, express or implied, regarding
+        the accuracy, adequacy, validity, reliability, availability, or
+        completeness of any information on the site.
+      </p>
+
+      <h2>Not Financial Advice</h2>
+      <p>
+        The content on this website, including all calculators, articles, and
+        guides:
+      </p>
+      <ul>
+        <li>Is not intended as financial, investment, tax, or legal advice</li>
+        <li>
+          Should not be used as a substitute for consultation with professional
+          advisors
+        </li>
+        <li>May not apply to your specific financial situation</li>
+        <li>Is provided "as is" without any guarantees</li>
+      </ul>
+
+      <h2>Calculator Disclaimer</h2>
+      <p>
+        Our financial calculators provide estimates based on the information you
+        enter and standard financial formulas. These calculations:
+      </p>
+      <ul>
+        <li>Are for illustrative purposes only</li>
+        <li>May not account for all factors affecting actual results</li>
+        <li>May differ from calculations by financial institutions</li>
+        <li>
+          Should be verified with qualified professionals before making
+          decisions
+        </li>
+      </ul>
+
+      <h2>No Guarantees</h2>
+      <p>We do not guarantee:</p>
+      <ul>
+        <li>The accuracy of any calculations or content</li>
+        <li>That the website will be available without interruption</li>
+        <li>That any errors will be corrected</li>
+        <li>Specific results from using our calculators</li>
+      </ul>
+
+      <h2>External Links</h2>
+      <p>
+        This website may contain links to external websites. We have no control
+        over the content, accuracy, or availability of external sites and do not
+        endorse or assume responsibility for them.
+      </p>
+
+      <h2>Professional Advice</h2>
+      <p>
+        For important financial decisions, we strongly recommend consulting:
+      </p>
+      <ul>
+        <li>A licensed financial advisor for investment decisions</li>
+        <li>A tax professional for tax-related matters</li>
+        <li>A mortgage professional for home financing</li>
+        <li>An attorney for legal matters</li>
+      </ul>
+
+      <h2>Limitation of Liability</h2>
+      <p>
+        Under no circumstances shall we be liable for any loss or damage,
+        including without limitation, indirect or consequential loss or damage,
+        arising from the use of this website or reliance on any information
+        provided.
+      </p>
+
+      <h2>Changes</h2>
+      <p>
+        We reserve the right to modify this disclaimer at any time. Please
+        review it periodically for changes.
+      </p>
+
+      <h2>Contact</h2>
+      <p>
+        If you have questions about this disclaimer, please contact us at: <a
+          href="mailto:legal@basispoint.org">legal@basispoint.org</a
+        >
+      </p>
+    </article>
+
+    <div class="mt-12 flex gap-4">
+      <a
+        href={getLocalizedUrl("/legal/privacy-policy/", locale)}
+        class="text-sm text-sky-600 hover:underline">Privacy Policy</a
+      >
+      <a
+        href={getLocalizedUrl("/legal/terms-and-conditions/", locale)}
+        class="text-sm text-sky-600 hover:underline">Terms & Conditions</a
+      >
+    </div>
+  </main>
+</Layout>

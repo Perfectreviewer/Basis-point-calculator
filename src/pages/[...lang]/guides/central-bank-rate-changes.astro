@@ -1,0 +1,202 @@
+---
+import CalculatorLayout, {
+  getStaticPaths as getStaticPathsCalc,
+} from "@theme/layouts/CalculatorLayout.astro";
+import {
+  getTranslations,
+  type Locale,
+  getLocalizedUrl,
+} from "@theme/i18n/utils";
+
+export const getStaticPaths = getStaticPathsCalc;
+
+const locale = (Astro.params.lang || "en") as Locale;
+const t = getTranslations(locale);
+
+const pageTitle = "Central Bank Rate Changes";
+const pageDescription =
+  "Understand how central bank rate decisions affect the economy, markets, and your personal finances.";
+
+const relatedCalculators = [
+  {
+    name: "Interest Rate Comparison",
+    url: "/interest-rate-calculators/interest-rate-comparison/",
+  },
+  {
+    name: "Basis Point Calculator",
+    url: "/basis-point-calculators/basis-point-to-percentage/",
+  },
+  {
+    name: "Mortgage Calculator",
+    url: "/loan-calculators/mortgage-calculator/",
+  },
+];
+---
+
+<CalculatorLayout
+  title={pageTitle}
+  description={pageDescription}
+  calculatorType="guide"
+  relatedCalculators={relatedCalculators}
+  faqs={[]}
+>
+  <article class="prose prose-slate max-w-none">
+    <h1 class="text-3xl font-bold text-slate-800">{pageTitle}</h1>
+
+    <div class="not-prose bg-purple-50 rounded-xl p-6 my-6">
+      <p class="text-lg text-slate-700">
+        <strong>Key Insight:</strong> Central banks use interest rate changes as their
+        primary tool to manage inflation, employment, and economic stability. A single
+        rate decision can ripple through all financial markets.
+      </p>
+    </div>
+
+    <h2>What is the Federal Funds Rate?</h2>
+    <p>
+      The federal funds rate is the interest rate at which banks lend reserve
+      balances to each other overnight. The Federal Reserve doesn't set this
+      rate directly but influences it through open market operations and sets a
+      target range.
+    </p>
+
+    <h2>Why Central Banks Change Rates</h2>
+    <div class="not-prose grid grid-cols-1 md:grid-cols-2 gap-4 my-6">
+      <div class="bg-red-50 rounded-lg p-4">
+        <h4 class="font-medium text-red-700">Rate Increases (Hawkish)</h4>
+        <p class="text-sm text-red-600 mt-2">Used to:</p>
+        <ul class="text-sm text-red-600 mt-1 space-y-1">
+          <li>• Combat high inflation</li>
+          <li>• Cool an overheating economy</li>
+          <li>• Strengthen the currency</li>
+          <li>• Prevent asset bubbles</li>
+        </ul>
+      </div>
+      <div class="bg-green-50 rounded-lg p-4">
+        <h4 class="font-medium text-green-700">Rate Decreases (Dovish)</h4>
+        <p class="text-sm text-green-600 mt-2">Used to:</p>
+        <ul class="text-sm text-green-600 mt-1 space-y-1">
+          <li>• Stimulate economic growth</li>
+          <li>• Combat unemployment</li>
+          <li>• Encourage borrowing/spending</li>
+          <li>• Support during recessions</li>
+        </ul>
+      </div>
+    </div>
+
+    <h2>Typical Rate Change Amounts</h2>
+    <div class="not-prose overflow-x-auto my-6">
+      <table class="w-full text-sm">
+        <thead class="bg-slate-100">
+          <tr>
+            <th class="px-4 py-2 text-left">Size</th>
+            <th class="px-4 py-2 text-left">Basis Points</th>
+            <th class="px-4 py-2 text-left">Meaning</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="border-b"
+            ><td class="px-4 py-2">Standard</td><td class="px-4 py-2"
+              >25 bps (0.25%)</td
+            ><td class="px-4 py-2">Normal, measured adjustment</td></tr
+          >
+          <tr class="border-b"
+            ><td class="px-4 py-2">Double</td><td class="px-4 py-2"
+              >50 bps (0.50%)</td
+            ><td class="px-4 py-2">More aggressive action needed</td></tr
+          >
+          <tr class="border-b"
+            ><td class="px-4 py-2">Large</td><td class="px-4 py-2"
+              >75 bps (0.75%)</td
+            ><td class="px-4 py-2">Urgent response to conditions</td></tr
+          >
+          <tr class="border-b"
+            ><td class="px-4 py-2">Emergency</td><td class="px-4 py-2"
+              >100+ bps</td
+            ><td class="px-4 py-2">Crisis response (very rare)</td></tr
+          >
+        </tbody>
+      </table>
+    </div>
+
+    <h2>Cascade Effects of Rate Changes</h2>
+    <div class="not-prose my-6">
+      <div class="bg-slate-50 rounded-lg p-6">
+        <div class="flex flex-col space-y-3">
+          <div class="flex items-center gap-3">
+            <div
+              class="w-8 h-8 rounded-full bg-purple-500 text-white flex items-center justify-center text-sm font-bold"
+            >
+              1
+            </div>
+            <span>Fed announces rate change</span>
+          </div>
+          <div class="ml-4 border-l-2 border-slate-300 h-4"></div>
+          <div class="flex items-center gap-3">
+            <div
+              class="w-8 h-8 rounded-full bg-purple-400 text-white flex items-center justify-center text-sm font-bold"
+            >
+              2
+            </div>
+            <span>Banks adjust prime rate (usually within days)</span>
+          </div>
+          <div class="ml-4 border-l-2 border-slate-300 h-4"></div>
+          <div class="flex items-center gap-3">
+            <div
+              class="w-8 h-8 rounded-full bg-purple-300 text-white flex items-center justify-center text-sm font-bold"
+            >
+              3
+            </div>
+            <span>Variable rate loans adjust (credit cards, HELOCs)</span>
+          </div>
+          <div class="ml-4 border-l-2 border-slate-300 h-4"></div>
+          <div class="flex items-center gap-3">
+            <div
+              class="w-8 h-8 rounded-full bg-purple-200 text-purple-700 flex items-center justify-center text-sm font-bold"
+            >
+              4
+            </div>
+            <span>Mortgage rates, savings yields respond (weeks)</span>
+          </div>
+          <div class="ml-4 border-l-2 border-slate-300 h-4"></div>
+          <div class="flex items-center gap-3">
+            <div
+              class="w-8 h-8 rounded-full bg-purple-100 text-purple-700 flex items-center justify-center text-sm font-bold"
+            >
+              5
+            </div>
+            <span>Economic effects manifest (months to years)</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <h2>How to Prepare for Rate Changes</h2>
+    <ul>
+      <li>
+        <strong>Before rate increases:</strong> Lock in fixed-rate loans, pay down
+        variable-rate debt
+      </li>
+      <li>
+        <strong>Before rate decreases:</strong> Wait to lock mortgage rates, prepare
+        to refinance
+      </li>
+      <li>
+        <strong>Savers:</strong> Consider CDs or bonds to lock in high rates before
+        cuts
+      </li>
+      <li>
+        <strong>Investors:</strong> Understand how rate changes affect stock and bond
+        valuations
+      </li>
+    </ul>
+
+    <div class="not-prose mt-8">
+      <a
+        href={getLocalizedUrl("/basis-point-calculators/", locale)}
+        class="inline-flex items-center gap-2 px-6 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
+      >
+        Calculate Rate Change Impact →
+      </a>
+    </div>
+  </article>
+</CalculatorLayout>

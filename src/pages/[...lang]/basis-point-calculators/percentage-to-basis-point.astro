@@ -1,0 +1,266 @@
+---
+import CalculatorLayout, {
+  getStaticPaths as getStaticPathsCalc,
+} from "@theme/layouts/CalculatorLayout.astro";
+import { getTranslations, type Locale } from "@theme/i18n/utils";
+
+export const getStaticPaths = getStaticPathsCalc;
+
+const locale = (Astro.params.lang || "en") as Locale;
+const t = getTranslations(locale);
+
+const pageTitle = t.pct_to_bp_title || "Percentage to Basis Points Calculator";
+const pageDescription =
+  t.pct_to_bp_desc ||
+  "Convert percentage (%) to basis points (bps) instantly. Free online calculator with formula and examples.";
+
+const relatedCalculators = [
+  {
+    name: t.bp_to_pct_title || "Basis Points to Percentage",
+    url: "/basis-point-calculators/basis-point-to-percentage/",
+  },
+  {
+    name: t.bp_change_title || "Basis Point Change Calculator",
+    url: "/basis-point-calculators/basis-point-change-calculator/",
+  },
+  {
+    name: t.bp_diff_title || "Basis Point Difference Calculator",
+    url: "/basis-point-calculators/basis-point-difference-calculator/",
+  },
+];
+
+const faqs = t.pct_to_bp_faqs || [
+  {
+    question: "How do I convert percentage to basis points?",
+    answer:
+      "Multiply the percentage by 100. For example, 0.50% = 0.50 × 100 = 50 basis points",
+  },
+  {
+    question: "What is 1% in basis points?",
+    answer:
+      "1% equals 100 basis points. Therefore, 0.01% equals 1 basis point.",
+  },
+  {
+    question: "How many basis points is 0.25%?",
+    answer: "0.25% equals 25 basis points (0.25 × 100 = 25 bps).",
+  },
+];
+---
+
+<CalculatorLayout
+  title={pageTitle}
+  description={pageDescription}
+  calculatorType="conversion"
+  relatedCalculators={relatedCalculators}
+  faqs={faqs}
+>
+  <section class="bg-white rounded-2xl shadow-lg p-6">
+    <h1 class="text-2xl font-semibold text-slate-800">{pageTitle}</h1>
+    <p class="text-sm text-slate-500 mt-1">
+      {
+        t.pct_to_bp_subtitle ||
+          "Convert percentage to basis points quickly and accurately."
+      }
+    </p>
+
+    <div class="mt-6 space-y-5">
+      <!-- Input: Percentage -->
+      <div>
+        <label for="pct-input" class="block text-sm mb-2 text-slate-600">
+          {t.enter_percentage || "Enter Percentage"}
+        </label>
+        <div class="relative">
+          <input
+            id="pct-input"
+            type="number"
+            inputmode="decimal"
+            step="0.01"
+            class="w-full bg-white border border-slate-200 rounded-lg py-3 px-4 pr-10 focus:outline-none focus:ring-2 focus:ring-sky-200"
+            placeholder="1.00"
+          />
+          <span
+            class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-slate-400"
+            >%</span
+          >
+        </div>
+      </div>
+
+      <!-- Output: Basis Points -->
+      <div>
+        <label for="bps-output" class="block text-sm mb-2 text-slate-600">
+          {t.result_basis_points || "Result in Basis Points"}
+        </label>
+        <div class="relative">
+          <input
+            id="bps-output"
+            type="text"
+            class="w-full bg-slate-50 border border-slate-200 rounded-lg py-3 px-4 pr-14 text-slate-700 font-medium"
+            placeholder="100"
+            readonly
+          />
+          <span
+            class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-slate-400"
+            >bps</span
+          >
+        </div>
+      </div>
+
+      <!-- Result Explanation -->
+      <div
+        id="result-explanation"
+        class="hidden p-4 bg-sky-50 rounded-lg border border-sky-100"
+      >
+        <p class="text-slate-700 text-sm" id="result-text"></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Formula Section -->
+  <section class="bg-white rounded-2xl shadow-lg p-6 mt-6">
+    <h2 class="text-xl font-semibold text-slate-800">
+      {t.formula_title || "Formula"}
+    </h2>
+    <div class="mt-4 p-4 bg-slate-50 rounded-lg">
+      <code class="text-lg text-slate-800">
+        {t.pct_to_bp_formula || "Basis Points = Percentage × 100"}
+      </code>
+    </div>
+    <div class="mt-4 text-slate-600 text-sm space-y-2">
+      <p>
+        {
+          t.pct_to_bp_formula_explain ||
+            "Since 1% equals 100 basis points, simply multiply the percentage by 100 to get the basis point value."
+        }
+      </p>
+    </div>
+  </section>
+
+  <!-- Examples Section -->
+  <section class="bg-white rounded-2xl shadow-lg p-6 mt-6">
+    <h2 class="text-xl font-semibold text-slate-800">
+      {t.examples_title || "Examples"}
+    </h2>
+    <div class="mt-4 overflow-x-auto">
+      <table class="w-full text-sm">
+        <thead>
+          <tr class="border-b border-slate-200">
+            <th class="text-left py-2 px-3 font-medium text-slate-600"
+              >{t.percent || "Percentage"}</th
+            >
+            <th class="text-left py-2 px-3 font-medium text-slate-600"
+              >{t.basis_points || "Basis Points"}</th
+            >
+            <th class="text-left py-2 px-3 font-medium text-slate-600"
+              >{t.decimal_value || "Decimal"}</th
+            >
+          </tr>
+        </thead>
+        <tbody class="text-slate-700">
+          <tr class="border-b border-slate-100"
+            ><td class="py-2 px-3">0.01%</td><td class="py-2 px-3">1 bps</td><td
+              class="py-2 px-3">0.0001</td
+            ></tr
+          >
+          <tr class="border-b border-slate-100"
+            ><td class="py-2 px-3">0.05%</td><td class="py-2 px-3">5 bps</td><td
+              class="py-2 px-3">0.0005</td
+            ></tr
+          >
+          <tr class="border-b border-slate-100"
+            ><td class="py-2 px-3">0.10%</td><td class="py-2 px-3">10 bps</td
+            ><td class="py-2 px-3">0.001</td></tr
+          >
+          <tr class="border-b border-slate-100"
+            ><td class="py-2 px-3">0.25%</td><td class="py-2 px-3">25 bps</td
+            ><td class="py-2 px-3">0.0025</td></tr
+          >
+          <tr class="border-b border-slate-100"
+            ><td class="py-2 px-3">0.50%</td><td class="py-2 px-3">50 bps</td
+            ><td class="py-2 px-3">0.005</td></tr
+          >
+          <tr class="border-b border-slate-100"
+            ><td class="py-2 px-3">0.75%</td><td class="py-2 px-3">75 bps</td
+            ><td class="py-2 px-3">0.0075</td></tr
+          >
+          <tr class="border-b border-slate-100"
+            ><td class="py-2 px-3">1.00%</td><td class="py-2 px-3">100 bps</td
+            ><td class="py-2 px-3">0.01</td></tr
+          >
+          <tr class="border-b border-slate-100"
+            ><td class="py-2 px-3">1.50%</td><td class="py-2 px-3">150 bps</td
+            ><td class="py-2 px-3">0.015</td></tr
+          >
+          <tr class="border-b border-slate-100"
+            ><td class="py-2 px-3">2.00%</td><td class="py-2 px-3">200 bps</td
+            ><td class="py-2 px-3">0.02</td></tr
+          >
+          <tr
+            ><td class="py-2 px-3">5.00%</td><td class="py-2 px-3">500 bps</td
+            ><td class="py-2 px-3">0.05</td></tr
+          >
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- How to Use Section -->
+  <section class="bg-white rounded-2xl shadow-lg p-6 mt-6">
+    <h2 class="text-xl font-semibold text-slate-800">
+      {t.how_to_use_title || "How to Use This Calculator"}
+    </h2>
+    <div class="mt-4 text-slate-600 text-sm space-y-3">
+      <ol class="list-decimal pl-5 space-y-2">
+        <li>
+          {
+            t.pct_to_bp_step1 ||
+              "Enter the percentage value in the input field above."
+          }
+        </li>
+        <li>
+          {
+            t.pct_to_bp_step2 ||
+              "The basis points value will be calculated and displayed instantly."
+          }
+        </li>
+        <li>
+          {
+            t.pct_to_bp_step3 ||
+              "Use the result for your financial calculations, rate comparisons, or yield analysis."
+          }
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <script>
+    const pctInput = document.getElementById("pct-input") as HTMLInputElement;
+    const bpsOutput = document.getElementById("bps-output") as HTMLInputElement;
+    const resultExplanation = document.getElementById("result-explanation");
+    const resultText = document.getElementById("result-text");
+
+    function calculate() {
+      const pct = parseFloat(pctInput.value);
+
+      if (isNaN(pct)) {
+        bpsOutput.value = "";
+        resultExplanation?.classList.add("hidden");
+        return;
+      }
+
+      const bps = pct * 100;
+      bpsOutput.value = bps.toFixed(2).replace(/\.?0+$/, "");
+
+      // Show explanation
+      if (resultExplanation && resultText) {
+        resultExplanation.classList.remove("hidden");
+        resultText.innerHTML = `<strong>${pct}%</strong> = <strong>${bps.toFixed(2).replace(/\.?0+$/, "")} basis points</strong> (calculated as ${pct} × 100 = ${bps.toFixed(2).replace(/\.?0+$/, "")})`;
+      }
+    }
+
+    pctInput.addEventListener("input", calculate);
+
+    // Initialize with default value
+    pctInput.value = "1";
+    calculate();
+  </script>
+</CalculatorLayout>

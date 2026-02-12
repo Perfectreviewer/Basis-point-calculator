@@ -1,0 +1,279 @@
+---
+import Header from "@theme/components/Header.astro";
+import Footer from "@theme/components/Footer.astro";
+
+import {
+  getTranslations,
+  getLocaleFromUrl,
+  getLocalizedUrl,
+  type Locale,
+} from "@theme/i18n/utils";
+
+import config from "~/config/config.json";
+import navigation from "~/config/navigation.json";
+
+import "@theme/styles/global.css";
+
+// SEO overrides from admin panel
+let pageSeoOverrides: Record<string, any> = {};
+try {
+  const seoModule = await import("~/config/page-seo.json");
+  pageSeoOverrides = seoModule.default || seoModule;
+} catch {
+  /* no overrides file yet */
+}
+
+interface Props {
+  title: string;
+  description: string;
+  img?: string;
+}
+
+const { title: propTitle, description: propDescription, img } = Astro.props;
+
+const locale = getLocaleFromUrl(Astro.url);
+const t = getTranslations(locale);
+
+// Apply SEO overrides if they exist for this page
+const pagePath = Astro.url.pathname.replace(
+  /\/(en|es|fr|de|hi|ru|it|pt|bn|ja|ko|ms|pl|id|ar|bg|tr|sv)\//,
+  "/",
+);
+const seoOverride = pageSeoOverrides[pagePath] || null;
+const title = seoOverride?.title || propTitle;
+const description = seoOverride?.description || propDescription;
+const keywords = seoOverride?.keywords || "";
+const customSchema = seoOverride?.schema || null;
+
+const localeToOG: Record<Locale, string> = {
+  en: "en_US",
+  hi: "hi_IN",
+  es: "es_ES",
+  ru: "ru_RU",
+  fr: "fr_FR",
+  de: "de_DE",
+  it: "it_IT",
+  pt: "pt_PT",
+  bn: "bn_BD",
+  ja: "ja_JP",
+  ko: "ko_KR",
+  ms: "ms_MY",
+  pl: "pl_PL",
+  id: "id_ID",
+  ar: "ar_SA",
+  bg: "bg_BG",
+  tr: "tr_TR",
+  sv: "sv_SE",
+};
+
+const ogLocale = localeToOG[locale];
+
+const slugify = (str: string) =>
+  str
+    .toLowerCase()
+    .trim()
+    .replace(/[^\w\s-]/g, "")
+    .replace(/[\s_-]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+
+const slug = Astro.url.pathname.replaceAll("/", "");
+
+const siteURL = Astro.url.origin;
+const pageURL = Astro.url.href;
+---
+
+<!doctype html>
+<html lang={locale} dir={locale === "ar" ? "rtl" : "ltr"}>
+  <head>
+    <!-- theme meta -->
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>{title}</title>
+
+    <!-- favicon -->
+    <link rel="shortcut icon" href="/images/favicon.png" />
+
+    <!-- verification -->
+    {
+      config.site.google_verification && (
+        <meta
+          name="google-site-verification"
+          content={config.site.google_verification}
+        />
+      )
+    }
+
+    {
+      config.site.bing_verification && (
+        <meta name="msvalidate.01" content={config.site.bing_verification} />
+      )
+    }
+
+    {
+      config.site.yandex_verification && (
+        <meta
+          name="yandex-verification"
+          content={config.site.yandex_verification}
+        />
+      )
+    }
+
+    <!-- robots -->
+    <meta name="robots" content="index, follow" />
+    <meta
+      name="googlebot"
+      content="index, follow, max-video-preview:-1, max-image-preview:large, max-snippet:-1"
+    />
+
+    <!-- canonical url -->
+    <link rel="canonical" href={pageURL} item-prop="url" />
+
+    <!-- meta-description -->
+    <meta name="description" content={description} />
+
+    <!-- meta-keywords from admin panel -->
+    {keywords && <meta name="keywords" content={keywords} />}
+
+    <!-- author from config.json -->
+    <meta name="author" content="BigTechies" />
+
+    <!-- og -->
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={pageURL} />
+    <meta property="og:site_name" content={t.site_title} />
+    <meta property="og:locale" content={ogLocale} />
+    <meta
+      property="og:image"
+      content={`${siteURL}${img || "/images/og.png"}`}
+    />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={title} />
+    <meta property="og:type" content="website" />
+
+    <!-- twitter -->
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta
+      name="twitter:image"
+      content={`${siteURL}${img || "/images/og.png"}`}
+    />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <!-- organization schema -->
+    <script
+      is:inline
+      type="application/ld+json"
+      set:html={JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "@id": `${siteURL}#organization`,
+        name: t.site_title,
+        url: siteURL,
+        legalName: t.site_title,
+        logo: [
+          {
+            "@type": "ImageObject",
+            url: `${siteURL}/images/logo.png`,
+            width: 512,
+            height: 512,
+          },
+        ],
+        description: t.index_description,
+        sameAs: config.social.map((item) => item.url),
+      })}
+    />
+
+    <!-- navigation schema -->
+    <script
+      is:inline
+      type="application/ld+json"
+      set:html={JSON.stringify({
+        "@context": "https://schema.org",
+        "@graph": navigation.header.map((item) => ({
+          "@type": "SiteNavigationElement",
+          "@id": `${siteURL}/#${slugify(t[item.name] || item.name)}`,
+          name: t[item.name] || item.name,
+          url: `${siteURL}${getLocalizedUrl(item.url, locale)}`,
+        })),
+      })}
+    />
+
+    {/* about page schema */}
+    {
+      slug === "about-us" && (
+        <script
+          is:inline
+          type="application/ld+json"
+          set:html={JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "AboutPage",
+            mainEntityOfPage: {
+              "@type": "WebPage",
+              "@id": pageURL,
+            },
+            url: pageURL,
+            headline: title,
+            description: description,
+            publisher: {
+              "@type": "Organization",
+              name: t.site_title,
+              url: siteURL,
+            },
+          })}
+        />
+      )
+    }
+
+    {/* contact page schema */}
+    {
+      slug === "contact-us" && (
+        <script
+          is:inline
+          type="application/ld+json"
+          set:html={JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "ContactPage",
+            mainEntityOfPage: {
+              "@type": "WebPage",
+              "@id": pageURL,
+            },
+            url: pageURL,
+            headline: title,
+            description: description,
+            publisher: {
+              "@type": "Organization",
+              name: t.site_title,
+              url: siteURL,
+            },
+          })}
+        />
+      )
+    }
+
+    {/* custom schema from admin panel */}
+    {
+      customSchema && (
+        <script
+          is:inline
+          type="application/ld+json"
+          set:html={JSON.stringify({
+            "@context": "https://schema.org",
+            ...customSchema,
+          })}
+        />
+      )
+    }
+
+    <slot name="head" />
+  </head>
+  <body class="flex flex-col justify-between bg-sky-50 min-h-screen">
+    <Header />
+    <main class="mx-auto px-3 md:px-6 py-5 md:py-10 w-full max-w-6xl">
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>

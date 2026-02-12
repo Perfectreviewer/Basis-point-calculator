@@ -1,0 +1,258 @@
+---
+import CalculatorLayout, {
+  getStaticPaths as getStaticPathsCalc,
+} from "@theme/layouts/CalculatorLayout.astro";
+import { getTranslations, type Locale } from "@theme/i18n/utils";
+
+export const getStaticPaths = getStaticPathsCalc;
+
+const locale = (Astro.params.lang || "en") as Locale;
+const t = getTranslations(locale);
+
+const pageTitle = t.roi_calc_title || "ROI Calculator";
+const pageDescription =
+  t.roi_calc_desc ||
+  "Calculate return on investment (ROI) and annualized returns for any investment.";
+
+const relatedCalculators = [
+  {
+    name: "Future Value Calculator",
+    url: "/investment-calculators/future-value-calculator/",
+  },
+  {
+    name: "Present Value Calculator",
+    url: "/investment-calculators/present-value-calculator/",
+  },
+  {
+    name: "Compound Interest Calculator",
+    url: "/interest-rate-calculators/compound-interest-calculator/",
+  },
+];
+
+const faqs = [
+  {
+    question: "What is ROI?",
+    answer:
+      "Return on Investment (ROI) measures the gain or loss on an investment relative to the amount invested, expressed as a percentage.",
+  },
+  {
+    question: "How is annualized ROI different?",
+    answer:
+      "Annualized ROI adjusts the return to a yearly basis, allowing you to compare investments held for different time periods.",
+  },
+  {
+    question: "What's a good ROI?",
+    answer:
+      "It depends on the investment type and risk. Stock markets historically average 7-10% annually. Compare to alternatives with similar risk.",
+  },
+];
+---
+
+<CalculatorLayout
+  title={pageTitle}
+  description={pageDescription}
+  calculatorType="investment"
+  relatedCalculators={relatedCalculators}
+  faqs={faqs}
+>
+  <section class="bg-white rounded-2xl shadow-lg p-6">
+    <h1 class="text-2xl font-semibold text-slate-800">{pageTitle}</h1>
+    <p class="text-sm text-slate-500 mt-1">
+      Measure the performance of your investments.
+    </p>
+
+    <div class="mt-6 space-y-5">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label
+            for="initial-investment"
+            class="block text-sm mb-2 text-slate-600">Initial Investment</label
+          >
+          <div class="relative">
+            <span
+              class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
+              >$</span
+            >
+            <input
+              id="initial-investment"
+              type="number"
+              step="100"
+              class="w-full bg-white border border-slate-200 rounded-lg py-3 px-4 pl-8 focus:outline-none focus:ring-2 focus:ring-sky-200"
+              placeholder="10000"
+            />
+          </div>
+        </div>
+        <div>
+          <label for="final-value" class="block text-sm mb-2 text-slate-600"
+            >Final Value</label
+          >
+          <div class="relative">
+            <span
+              class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
+              >$</span
+            >
+            <input
+              id="final-value"
+              type="number"
+              step="100"
+              class="w-full bg-white border border-slate-200 rounded-lg py-3 px-4 pl-8 focus:outline-none focus:ring-2 focus:ring-sky-200"
+              placeholder="15000"
+            />
+          </div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label for="time-period" class="block text-sm mb-2 text-slate-600"
+            >Investment Period</label
+          >
+          <input
+            id="time-period"
+            type="number"
+            step="0.5"
+            class="w-full bg-white border border-slate-200 rounded-lg py-3 px-4 focus:outline-none focus:ring-2 focus:ring-sky-200"
+            placeholder="3"
+          />
+        </div>
+        <div>
+          <label for="time-unit" class="block text-sm mb-2 text-slate-600"
+            >Time Unit</label
+          >
+          <select
+            id="time-unit"
+            class="w-full bg-white border border-slate-200 rounded-lg py-3 px-4"
+          >
+            <option value="years" selected>Years</option>
+            <option value="months">Months</option>
+            <option value="days">Days</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 pt-4">
+        <div class="bg-sky-50 rounded-lg p-4">
+          <label class="block text-sm text-slate-600 mb-1">Total ROI</label>
+          <div id="total-roi" class="text-2xl font-bold text-sky-600">
+            0.00%
+          </div>
+        </div>
+        <div class="bg-green-50 rounded-lg p-4">
+          <label class="block text-sm text-slate-600 mb-1">Annualized ROI</label
+          >
+          <div id="annualized-roi" class="text-2xl font-bold text-green-600">
+            0.00%
+          </div>
+        </div>
+        <div class="bg-purple-50 rounded-lg p-4">
+          <label class="block text-sm text-slate-600 mb-1"
+            >Total Gain/Loss</label
+          >
+          <div id="total-gain" class="text-2xl font-bold text-purple-600">
+            $0
+          </div>
+        </div>
+      </div>
+
+      <div id="result-message" class="p-4 rounded-lg"></div>
+    </div>
+  </section>
+
+  <section class="bg-white rounded-2xl shadow-lg p-6 mt-6">
+    <h2 class="text-xl font-semibold text-slate-800">ROI Formulas</h2>
+    <div class="mt-4 space-y-4 text-sm">
+      <div class="p-4 bg-slate-50 rounded-lg">
+        <h3 class="font-medium text-slate-700 mb-2">Total ROI</h3>
+        <code class="text-slate-800"
+          >ROI = (Final Value - Initial Investment) / Initial Investment × 100</code
+        >
+      </div>
+      <div class="p-4 bg-slate-50 rounded-lg">
+        <h3 class="font-medium text-slate-700 mb-2">Annualized ROI (CAGR)</h3>
+        <code class="text-slate-800"
+          >Annualized ROI = [(Final / Initial)^(1/years) - 1] × 100</code
+        >
+      </div>
+    </div>
+  </section>
+
+  <script>
+    const initialInvestment = document.getElementById(
+      "initial-investment",
+    ) as HTMLInputElement;
+    const finalValue = document.getElementById(
+      "final-value",
+    ) as HTMLInputElement;
+    const timePeriod = document.getElementById(
+      "time-period",
+    ) as HTMLInputElement;
+    const timeUnit = document.getElementById("time-unit") as HTMLSelectElement;
+
+    const totalRoiEl = document.getElementById("total-roi");
+    const annualizedRoiEl = document.getElementById("annualized-roi");
+    const totalGainEl = document.getElementById("total-gain");
+    const resultMessage = document.getElementById("result-message");
+
+    function formatCurrency(v: number) {
+      return new Intl.NumberFormat("en-US", {
+        style: "currency",
+        currency: "USD",
+        maximumFractionDigits: 0,
+      }).format(v);
+    }
+
+    function calculate() {
+      const initial = parseFloat(initialInvestment.value) || 0;
+      const final = parseFloat(finalValue.value) || 0;
+      let time = parseFloat(timePeriod.value) || 0;
+      const unit = timeUnit.value;
+
+      // Convert to years
+      if (unit === "months") time = time / 12;
+      else if (unit === "days") time = time / 365;
+
+      const gain = final - initial;
+      const totalRoi = initial > 0 ? (gain / initial) * 100 : 0;
+      const annualizedRoi =
+        initial > 0 && time > 0
+          ? (Math.pow(final / initial, 1 / time) - 1) * 100
+          : 0;
+
+      if (totalRoiEl) {
+        totalRoiEl.textContent = totalRoi.toFixed(2) + "%";
+        totalRoiEl.className = `text-2xl font-bold ${totalRoi >= 0 ? "text-green-600" : "text-red-600"}`;
+      }
+      if (annualizedRoiEl) {
+        annualizedRoiEl.textContent = annualizedRoi.toFixed(2) + "%";
+        annualizedRoiEl.className = `text-2xl font-bold ${annualizedRoi >= 0 ? "text-green-600" : "text-red-600"}`;
+      }
+      if (totalGainEl) {
+        totalGainEl.textContent = formatCurrency(gain);
+        totalGainEl.className = `text-2xl font-bold ${gain >= 0 ? "text-green-600" : "text-red-600"}`;
+      }
+
+      if (resultMessage) {
+        if (gain > 0) {
+          resultMessage.className = "p-4 rounded-lg bg-green-50 text-green-700";
+          resultMessage.innerHTML = `<strong>Profit:</strong> Your investment grew by ${formatCurrency(gain)} (${totalRoi.toFixed(1)}% total return).`;
+        } else if (gain < 0) {
+          resultMessage.className = "p-4 rounded-lg bg-red-50 text-red-700";
+          resultMessage.innerHTML = `<strong>Loss:</strong> Your investment decreased by ${formatCurrency(Math.abs(gain))} (${totalRoi.toFixed(1)}% loss).`;
+        } else {
+          resultMessage.className = "p-4 rounded-lg bg-slate-50 text-slate-700";
+          resultMessage.innerHTML = "No change in investment value.";
+        }
+      }
+    }
+
+    [initialInvestment, finalValue, timePeriod].forEach((el) =>
+      el.addEventListener("input", calculate),
+    );
+    timeUnit.addEventListener("change", calculate);
+
+    initialInvestment.value = "10000";
+    finalValue.value = "15000";
+    timePeriod.value = "3";
+    calculate();
+  </script>
+</CalculatorLayout>

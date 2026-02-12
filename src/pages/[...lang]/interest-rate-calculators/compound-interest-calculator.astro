@@ -1,0 +1,382 @@
+---
+import CalculatorLayout, {
+  getStaticPaths as getStaticPathsCalc,
+} from "@theme/layouts/CalculatorLayout.astro";
+import { getTranslations, type Locale } from "@theme/i18n/utils";
+
+export const getStaticPaths = getStaticPathsCalc;
+
+const locale = (Astro.params.lang || "en") as Locale;
+const t = getTranslations(locale);
+
+const pageTitle = t.compound_interest_title || "Compound Interest Calculator";
+const pageDescription =
+  t.compound_interest_desc ||
+  "Calculate compound interest with different compounding frequencies. See how your money grows over time.";
+
+const relatedCalculators = [
+  {
+    name: t.simple_interest_title || "Simple Interest Calculator",
+    url: "/interest-rate-calculators/simple-interest-calculator/",
+  },
+  {
+    name: t.apr_calc_title || "APR Calculator",
+    url: "/interest-rate-calculators/apr-calculator/",
+  },
+  {
+    name: t.apy_calc_title || "APY Calculator",
+    url: "/interest-rate-calculators/apy-calculator/",
+  },
+];
+
+const faqs = t.compound_interest_faqs || [
+  {
+    question: "What is compound interest?",
+    answer:
+      "Compound interest is interest calculated on both the initial principal and the accumulated interest from previous periods. It makes your money grow faster than simple interest.",
+  },
+  {
+    question: "How does compounding frequency affect returns?",
+    answer:
+      "The more frequently interest compounds (daily vs monthly vs annually), the more total interest you earn. Daily compounding yields slightly more than monthly, which yields more than annual.",
+  },
+  {
+    question: "What is the Rule of 72?",
+    answer:
+      "The Rule of 72 is a quick way to estimate how long it takes to double your money. Divide 72 by the annual interest rate. At 8%, money doubles in approximately 9 years.",
+  },
+];
+---
+
+<CalculatorLayout
+  title={pageTitle}
+  description={pageDescription}
+  calculatorType="interest"
+  relatedCalculators={relatedCalculators}
+  faqs={faqs}
+>
+  <section class="bg-white rounded-2xl shadow-lg p-6">
+    <h1 class="text-2xl font-semibold text-slate-800">{pageTitle}</h1>
+    <p class="text-sm text-slate-500 mt-1">
+      {
+        t.compound_interest_subtitle ||
+          "See how your investments grow with the power of compound interest."
+      }
+    </p>
+
+    <div class="mt-6 space-y-5">
+      <!-- Input: Principal -->
+      <div>
+        <label for="principal" class="block text-sm mb-2 text-slate-600">
+          {t.initial_investment || "Initial Investment"}
+        </label>
+        <div class="relative">
+          <span
+            class="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
+            >$</span
+          >
+          <input
+            id="principal"
+            type="number"
+            inputmode="decimal"
+            step="100"
+            class="w-full bg-white border border-slate-200 rounded-lg py-3 px-4 pl-8 focus:outline-none focus:ring-2 focus:ring-sky-200"
+            placeholder="10000"
+          />
+        </div>
+      </div>
+
+      <!-- Input: Monthly Contribution -->
+      <div>
+        <label for="contribution" class="block text-sm mb-2 text-slate-600">
+          {t.monthly_contribution || "Monthly Contribution"}
+          <span class="text-slate-400">(optional)</span>
+        </label>
+        <div class="relative">
+          <span
+            class="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
+            >$</span
+          >
+          <input
+            id="contribution"
+            type="number"
+            inputmode="decimal"
+            step="50"
+            class="w-full bg-white border border-slate-200 rounded-lg py-3 px-4 pl-8 focus:outline-none focus:ring-2 focus:ring-sky-200"
+            placeholder="0"
+          />
+        </div>
+      </div>
+
+      <!-- Input: Interest Rate -->
+      <div>
+        <label for="rate" class="block text-sm mb-2 text-slate-600">
+          {t.annual_interest_rate || "Annual Interest Rate"}
+        </label>
+        <div class="relative">
+          <input
+            id="rate"
+            type="number"
+            inputmode="decimal"
+            step="0.1"
+            class="w-full bg-white border border-slate-200 rounded-lg py-3 px-4 pr-10 focus:outline-none focus:ring-2 focus:ring-sky-200"
+            placeholder="7"
+          />
+          <span
+            class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-slate-400"
+            >%</span
+          >
+        </div>
+      </div>
+
+      <!-- Input: Time Period -->
+      <div>
+        <label for="time" class="block text-sm mb-2 text-slate-600">
+          {t.investment_period || "Investment Period (Years)"}
+        </label>
+        <input
+          id="time"
+          type="number"
+          inputmode="decimal"
+          step="1"
+          class="w-full bg-white border border-slate-200 rounded-lg py-3 px-4 focus:outline-none focus:ring-2 focus:ring-sky-200"
+          placeholder="10"
+        />
+      </div>
+
+      <!-- Input: Compounding Frequency -->
+      <div>
+        <label for="frequency" class="block text-sm mb-2 text-slate-600">
+          {t.compounding_frequency || "Compounding Frequency"}
+        </label>
+        <select
+          id="frequency"
+          class="w-full bg-white border border-slate-200 rounded-lg py-3 px-4 focus:outline-none focus:ring-2 focus:ring-sky-200"
+        >
+          <option value="365">{t.daily || "Daily"}</option>
+          <option value="12" selected>{t.monthly || "Monthly"}</option>
+          <option value="4">{t.quarterly || "Quarterly"}</option>
+          <option value="1">{t.annually || "Annually"}</option>
+        </select>
+      </div>
+
+      <!-- Results -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 pt-4">
+        <div class="bg-sky-50 rounded-lg p-4">
+          <label class="block text-sm text-slate-600 mb-1"
+            >{t.future_value || "Future Value"}</label
+          >
+          <div id="future-value" class="text-2xl font-bold text-sky-600">
+            $0.00
+          </div>
+        </div>
+        <div class="bg-green-50 rounded-lg p-4">
+          <label class="block text-sm text-slate-600 mb-1"
+            >{t.total_interest || "Total Interest"}</label
+          >
+          <div id="total-interest" class="text-2xl font-bold text-green-600">
+            $0.00
+          </div>
+        </div>
+        <div class="bg-purple-50 rounded-lg p-4">
+          <label class="block text-sm text-slate-600 mb-1"
+            >{t.total_contributions || "Total Invested"}</label
+          >
+          <div id="total-invested" class="text-2xl font-bold text-purple-600">
+            $0.00
+          </div>
+        </div>
+      </div>
+
+      <!-- Visual Breakdown -->
+      <div class="mt-4">
+        <div class="flex justify-between text-sm text-slate-600 mb-2">
+          <span>{t.principal_label || "Principal"}</span>
+          <span>{t.contributions_label || "Contributions"}</span>
+          <span>{t.interest_label || "Interest"}</span>
+        </div>
+        <div class="h-4 rounded-full overflow-hidden flex" id="breakdown-bar">
+          <div
+            id="bar-principal"
+            class="bg-purple-400 h-full transition-all"
+            style="width: 50%"
+          >
+          </div>
+          <div
+            id="bar-contributions"
+            class="bg-blue-400 h-full transition-all"
+            style="width: 0%"
+          >
+          </div>
+          <div
+            id="bar-interest"
+            class="bg-green-400 h-full transition-all"
+            style="width: 50%"
+          >
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Formula Section -->
+  <section class="bg-white rounded-2xl shadow-lg p-6 mt-6">
+    <h2 class="text-xl font-semibold text-slate-800">
+      {t.formula_title || "Compound Interest Formula"}
+    </h2>
+    <div class="mt-4 p-4 bg-slate-50 rounded-lg">
+      <code class="text-lg text-slate-800"> A = P(1 + r/n)^(nt) </code>
+    </div>
+    <div class="mt-4 text-slate-600 text-sm space-y-2">
+      <p><strong>A</strong> = Final amount (future value)</p>
+      <p><strong>P</strong> = Principal (initial investment)</p>
+      <p><strong>r</strong> = Annual interest rate (as decimal)</p>
+      <p><strong>n</strong> = Number of times compounded per year</p>
+      <p><strong>t</strong> = Time in years</p>
+    </div>
+  </section>
+
+  <!-- Comparison Table -->
+  <section class="bg-white rounded-2xl shadow-lg p-6 mt-6">
+    <h2 class="text-xl font-semibold text-slate-800">
+      {t.compounding_comparison || "Compounding Frequency Comparison"}
+    </h2>
+    <p class="text-sm text-slate-500 mt-1">
+      $10,000 at 7% annual rate for 10 years
+    </p>
+    <div class="mt-4 overflow-x-auto">
+      <table class="w-full text-sm">
+        <thead>
+          <tr class="border-b border-slate-200">
+            <th class="text-left py-2 px-3 font-medium text-slate-600"
+              >Frequency</th
+            >
+            <th class="text-left py-2 px-3 font-medium text-slate-600"
+              >Future Value</th
+            >
+            <th class="text-left py-2 px-3 font-medium text-slate-600"
+              >Interest Earned</th
+            >
+          </tr>
+        </thead>
+        <tbody class="text-slate-700">
+          <tr class="border-b border-slate-100">
+            <td class="py-2 px-3">Annually</td>
+            <td class="py-2 px-3">$19,671.51</td>
+            <td class="py-2 px-3">$9,671.51</td>
+          </tr>
+          <tr class="border-b border-slate-100">
+            <td class="py-2 px-3">Quarterly</td>
+            <td class="py-2 px-3">$19,897.89</td>
+            <td class="py-2 px-3">$9,897.89</td>
+          </tr>
+          <tr class="border-b border-slate-100">
+            <td class="py-2 px-3">Monthly</td>
+            <td class="py-2 px-3">$20,096.61</td>
+            <td class="py-2 px-3">$10,096.61</td>
+          </tr>
+          <tr>
+            <td class="py-2 px-3">Daily</td>
+            <td class="py-2 px-3">$20,137.53</td>
+            <td class="py-2 px-3">$10,137.53</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <script>
+    const principalInput = document.getElementById(
+      "principal",
+    ) as HTMLInputElement;
+    const contributionInput = document.getElementById(
+      "contribution",
+    ) as HTMLInputElement;
+    const rateInput = document.getElementById("rate") as HTMLInputElement;
+    const timeInput = document.getElementById("time") as HTMLInputElement;
+    const frequencySelect = document.getElementById(
+      "frequency",
+    ) as HTMLSelectElement;
+
+    const futureValueEl = document.getElementById("future-value");
+    const totalInterestEl = document.getElementById("total-interest");
+    const totalInvestedEl = document.getElementById("total-invested");
+    const barPrincipal = document.getElementById("bar-principal");
+    const barContributions = document.getElementById("bar-contributions");
+    const barInterest = document.getElementById("bar-interest");
+
+    function formatCurrency(value: number): string {
+      return new Intl.NumberFormat("en-US", {
+        style: "currency",
+        currency: "USD",
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      }).format(value);
+    }
+
+    function calculate() {
+      const P = parseFloat(principalInput.value) || 0;
+      const monthlyContribution = parseFloat(contributionInput.value) || 0;
+      const r = (parseFloat(rateInput.value) || 0) / 100;
+      const t = parseFloat(timeInput.value) || 0;
+      const n = parseInt(frequencySelect.value) || 12;
+
+      // Compound interest: A = P(1 + r/n)^(nt)
+      const compoundFactor = Math.pow(1 + r / n, n * t);
+      let futureValue = P * compoundFactor;
+
+      // Add contributions (using future value of annuity formula)
+      let totalContributions = 0;
+      if (monthlyContribution > 0) {
+        // Convert monthly to match compounding frequency
+        const periodicContribution = monthlyContribution * (12 / n);
+        const periodicRate = r / n;
+        const periods = n * t;
+
+        // FV of annuity = PMT × [(1 + r)^n - 1] / r
+        if (periodicRate > 0) {
+          const contributionFV =
+            periodicContribution * ((compoundFactor - 1) / periodicRate);
+          futureValue += contributionFV;
+        } else {
+          futureValue += periodicContribution * periods;
+        }
+        totalContributions = monthlyContribution * 12 * t;
+      }
+
+      const totalInvested = P + totalContributions;
+      const totalInterest = futureValue - totalInvested;
+
+      if (futureValueEl)
+        futureValueEl.textContent = formatCurrency(futureValue);
+      if (totalInterestEl)
+        totalInterestEl.textContent = formatCurrency(totalInterest);
+      if (totalInvestedEl)
+        totalInvestedEl.textContent = formatCurrency(totalInvested);
+
+      // Update bar chart
+      if (futureValue > 0 && barPrincipal && barContributions && barInterest) {
+        const pctPrincipal = (P / futureValue) * 100;
+        const pctContributions = (totalContributions / futureValue) * 100;
+        const pctInterest = (totalInterest / futureValue) * 100;
+
+        barPrincipal.style.width = `${pctPrincipal}%`;
+        barContributions.style.width = `${pctContributions}%`;
+        barInterest.style.width = `${pctInterest}%`;
+      }
+    }
+
+    principalInput.addEventListener("input", calculate);
+    contributionInput.addEventListener("input", calculate);
+    rateInput.addEventListener("input", calculate);
+    timeInput.addEventListener("input", calculate);
+    frequencySelect.addEventListener("change", calculate);
+
+    // Initialize with default values
+    principalInput.value = "10000";
+    contributionInput.value = "200";
+    rateInput.value = "7";
+    timeInput.value = "10";
+    calculate();
+  </script>
+</CalculatorLayout>

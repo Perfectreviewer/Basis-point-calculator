@@ -1,0 +1,413 @@
+---
+import CalculatorLayout, {
+  getStaticPaths as getStaticPathsCalc,
+} from "@theme/layouts/CalculatorLayout.astro";
+import { getTranslations, type Locale } from "@theme/i18n/utils";
+
+export const getStaticPaths = getStaticPathsCalc;
+
+const locale = (Astro.params.lang || "en") as Locale;
+const t = getTranslations(locale);
+
+const pageTitle = t.rate_comparison_title || "Interest Rate Comparison";
+const pageDescription =
+  t.rate_comparison_desc ||
+  "Compare different interest rates side by side. See how rate differences impact your savings or loan costs.";
+
+const relatedCalculators = [
+  {
+    name: t.simple_interest_title || "Simple Interest Calculator",
+    url: "/interest-rate-calculators/simple-interest-calculator/",
+  },
+  {
+    name: t.compound_interest_title || "Compound Interest Calculator",
+    url: "/interest-rate-calculators/compound-interest-calculator/",
+  },
+  {
+    name: t.bp_change_title || "Basis Point Calculator",
+    url: "/basis-point-calculators/basis-point-change-calculator/",
+  },
+];
+
+const faqs = t.rate_comparison_faqs || [
+  {
+    question: "Why does a small rate difference matter?",
+    answer:
+      "Small rate differences compound over time. A 0.25% difference on a $300,000 mortgage can cost or save you over $15,000 over 30 years.",
+  },
+  {
+    question: "How do I compare rates effectively?",
+    answer:
+      "Compare rates using the same terms (loan length, compounding frequency). For loans, use APR; for savings, use APY. Consider the total cost, not just monthly payments.",
+  },
+  {
+    question: "What's a significant rate difference?",
+    answer:
+      "For mortgages, even 0.125% (12.5 bps) can make a meaningful difference. For savings accounts, 0.25-0.50% can add up over time on larger balances.",
+  },
+];
+---
+
+<CalculatorLayout
+  title={pageTitle}
+  description={pageDescription}
+  calculatorType="comparison"
+  relatedCalculators={relatedCalculators}
+  faqs={faqs}
+>
+  <section class="bg-white rounded-2xl shadow-lg p-6">
+    <h1 class="text-2xl font-semibold text-slate-800">{pageTitle}</h1>
+    <p class="text-sm text-slate-500 mt-1">
+      {
+        t.rate_comparison_subtitle ||
+          "Compare two interest rates to see the difference in earnings or costs."
+      }
+    </p>
+
+    <div class="mt-6 space-y-5">
+      <!-- Input: Principal Amount -->
+      <div>
+        <label for="principal" class="block text-sm mb-2 text-slate-600">
+          {t.amount || "Amount"}
+        </label>
+        <div class="relative">
+          <span
+            class="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
+            >$</span
+          >
+          <input
+            id="principal"
+            type="number"
+            inputmode="decimal"
+            step="1000"
+            class="w-full bg-white border border-slate-200 rounded-lg py-3 px-4 pl-8 focus:outline-none focus:ring-2 focus:ring-sky-200"
+            placeholder="100000"
+          />
+        </div>
+      </div>
+
+      <!-- Rates Comparison -->
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <label for="rate1" class="block text-sm mb-2 text-slate-600">
+            {t.rate_a || "Rate A"}
+          </label>
+          <div class="relative">
+            <input
+              id="rate1"
+              type="number"
+              inputmode="decimal"
+              step="0.01"
+              class="w-full bg-sky-50 border border-sky-200 rounded-lg py-3 px-4 pr-10 focus:outline-none focus:ring-2 focus:ring-sky-200"
+              placeholder="4.5"
+            />
+            <span
+              class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-slate-400"
+              >%</span
+            >
+          </div>
+        </div>
+        <div>
+          <label for="rate2" class="block text-sm mb-2 text-slate-600">
+            {t.rate_b || "Rate B"}
+          </label>
+          <div class="relative">
+            <input
+              id="rate2"
+              type="number"
+              inputmode="decimal"
+              step="0.01"
+              class="w-full bg-green-50 border border-green-200 rounded-lg py-3 px-4 pr-10 focus:outline-none focus:ring-2 focus:ring-green-200"
+              placeholder="5.0"
+            />
+            <span
+              class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-slate-400"
+              >%</span
+            >
+          </div>
+        </div>
+      </div>
+
+      <!-- Input: Time Period -->
+      <div>
+        <label for="years" class="block text-sm mb-2 text-slate-600">
+          {t.time_period_years || "Time Period (Years)"}
+        </label>
+        <input
+          id="years"
+          type="number"
+          inputmode="decimal"
+          step="1"
+          class="w-full bg-white border border-slate-200 rounded-lg py-3 px-4 focus:outline-none focus:ring-2 focus:ring-sky-200"
+          placeholder="10"
+        />
+      </div>
+
+      <!-- Results Comparison -->
+      <div class="grid grid-cols-2 gap-4 pt-4">
+        <div class="bg-sky-50 rounded-lg p-4 border-2 border-sky-200">
+          <div class="flex justify-between items-start mb-2">
+            <label class="text-sm font-medium text-sky-800">Rate A</label>
+            <span id="rate1-badge" class="text-sm font-bold text-sky-600"
+              >0.00%</span
+            >
+          </div>
+          <div class="space-y-2">
+            <div>
+              <span class="text-xs text-slate-500">Interest Earned/Paid</span>
+              <div id="interest1" class="text-xl font-bold text-sky-600">
+                $0
+              </div>
+            </div>
+            <div>
+              <span class="text-xs text-slate-500">Total Value</span>
+              <div id="total1" class="text-lg font-semibold text-slate-700">
+                $0
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="bg-green-50 rounded-lg p-4 border-2 border-green-200">
+          <div class="flex justify-between items-start mb-2">
+            <label class="text-sm font-medium text-green-800">Rate B</label>
+            <span id="rate2-badge" class="text-sm font-bold text-green-600"
+              >0.00%</span
+            >
+          </div>
+          <div class="space-y-2">
+            <div>
+              <span class="text-xs text-slate-500">Interest Earned/Paid</span>
+              <div id="interest2" class="text-xl font-bold text-green-600">
+                $0
+              </div>
+            </div>
+            <div>
+              <span class="text-xs text-slate-500">Total Value</span>
+              <div id="total2" class="text-lg font-semibold text-slate-700">
+                $0
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Difference Summary -->
+      <div id="difference-box" class="p-4 rounded-lg border-2">
+        <div class="flex justify-between items-center">
+          <div>
+            <span class="text-sm text-slate-600">Difference</span>
+            <div id="difference-amount" class="text-2xl font-bold">$0</div>
+          </div>
+          <div class="text-right">
+            <span class="text-sm text-slate-600">Rate Spread</span>
+            <div id="rate-spread" class="text-lg font-semibold">0 bps</div>
+          </div>
+        </div>
+        <p id="difference-summary" class="text-sm mt-2"></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Impact Analysis Table -->
+  <section class="bg-white rounded-2xl shadow-lg p-6 mt-6">
+    <h2 class="text-xl font-semibold text-slate-800">
+      {t.yearly_breakdown || "Year-by-Year Breakdown"}
+    </h2>
+    <div class="mt-4 overflow-x-auto">
+      <table class="w-full text-sm" id="breakdown-table">
+        <thead>
+          <tr class="border-b border-slate-200">
+            <th class="text-left py-2 px-3 font-medium text-slate-600">Year</th>
+            <th class="text-left py-2 px-3 font-medium text-sky-600"
+              >Rate A Value</th
+            >
+            <th class="text-left py-2 px-3 font-medium text-green-600"
+              >Rate B Value</th
+            >
+            <th class="text-left py-2 px-3 font-medium text-slate-600"
+              >Difference</th
+            >
+          </tr>
+        </thead>
+        <tbody id="breakdown-body" class="text-slate-700"> </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- Rate Difference Impact -->
+  <section class="bg-white rounded-2xl shadow-lg p-6 mt-6">
+    <h2 class="text-xl font-semibold text-slate-800">
+      {t.impact_examples || "Rate Difference Impact Examples"}
+    </h2>
+    <p class="text-sm text-slate-500 mt-1">
+      On a $300,000 mortgage over 30 years
+    </p>
+    <div class="mt-4 overflow-x-auto">
+      <table class="w-full text-sm">
+        <thead>
+          <tr class="border-b border-slate-200">
+            <th class="text-left py-2 px-3 font-medium text-slate-600"
+              >Difference</th
+            >
+            <th class="text-left py-2 px-3 font-medium text-slate-600"
+              >Basis Points</th
+            >
+            <th class="text-left py-2 px-3 font-medium text-slate-600"
+              >Monthly Payment Diff</th
+            >
+            <th class="text-left py-2 px-3 font-medium text-slate-600"
+              >Total Cost Diff</th
+            >
+          </tr>
+        </thead>
+        <tbody class="text-slate-700">
+          <tr class="border-b border-slate-100">
+            <td class="py-2 px-3">0.125%</td>
+            <td class="py-2 px-3">12.5 bps</td>
+            <td class="py-2 px-3">~$24/month</td>
+            <td class="py-2 px-3">~$8,640</td>
+          </tr>
+          <tr class="border-b border-slate-100">
+            <td class="py-2 px-3">0.25%</td>
+            <td class="py-2 px-3">25 bps</td>
+            <td class="py-2 px-3">~$48/month</td>
+            <td class="py-2 px-3">~$17,280</td>
+          </tr>
+          <tr class="border-b border-slate-100">
+            <td class="py-2 px-3">0.50%</td>
+            <td class="py-2 px-3">50 bps</td>
+            <td class="py-2 px-3">~$95/month</td>
+            <td class="py-2 px-3">~$34,200</td>
+          </tr>
+          <tr>
+            <td class="py-2 px-3">1.00%</td>
+            <td class="py-2 px-3">100 bps</td>
+            <td class="py-2 px-3">~$189/month</td>
+            <td class="py-2 px-3">~$68,040</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <script>
+    const principalInput = document.getElementById(
+      "principal",
+    ) as HTMLInputElement;
+    const rate1Input = document.getElementById("rate1") as HTMLInputElement;
+    const rate2Input = document.getElementById("rate2") as HTMLInputElement;
+    const yearsInput = document.getElementById("years") as HTMLInputElement;
+
+    const rate1Badge = document.getElementById("rate1-badge");
+    const rate2Badge = document.getElementById("rate2-badge");
+    const interest1 = document.getElementById("interest1");
+    const interest2 = document.getElementById("interest2");
+    const total1 = document.getElementById("total1");
+    const total2 = document.getElementById("total2");
+    const differenceBox = document.getElementById("difference-box");
+    const differenceAmount = document.getElementById("difference-amount");
+    const rateSpread = document.getElementById("rate-spread");
+    const differenceSummary = document.getElementById("difference-summary");
+    const breakdownBody = document.getElementById("breakdown-body");
+
+    function formatCurrency(value: number): string {
+      return new Intl.NumberFormat("en-US", {
+        style: "currency",
+        currency: "USD",
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0,
+      }).format(value);
+    }
+
+    function calculate() {
+      const P = parseFloat(principalInput.value) || 0;
+      const r1 = (parseFloat(rate1Input.value) || 0) / 100;
+      const r2 = (parseFloat(rate2Input.value) || 0) / 100;
+      const years = parseFloat(yearsInput.value) || 0;
+
+      // Compound interest calculation
+      const fv1 = P * Math.pow(1 + r1, years);
+      const fv2 = P * Math.pow(1 + r2, years);
+      const int1 = fv1 - P;
+      const int2 = fv2 - P;
+      const diff = Math.abs(fv2 - fv1);
+      const spreadBps = Math.abs(r2 - r1) * 10000;
+
+      if (rate1Badge) rate1Badge.textContent = (r1 * 100).toFixed(2) + "%";
+      if (rate2Badge) rate2Badge.textContent = (r2 * 100).toFixed(2) + "%";
+      if (interest1) interest1.textContent = formatCurrency(int1);
+      if (interest2) interest2.textContent = formatCurrency(int2);
+      if (total1) total1.textContent = formatCurrency(fv1);
+      if (total2) total2.textContent = formatCurrency(fv2);
+      if (differenceAmount) differenceAmount.textContent = formatCurrency(diff);
+      if (rateSpread) rateSpread.textContent = spreadBps.toFixed(0) + " bps";
+
+      // Update difference box color and summary
+      if (differenceBox && differenceSummary) {
+        const winner = fv2 > fv1 ? "B" : "A";
+        const winnerRate =
+          fv2 > fv1 ? (r2 * 100).toFixed(2) : (r1 * 100).toFixed(2);
+
+        if (fv2 > fv1) {
+          differenceBox.className =
+            "p-4 rounded-lg border-2 border-green-200 bg-green-50";
+          differenceAmount!.className = "text-2xl font-bold text-green-600";
+        } else if (fv1 > fv2) {
+          differenceBox.className =
+            "p-4 rounded-lg border-2 border-sky-200 bg-sky-50";
+          differenceAmount!.className = "text-2xl font-bold text-sky-600";
+        } else {
+          differenceBox.className =
+            "p-4 rounded-lg border-2 border-slate-200 bg-slate-50";
+          differenceAmount!.className = "text-2xl font-bold text-slate-600";
+        }
+
+        if (diff > 0) {
+          differenceSummary.innerHTML = `Rate ${winner} (${winnerRate}%) earns <strong>${formatCurrency(diff)}</strong> more over ${years} years.`;
+        } else {
+          differenceSummary.textContent = "Both rates produce the same result.";
+        }
+      }
+
+      // Generate year-by-year breakdown
+      if (breakdownBody) {
+        breakdownBody.innerHTML = "";
+        const maxRows = Math.min(years, 10);
+
+        for (let y = 1; y <= maxRows; y++) {
+          const val1 = P * Math.pow(1 + r1, y);
+          const val2 = P * Math.pow(1 + r2, y);
+          const yearDiff = val2 - val1;
+
+          const row = document.createElement("tr");
+          row.className = "border-b border-slate-100";
+          row.innerHTML = `
+            <td class="py-2 px-3">${y}</td>
+            <td class="py-2 px-3">${formatCurrency(val1)}</td>
+            <td class="py-2 px-3">${formatCurrency(val2)}</td>
+            <td class="py-2 px-3 ${yearDiff >= 0 ? "text-green-600" : "text-red-600"}">${yearDiff >= 0 ? "+" : ""}${formatCurrency(yearDiff)}</td>
+          `;
+          breakdownBody.appendChild(row);
+        }
+
+        if (years > 10) {
+          const row = document.createElement("tr");
+          row.innerHTML = `<td colspan="4" class="py-2 px-3 text-slate-500 text-center">... showing first 10 of ${years} years</td>`;
+          breakdownBody.appendChild(row);
+        }
+      }
+    }
+
+    principalInput.addEventListener("input", calculate);
+    rate1Input.addEventListener("input", calculate);
+    rate2Input.addEventListener("input", calculate);
+    yearsInput.addEventListener("input", calculate);
+
+    // Initialize with default values
+    principalInput.value = "100000";
+    rate1Input.value = "4.5";
+    rate2Input.value = "5.0";
+    yearsInput.value = "10";
+    calculate();
+  </script>
+</CalculatorLayout>

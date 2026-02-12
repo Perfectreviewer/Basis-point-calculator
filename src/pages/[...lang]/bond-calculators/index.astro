@@ -1,0 +1,156 @@
+---
+import CalculatorLayout, {
+  getStaticPaths as getStaticPathsCalc,
+} from "@theme/layouts/CalculatorLayout.astro";
+import {
+  getTranslations,
+  type Locale,
+  getLocalizedUrl,
+} from "@theme/i18n/utils";
+
+export const getStaticPaths = getStaticPathsCalc;
+
+const locale = (Astro.params.lang || "en") as Locale;
+const t = getTranslations(locale);
+
+const pageTitle = "Bond Calculators";
+const pageDescription =
+  "Free bond calculators for yield, price, duration, and yield to maturity calculations.";
+
+const calculators = [
+  {
+    title: "Bond Yield Calculator",
+    description: "Calculate current yield and yield to maturity",
+    url: "/bond-calculators/bond-yield-calculator/",
+    icon: "📈",
+    color: "sky",
+  },
+  {
+    title: "Yield to Maturity Calculator",
+    description: "Find the internal rate of return for a bond",
+    url: "/bond-calculators/yield-to-maturity-calculator/",
+    icon: "📊",
+    color: "green",
+  },
+  {
+    title: "Bond Price Calculator",
+    description: "Calculate fair value based on yield",
+    url: "/bond-calculators/bond-price-calculator/",
+    icon: "💵",
+    color: "purple",
+  },
+  {
+    title: "Bond Duration Calculator",
+    description: "Measure interest rate sensitivity",
+    url: "/bond-calculators/bond-duration-calculator/",
+    icon: "⏱️",
+    color: "orange",
+  },
+];
+
+const colorClasses: Record<string, string> = {
+  sky: "bg-sky-50 border-sky-200 hover:border-sky-400",
+  green: "bg-green-50 border-green-200 hover:border-green-400",
+  purple: "bg-purple-50 border-purple-200 hover:border-purple-400",
+  orange: "bg-orange-50 border-orange-200 hover:border-orange-400",
+};
+---
+
+<CalculatorLayout
+  title={pageTitle}
+  description={pageDescription}
+  calculatorType="index"
+  relatedCalculators={[]}
+  faqs={[]}
+>
+  <section class="space-y-6">
+    <div class="text-center">
+      <h1 class="text-3xl font-bold text-slate-800">{pageTitle}</h1>
+      <p class="text-slate-600 mt-2 max-w-2xl mx-auto">
+        Analyze bonds with our free calculators. Calculate yields, prices, and
+        duration to make informed fixed-income investment decisions.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-8">
+      {
+        calculators.map((calc) => (
+          <a
+            href={getLocalizedUrl(calc.url, locale)}
+            class={`block p-5 rounded-xl border-2 transition-all duration-200 hover:shadow-lg hover:-translate-y-1 ${colorClasses[calc.color]}`}
+          >
+            <div class="flex items-start gap-4">
+              <span class="text-3xl">{calc.icon}</span>
+              <div>
+                <h2 class="font-semibold text-slate-800">{calc.title}</h2>
+                <p class="text-sm text-slate-600 mt-1">{calc.description}</p>
+              </div>
+            </div>
+          </a>
+        ))
+      }
+    </div>
+
+    <section class="bg-white rounded-2xl shadow-lg p-6 mt-8">
+      <h2 class="text-xl font-semibold text-slate-800">Bond Basics</h2>
+      <div
+        class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-6 text-sm text-slate-600"
+      >
+        <div>
+          <h3 class="font-medium text-slate-700 mb-2">Coupon vs Yield</h3>
+          <p>
+            The coupon rate is the annual interest rate printed on the bond.
+            Yield reflects the actual return based on the current price you pay.
+          </p>
+        </div>
+        <div>
+          <h3 class="font-medium text-slate-700 mb-2">
+            Price and Yield Relationship
+          </h3>
+          <p>
+            Bond prices and yields move inversely. When interest rates rise,
+            existing bond prices fall to offer competitive yields.
+          </p>
+        </div>
+        <div>
+          <h3 class="font-medium text-slate-700 mb-2">Premium vs Discount</h3>
+          <p>
+            A bond trades at a premium when its price exceeds face value (coupon
+            &gt; market yield) and at a discount when below (coupon &lt; yield).
+          </p>
+        </div>
+        <div>
+          <h3 class="font-medium text-slate-700 mb-2">Duration Risk</h3>
+          <p>
+            Longer duration means more sensitivity to interest rate changes.
+            High-duration bonds have more price volatility.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section
+      class="bg-gradient-to-r from-sky-50 to-blue-50 rounded-2xl p-6 border border-sky-100"
+    >
+      <h2 class="text-lg font-semibold text-slate-800 mb-4">
+        Related Calculators
+      </h2>
+      <div class="flex flex-wrap gap-3">
+        <a
+          href={getLocalizedUrl("/interest-rate-calculators/", locale)}
+          class="inline-flex items-center gap-2 px-4 py-2 bg-white rounded-lg border border-slate-200 hover:border-sky-400 transition-colors text-sm"
+        >
+          <span>📊</span>
+          <span>Interest Rate Calculators</span>
+        </a>
+        <a
+          href={getLocalizedUrl("/loan-calculators/", locale)}
+          class="inline-flex items-center gap-2 px-4 py-2 bg-white rounded-lg border border-slate-200 hover:border-sky-400 transition-colors text-sm"
+        >
+          <span>💰</span>
+          <span>Loan Calculators</span>
+        </a>
+      </div>
+    </section>
+  </section>
+</CalculatorLayout>

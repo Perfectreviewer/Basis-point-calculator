@@ -1,0 +1,254 @@
+---
+import CalculatorLayout, {
+  getStaticPaths as getStaticPathsCalc,
+} from "@theme/layouts/CalculatorLayout.astro";
+import { getTranslations, type Locale } from "@theme/i18n/utils";
+
+export const getStaticPaths = getStaticPathsCalc;
+
+const locale = (Astro.params.lang || "en") as Locale;
+const t = getTranslations(locale);
+
+const pageTitle = t.bond_yield_title || "Bond Yield Calculator";
+const pageDescription =
+  t.bond_yield_desc ||
+  "Calculate current yield and yield to maturity for bonds based on price, coupon rate, and maturity.";
+
+const relatedCalculators = [
+  {
+    name: "Yield to Maturity Calculator",
+    url: "/bond-calculators/yield-to-maturity-calculator/",
+  },
+  {
+    name: "Bond Price Calculator",
+    url: "/bond-calculators/bond-price-calculator/",
+  },
+  {
+    name: "Bond Duration Calculator",
+    url: "/bond-calculators/bond-duration-calculator/",
+  },
+];
+
+const faqs = [
+  {
+    question: "What is bond yield?",
+    answer:
+      "Bond yield is the return you earn from a bond investment. Current yield is annual coupon divided by price; YTM accounts for all future cash flows.",
+  },
+  {
+    question: "Why does yield go up when price goes down?",
+    answer:
+      "Bond prices and yields move inversely. When you pay less for a bond, the fixed coupon payments represent a higher percentage return.",
+  },
+  {
+    question: "What's a good bond yield?",
+    answer:
+      "A 'good' yield depends on risk, maturity, and current interest rates. Higher yields often mean higher risk.",
+  },
+];
+---
+
+<CalculatorLayout
+  title={pageTitle}
+  description={pageDescription}
+  calculatorType="bond"
+  relatedCalculators={relatedCalculators}
+  faqs={faqs}
+>
+  <section class="bg-white rounded-2xl shadow-lg p-6">
+    <h1 class="text-2xl font-semibold text-slate-800">{pageTitle}</h1>
+    <p class="text-sm text-slate-500 mt-1">
+      Calculate the yield on your bond investment.
+    </p>
+
+    <div class="mt-6 space-y-5">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label for="face-value" class="block text-sm mb-2 text-slate-600"
+            >Face Value (Par)</label
+          >
+          <div class="relative">
+            <span
+              class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
+              >$</span
+            >
+            <input
+              id="face-value"
+              type="number"
+              step="100"
+              class="w-full bg-white border border-slate-200 rounded-lg py-3 px-4 pl-8 focus:outline-none focus:ring-2 focus:ring-sky-200"
+              placeholder="1000"
+            />
+          </div>
+        </div>
+        <div>
+          <label for="current-price" class="block text-sm mb-2 text-slate-600"
+            >Current Price</label
+          >
+          <div class="relative">
+            <span
+              class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
+              >$</span
+            >
+            <input
+              id="current-price"
+              type="number"
+              step="1"
+              class="w-full bg-white border border-slate-200 rounded-lg py-3 px-4 pl-8 focus:outline-none focus:ring-2 focus:ring-sky-200"
+              placeholder="950"
+            />
+          </div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label for="coupon-rate" class="block text-sm mb-2 text-slate-600"
+            >Annual Coupon Rate</label
+          >
+          <div class="relative">
+            <input
+              id="coupon-rate"
+              type="number"
+              step="0.125"
+              class="w-full bg-white border border-slate-200 rounded-lg py-3 px-4 pr-10 focus:outline-none focus:ring-2 focus:ring-sky-200"
+              placeholder="5"
+            />
+            <span
+              class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400"
+              >%</span
+            >
+          </div>
+        </div>
+        <div>
+          <label
+            for="years-to-maturity"
+            class="block text-sm mb-2 text-slate-600">Years to Maturity</label
+          >
+          <input
+            id="years-to-maturity"
+            type="number"
+            step="1"
+            class="w-full bg-white border border-slate-200 rounded-lg py-3 px-4 focus:outline-none focus:ring-2 focus:ring-sky-200"
+            placeholder="10"
+          />
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 pt-4">
+        <div class="bg-sky-50 rounded-lg p-4">
+          <label class="block text-sm text-slate-600 mb-1">Current Yield</label>
+          <div id="current-yield" class="text-2xl font-bold text-sky-600">
+            0.00%
+          </div>
+        </div>
+        <div class="bg-green-50 rounded-lg p-4">
+          <label class="block text-sm text-slate-600 mb-1"
+            >Yield to Maturity</label
+          >
+          <div id="ytm" class="text-2xl font-bold text-green-600">0.00%</div>
+        </div>
+        <div class="bg-purple-50 rounded-lg p-4">
+          <label class="block text-sm text-slate-600 mb-1">Annual Coupon</label>
+          <div id="annual-coupon" class="text-2xl font-bold text-purple-600">
+            $0
+          </div>
+        </div>
+      </div>
+
+      <div id="price-indicator" class="p-3 rounded-lg text-sm"></div>
+    </div>
+  </section>
+
+  <section class="bg-white rounded-2xl shadow-lg p-6 mt-6">
+    <h2 class="text-xl font-semibold text-slate-800">Yield Formulas</h2>
+    <div class="mt-4 space-y-4">
+      <div class="p-4 bg-slate-50 rounded-lg">
+        <h3 class="font-medium text-slate-700 mb-2">Current Yield</h3>
+        <code class="text-slate-800"
+          >Current Yield = Annual Coupon / Current Price × 100</code
+        >
+      </div>
+      <div class="p-4 bg-slate-50 rounded-lg">
+        <h3 class="font-medium text-slate-700 mb-2">
+          Yield to Maturity (Approximation)
+        </h3>
+        <code class="text-slate-800">YTM ≈ [C + (F-P)/n] / [(F+P)/2]</code>
+        <p class="text-xs text-slate-500 mt-1">
+          C = Annual coupon, F = Face value, P = Price, n = Years to maturity
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    const faceValue = document.getElementById("face-value") as HTMLInputElement;
+    const currentPrice = document.getElementById(
+      "current-price",
+    ) as HTMLInputElement;
+    const couponRate = document.getElementById(
+      "coupon-rate",
+    ) as HTMLInputElement;
+    const yearsToMaturity = document.getElementById(
+      "years-to-maturity",
+    ) as HTMLInputElement;
+
+    const currentYieldEl = document.getElementById("current-yield");
+    const ytmEl = document.getElementById("ytm");
+    const annualCouponEl = document.getElementById("annual-coupon");
+    const priceIndicator = document.getElementById("price-indicator");
+
+    function formatCurrency(v: number) {
+      return new Intl.NumberFormat("en-US", {
+        style: "currency",
+        currency: "USD",
+        maximumFractionDigits: 2,
+      }).format(v);
+    }
+
+    function calculate() {
+      const F = parseFloat(faceValue.value) || 0;
+      const P = parseFloat(currentPrice.value) || 0;
+      const rate = parseFloat(couponRate.value) || 0;
+      const n = parseFloat(yearsToMaturity.value) || 0;
+
+      const C = F * (rate / 100);
+      const currentYield = P > 0 ? (C / P) * 100 : 0;
+
+      // YTM approximation formula
+      const ytm =
+        P > 0 && n > 0 ? ((C + (F - P) / n) / ((F + P) / 2)) * 100 : 0;
+
+      if (currentYieldEl)
+        currentYieldEl.textContent = currentYield.toFixed(2) + "%";
+      if (ytmEl) ytmEl.textContent = ytm.toFixed(2) + "%";
+      if (annualCouponEl) annualCouponEl.textContent = formatCurrency(C);
+
+      if (priceIndicator) {
+        if (P < F) {
+          priceIndicator.className =
+            "p-3 rounded-lg text-sm bg-green-50 text-green-700";
+          priceIndicator.innerHTML = `<strong>Trading at a discount:</strong> Bond price ($${P}) is below face value ($${F}), so yield is higher than coupon rate.`;
+        } else if (P > F) {
+          priceIndicator.className =
+            "p-3 rounded-lg text-sm bg-orange-50 text-orange-700";
+          priceIndicator.innerHTML = `<strong>Trading at a premium:</strong> Bond price ($${P}) is above face value ($${F}), so yield is lower than coupon rate.`;
+        } else {
+          priceIndicator.className =
+            "p-3 rounded-lg text-sm bg-slate-50 text-slate-700";
+          priceIndicator.innerHTML = `<strong>Trading at par:</strong> Bond price equals face value, so yield equals coupon rate.`;
+        }
+      }
+    }
+
+    [faceValue, currentPrice, couponRate, yearsToMaturity].forEach((el) =>
+      el.addEventListener("input", calculate),
+    );
+
+    faceValue.value = "1000";
+    currentPrice.value = "950";
+    couponRate.value = "5";
+    yearsToMaturity.value = "10";
+    calculate();
+  </script>
+</CalculatorLayout>

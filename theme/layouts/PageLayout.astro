@@ -1,0 +1,17 @@
+---
+import Layout from '@theme/layouts/Layout.astro';
+import indexTranslations from '~/i18n/index.json';
+
+interface Props {
+  title: string;
+  description: string;
+  img?: string;
+}
+
+const { title, ...props } = Astro.props;
+---
+
+<Layout title={`${title} | ${indexTranslations.en.site_title}`} {...props}>
+  <h1 class="font-semibold text-slate-800 text-3xl">{Astro.props.title}</h1>
+  <slot />
+</Layout>

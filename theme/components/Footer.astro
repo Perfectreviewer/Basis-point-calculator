@@ -1,0 +1,329 @@
+---
+import {
+  getTranslations,
+  getLocaleFromUrl,
+  getLocalizedUrl,
+} from "@theme/i18n/utils";
+import LanguageSwitcher from "@theme/components/LanguageSwitcher.astro";
+
+import config from "~/config/config.json";
+
+import Facebook from "./SVGs/Facebook.astro";
+import Linkedin from "./SVGs/Linkedin.astro";
+import Twitter from "./SVGs/Twitter.astro";
+import Pinterest from "./SVGs/Pinterest.astro";
+
+const locale = getLocaleFromUrl(Astro.url);
+const t = getTranslations(locale);
+
+const socialLogos: Record<string, any> = {
+  facebook: Facebook,
+  linkedin: Linkedin,
+  twitter: Twitter,
+  pinterest: Pinterest,
+};
+
+const getSocialLogoMarkup = (name: string) =>
+  socialLogos[name.toLowerCase()] ?? null;
+
+const calculatorColumns = [
+  {
+    title: "Basis Point Tools",
+    links: [
+      {
+        name: "BPS to Percentage",
+        url: "/basis-point-calculators/basis-point-to-percentage/",
+      },
+      {
+        name: "Percentage to BPS",
+        url: "/basis-point-calculators/percentage-to-basis-point/",
+      },
+      {
+        name: "BPS Change Calculator",
+        url: "/basis-point-calculators/basis-point-change-calculator/",
+      },
+      {
+        name: "BPS Examples",
+        url: "/basis-point-calculators/basis-point-examples/",
+      },
+    ],
+  },
+  {
+    title: "Interest & Loan Tools",
+    links: [
+      {
+        name: "Simple Interest",
+        url: "/interest-rate-calculators/simple-interest-calculator/",
+      },
+      {
+        name: "Compound Interest",
+        url: "/interest-rate-calculators/compound-interest-calculator/",
+      },
+      {
+        name: "APR Calculator",
+        url: "/interest-rate-calculators/apr-calculator/",
+      },
+      {
+        name: "Mortgage Calculator",
+        url: "/loan-calculators/mortgage-calculator/",
+      },
+    ],
+  },
+  {
+    title: "Bond & Investment",
+    links: [
+      { name: "Bond Yield", url: "/bond-calculators/bond-yield-calculator/" },
+      {
+        name: "ROI Calculator",
+        url: "/investment-calculators/roi-calculator/",
+      },
+      {
+        name: "Future Value",
+        url: "/investment-calculators/future-value-calculator/",
+      },
+      {
+        name: "Inflation Calculator",
+        url: "/investment-calculators/inflation-calculator/",
+      },
+    ],
+  },
+];
+
+const supportLinks = [
+  { name: "About Us", url: "/about/about-us/" },
+  { name: "Contact Us", url: "/about/contact/" },
+  { name: "FAQ", url: "/faq/" },
+  { name: "Guides", url: "/guides/" },
+];
+
+const legalLinks = [
+  { name: "Terms & Conditions", url: "/legal/terms-and-conditions/" },
+  { name: "Privacy Policy", url: "/legal/privacy-policy/" },
+  { name: "Disclaimer", url: "/legal/disclaimer/" },
+  { name: "Editorial Policy", url: "/about/editorial-policy/" },
+];
+---
+
+<footer class="relative mt-8 md:mt-16 overflow-hidden">
+  <!-- Gradient top accent -->
+  <div class="h-1 bg-gradient-to-r from-sky-500 via-blue-500 to-indigo-500">
+  </div>
+
+  <div class="bg-gradient-to-b from-slate-900 to-slate-950 relative">
+    <!-- Subtle pattern -->
+    <div
+      class="absolute inset-0 opacity-[0.02]"
+      style="background-image: radial-gradient(circle at 1px 1px, white 1px, transparent 1px); background-size: 40px 40px;"
+    >
+    </div>
+
+    <div class="relative z-10">
+      <!-- ═══ ROW 1: Brand + Calculator Columns ═══ -->
+      <div class="max-w-7xl mx-auto px-8 pt-16 pb-14">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-16">
+          <!-- Brand Column -->
+          <div class="lg:col-span-3">
+            <a
+              href={getLocalizedUrl("/", locale)}
+              class="inline-flex items-center gap-3 mb-6 group"
+            >
+              <img
+                src="/images/logo.png"
+                width="44"
+                height="44"
+                alt={t["Footer Logo"]}
+                loading="lazy"
+                class="group-hover:scale-105 transition-transform duration-300"
+              />
+              <span class="font-bold text-white text-xl tracking-tight"
+                >{t.site_title}</span
+              >
+            </a>
+            <p class="text-slate-400 text-sm leading-relaxed mb-8">
+              {t.footer_description}
+            </p>
+
+            <!-- Social Icons -->
+            {
+              config.social.find((item) => !!item.url) && (
+                <div class="flex gap-3">
+                  {config.social.map((item) => {
+                    if (!item.url) return null;
+                    const IconMarkup = getSocialLogoMarkup(item.name);
+                    if (!IconMarkup) return null;
+                    return (
+                      <a
+                        href={item.url}
+                        title={item.name}
+                        class="w-10 h-10 rounded-xl bg-slate-800/50 border border-slate-700/40 flex items-center justify-center hover:bg-sky-600 hover:border-sky-500 transition-all duration-300 group"
+                      >
+                        <IconMarkup class="w-5 h-5 text-slate-400 group-hover:text-white transition-colors" />
+                      </a>
+                    );
+                  })}
+                </div>
+              )
+            }
+          </div>
+
+          <!-- Calculator Tool Columns -->
+          {
+            calculatorColumns.map((col) => (
+              <div class="lg:col-span-3">
+                <h3 class="text-sm font-semibold text-white mb-5 pb-3 border-b border-slate-800">
+                  {col.title}
+                </h3>
+                <ul class="space-y-3.5">
+                  {col.links.map((link) => (
+                    <li>
+                      <a
+                        href={getLocalizedUrl(link.url, locale)}
+                        class="text-slate-400 hover:text-white text-sm transition-colors duration-200 inline-flex items-center gap-2 group"
+                      >
+                        <span class="w-1 h-1 rounded-full bg-sky-500/60 group-hover:bg-sky-400 transition-colors" />
+                        {link.name}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+
+      <!-- ═══ ROW 2: Support, Legal, Newsletter, Stats ═══ -->
+      <div class="border-t border-slate-800/60">
+        <div class="max-w-7xl mx-auto px-8 py-14">
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-14">
+            <!-- Support -->
+            <div class="lg:col-span-2">
+              <h3
+                class="text-sm font-semibold text-white mb-5 pb-3 border-b border-slate-800"
+              >
+                Support
+              </h3>
+              <ul class="space-y-3.5">
+                {
+                  supportLinks.map((link) => (
+                    <li>
+                      <a
+                        href={getLocalizedUrl(link.url, locale)}
+                        class="text-slate-400 hover:text-white text-sm transition-colors duration-200 inline-flex items-center gap-2 group"
+                      >
+                        <span class="w-1 h-1 rounded-full bg-sky-500/60 group-hover:bg-sky-400 transition-colors" />
+                        {link.name}
+                      </a>
+                    </li>
+                  ))
+                }
+              </ul>
+            </div>
+
+            <!-- Legal -->
+            <div class="lg:col-span-2">
+              <h3
+                class="text-sm font-semibold text-white mb-5 pb-3 border-b border-slate-800"
+              >
+                Legal
+              </h3>
+              <ul class="space-y-3.5">
+                {
+                  legalLinks.map((link) => (
+                    <li>
+                      <a
+                        href={getLocalizedUrl(link.url, locale)}
+                        class="text-slate-400 hover:text-white text-sm transition-colors duration-200 inline-flex items-center gap-2 group"
+                      >
+                        <span class="w-1 h-1 rounded-full bg-sky-500/60 group-hover:bg-sky-400 transition-colors" />
+                        {link.name}
+                      </a>
+                    </li>
+                  ))
+                }
+              </ul>
+            </div>
+
+            <!-- Newsletter -->
+            <div class="lg:col-span-3">
+              <h3
+                class="text-sm font-semibold text-white mb-5 pb-3 border-b border-slate-800"
+              >
+                Stay Updated
+              </h3>
+              <p class="text-slate-400 text-sm mb-5 leading-relaxed">
+                Get financial tips and calculator updates delivered to your
+                inbox.
+              </p>
+              <form class="space-y-3" onsubmit="return false;">
+                <input
+                  type="email"
+                  placeholder="you@email.com"
+                  class="w-full bg-slate-800/60 border border-slate-700/50 rounded-lg px-4 py-3 text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-sky-500/40 focus:border-sky-500/50 transition-all"
+                />
+                <button
+                  type="submit"
+                  class="w-full bg-gradient-to-r from-sky-600 to-blue-600 hover:from-sky-500 hover:to-blue-500 text-white font-medium py-3 rounded-lg text-sm transition-all duration-300 shadow-lg shadow-sky-900/25 hover:shadow-sky-800/40"
+                >
+                  Subscribe →
+                </button>
+              </form>
+            </div>
+
+            <!-- Stats -->
+            <div class="lg:col-span-5">
+              <h3
+                class="text-sm font-semibold text-white mb-5 pb-3 border-b border-slate-800"
+              >
+                Why BasisPointCalculator.com
+              </h3>
+              <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                <div
+                  class="bg-slate-800/30 rounded-xl p-5 border border-slate-700/25 text-center hover:border-sky-800/40 transition-colors"
+                >
+                  <p class="text-2xl font-bold text-sky-400 mb-1">25+</p>
+                  <p class="text-xs text-slate-500">Free Tools</p>
+                </div>
+                <div
+                  class="bg-slate-800/30 rounded-xl p-5 border border-slate-700/25 text-center hover:border-green-800/40 transition-colors"
+                >
+                  <p class="text-2xl font-bold text-green-400 mb-1">0</p>
+                  <p class="text-xs text-slate-500">Data Stored</p>
+                </div>
+                <div
+                  class="bg-slate-800/30 rounded-xl p-5 border border-slate-700/25 text-center hover:border-purple-800/40 transition-colors"
+                >
+                  <p class="text-2xl font-bold text-purple-400 mb-1">5</p>
+                  <p class="text-xs text-slate-500">Languages</p>
+                </div>
+                <div
+                  class="bg-slate-800/30 rounded-xl p-5 border border-slate-700/25 text-center hover:border-amber-800/40 transition-colors"
+                >
+                  <p class="text-2xl font-bold text-amber-400 mb-1">∞</p>
+                  <p class="text-xs text-slate-500">Free Forever</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══ Copyright Bar ═══ -->
+      <div class="border-t border-slate-800/40">
+        <div
+          class="max-w-7xl mx-auto px-8 py-6 flex flex-col sm:flex-row items-center justify-between gap-4"
+        >
+          <p class="text-slate-500 text-xs">
+            &copy; {new Date().getFullYear()}
+            {t.site_title}. {t["Built with ❤️ by"]}
+            <span
+              class="bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent font-medium"
+              >BigTechies</span
+            >.
+          </p>
+          <LanguageSwitcher />
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>

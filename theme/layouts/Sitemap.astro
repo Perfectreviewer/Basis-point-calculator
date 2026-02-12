@@ -1,0 +1,129 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '@theme/layouts/Layout.astro';
+import { getLocalizedUrl, getLocaleFromUrl, getTranslations } from '@theme/i18n/utils';
+
+import indexTranslations from '~/i18n/index.json';
+
+const siteURL = Astro.url.origin;
+
+// 1️⃣ Get Static Pages (.astro files)
+const pages = import.meta.glob('/src/pages/**/*.astro', { eager: true });
+
+const pageLinks = Object.keys(pages)
+  .map((filePath) => {
+    // Convert file path to route
+    let route = filePath
+      .replace('/src/pages', '')
+      .replace(/index\.astro$/, '') // remove index
+      .replace(/\.astro$/, ''); // remove ext
+
+    if (route.includes('[') || route.includes('404')) return null; // ignore dynamic routes
+    if (route === '') route = '/'; // homepage
+
+    const label =
+      route === '/'
+        ? 'Home'
+        : route
+            .split('/')
+            .filter(Boolean)
+            .map((segment) => segment.replace(/-/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase()))
+            .join(' / ');
+
+    return { href: route.endsWith('/') ? siteURL + route : siteURL + route + '/', label };
+  })
+  .filter(Boolean);
+
+// Get all available locales from index.json in translations
+const availableLocalesPages = Object.keys(indexTranslations).map((locale) => {
+  return { href: getLocalizedUrl('/', locale as any), label: indexTranslations[locale as keyof typeof indexTranslations].site_title };
+});
+
+// 2️⃣ Get Blog Posts
+const posts = await getCollection('blog');
+
+const postLinks = posts.map((post) => ({
+  href: `${siteURL}/blog/${post.id}/`,
+  label: post.data.title,
+}));
+
+// 3️⃣ Get Pagination Pages
+const totalPosts = posts.length;
+const perPage = 12; // adjust if your site uses a different value
+const totalPages = Math.ceil(totalPosts / perPage);
+
+const paginationLinks = Array.from({ length: totalPages }, (_, i) => ({
+  href: i === 0 ? `${siteURL}/blog/` : `${siteURL}/blog/${i + 1}/`,
+  label: `Blog - Page ${i + 1}`,
+}));
+---
+
+<Layout title={`Sitemap | ${indexTranslations.en.site_title}`} description="A list of all pages, blog posts, and pagination links.">
+  <div class="mx-auto px-6 py-10 max-w-3xl">
+    <h1 class="font-semibold text-slate-800 text-3xl">Sitemap</h1>
+    <p class="mt-2 text-slate-600 text-sm">A list of all pages, blog posts, and pagination links.</p>
+
+    <!-- Pages -->
+    <section class="mt-8">
+      <h2 class="font-semibold text-slate-800 text-xl">Pages</h2>
+      <ul class="space-y-1 mt-3">
+        {
+          pageLinks.map(
+            (page) =>
+              page && (
+                <li>
+                  <a class="text-sky-600 hover:underline" href={page.href}>
+                    {page.label}
+                  </a>
+                </li>
+              )
+          )
+        }
+        {
+          availableLocalesPages.map(
+            (page) =>
+              page && (
+                <li>
+                  <a class="text-sky-600 hover:underline" href={page.href}>
+                    {page.label}
+                  </a>
+                </li>
+              )
+          )
+        }
+      </ul>
+    </section>
+
+    <!-- Blog Posts -->
+    <section class="mt-8">
+      <h2 class="font-semibold text-slate-800 text-xl">Blog Posts</h2>
+      <ul class="space-y-1 mt-3">
+        {
+          postLinks.map((l) => (
+            <li>
+              <a class="text-sky-600 hover:underline" href={l.href}>
+                {l.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+
+    <!-- Pagination -->
+    <section class="mt-8">
+      <h2 class="font-semibold text-slate-800 text-xl">Pagination</h2>
+      <ul class="space-y-1 mt-3">
+        {
+          paginationLinks.map((l) => (
+            <li>
+              <a class="text-sky-600 hover:underline" href={l.href}>
+                {l.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+  </div>
+</Layout>

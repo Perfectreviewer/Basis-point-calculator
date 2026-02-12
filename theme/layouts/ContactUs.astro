@@ -1,0 +1,13 @@
+---
+import Layout from '@theme/layouts/Layout.astro';
+import ContactForm from '@theme/components/ContactForm.astro';
+
+import indexTranslations from '~/i18n/index.json';
+
+---
+
+<Layout title={`Contact Us | ${indexTranslations.en.site_title}`} description="Contact The Tundra Drums team for news tips, story submissions, or general inquiries — we’re here to hear from you.">
+  <h1 class="font-semibold text-slate-800 text-3xl">Contact Us</h1>
+  <p class="mt-2 text-slate-600">We read every message. Fill the form and we will get back to you as soon as possible.</p>
+  <ContactForm />
+</Layout>

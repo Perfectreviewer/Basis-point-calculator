@@ -1,0 +1,40 @@
+---
+import Layout from "@theme/layouts/Layout.astro";
+import { getTranslations, type Locale } from "@theme/i18n/utils.ts";
+import indexTranslations from "~/i18n/index.json";
+import HomeSchema from "@theme/components/HomeSchema.astro";
+
+// Generate static paths for all available locales
+export async function getStaticPaths({
+  params,
+}: {
+  params: Record<string, any>;
+}) {
+  // Return paths for all locales
+  return Object.keys(indexTranslations).map((locale) => ({
+    params: { lang: locale === "en" ? undefined : locale },
+    props: { locale, ...params },
+  }));
+}
+
+interface Props {
+  title?: string;
+  description?: string;
+  schema?: boolean;
+  [key: string]: any;
+}
+
+const locale = (Astro.params.lang || "en") as Locale;
+const t = getTranslations(locale);
+const { title, description, schema = true } = Astro.props;
+---
+
+<Layout
+  title={title || t.index_title}
+  description={description || t.index_description}
+>
+  {schema && <HomeSchema slot="head" />}
+  <slot name="head" slot="head" />
+
+  <slot />
+</Layout>

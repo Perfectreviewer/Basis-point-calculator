@@ -1,0 +1,307 @@
+---
+import CalculatorLayout, {
+  getStaticPaths as getStaticPathsCalc,
+} from "@theme/layouts/CalculatorLayout.astro";
+import { getTranslations, type Locale } from "@theme/i18n/utils";
+
+export const getStaticPaths = getStaticPathsCalc;
+
+const locale = (Astro.params.lang || "en") as Locale;
+const t = getTranslations(locale);
+
+const pageTitle = t.amortization_title || "Loan Amortization Calculator";
+const pageDescription =
+  t.amortization_desc ||
+  "View a detailed amortization schedule showing principal and interest breakdown for each payment.";
+
+const relatedCalculators = [
+  {
+    name: t.loan_payment_title || "Loan Payment Calculator",
+    url: "/loan-calculators/loan-payment-calculator/",
+  },
+  {
+    name: t.mortgage_calc_title || "Mortgage Calculator",
+    url: "/loan-calculators/mortgage-calculator/",
+  },
+  {
+    name: t.compound_interest_title || "Compound Interest",
+    url: "/interest-rate-calculators/compound-interest-calculator/",
+  },
+];
+
+const faqs = [
+  {
+    question: "What is an amortization schedule?",
+    answer:
+      "An amortization schedule shows each loan payment split into principal and interest, plus the remaining balance after each payment.",
+  },
+  {
+    question: "Why does interest decrease over time?",
+    answer:
+      "Interest is calculated on the remaining balance. As you pay down principal, the balance decreases, so less interest accrues.",
+  },
+  {
+    question: "How can I pay less interest?",
+    answer:
+      "Make extra principal payments, choose a shorter loan term, or refinance to a lower interest rate.",
+  },
+];
+---
+
+<CalculatorLayout
+  title={pageTitle}
+  description={pageDescription}
+  calculatorType="loan"
+  relatedCalculators={relatedCalculators}
+  faqs={faqs}
+>
+  <section class="bg-white rounded-2xl shadow-lg p-6">
+    <h1 class="text-2xl font-semibold text-slate-800">{pageTitle}</h1>
+    <p class="text-sm text-slate-500 mt-1">
+      See how your loan is paid down over time with a detailed breakdown.
+    </p>
+
+    <div class="mt-6 space-y-5">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div>
+          <label for="loan-amount" class="block text-sm mb-2 text-slate-600"
+            >Loan Amount</label
+          >
+          <div class="relative">
+            <span
+              class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
+              >$</span
+            >
+            <input
+              id="loan-amount"
+              type="number"
+              step="1000"
+              class="w-full bg-white border border-slate-200 rounded-lg py-3 px-4 pl-8 focus:outline-none focus:ring-2 focus:ring-sky-200"
+              placeholder="200000"
+            />
+          </div>
+        </div>
+        <div>
+          <label for="interest-rate" class="block text-sm mb-2 text-slate-600"
+            >Interest Rate</label
+          >
+          <div class="relative">
+            <input
+              id="interest-rate"
+              type="number"
+              step="0.125"
+              class="w-full bg-white border border-slate-200 rounded-lg py-3 px-4 pr-10 focus:outline-none focus:ring-2 focus:ring-sky-200"
+              placeholder="6.5"
+            />
+            <span
+              class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400"
+              >%</span
+            >
+          </div>
+        </div>
+        <div>
+          <label for="loan-term" class="block text-sm mb-2 text-slate-600"
+            >Loan Term (Years)</label
+          >
+          <input
+            id="loan-term"
+            type="number"
+            step="1"
+            class="w-full bg-white border border-slate-200 rounded-lg py-3 px-4 focus:outline-none focus:ring-2 focus:ring-sky-200"
+            placeholder="30"
+          />
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-4 pt-4">
+        <div class="bg-sky-50 rounded-lg p-4">
+          <label class="block text-sm text-slate-600 mb-1"
+            >Monthly Payment</label
+          >
+          <div id="monthly-payment" class="text-xl font-bold text-sky-600">
+            $0
+          </div>
+        </div>
+        <div class="bg-green-50 rounded-lg p-4">
+          <label class="block text-sm text-slate-600 mb-1"
+            >Total Principal</label
+          >
+          <div id="total-principal" class="text-xl font-bold text-green-600">
+            $0
+          </div>
+        </div>
+        <div class="bg-orange-50 rounded-lg p-4">
+          <label class="block text-sm text-slate-600 mb-1">Total Interest</label
+          >
+          <div id="total-interest" class="text-xl font-bold text-orange-600">
+            $0
+          </div>
+        </div>
+        <div class="bg-purple-50 rounded-lg p-4">
+          <label class="block text-sm text-slate-600 mb-1">Total Payments</label
+          >
+          <div id="total-cost" class="text-xl font-bold text-purple-600">
+            $0
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Amortization Schedule -->
+  <section class="bg-white rounded-2xl shadow-lg p-6 mt-6">
+    <div class="flex justify-between items-center mb-4">
+      <h2 class="text-xl font-semibold text-slate-800">
+        Amortization Schedule
+      </h2>
+      <select
+        id="view-mode"
+        class="text-sm bg-white border border-slate-200 rounded-lg py-2 px-3"
+      >
+        <option value="yearly">Yearly Summary</option>
+        <option value="monthly">Monthly Detail</option>
+      </select>
+    </div>
+    <div class="overflow-x-auto max-h-96">
+      <table class="w-full text-sm">
+        <thead class="sticky top-0 bg-white">
+          <tr class="border-b border-slate-200">
+            <th
+              class="text-left py-2 px-3 font-medium text-slate-600"
+              id="period-header">Year</th
+            >
+            <th class="text-right py-2 px-3 font-medium text-slate-600"
+              >Payment</th
+            >
+            <th class="text-right py-2 px-3 font-medium text-slate-600"
+              >Principal</th
+            >
+            <th class="text-right py-2 px-3 font-medium text-slate-600"
+              >Interest</th
+            >
+            <th class="text-right py-2 px-3 font-medium text-slate-600"
+              >Balance</th
+            >
+          </tr>
+        </thead>
+        <tbody id="schedule-body" class="text-slate-700"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <script>
+    const loanInput = document.getElementById(
+      "loan-amount",
+    ) as HTMLInputElement;
+    const rateInput = document.getElementById(
+      "interest-rate",
+    ) as HTMLInputElement;
+    const termInput = document.getElementById("loan-term") as HTMLInputElement;
+    const viewMode = document.getElementById("view-mode") as HTMLSelectElement;
+    const periodHeader = document.getElementById("period-header");
+    const scheduleBody = document.getElementById("schedule-body");
+
+    const monthlyEl = document.getElementById("monthly-payment");
+    const principalEl = document.getElementById("total-principal");
+    const interestEl = document.getElementById("total-interest");
+    const costEl = document.getElementById("total-cost");
+
+    function formatCurrency(v: number) {
+      return new Intl.NumberFormat("en-US", {
+        style: "currency",
+        currency: "USD",
+        maximumFractionDigits: 0,
+      }).format(v);
+    }
+
+    function calculate() {
+      const P = parseFloat(loanInput.value) || 0;
+      const annualRate = parseFloat(rateInput.value) || 0;
+      const years = parseFloat(termInput.value) || 0;
+      const isMonthly = viewMode.value === "monthly";
+
+      const r = annualRate / 100 / 12;
+      const n = years * 12;
+
+      if (P <= 0 || r <= 0 || n <= 0) return;
+
+      const M = (P * (r * Math.pow(1 + r, n))) / (Math.pow(1 + r, n) - 1);
+      const totalPaid = M * n;
+      const totalInterest = totalPaid - P;
+
+      if (monthlyEl) monthlyEl.textContent = formatCurrency(M);
+      if (principalEl) principalEl.textContent = formatCurrency(P);
+      if (interestEl) interestEl.textContent = formatCurrency(totalInterest);
+      if (costEl) costEl.textContent = formatCurrency(totalPaid);
+      if (periodHeader) periodHeader.textContent = isMonthly ? "Month" : "Year";
+
+      // Generate schedule
+      if (scheduleBody) {
+        scheduleBody.innerHTML = "";
+        let balance = P;
+        let yearlyPrincipal = 0,
+          yearlyInterest = 0,
+          yearlyPayment = 0;
+
+        const maxRows = isMonthly ? Math.min(n, 120) : years;
+
+        for (let month = 1; month <= n; month++) {
+          const interestPayment = balance * r;
+          const principalPayment = M - interestPayment;
+          balance -= principalPayment;
+          if (balance < 0) balance = 0;
+
+          yearlyPrincipal += principalPayment;
+          yearlyInterest += interestPayment;
+          yearlyPayment += M;
+
+          if (isMonthly && month <= 120) {
+            const row = document.createElement("tr");
+            row.className = "border-b border-slate-100";
+            row.innerHTML = `
+              <td class="py-2 px-3">${month}</td>
+              <td class="py-2 px-3 text-right">${formatCurrency(M)}</td>
+              <td class="py-2 px-3 text-right text-green-600">${formatCurrency(principalPayment)}</td>
+              <td class="py-2 px-3 text-right text-orange-600">${formatCurrency(interestPayment)}</td>
+              <td class="py-2 px-3 text-right">${formatCurrency(balance)}</td>
+            `;
+            scheduleBody.appendChild(row);
+          }
+
+          if (!isMonthly && month % 12 === 0) {
+            const year = month / 12;
+            const row = document.createElement("tr");
+            row.className = "border-b border-slate-100";
+            row.innerHTML = `
+              <td class="py-2 px-3">${year}</td>
+              <td class="py-2 px-3 text-right">${formatCurrency(yearlyPayment)}</td>
+              <td class="py-2 px-3 text-right text-green-600">${formatCurrency(yearlyPrincipal)}</td>
+              <td class="py-2 px-3 text-right text-orange-600">${formatCurrency(yearlyInterest)}</td>
+              <td class="py-2 px-3 text-right">${formatCurrency(balance)}</td>
+            `;
+            scheduleBody.appendChild(row);
+            yearlyPrincipal = 0;
+            yearlyInterest = 0;
+            yearlyPayment = 0;
+          }
+        }
+
+        if (isMonthly && n > 120) {
+          const row = document.createElement("tr");
+          row.innerHTML = `<td colspan="5" class="py-2 px-3 text-center text-slate-500">Showing first 120 of ${n} months</td>`;
+          scheduleBody.appendChild(row);
+        }
+      }
+    }
+
+    [loanInput, rateInput, termInput].forEach((el) =>
+      el.addEventListener("input", calculate),
+    );
+    viewMode.addEventListener("change", calculate);
+
+    loanInput.value = "200000";
+    rateInput.value = "6.5";
+    termInput.value = "30";
+    calculate();
+  </script>
+</CalculatorLayout>

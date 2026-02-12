@@ -1,0 +1,141 @@
+---
+import CalculatorLayout, {
+  getStaticPaths as getStaticPathsCalc,
+} from "@theme/layouts/CalculatorLayout.astro";
+import {
+  getTranslations,
+  type Locale,
+  getLocalizedUrl,
+} from "@theme/i18n/utils";
+
+export const getStaticPaths = getStaticPathsCalc;
+
+const locale = (Astro.params.lang || "en") as Locale;
+const t = getTranslations(locale);
+
+const pageTitle = t.loan_section_title || "Loan Calculators";
+const pageDescription =
+  t.loan_section_desc ||
+  "Free loan calculators for mortgages, auto loans, personal loans, and amortization schedules.";
+
+const calculators = [
+  {
+    title: "Loan Payment Calculator",
+    description: "Calculate monthly payments for any loan",
+    url: "/loan-calculators/loan-payment-calculator/",
+    icon: "💰",
+    color: "sky",
+  },
+  {
+    title: "Mortgage Calculator",
+    description: "Estimate mortgage payments with PITI",
+    url: "/loan-calculators/mortgage-calculator/",
+    icon: "🏠",
+    color: "green",
+  },
+  {
+    title: "Auto Loan Calculator",
+    description: "Calculate car financing costs",
+    url: "/loan-calculators/auto-loan-calculator/",
+    icon: "🚗",
+    color: "blue",
+  },
+  {
+    title: "Personal Loan Calculator",
+    description: "Estimate personal loan payments",
+    url: "/loan-calculators/personal-loan-calculator/",
+    icon: "💳",
+    color: "purple",
+  },
+  {
+    title: "Amortization Calculator",
+    description: "View payment breakdown over time",
+    url: "/loan-calculators/loan-amortization-calculator/",
+    icon: "📊",
+    color: "orange",
+  },
+];
+
+const colorClasses: Record<string, string> = {
+  sky: "bg-sky-50 border-sky-200 hover:border-sky-400",
+  green: "bg-green-50 border-green-200 hover:border-green-400",
+  blue: "bg-blue-50 border-blue-200 hover:border-blue-400",
+  purple: "bg-purple-50 border-purple-200 hover:border-purple-400",
+  orange: "bg-orange-50 border-orange-200 hover:border-orange-400",
+};
+---
+
+<CalculatorLayout
+  title={pageTitle}
+  description={pageDescription}
+  calculatorType="index"
+  relatedCalculators={[]}
+  faqs={[]}
+>
+  <section class="space-y-6">
+    <div class="text-center">
+      <h1 class="text-3xl font-bold text-slate-800">{pageTitle}</h1>
+      <p class="text-slate-600 mt-2 max-w-2xl mx-auto">
+        Calculate loan payments, compare options, and understand your borrowing
+        costs with our free calculators.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-8">
+      {
+        calculators.map((calc) => (
+          <a
+            href={getLocalizedUrl(calc.url, locale)}
+            class={`block p-5 rounded-xl border-2 transition-all duration-200 hover:shadow-lg hover:-translate-y-1 ${colorClasses[calc.color]}`}
+          >
+            <div class="flex items-start gap-4">
+              <span class="text-3xl">{calc.icon}</span>
+              <div>
+                <h2 class="font-semibold text-slate-800">{calc.title}</h2>
+                <p class="text-sm text-slate-600 mt-1">{calc.description}</p>
+              </div>
+            </div>
+          </a>
+        ))
+      }
+    </div>
+
+    <section class="bg-white rounded-2xl shadow-lg p-6 mt-8">
+      <h2 class="text-xl font-semibold text-slate-800">
+        Understanding Loan Terms
+      </h2>
+      <div
+        class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-6 text-sm text-slate-600"
+      >
+        <div>
+          <h3 class="font-medium text-slate-700 mb-2">Principal vs Interest</h3>
+          <p>
+            Principal is the amount you borrow. Interest is what the lender
+            charges for the loan. Your payment covers both.
+          </p>
+        </div>
+        <div>
+          <h3 class="font-medium text-slate-700 mb-2">APR vs Interest Rate</h3>
+          <p>
+            APR includes fees and gives you the true cost of borrowing. Always
+            compare APR, not just interest rates.
+          </p>
+        </div>
+        <div>
+          <h3 class="font-medium text-slate-700 mb-2">Amortization</h3>
+          <p>
+            Amortization is how your loan is paid off over time. Early payments
+            are mostly interest; later payments are mostly principal.
+          </p>
+        </div>
+        <div>
+          <h3 class="font-medium text-slate-700 mb-2">Down Payment</h3>
+          <p>
+            A larger down payment reduces your loan amount, lowering monthly
+            payments and total interest paid.
+          </p>
+        </div>
+      </div>
+    </section>
+  </section>
+</CalculatorLayout>

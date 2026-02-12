@@ -1,0 +1,266 @@
+---
+import Layout from "@theme/layouts/Layout.astro";
+import {
+  getTranslations,
+  type Locale,
+  getLocalizedUrl,
+} from "@theme/i18n/utils";
+
+export function getStaticPaths() {
+  return [
+    { params: { lang: undefined } },
+    { params: { lang: "en" } },
+    { params: { lang: "es" } },
+    { params: { lang: "fr" } },
+    { params: { lang: "de" } },
+  ];
+}
+
+const locale = (Astro.params.lang || "en") as Locale;
+const t = getTranslations(locale);
+
+const pageTitle = "Frequently Asked Questions | BasisPointCalculator.com";
+const pageDescription =
+  "Find clear answers to common questions about basis points, financial calculators, and how to use our free tools. Browse by category or search below.";
+
+const faqCategories = [
+  {
+    title: "Basis Point FAQ",
+    description:
+      "Everything you need to know about basis points — what they are, how to convert them, and why finance uses them.",
+    url: "/faq/basis-point-faq/",
+    icon: "📐",
+    color: "sky",
+    count: 8,
+    topQuestions: [
+      "What is a basis point?",
+      "How many bps in 1%?",
+      "Why not just use percentages?",
+    ],
+  },
+  {
+    title: "Calculator Usage FAQ",
+    description:
+      "How to get the most out of our 25+ free financial calculators — tips, common questions, and troubleshooting.",
+    url: "/faq/calculator-usage-faq/",
+    icon: "🧮",
+    color: "green",
+    count: 10,
+    topQuestions: [
+      "Are the calculators free?",
+      "How accurate are results?",
+      "Is my data stored?",
+    ],
+  },
+  {
+    title: "Financial Disclaimer",
+    description:
+      "Important information about the nature of our calculations, limitations, and when to seek professional advice.",
+    url: "/faq/financial-disclaimer/",
+    icon: "⚠️",
+    color: "orange",
+    count: 5,
+    topQuestions: [
+      "Is this financial advice?",
+      "How are results calculated?",
+      "Should I consult a professional?",
+    ],
+  },
+];
+
+const colorClasses: Record<string, { card: string; badge: string }> = {
+  sky: {
+    card: "bg-sky-50 border-sky-200 hover:border-sky-400",
+    badge: "bg-sky-100 text-sky-700",
+  },
+  green: {
+    card: "bg-green-50 border-green-200 hover:border-green-400",
+    badge: "bg-green-100 text-green-700",
+  },
+  orange: {
+    card: "bg-orange-50 border-orange-200 hover:border-orange-400",
+    badge: "bg-orange-100 text-orange-700",
+  },
+};
+
+const quickAnswers = [
+  {
+    question: "What is a basis point?",
+    answer:
+      "A basis point (bps) is 1/100th of 1 percent, or 0.01%. It's used in finance to describe small changes in interest rates, yields, and fees. For example, a rate increase from 3.00% to 3.25% is a 25 basis point increase.",
+  },
+  {
+    question: "How do I convert basis points to percentage?",
+    answer:
+      "Divide basis points by 100. For example: 50 bps ÷ 100 = 0.50%. Or use our free Basis Point to Percentage calculator for instant conversion.",
+  },
+  {
+    question: "Are BasisPointCalculator.com calculators free to use?",
+    answer:
+      "Yes, all 25+ calculators are completely free. No signup, no ads, no data collection. All calculations run in your browser — nothing is sent to any server.",
+  },
+  {
+    question: "Is this financial advice?",
+    answer:
+      "No. BasisPointCalculator.com provides educational tools and information only. Our calculators produce estimates based on standard financial formulas. Always consult a qualified financial professional before making important financial decisions.",
+  },
+  {
+    question: "How many basis points are in 1 percent?",
+    answer:
+      "There are exactly 100 basis points in 1 percent. So 1% = 100 bps, 0.5% = 50 bps, and 0.01% = 1 bp.",
+  },
+];
+---
+
+<Layout title={pageTitle} description={pageDescription}>
+  <!-- FAQPage Schema -->
+  <script
+    is:inline
+    slot="head"
+    type="application/ld+json"
+    set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      mainEntity: quickAnswers.map((faq) => ({
+        "@type": "Question",
+        name: faq.question,
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: faq.answer,
+        },
+      })),
+    })}
+  />
+
+  <!-- Hero -->
+  <section class="text-center mb-12">
+    <nav class="text-sm text-slate-500 mb-6" aria-label="Breadcrumb">
+      <a href={getLocalizedUrl("/", locale)} class="hover:text-sky-600">Home</a>
+      <span class="mx-2">›</span>
+      <span class="text-slate-700">FAQ</span>
+    </nav>
+    <h1 class="text-4xl font-bold text-slate-800 mb-4">
+      Frequently Asked Questions
+    </h1>
+    <p class="text-lg text-slate-600 max-w-3xl mx-auto">
+      Find answers to common questions about basis points, financial
+      calculations, and how to make the most of our free tools.
+    </p>
+  </section>
+
+  <!-- Quick Answers (inline) -->
+  <section class="bg-white rounded-2xl shadow-lg p-8 mb-8">
+    <h2 class="text-xl font-semibold text-slate-800 mb-6">Quick Answers</h2>
+    <div class="divide-y divide-slate-100">
+      {
+        quickAnswers.map((faq) => (
+          <details class="group py-4 first:pt-0 last:pb-0">
+            <summary class="flex items-center justify-between cursor-pointer font-medium text-slate-800 hover:text-sky-600 transition-colors">
+              {faq.question}
+              <svg
+                class="w-5 h-5 text-slate-400 group-open:rotate-180 transition-transform shrink-0 ml-2"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M19 9l-7 7-7-7"
+                />
+              </svg>
+            </summary>
+            <p class="mt-3 text-sm text-slate-600 leading-relaxed">
+              {faq.answer}
+            </p>
+          </details>
+        ))
+      }
+    </div>
+  </section>
+
+  <!-- FAQ Categories -->
+  <section class="mb-10">
+    <h2 class="text-2xl font-bold text-slate-800 mb-6">Browse by Category</h2>
+    <div class="grid gap-5">
+      {
+        faqCategories.map((cat) => (
+          <a
+            href={getLocalizedUrl(cat.url, locale)}
+            class={`block p-6 rounded-xl border-2 transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5 ${colorClasses[cat.color].card}`}
+          >
+            <div class="flex items-start gap-4">
+              <span class="text-4xl">{cat.icon}</span>
+              <div class="flex-1">
+                <div class="flex items-center gap-2 mb-1">
+                  <h3 class="text-lg font-semibold text-slate-800">
+                    {cat.title}
+                  </h3>
+                  <span
+                    class={`text-xs font-medium px-2 py-0.5 rounded-full ${colorClasses[cat.color].badge}`}
+                  >
+                    {cat.count} questions
+                  </span>
+                </div>
+                <p class="text-sm text-slate-600 mb-3">{cat.description}</p>
+                <div class="flex flex-wrap gap-1.5">
+                  {cat.topQuestions.map((q) => (
+                    <span class="text-xs bg-white/80 px-2 py-0.5 rounded border border-slate-200 text-slate-500">
+                      {q}
+                    </span>
+                  ))}
+                </div>
+              </div>
+              <svg
+                class="w-5 h-5 text-slate-400 mt-1 shrink-0"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M9 5l7 7-7 7"
+                />
+              </svg>
+            </div>
+          </a>
+        ))
+      }
+    </div>
+  </section>
+
+  <!-- Still Need Help -->
+  <section
+    class="bg-gradient-to-r from-slate-50 to-sky-50 rounded-2xl p-8 border border-slate-200"
+  >
+    <h2 class="text-lg font-semibold text-slate-800 mb-3">
+      Can't find what you're looking for?
+    </h2>
+    <p class="text-sm text-slate-600 mb-5">
+      Check our guides for in-depth explanations or reach out to us directly.
+    </p>
+    <div class="flex flex-wrap gap-3">
+      <a
+        href={getLocalizedUrl("/guides/", locale)}
+        class="inline-flex items-center gap-2 px-4 py-2 bg-white rounded-lg border border-slate-200 hover:border-sky-400 transition-colors text-sm"
+      >
+        📚 Browse Guides
+      </a>
+      <a
+        href={getLocalizedUrl("/about/contact/", locale)}
+        class="inline-flex items-center gap-2 px-4 py-2 bg-sky-600 text-white rounded-lg hover:bg-sky-700 transition-colors text-sm"
+      >
+        ✉️ Contact Us
+      </a>
+      <a
+        href={getLocalizedUrl("/calculators/", locale)}
+        class="inline-flex items-center gap-2 px-4 py-2 bg-white rounded-lg border border-slate-200 hover:border-sky-400 transition-colors text-sm"
+      >
+        🧮 Try Our Calculators
+      </a>
+    </div>
+  </section>
+</Layout>

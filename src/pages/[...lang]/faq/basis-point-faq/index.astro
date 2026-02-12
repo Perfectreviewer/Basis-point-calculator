@@ -1,0 +1,118 @@
+---
+import Layout from "@theme/layouts/Layout.astro";
+import {
+  getTranslations,
+  type Locale,
+  getLocalizedUrl,
+} from "@theme/i18n/utils";
+
+export function getStaticPaths() {
+  return [
+    { params: { lang: undefined } },
+    { params: { lang: "en" } },
+    { params: { lang: "es" } },
+    { params: { lang: "fr" } },
+    { params: { lang: "de" } },
+  ];
+}
+
+const locale = (Astro.params.lang || "en") as Locale;
+const t = getTranslations(locale);
+
+const pageTitle = "Basis Point FAQ | Frequently Asked Questions";
+const pageDescription =
+  "Common questions and answers about basis points - what they are, how to use them, and why they matter.";
+
+const faqs = [
+  {
+    q: "What is a basis point?",
+    a: "A basis point (bp or bps) is one hundredth of a percentage point, or 0.01%. It's used in finance to describe small changes in interest rates, yields, and other financial metrics.",
+  },
+  {
+    q: "How many basis points are in 1 percent?",
+    a: "There are 100 basis points in 1 percent. To convert percentage to basis points, multiply by 100. To convert basis points to percentage, divide by 100.",
+  },
+  {
+    q: "Why do financial professionals use basis points?",
+    a: "Basis points eliminate confusion when discussing rate changes. Saying 'rates rose 50 basis points' is clearer than saying 'rates rose 0.5%' which could be interpreted as a relative or absolute change.",
+  },
+  {
+    q: "What does 'the Fed raised rates by 25 basis points' mean?",
+    a: "It means the Federal Reserve increased the federal funds rate by 0.25 percentage points. For example, rates might have gone from 5.00% to 5.25%.",
+  },
+  {
+    q: "How do I convert basis points to percentage?",
+    a: "Divide the basis points by 100. For example: 75 basis points ÷ 100 = 0.75%. Use our Basis Point to Percentage calculator for instant conversions.",
+  },
+  {
+    q: "How do I convert percentage to basis points?",
+    a: "Multiply the percentage by 100. For example: 2.5% × 100 = 250 basis points. Our Percentage to Basis Points calculator makes this easy.",
+  },
+  {
+    q: "What's the difference between basis points and percentage points?",
+    a: "They're similar but used in different contexts. 'Percentage points' refers to the arithmetic difference between percentages (e.g., 5% to 7% = 2 percentage points). Basis points are a more precise unit (200 bps = 2 percentage points).",
+  },
+  {
+    q: "Are basis points used outside of finance?",
+    a: "Primarily no. Basis points are almost exclusively used in finance, banking, and investing to discuss interest rates, bond yields, and fees.",
+  },
+];
+---
+
+<Layout title={pageTitle} description={pageDescription}>
+  <main class="max-w-4xl mx-auto px-4 py-12">
+    <nav class="text-sm text-slate-500 mb-6">
+      <a href={getLocalizedUrl("/faq/", locale)} class="hover:text-sky-600"
+        >FAQ</a
+      >
+      <span class="mx-2">/</span>
+      <span class="text-slate-800">Basis Point FAQ</span>
+    </nav>
+
+    <div class="mb-12">
+      <h1 class="text-3xl font-bold text-slate-800 mb-4">Basis Point FAQ</h1>
+      <p class="text-slate-600">
+        Your questions about basis points, answered clearly and simply.
+      </p>
+    </div>
+
+    <div class="space-y-4">
+      {
+        faqs.map((faq, i) => (
+          <details class="bg-white rounded-xl border border-slate-200 group">
+            <summary class="flex items-center justify-between p-5 cursor-pointer hover:bg-slate-50">
+              <span class="font-medium text-slate-800 pr-4">{faq.q}</span>
+              <svg
+                class="w-5 h-5 text-slate-400 group-open:rotate-180 transition-transform shrink-0"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M19 9l-7 7-7-7"
+                />
+              </svg>
+            </summary>
+            <div class="px-5 pb-5 text-slate-600">{faq.a}</div>
+          </details>
+        ))
+      }
+    </div>
+
+    <div class="mt-12 p-6 bg-sky-50 rounded-xl border border-sky-200">
+      <h3 class="font-semibold text-slate-800 mb-2">Try It Yourself</h3>
+      <p class="text-slate-600 text-sm mb-4">
+        Use our calculators to convert and calculate basis points.
+      </p>
+      <a
+        href={getLocalizedUrl("/basis-point-calculators/", locale)}
+        class="inline-flex items-center gap-2 px-4 py-2 bg-sky-600 text-white rounded-lg hover:bg-sky-700 transition-colors text-sm"
+      >
+        Open Calculators →
+      </a>
+    </div>
+  </main>
+</Layout>

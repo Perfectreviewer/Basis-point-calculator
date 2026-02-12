@@ -1,0 +1,846 @@
+{
+  "en": {
+    "faqs": [
+      {
+        "question": "What is a basis point?",
+        "answer": "A basis point is a unit of measurement in finance equal to 0.01%. It is commonly used to describe small changes in interest rates, loans, and investments."
+      },
+      {
+        "question": "How to calculate basis points?",
+        "answer": "To calculate basis points, multiply the percentage by 100. For example, 1.50% equals 150 basis points."
+      },
+      {
+        "question": "How many basis points are in 1 percent?",
+        "answer": "There are 100 basis points in 1 percent."
+      },
+      {
+        "question": "Why are basis points used instead of percentages?",
+        "answer": "Basis points provide clarity and precision when explaining small financial changes and help avoid confusion caused by percentages."
+      },
+      {
+        "question": "Can I convert basis points to percentage?",
+        "answer": "Yes. To convert basis points to percentage, divide the basis points by 100. For example, 250 basis points equal 2.50%."
+      },
+      {
+        "question": "Is the basis point calculator free to use?",
+        "answer": "Yes, our basis point calculator is completely free and can be used online without registration."
+      }
+    ]
+  },
+  "hi": {
+    "faqs": [
+      {
+        "question": "बेसिस पॉइंट क्या है?",
+        "answer": "एक बेसिस पॉइंट (bps) एक प्रतिशत अंक का सौवां हिस्सा होता है। 1% = 100 bps, 0.01 = 1%, और 1 bps = 0.01%।"
+      },
+      {
+        "question": "हमारे पास बेसिस पॉइंट क्यों हैं?",
+        "answer": "ब्याज दरों में छोटे बदलावों पर चर्चा करते समय बेसिस पॉइंट अस्पष्टता से बचाते हैं। 'दरे 25 bps बढ़ीं' कहना स्पष्ट है (0.25%), जबकि '0.25 प्रतिशत' को गलती से 25% सुना जा सकता है।"
+      },
+      {
+        "question": "बेसिस पॉइंट को प्रतिशत में कैसे बदलें?",
+        "answer": "प्रतिशत प्राप्त करने के लिए bps को 100 से विभाजित करें। उदाहरण के लिए, 40 bps = 0.40%। bps प्राप्त करने के लिए प्रतिशत को 100 से गुणा करें।"
+      },
+      {
+        "question": "बेसिस पॉइंट का उपयोग कहाँ किया जाता है?",
+        "answer": "आमतौर पर वित्त में: ब्याज दरें, शुल्क, बांड यील्ड, विदेशी मुद्रा स्प्रेड, और फंड व्यय अनुपात।"
+      },
+      {
+        "question": "मॉर्गेज (गिरवी) में बेसिस पॉइंट क्या हैं?",
+        "answer": "मॉर्गेज दरों में बदलाव अक्सर bps में बताए जाते हैं। 20 bps की वृद्धि का मतलब है कि दर 0.20 प्रतिशत अंक बढ़ गई।"
+      },
+      {
+        "question": "क्या बेसिस पॉइंट ऋणात्मक हो सकते हैं?",
+        "answer": "हाँ। ऋणात्मक bps कमी को दर्शाते हैं। उदाहरण के लिए, 6% यील्ड पर -15 bps का मतलब है कि यील्ड गिरकर 5.85% हो गई।"
+      },
+      {
+        "question": "हम बेसिस पॉइंट का उपयोग क्यों करते हैं?",
+        "answer": "वे छोटे बदलावों के लिए सटीक, संक्षिप्त संचार प्रदान करते हैं और 'प्रतिशत अंक बनाम प्रतिशत' के भ्रम को दूर करते हैं।"
+      },
+      {
+        "question": "40 बेसिस पॉइंट कितना होता है?",
+        "answer": "40 bps = 0.40% = दशमलव में 0.004 = 4.0‰ (प्रति हजार)।"
+      },
+      {
+        "question": "50 बेसिस पॉइंट का क्या अर्थ है?",
+        "answer": "इसका मतलब है 0.50 प्रतिशत अंक (0.50%)। दशमलव में यह 0.005, या 5‰ (प्रति हजार) है।"
+      },
+      {
+        "question": "कमीशन के लिए बेसिस पॉइंट की गणना कैसे करें?",
+        "answer": "कमीशन = राशि × (bps ÷ 10,000)। उदाहरण के लिए, PKR 2,000,000 पर 75 bps बराबर PKR 15,000 है।"
+      },
+      {
+        "question": "दशमलव रूप में 50 बेसिस पॉइंट क्या है?",
+        "answer": "50 bps = दशमलव रूप में 0.005 (जो 0.50% है)।"
+      }
+    ]
+  },
+  "es": {
+    "faqs": [
+      {
+        "question": "¿Qué es un punto básico?",
+        "answer": "Un punto básico (bps) es una centésima parte de un punto porcentual. 1% = 100 bps, 0,01 = 1% y 1 bps = 0,01%."
+      },
+      {
+        "question": "¿Por qué tenemos puntos básicos?",
+        "answer": "Los puntos básicos evitan la ambigüedad al discutir pequeños cambios en las tasas. Decir 'las tasas subieron 25 bps' es inequívoco (0,25%), mientras que '0,25 por ciento' puede confundirse con 25%."
+      },
+      {
+        "question": "¿Cómo convertir puntos básicos a porcentajes?",
+        "answer": "Divida los bps por 100 para obtener el porcentaje. Por ejemplo, 40 bps = 0,40%. Multiplique el porcentaje por 100 para obtener bps."
+      },
+      {
+        "question": "¿Dónde se utilizan los puntos básicos?",
+        "answer": "Comúnmente en finanzas: tasas de interés, tarifas, rendimientos de bonos, diferenciales de divisas y ratios de gastos de fondos."
+      },
+      {
+        "question": "¿Qué son los puntos básicos en las hipotecas?",
+        "answer": "Los cambios en las tasas hipotecarias a menudo se cotizan en bps. Un aumento de 20 bps significa que la tasa subió 0,20 puntos porcentuales."
+      },
+      {
+        "question": "¿Pueden ser negativos los puntos básicos?",
+        "answer": "Sí. Los bps negativos representan una disminución. Por ejemplo, -15 bps en un rendimiento del 6% significa que el rendimiento cayó al 5,85%."
+      },
+      {
+        "question": "¿Por qué usamos puntos básicos?",
+        "answer": "Proporcionan una comunicación precisa y compacta para pequeños movimientos y eliminan la confusión entre 'punto porcentual y porcentaje'."
+      },
+      {
+        "question": "¿Cuánto son 40 puntos básicos?",
+        "answer": "40 bps = 0,40% = 0,004 en decimal = 4,0‰ (por mil)."
+      },
+      {
+        "question": "¿Qué significan 50 puntos básicos?",
+        "answer": "Significa 0,50 puntos porcentuales (0,50%). En decimal es 0,005, o 5‰ (por mil)."
+      },
+      {
+        "question": "¿Cómo se calculan los puntos básicos para la comisión?",
+        "answer": "Comisión = Monto × (bps ÷ 10.000). Por ejemplo, 75 bps sobre PKR 2.000.000 equivalen a PKR 15.000."
+      },
+      {
+        "question": "¿Qué son 50 puntos básicos en forma decimal?",
+        "answer": "50 bps = 0,005 en forma decimal (que es 0,50%)."
+      }
+    ]
+  },
+  "ru": {
+    "faqs": [
+      {
+        "question": "Что такое базисный пункт?",
+        "answer": "Базисный пункт (bps) — это одна сотая процентного пункта. 1% = 100 bps, 0,01 = 1%, и 1 bps = 0,01%."
+      },
+      {
+        "question": "Зачем нужны базисные пункты?",
+        "answer": "Базисные пункты позволяют избежать двусмысленности при обсуждении малых изменений ставок. Фраза «ставки выросли на 25 bps» однозначна (0,25%), тогда как «0,25 процента» можно спутать с 25%."
+      },
+      {
+        "question": "Как перевести базисные пункты в проценты?",
+        "answer": "Разделите bps на 100, чтобы получить проценты. Например, 40 bps = 0,40%. Умножьте проценты на 100, чтобы получить bps."
+      },
+      {
+        "question": "Где используются базисные пункты?",
+        "answer": "Обычно в финансах: процентные ставки, комиссии, доходность облигаций, спреды форекс и коэффициенты расходов фондов."
+      },
+      {
+        "question": "Что такое базисные пункты в ипотеке?",
+        "answer": "Изменения ипотечных ставок часто указываются в bps. Увеличение на 20 bps означает, что ставка выросла на 0,20 процентного пункта."
+      },
+      {
+        "question": "Могут ли базисные пункты быть отрицательными?",
+        "answer": "Да. Отрицательные bps означают снижение. Например, -15 bps при доходности 6% означает, что доходность упала до 5,85%."
+      },
+      {
+        "question": "Почему мы используем базисные пункты?",
+        "answer": "Они обеспечивают точную и краткую передачу информации о малых изменениях и устраняют путаницу между «процентным пунктом» и «процентом»."
+      },
+      {
+        "question": "Сколько это 40 базисных пунктов?",
+        "answer": "40 bps = 0,40% = 0,004 в десятичном виде = 4,0‰ (промилле)."
+      },
+      {
+        "question": "Что означает 50 базисных пунктов?",
+        "answer": "Это означает 0,50 процентных пункта (0,50%). В десятичном виде это 0,005 или 5‰ (промилле)."
+      },
+      {
+        "question": "Как рассчитать комиссию в базисных пунктах?",
+        "answer": "Комиссия = Сумма × (bps ÷ 10 000). Например, 75 bps от 2 000 000 PKR равны 15 000 PKR."
+      },
+      {
+        "question": "Что такое 50 базисных пунктов в десятичном виде?",
+        "answer": "50 bps = 0,005 в десятичном виде (что составляет 0,50%)."
+      }
+    ]
+  },
+  "fr": {
+    "faqs": [
+      {
+        "question": "Qu'est-ce qu'un point de base ?",
+        "answer": "Un point de base (bps) est un centième de point de pourcentage. 1% = 100 bps, 0,01 = 1% et 1 bps = 0,01%."
+      },
+      {
+        "question": "Pourquoi avons-nous des points de base ?",
+        "answer": "Les points de base évitent toute ambiguïté lors de la discussion de petits changements de taux. Dire « les taux ont augmenté de 25 bps » est sans ambiguïté (0,25%), tandis que « 0,25 pour cent » peut être mal entendu comme 25%."
+      },
+      {
+        "question": "Comment convertir les points de base en pourcentages ?",
+        "answer": "Divisez les bps par 100 pour obtenir le pourcentage. Par exemple, 40 bps = 0,40%. Multipliez le pourcentage par 100 pour obtenir les bps."
+      },
+      {
+        "question": "Où les points de base sont-ils utilisés ?",
+        "answer": "Couramment en finance : taux d'intérêt, frais, rendements obligataires, spreads forex et ratios de dépenses des fonds."
+      },
+      {
+        "question": "Que sont les points de base dans les hypothèques ?",
+        "answer": "Les variations des taux hypothécaires sont souvent cotées en bps. Une augmentation de 20 bps signifie que le taux a augmenté de 0,20 point de pourcentage."
+      },
+      {
+        "question": "Les points de base peuvent-ils être négatifs ?",
+        "answer": "Oui. Les bps négatifs représentent une baisse. Par exemple, -15 bps sur un rendement de 6% signifie que le rendement a chuté à 5,85%."
+      },
+      {
+        "question": "Pourquoi utilisons-nous des points de base ?",
+        "answer": "Ils permettent une communication précise et compacte pour les petits mouvements et éliminent la confusion entre « point de pourcentage et pourcentage »."
+      },
+      {
+        "question": "Combien font 40 points de base ?",
+        "answer": "40 bps = 0,40% = 0,004 en décimal = 4,0‰ (pour mille)."
+      },
+      {
+        "question": "Que signifient 50 points de base ?",
+        "answer": "Cela signifie 0,50 point de pourcentage (0,50%). En décimal, c'est 0,005, ou 5‰ (pour mille)."
+      },
+      {
+        "question": "Comment calculer les points de base pour une commission ?",
+        "answer": "Commission = Montant × (bps ÷ 10 000). Par exemple, 75 bps sur 2 000 000 PKR équivalent à 15 000 PKR."
+      },
+      {
+        "question": "Que représentent 50 points de base sous forme décimale ?",
+        "answer": "50 bps = 0,005 sous forme décimale (ce qui fait 0,50%)."
+      }
+    ]
+  },
+  "de": {
+    "faqs": [
+      {
+        "question": "Was ist ein Basispunkt?",
+        "answer": "Ein Basispunkt (bps) ist ein Hundertstel eines Prozentpunkts. 1% = 100 bps, 0,01 = 1% und 1 bps = 0,01%."
+      },
+      {
+        "question": "Warum gibt es Basispunkte?",
+        "answer": "Basispunkte vermeiden Unklarheiten bei kleinen Zinsänderungen. 'Zinsen stiegen um 25 bps' ist eindeutig (0,25%), während '0,25 Prozent' als 25% missverstanden werden kann."
+      },
+      {
+        "question": "Wie rechnet man Basispunkte in Prozent um?",
+        "answer": "Teilen Sie bps durch 100, um Prozent zu erhalten. Zum Beispiel: 40 bps = 0,40%. Multiplizieren Sie Prozent mit 100, um bps zu erhalten."
+      },
+      {
+        "question": "Wo werden Basispunkte verwendet?",
+        "answer": "Häufig im Finanzwesen: Zinssätze, Gebühren, Anleiherenditen, Forex-Spreads und Kostenquoten von Fonds."
+      },
+      {
+        "question": "Was sind Basispunkte bei Hypotheken?",
+        "answer": "Änderungen der Hypothekenzinsen werden oft in bps angegeben. Ein Anstieg um 20 bps bedeutet, dass der Zinssatz um 0,20 Prozentpunkte gestiegen ist."
+      },
+      {
+        "question": "Können Basispunkte negativ sein?",
+        "answer": "Ja. Negative bps stellen einen Rückgang dar. Zum Beispiel bedeuten -15 bps bei einer Rendite von 6%, dass die Rendite auf 5,85% gefallen ist."
+      },
+      {
+        "question": "Warum verwenden wir Basispunkte?",
+        "answer": "Sie ermöglichen eine präzise Kommunikation für kleine Bewegungen und beseitigen die Verwechslung von 'Prozentpunkt vs. Prozent'."
+      },
+      {
+        "question": "Wie viel sind 40 Basispunkte?",
+        "answer": "40 bps = 0,40% = 0,004 als Dezimalzahl = 4,0‰ (Promille)."
+      },
+      {
+        "question": "Was bedeuten 50 Basispunkte?",
+        "answer": "Es bedeutet 0,50 Prozentpunkte (0,50%). Als Dezimalzahl ist das 0,005 oder 5‰ (Promille)."
+      },
+      {
+        "question": "Wie berechnet man Basispunkte für Provisionen?",
+        "answer": "Provision = Betrag × (bps ÷ 10.000). Zum Beispiel entsprechen 75 bps von 2.000.000 PKR gleich 15.000 PKR."
+      },
+      {
+        "question": "Was sind 50 Basispunkte in Dezimalform?",
+        "answer": "50 bps = 0,005 in Dezimalform (was 0,50% entspricht)."
+      }
+    ]
+  },
+  "it": {
+    "faqs": [
+      {
+        "question": "Cos'è un punto base?",
+        "answer": "Un punto base (bps) è un centesimo di punto percentuale. 1% = 100 bps, 0,01 = 1% e 1 bps = 0,01%."
+      },
+      {
+        "question": "Perché esistono i punti base?",
+        "answer": "I punti base evitano ambiguità quando si discutono piccole variazioni dei tassi. Dire 'i tassi sono aumentati di 25 bps' è inequivocabile (0,25%), mentre '0,25 per cento' può essere frainteso come 25%."
+      },
+      {
+        "question": "Come convertire i punti base in percentuali?",
+        "answer": "Dividi i bps per 100 per ottenere la percentuale. Ad esempio, 40 bps = 0,40%. Moltiplica la percentuale per 100 per ottenere i bps."
+      },
+      {
+        "question": "Dove vengono utilizzati i punti base?",
+        "answer": "Comunemente in finanza: tassi di interesse, commissioni, rendimenti obbligazionari, spread forex e rapporti di spesa dei fondi."
+      },
+      {
+        "question": "Cosa sono i punti base nei mutui?",
+        "answer": "Le variazioni dei tassi ipotecari sono spesso quotate in bps. Un aumento di 20 bps significa che il tasso è aumentato di 0,20 punti percentuali."
+      },
+      {
+        "question": "I punti base possono essere negativi?",
+        "answer": "Sì. I bps negativi rappresentano una diminuzione. Ad esempio, -15 bps su un rendimento del 6% significa che il rendimento è sceso al 5,85%."
+      },
+      {
+        "question": "Perché usiamo i punti base?",
+        "answer": "Forniscono una comunicazione precisa per piccoli movimenti ed eliminano la confusione tra 'punto percentuale e percentuale'."
+      },
+      {
+        "question": "Quanto sono 40 punti base?",
+        "answer": "40 bps = 0,40% = 0,004 in decimale = 4,0‰ (per mille)."
+      },
+      {
+        "question": "Cosa si intende per 50 punti base?",
+        "answer": "Significa 0,50 punti percentuali (0,50%). In decimale è 0,005, o 5‰ (per mille)."
+      },
+      {
+        "question": "Come si calcolano i punti base per le commissioni?",
+        "answer": "Commissione = Importo × (bps ÷ 10.000). Ad esempio, 75 bps su 2.000.000 PKR equivalgono a 15.000 PKR."
+      },
+      {
+        "question": "Cosa sono 50 punti base in forma decimale?",
+        "answer": "50 bps = 0,005 in forma decimale (che è 0,50%)."
+      }
+    ]
+  },
+  "pt": {
+    "faqs": [
+      {
+        "question": "O que é um ponto-base?",
+        "answer": "Um ponto-base (bps) é um centésimo de um ponto percentual. 1% = 100 bps, 0,01 = 1% e 1 bps = 0,01%."
+      },
+      {
+        "question": "Por que temos pontos-base?",
+        "answer": "Os pontos-base evitam ambiguidade ao discutir pequenas alterações nas taxas. Dizer 'as taxas subiram 25 bps' é inequívoco (0,25%), enquanto '0,25 por cento' pode ser mal interpretado como 25%."
+      },
+      {
+        "question": "Como converter pontos-base em porcentagens?",
+        "answer": "Divida bps por 100 para obter a porcentagem. Por exemplo, 40 bps = 0,40%. Multiplique a porcentagem por 100 para obter bps."
+      },
+      {
+        "question": "Onde os pontos-base são usados?",
+        "answer": "Comumente em finanças: taxas de juros, comissões, rendimentos de títulos, spreads forex e índices de despesas de fundos."
+      },
+      {
+        "question": "O que são pontos-base em hipotecas?",
+        "answer": "As alterações nas taxas de hipoteca são frequentemente cotadas em bps. Um aumento de 20 bps significa que a taxa subiu 0,20 pontos percentuais."
+      },
+      {
+        "question": "Os pontos-base podem ser negativos?",
+        "answer": "Sim. Bps negativos representam uma diminuição. Por exemplo, -15 bps em um rendimento de 6% significa que o rendimento caiu para 5,85%."
+      },
+      {
+        "question": "Por que usamos pontos-base?",
+        "answer": "Eles fornecem comunicação precisa e compacta para pequenos movimentos e removem a confusão entre 'ponto percentual vs porcentagem'."
+      },
+      {
+        "question": "Quanto são 40 pontos-base?",
+        "answer": "40 bps = 0,40% = 0,004 em decimal = 4,0‰ (por mil)."
+      },
+      {
+        "question": "O que significa 50 pontos-base?",
+        "answer": "Significa 0,50 pontos percentuais (0,50%). Em decimal é 0,005 ou 5‰ (por mil)."
+      },
+      {
+        "question": "Como calcular pontos-base para comissão?",
+        "answer": "Comissão = Valor × (bps ÷ 10.000). Por exemplo, 75 bps sobre PKR 2.000.000 é igual a PKR 15.000."
+      },
+      {
+        "question": "O que são 50 pontos-base na forma decimal?",
+        "answer": "50 bps = 0,005 na forma decimal (que é 0,50%)."
+      }
+    ]
+  },
+  "bn": {
+    "faqs": [
+      {
+        "question": "বেসিস পয়েন্ট কি?",
+        "answer": "একটি বেসিস পয়েন্ট (bps) হল একটি শতাংশ পয়েন্টের একশতাংশ। ১% = ১০০ bps, ০.০১ = ১%, এবং ১ bps = ০.০১%।"
+      },
+      {
+        "question": "কেন আমাদের বেসিস পয়েন্ট আছে?",
+        "answer": "ছোট হারের পরিবর্তন নিয়ে আলোচনা করার সময় বেসিস পয়েন্ট অস্পষ্টতা এড়ায়। 'হার ২৫ bps বেড়েছে' বলা স্পষ্ট (০.২৫%), যেখানে '০.২৫ শতাংশ' ২৫% হিসাবে ভুল শোনা যেতে পারে।"
+      },
+      {
+        "question": "বেসিস পয়েন্টকে শতাংশে কীভাবে রূপান্তর করবেন?",
+        "answer": "শতাংশ পেতে bps কে ১০০ দ্বারা ভাগ করুন। উদাহরণস্বরূপ, ৪০ bps = ০.৪০%। bps পেতে শতাংশকে ১০০ দিয়ে গুণ করুন।"
+      },
+      {
+        "question": "বেসিস পয়েন্ট কোথায় ব্যবহার করা হয়?",
+        "answer": "সাধারণত অর্থশাস্ত্রে: সুদের হার, ফি, বন্ড ফলন, ফরেক্স স্প্রেড এবং তহবিলের ব্যয়ের অনুপাত।"
+      },
+      {
+        "question": "বন্ধকী ঋণে বেসিস পয়েন্ট কি?",
+        "answer": "বন্ধকী হারের পরিবর্তনগুলি প্রায়শই bps-এ উদ্ধৃত করা হয়। ২০ bps বৃদ্ধির অর্থ হল হার ০.২০ শতাংশ পয়েন্ট বেড়েছে।"
+      },
+      {
+        "question": "বেসিস পয়েন্ট কি ঋণাত্মক হতে পারে?",
+        "answer": "হ্যাঁ। ঋণাত্মক bps হ্রাস নির্দেশ করে। উদাহরণস্বরূপ, ৬% ফলনে -১৫ bps মানে ফলন ৫.৮৫% এ নেমে এসেছে।"
+      },
+      {
+        "question": "আমরা কেন বেসিস পয়েন্ট ব্যবহার করি?",
+        "answer": "এগুলি ছোট পদক্ষেপের জন্য সুনির্দিষ্ট যোগাযোগ প্রদান করে এবং 'শতাংশ পয়েন্ট বনাম শতাংশ' বিভ্রান্তি দূর করে।"
+      },
+      {
+        "question": "৪০ বেসিস পয়েন্ট কত?",
+        "answer": "৪০ bps = ০.৪০% = দশমিকে ০.০০৪ = ৪.০‰ (পারমিল)।"
+      },
+      {
+        "question": "৫০ বেসিস পয়েন্ট বলতে কী বোঝায়?",
+        "answer": "এর অর্থ ০.৫০ শতাংশ পয়েন্ট (০.৫০%)। দশমিকে এটি ০.০০৫, বা ৫‰ (পারমিল)।"
+      },
+      {
+        "question": "আপনি কীভাবে কমিশনের জন্য বেসিস পয়েন্ট গণনা করবেন?",
+        "answer": "কমিশন = পরিমাণ × (bps ÷ ১০,০০০)। উদাহরণস্বরূপ, PKR ২,০০০,০০০ এর উপর ৭৫ bps সমান PKR ১৫,০০০।"
+      },
+      {
+        "question": "দশমিক আকারে ৫০ বেসিস পয়েন্ট কত?",
+        "answer": "৫০ bps = দশমিক আকারে ০.০০৫ (যা ০.৫০%)।"
+      }
+    ]
+  },
+  "ja": {
+    "faqs": [
+      {
+        "question": "ベーシスポイントとは何ですか？",
+        "answer": "ベーシスポイント (bps) はパーセントポイントの100分の1です。1% = 100 bps、0.01 = 1%、1 bps = 0.01%です。"
+      },
+      {
+        "question": "なぜベーシスポイントがあるのですか？",
+        "answer": "ベーシスポイントは、金利の小さな変動を議論する際の曖昧さを避けます。「金利が25 bps上昇した」と言うのは明確（0.25%）ですが、「0.25パーセント」は25%と聞き間違えられる可能性があります。"
+      },
+      {
+        "question": "ベーシスポイントをパーセントに変換するには？",
+        "answer": "bpsを100で割ってパーセントを求めます。例えば、40 bps = 0.40%です。パーセントに100を掛けるとbpsになります。"
+      },
+      {
+        "question": "ベーシスポイントはどこで使われますか？",
+        "answer": "一般的に金融で使用されます：金利、手数料、債券利回り、外国為替スプレッド、ファンドの経費率など。"
+      },
+      {
+        "question": "住宅ローンにおけるベーシスポイントとは？",
+        "answer": "住宅ローン金利の変動は頻繁にbpsで提示されます。20 bpsの上昇は、金利が0.20パーセントポイント上昇したことを意味します。"
+      },
+      {
+        "question": "ベーシスポイントはマイナスになりますか？",
+        "answer": "はい。マイナスのbpsは減少を表します。例えば、6%の利回りで-15 bpsは、利回りが5.85%に低下したことを意味します。"
+      },
+      {
+        "question": "なぜベーシスポイントを使うのですか？",
+        "answer": "小さな動きに対して正確で簡潔なコミュニケーションを提供し、「パーセントポイント対パーセント」の混乱を取り除きます。"
+      },
+      {
+        "question": "40ベーシスポイントはいくらですか？",
+        "answer": "40 bps = 0.40% = 小数で0.004 = 4.0‰ (パーミル) です。"
+      },
+      {
+        "question": "50ベーシスポイントとはどういう意味ですか？",
+        "answer": "0.50パーセントポイント（0.50%）を意味します。小数では0.005、または5‰（パーミル）です。"
+      },
+      {
+        "question": "手数料のベーシスポイントをどのように計算しますか？",
+        "answer": "手数料 = 金額 × (bps ÷ 10,000)。例えば、2,000,000 PKRに対して75 bpsは15,000 PKRに相当します。"
+      },
+      {
+        "question": "小数形式で50ベーシスポイントは何ですか？",
+        "answer": "50 bps = 小数形式で0.005（これは0.50%です）。"
+      }
+    ]
+  },
+  "ko": {
+    "faqs": [
+      {
+        "question": "베이시스 포인트란 무엇입니까?",
+        "answer": "베이시스 포인트(bps)는 1퍼센트 포인트의 100분의 1입니다. 1% = 100 bps, 0.01 = 1%, 그리고 1 bps = 0.01%입니다."
+      },
+      {
+        "question": "왜 베이시스 포인트를 사용합니까?",
+        "answer": "베이시스 포인트는 작은 금리 변화를 논의할 때 모호함을 피합니다. '금리가 25 bps 올랐다'는 말은 명확하지만(0.25%), '0.25 퍼센트'는 25%로 잘못 들릴 수 있습니다."
+      },
+      {
+        "question": "베이시스 포인트를 백분율로 어떻게 변환합니까?",
+        "answer": "bps를 100으로 나누어 백분율을 구합니다. 예를 들어 40 bps = 0.40%입니다. 백분율에 100을 곱하면 bps가 됩니다."
+      },
+      {
+        "question": "베이시스 포인트는 어디에 사용됩니까?",
+        "answer": "금융에서 일반적으로 사용됩니다: 이자율, 수수료, 채권 수익률, 외환 스프레드 및 펀드 비용 비율."
+      },
+      {
+        "question": "주택 담보 대출에서 베이시스 포인트는 무엇입니까?",
+        "answer": "주택 담보 대출 금리 변경은 종종 bps로 인용됩니다. 20 bps 인상은 금리가 0.20 퍼센트 포인트 상승했음을 의미합니다."
+      },
+      {
+        "question": "베이시스 포인트가 음수일 수 있습니까?",
+        "answer": "네. 음수 bps는 감소를 나타냅니다. 예를 들어 6% 수익률에서 -15 bps는 수익률이 5.85%로 떨어졌음을 의미합니다."
+      },
+      {
+        "question": "우리는 왜 베이시스 포인트를 사용합니까?",
+        "answer": "작은 변동에 대해 정확하고 간결한 의사소통을 제공하고 '퍼센트 포인트 대 퍼센트'의 혼란을 제거합니다."
+      },
+      {
+        "question": "40 베이시스 포인트는 얼마입니까?",
+        "answer": "40 bps = 0.40% = 소수로 0.004 = 4.0‰ (천분율)입니다."
+      },
+      {
+        "question": "50 베이시스 포인트는 무엇을 의미합니까?",
+        "answer": "0.50 퍼센트 포인트(0.50%)를 의미합니다. 소수로는 0.005 또는 5‰ (천분율)입니다."
+      },
+      {
+        "question": "수수료에 대한 베이시스 포인트를 어떻게 계산합니까?",
+        "answer": "수수료 = 금액 × (bps ÷ 10,000). 예를 들어, 2,000,000 PKR에 대한 75 bps는 15,000 PKR과 같습니다."
+      },
+      {
+        "question": "소수 형태의 50 베이시스 포인트는 무엇입니까?",
+        "answer": "50 bps = 소수 형태로 0.005입니다(이는 0.50%입니다)."
+      }
+    ]
+  },
+  "ms": {
+    "faqs": [
+      {
+        "question": "Apa itu titik asas?",
+        "answer": "Titik asas (bps) ialah satu per seratus daripada satu mata peratusan. 1% = 100 bps, 0.01 = 1%, dan 1 bps = 0.01%."
+      },
+      {
+        "question": "Mengapa kita mempunyai titik asas?",
+        "answer": "Titik asas mengelakkan kekeliruan apabila membincangkan perubahan kadar kecil. Mengatakan 'kadar naik 25 bps' adalah jelas (0.25%), manakala '0.25 peratus' boleh disalah dengar sebagai 25%."
+      },
+      {
+        "question": "Bagaimana menukar titik asas kepada peratus?",
+        "answer": "Bahagikan bps dengan 100 untuk mendapatkan peratus. Contohnya, 40 bps = 0.40%. Darab peratus dengan 100 untuk mendapatkan bps."
+      },
+      {
+        "question": "Di mana titik asas digunakan?",
+        "answer": "Biasanya dalam kewangan: kadar faedah, yuran, hasil bon, spread forex, dan nisbah perbelanjaan dana."
+      },
+      {
+        "question": "Apa itu titik asas dalam gadai janji?",
+        "answer": "Perubahan kadar gadai janji sering disebut dalam bps. Kenaikan 20 bps bermakna kadar naik sebanyak 0.20 mata peratusan."
+      },
+      {
+        "question": "Bolehkah titik asas menjadi negatif?",
+        "answer": "Ya. Bps negatif mewakili penurunan. Contohnya, -15 bps pada hasil 6% bermakna hasil jatuh kepada 5.85%."
+      },
+      {
+        "question": "Mengapa kita menggunakan titik asas?",
+        "answer": "Ia memberikan komunikasi yang tepat dan ringkas untuk pergerakan kecil dan menghapuskan kekeliruan 'mata peratusan vs peratus'."
+      },
+      {
+        "question": "Berapakah 40 titik asas?",
+        "answer": "40 bps = 0.40% = 0.004 dalam perpuluhan = 4.0‰ (permille)."
+      },
+      {
+        "question": "Apa yang dimaksudkan dengan 50 titik asas?",
+        "answer": "Ia bermaksud 0.50 mata peratusan (0.50%). Dalam perpuluhan ia adalah 0.005, atau 5‰ (permille)."
+      },
+      {
+        "question": "Bagaimana anda mengira titik asas untuk komisen?",
+        "answer": "Komisen = Jumlah × (bps ÷ 10,000). Contohnya, 75 bps pada PKR 2,000,000 bersamaan dengan PKR 15,000."
+      },
+      {
+        "question": "Apakah 50 titik asas dalam bentuk perpuluhan?",
+        "answer": "50 bps = 0.005 dalam bentuk perpuluhan (iaitu 0.50%)."
+      }
+    ]
+  },
+  "pl": {
+    "faqs": [
+      {
+        "question": "Co to jest punkt bazowy?",
+        "answer": "Punkt bazowy (bps) to jedna setna punktu procentowego. 1% = 100 bps, 0,01 = 1%, a 1 bps = 0,01%."
+      },
+      {
+        "question": "Dlaczego mamy punkty bazowe?",
+        "answer": "Punkty bazowe pozwalają uniknąć dwuznaczności podczas omawiania małych zmian stóp. Powiedzenie „stopy wzrosły o 25 bps” jest jednoznaczne (0,25%), podczas gdy „0,25 procent” można źle usłyszeć jako 25%."
+      },
+      {
+        "question": "Jak przeliczyć punkty bazowe na procenty?",
+        "answer": "Podziel bps przez 100, aby otrzymać procent. Na przykład 40 bps = 0,40%. Pomnóż procent przez 100, aby otrzymać bps."
+      },
+      {
+        "question": "Gdzie używa się punktów bazowych?",
+        "answer": "Powszechnie w finansach: stopy procentowe, opłaty, rentowność obligacji, spready forex i wskaźniki kosztów funduszy."
+      },
+      {
+        "question": "Czym są punkty bazowe w kredytach hipotecznych?",
+        "answer": "Zmiany stóp kredytów hipotecznych są często podawane w bps. Wzrost o 20 bps oznacza, że stopa wzrosła o 0,20 punktu procentowego."
+      },
+      {
+        "question": "Czy punkty bazowe mogą być ujemne?",
+        "answer": "Tak. Ujemne bps oznaczają spadek. Na przykład -15 bps przy rentowności 6% oznacza, że rentowność spadła do 5,85%."
+      },
+      {
+        "question": "Dlaczego używamy punktów bazowych?",
+        "answer": "Zapewniają precyzyjną, zwięzłą komunikację przy małych ruchach i usuwają zamieszanie „punkt procentowy vs procent”."
+      },
+      {
+        "question": "Ile to 40 punktów bazowych?",
+        "answer": "40 bps = 0,40% = 0,004 w ułamku dziesiętnym = 4,0‰ (promile)."
+      },
+      {
+        "question": "Co oznacza 50 punktów bazowych?",
+        "answer": "Oznacza to 0,50 punktu procentowego (0,50%). W ułamku dziesiętnym to 0,005 lub 5‰ (promile)."
+      },
+      {
+        "question": "Jak obliczyć punkty bazowe dla prowizji?",
+        "answer": "Prowizja = Kwota × (bps ÷ 10 000). Na przykład 75 bps od 2 000 000 PKR równa się 15 000 PKR."
+      },
+      {
+        "question": "Ile to jest 50 punktów bazowych w postaci dziesiętnej?",
+        "answer": "50 bps = 0,005 w postaci dziesiętnej (czyli 0,50%)."
+      }
+    ]
+  },
+  "id": {
+    "faqs": [
+      {
+        "question": "Apa itu poin basis?",
+        "answer": "Poin basis (bps) adalah seperseratus dari satu poin persentase. 1% = 100 bps, 0,01 = 1%, dan 1 bps = 0,01%."
+      },
+      {
+        "question": "Mengapa kita memiliki poin basis?",
+        "answer": "Poin basis menghindari ambiguitas saat mendiskusikan perubahan suku bunga kecil. Mengatakan 'suku bunga naik 25 bps' tidak ambigu (0,25%), sedangkan '0,25 persen' bisa salah didengar sebagai 25%."
+      },
+      {
+        "question": "Bagaimana cara mengubah poin basis menjadi persen?",
+        "answer": "Bagi bps dengan 100 untuk mendapatkan persen. Contohnya, 40 bps = 0,40%. Kalikan persen dengan 100 untuk mendapatkan bps."
+      },
+      {
+        "question": "Di mana poin basis digunakan?",
+        "answer": "Umumnya dalam keuangan: suku bunga, biaya, hasil obligasi, spread forex, dan rasio biaya dana."
+      },
+      {
+        "question": "Apa itu poin basis dalam hipotek?",
+        "answer": "Perubahan suku bunga hipotek sering dikutip dalam bps. Kenaikan 20 bps berarti suku bunga naik sebesar 0,20 poin persentase."
+      },
+      {
+        "question": "Bisakah poin basis menjadi negatif?",
+        "answer": "Ya. Bps negatif mewakili penurunan. Contohnya, -15 bps pada hasil 6% berarti hasil turun menjadi 5,85%."
+      },
+      {
+        "question": "Mengapa kita menggunakan poin basis?",
+        "answer": "Mereka memberikan komunikasi yang tepat dan ringkas untuk pergerakan kecil dan menghilangkan kebingungan 'poin persentase vs persen'."
+      },
+      {
+        "question": "Berapa 40 poin basis?",
+        "answer": "40 bps = 0,40% = 0,004 dalam desimal = 4,0‰ (permille)."
+      },
+      {
+        "question": "Apa yang dimaksud dengan 50 poin basis?",
+        "answer": "Itu berarti 0,50 poin persentase (0,50%). Dalam desimal itu adalah 0,005, atau 5‰ (permille)."
+      },
+      {
+        "question": "Bagaimana cara menghitung poin basis untuk komisi?",
+        "answer": "Komisi = Jumlah × (bps ÷ 10.000). Contohnya, 75 bps dari PKR 2.000.000 sama dengan PKR 15.000."
+      },
+      {
+        "question": "Berapa 50 poin basis dalam bentuk desimal?",
+        "answer": "50 bps = 0,005 dalam bentuk desimal (yaitu 0,50%)."
+      }
+    ]
+  },
+  "ar": {
+    "faqs": [
+      {
+        "question": "ما هي نقطة الأساس؟",
+        "answer": "نقطة الأساس (bps) هي واحد من مائة من نقطة مئوية. 1% = 100 bps، و 0.01 = 1%، و 1 bps = 0.01%."
+      },
+      {
+        "question": "لماذا توجد نقاط الأساس؟",
+        "answer": "تتجنب نقاط الأساس الغموض عند مناقشة التغييرات الصغيرة في الأسعار. القول بأن 'الأسعار ارتفعت 25 bps' واضح (0.25%)، بينما '0.25 في المائة' يمكن سماعها بشكل خاطئ كـ 25%."
+      },
+      {
+        "question": "كيف نحول نقاط الأساس إلى نسب مئوية؟",
+        "answer": "اقسم bps على 100 للحصول على النسبة المئوية. على سبيل المثال، 40 bps = 0.40%. اضرب النسبة المئوية في 100 للحصول على bps."
+      },
+      {
+        "question": "أين تستخدم نقاط الأساس؟",
+        "answer": "شائعة في التمويل: أسعار الفائدة، الرسوم، عوائد السندات، هوامش الفوركس، ونسب نفقات الصناديق."
+      },
+      {
+        "question": "ما هي نقاط الأساس في الرهون العقارية؟",
+        "answer": "غالباً ما يتم ذكر تغييرات أسعار الرهن العقاري بـ bps. زيادة 20 bps تعني أن السعر ارتفع بمقدار 0.20 نقطة مئوية."
+      },
+      {
+        "question": "هل يمكن أن تكون نقاط الأساس سلبية؟",
+        "answer": "نعم. تمثل bps السلبية انخفاضاً. على سبيل المثال، -15 bps على عائد 6% يعني أن العائد انخفض إلى 5.85%."
+      },
+      {
+        "question": "لماذا نستخدم نقاط الأساس؟",
+        "answer": "إنها توفر تواصلاً دقيقاً ومختصراً للتحركات الصغيرة وتزيل ارتباك 'نقطة مئوية مقابل نسبة مئوية'."
+      },
+      {
+        "question": "كم تساوي 40 نقطة أساس؟",
+        "answer": "40 bps = 0.40% = 0.004 في النظام العشري = 4.0‰ (في الألف)."
+      },
+      {
+        "question": "ما المقصود بـ 50 نقطة أساس؟",
+        "answer": "يعني 0.50 نقطة مئوية (0.50%). في النظام العشري هو 0.005، أو 5‰ (في الألف)."
+      },
+      {
+        "question": "كيف تحسب نقاط الأساس للعمولة؟",
+        "answer": "العمولة = المبلغ × (bps ÷ 10,000). على سبيل المثال، 75 bps على 2,000,000 PKR تساوي 15,000 PKR."
+      },
+      {
+        "question": "ما هي 50 نقطة أساس في الشكل العشري؟",
+        "answer": "50 bps = 0.005 في الشكل العشري (وهو 0.50%)."
+      }
+    ]
+  },
+  "bg": {
+    "faqs": [
+      {
+        "question": "Какво е базисна точка?",
+        "answer": "Базисна точка (bps) е една стотна от процентния пункт. 1% = 100 bps, 0,01 = 1%, а 1 bps = 0,01%."
+      },
+      {
+        "question": "Защо имаме базисни точки?",
+        "answer": "Базисните точки избягват двусмислието при обсъждане на малки промени в процентите. Да се каже „лихвите се повишиха с 25 bps“ е недвусмислено (0,25%), докато „0,25 процента“ може да се чуе грешно като 25%."
+      },
+      {
+        "question": "Как да превърнем базисни точки в проценти?",
+        "answer": "Разделете bps на 100, за да получите процент. Например, 40 bps = 0,40%. Умножете процента по 100, за да получите bps."
+      },
+      {
+        "question": "Къде се използват базисни точки?",
+        "answer": "Често във финансите: лихвени проценти, такси, доходност на облигации, форекс спредове и коефициенти на разходи на фондове."
+      },
+      {
+        "question": "Какво са базисни точки при ипотеките?",
+        "answer": "Промените в ипотечните проценти често се котират в bps. Увеличение от 20 bps означава, че процентът се е повишил с 0,20 процентни пункта."
+      },
+      {
+        "question": "Могат ли базисните точки да бъдат отрицателни?",
+        "answer": "Да. Отрицателните bps представляват намаление. Например, -15 bps при доходност от 6% означава, че доходността е спаднала до 5,85%."
+      },
+      {
+        "question": "Защо използваме базисни точки?",
+        "answer": "Те осигуряват прецизна, компактна комуникация за малки движения и премахват объркването „процентен пункт срещу процент“."
+      },
+      {
+        "question": "Колко са 40 базисни точки?",
+        "answer": "40 bps = 0,40% = 0,004 в десетичен вид = 4,0‰ (промил)."
+      },
+      {
+        "question": "Какво се има предвид под 50 базисни точки?",
+        "answer": "Това означава 0,50 процентни пункта (0,50%). В десетичен вид това е 0,005 или 5‰ (промил)."
+      },
+      {
+        "question": "Как изчислявате базисни точки за комисионна?",
+        "answer": "Комисионна = Сума × (bps ÷ 10 000). Например, 75 bps върху 2 000 000 PKR е равно на 15 000 PKR."
+      },
+      {
+        "question": "Какво е 50 базисни точки в десетична форма?",
+        "answer": "50 bps = 0,005 в десетична форма (което е 0,50%)."
+      }
+    ]
+  },
+  "tr": {
+    "faqs": [
+      {
+        "question": "Baz puan nedir?",
+        "answer": "Bir baz puan (bps), yüzde puanının yüzde biridir. %1 = 100 bps, 0,01 = %1 ve 1 bps = %0,01'dir."
+      },
+      {
+        "question": "Neden baz puanlarımız var?",
+        "answer": "Baz puanlar, küçük oran değişikliklerini tartışırken belirsizliği önler. 'Oranlar 25 bps arttı' demek nettir (%0,25), oysa 'yüzde 0,25' yanlışlıkla %25 olarak duyulabilir."
+      },
+      {
+        "question": "Baz puanlar yüzdeye nasıl dönüştürülür?",
+        "answer": "Yüzdeyi elde etmek için bps'yi 100'e bölün. Örneğin, 40 bps = %0,40. bps elde etmek için yüzdeyi 100 ile çarpın."
+      },
+      {
+        "question": "Baz puanlar nerede kullanılır?",
+        "answer": "Genellikle finansta: faiz oranları, ücretler, tahvil getirileri, forex spreadleri ve fon gider oranları."
+      },
+      {
+        "question": "İpoteklerde baz puan nedir?",
+        "answer": "İpotek oranı değişiklikleri genellikle bps cinsinden belirtilir. 20 bps'lik bir artış, oranın 0,20 yüzde puanı arttığı anlamına gelir."
+      },
+      {
+        "question": "Baz puanlar negatif olabilir mi?",
+        "answer": "Evet. Negatif bps bir düşüşü temsil eder. Örneğin, %6 getiride -15 bps, getirinin %5,85'e düştüğü anlamına gelir."
+      },
+      {
+        "question": "Neden baz puan kullanıyoruz?",
+        "answer": "Küçük hareketler için kesin, özlü iletişim sağlarlar ve 'yüzde puanı ile yüzde' karışıklığını giderirler."
+      },
+      {
+        "question": "40 baz puan ne kadardır?",
+        "answer": "40 bps = %0,40 = ondalık olarak 0,004 = 4,0‰ (binde)."
+      },
+      {
+        "question": "50 baz puan ne anlama gelir?",
+        "answer": "0,50 yüzde puanı (%0,50) anlamına gelir. Ondalık olarak 0,005 veya 5‰ (binde) 'dir."
+      },
+      {
+        "question": "Komisyon için baz puanları nasıl hesaplarsınız?",
+        "answer": "Komisyon = Tutar × (bps ÷ 10.000). Örneğin, 2.000.000 PKR üzerinden 75 bps, 15.000 PKR'ye eşittir."
+      },
+      {
+        "question": "Ondalık biçimde 50 baz puan nedir?",
+        "answer": "50 bps = ondalık biçimde 0,005 (%0,50'dir)."
+      }
+    ]
+  },
+  "sv": {
+    "faqs": [
+      {
+        "question": "Vad är en baspunkt?",
+        "answer": "En baspunkt (bps) är en hundradel av en procentenhet. 1% = 100 bps, 0,01 = 1% och 1 bps = 0,01%."
+      },
+      {
+        "question": "Varför har vi baspunkter?",
+        "answer": "Baspunkter undviker tvetydighet när man diskuterar små ränteförändringar. Att säga 'räntorna steg med 25 bps' är entydigt (0,25%), medan '0,25 procent' kan missuppfattas som 25%."
+      },
+      {
+        "question": "Hur omvandlar man baspunkter till procent?",
+        "answer": "Dela bps med 100 för att få procent. Till exempel, 40 bps = 0,40%. Multiplicera procent med 100 för att få bps."
+      },
+      {
+        "question": "Var används baspunkter?",
+        "answer": "Vanligtvis inom finans: räntor, avgifter, obligationsräntor, forex-spreadar och fondavgifter."
+      },
+      {
+        "question": "Vad är baspunkter i bolån?",
+        "answer": "Förändringar i bolåneräntor anges ofta i bps. En ökning med 20 bps innebär att räntan steg med 0,20 procentenheter."
+      },
+      {
+        "question": "Kan baspunkter vara negativa?",
+        "answer": "Ja. Negativa bps representerar en minskning. Till exempel betyder -15 bps på en avkastning på 6% att avkastningen sjönk till 5,85%."
+      },
+      {
+        "question": "Varför använder vi baspunkter?",
+        "answer": "De ger exakt, kompakt kommunikation för små rörelser och tar bort förvirringen mellan 'procentenhet och procent'."
+      },
+      {
+        "question": "Hur mycket är 40 baspunkter?",
+        "answer": "40 bps = 0,40% = 0,004 i decimalform = 4,0‰ (promille)."
+      },
+      {
+        "question": "Vad menas med 50 baspunkter?",
+        "answer": "Det betyder 0,50 procentenheter (0,50%). I decimalform är det 0,005 eller 5‰ (promille)."
+      },
+      {
+        "question": "Hur beräknar man baspunkter för provision?",
+        "answer": "Provision = Belopp × (bps ÷ 10 000). Till exempel är 75 bps på 2 000 000 PKR lika med 15 000 PKR."
+      },
+      {
+        "question": "Vad är 50 baspunkter i decimalform?",
+        "answer": "50 bps = 0,005 i decimalform (vilket är 0,50%)."
+      }
+    ]
+  }
+}

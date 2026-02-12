@@ -1,0 +1,303 @@
+---
+import CalculatorLayout, {
+  getStaticPaths as getStaticPathsCalc,
+} from "@theme/layouts/CalculatorLayout.astro";
+import { getTranslations, type Locale } from "@theme/i18n/utils";
+
+export const getStaticPaths = getStaticPathsCalc;
+
+const locale = (Astro.params.lang || "en") as Locale;
+const t = getTranslations(locale);
+
+const pageTitle = "Yield to Maturity Calculator";
+const pageDescription =
+  "Calculate the yield to maturity (YTM) of a bond given its price, coupon, and time to maturity.";
+
+const relatedCalculators = [
+  {
+    name: "Bond Yield Calculator",
+    url: "/bond-calculators/bond-yield-calculator/",
+  },
+  {
+    name: "Bond Price Calculator",
+    url: "/bond-calculators/bond-price-calculator/",
+  },
+  {
+    name: "Bond Duration Calculator",
+    url: "/bond-calculators/bond-duration-calculator/",
+  },
+];
+
+const faqs = [
+  {
+    question: "What is Yield to Maturity?",
+    answer:
+      "YTM is the total return you'll receive if you hold a bond until maturity and reinvest all coupons at the same rate. It's the bond's internal rate of return.",
+  },
+  {
+    question: "How is YTM different from current yield?",
+    answer:
+      "Current yield only considers annual coupon vs price. YTM also accounts for capital gain/loss at maturity and the time value of money.",
+  },
+  {
+    question: "Is YTM guaranteed?",
+    answer:
+      "No. YTM assumes you hold to maturity and reinvest coupons at the same rate. Actual returns may differ due to reinvestment risk.",
+  },
+];
+---
+
+<CalculatorLayout
+  title={pageTitle}
+  description={pageDescription}
+  calculatorType="bond"
+  relatedCalculators={relatedCalculators}
+  faqs={faqs}
+>
+  <section class="bg-white rounded-2xl shadow-lg p-6">
+    <h1 class="text-2xl font-semibold text-slate-800">{pageTitle}</h1>
+    <p class="text-sm text-slate-500 mt-1">
+      Find the internal rate of return for a bond held to maturity.
+    </p>
+
+    <div class="mt-6 space-y-5">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label for="face-value" class="block text-sm mb-2 text-slate-600"
+            >Face Value</label
+          >
+          <div class="relative">
+            <span
+              class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
+              >$</span
+            >
+            <input
+              id="face-value"
+              type="number"
+              step="100"
+              class="w-full bg-white border border-slate-200 rounded-lg py-3 px-4 pl-8 focus:outline-none focus:ring-2 focus:ring-sky-200"
+              placeholder="1000"
+            />
+          </div>
+        </div>
+        <div>
+          <label for="current-price" class="block text-sm mb-2 text-slate-600"
+            >Current Price</label
+          >
+          <div class="relative">
+            <span
+              class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
+              >$</span
+            >
+            <input
+              id="current-price"
+              type="number"
+              step="1"
+              class="w-full bg-white border border-slate-200 rounded-lg py-3 px-4 pl-8 focus:outline-none focus:ring-2 focus:ring-sky-200"
+              placeholder="920"
+            />
+          </div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div>
+          <label for="coupon-rate" class="block text-sm mb-2 text-slate-600"
+            >Coupon Rate</label
+          >
+          <div class="relative">
+            <input
+              id="coupon-rate"
+              type="number"
+              step="0.125"
+              class="w-full bg-white border border-slate-200 rounded-lg py-3 px-4 pr-10 focus:outline-none focus:ring-2 focus:ring-sky-200"
+              placeholder="5"
+            />
+            <span
+              class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400"
+              >%</span
+            >
+          </div>
+        </div>
+        <div>
+          <label
+            for="years-to-maturity"
+            class="block text-sm mb-2 text-slate-600">Years to Maturity</label
+          >
+          <input
+            id="years-to-maturity"
+            type="number"
+            step="1"
+            class="w-full bg-white border border-slate-200 rounded-lg py-3 px-4 focus:outline-none focus:ring-2 focus:ring-sky-200"
+            placeholder="10"
+          />
+        </div>
+        <div>
+          <label
+            for="payments-per-year"
+            class="block text-sm mb-2 text-slate-600">Payments/Year</label
+          >
+          <select
+            id="payments-per-year"
+            class="w-full bg-white border border-slate-200 rounded-lg py-3 px-4"
+          >
+            <option value="1">Annual (1)</option>
+            <option value="2" selected>Semi-annual (2)</option>
+            <option value="4">Quarterly (4)</option>
+            <option value="12">Monthly (12)</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl p-6">
+        <div class="text-center">
+          <span class="text-sm text-slate-600">Yield to Maturity</span>
+          <div id="ytm-result" class="text-4xl font-bold text-green-600 mt-1">
+            0.00%
+          </div>
+        </div>
+        <div class="grid grid-cols-3 gap-4 mt-4 text-center">
+          <div class="bg-white rounded-lg p-3">
+            <div class="text-xs text-slate-500">Current Yield</div>
+            <div id="current-yield" class="font-semibold text-slate-800">
+              0.00%
+            </div>
+          </div>
+          <div class="bg-white rounded-lg p-3">
+            <div class="text-xs text-slate-500">Total Coupons</div>
+            <div id="total-coupons" class="font-semibold text-slate-800">
+              $0
+            </div>
+          </div>
+          <div class="bg-white rounded-lg p-3">
+            <div class="text-xs text-slate-500">Capital Gain/Loss</div>
+            <div id="capital-change" class="font-semibold">$0</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-white rounded-2xl shadow-lg p-6 mt-6">
+    <h2 class="text-xl font-semibold text-slate-800">Understanding YTM</h2>
+    <div class="mt-4 text-sm text-slate-600 space-y-3">
+      <p>
+        YTM is the discount rate that makes the present value of all future cash
+        flows (coupons + face value) equal to the current price.
+      </p>
+      <div class="p-4 bg-slate-50 rounded-lg">
+        <code class="text-slate-800"
+          >Price = Σ[C/(1+YTM/n)^t] + F/(1+YTM/n)^(n×years)</code
+        >
+        <p class="text-xs text-slate-500 mt-2">
+          Where C = coupon payment, F = face value, n = payments per year
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    const faceValue = document.getElementById("face-value") as HTMLInputElement;
+    const currentPrice = document.getElementById(
+      "current-price",
+    ) as HTMLInputElement;
+    const couponRate = document.getElementById(
+      "coupon-rate",
+    ) as HTMLInputElement;
+    const yearsToMaturity = document.getElementById(
+      "years-to-maturity",
+    ) as HTMLInputElement;
+    const paymentsPerYear = document.getElementById(
+      "payments-per-year",
+    ) as HTMLSelectElement;
+
+    const ytmResult = document.getElementById("ytm-result");
+    const currentYieldEl = document.getElementById("current-yield");
+    const totalCouponsEl = document.getElementById("total-coupons");
+    const capitalChangeEl = document.getElementById("capital-change");
+
+    function formatCurrency(v: number) {
+      return new Intl.NumberFormat("en-US", {
+        style: "currency",
+        currency: "USD",
+        maximumFractionDigits: 0,
+      }).format(v);
+    }
+
+    function calculateYTM(
+      F: number,
+      P: number,
+      C: number,
+      n: number,
+      m: number,
+    ): number {
+      // Newton-Raphson method to find YTM
+      let ytm = C / P; // Initial guess
+      const couponPayment = C / m;
+      const periods = n * m;
+
+      for (let i = 0; i < 100; i++) {
+        let price = 0;
+        let dPrice = 0;
+        const r = ytm / m;
+
+        for (let t = 1; t <= periods; t++) {
+          const df = Math.pow(1 + r, -t);
+          price += couponPayment * df;
+          dPrice -= (t * couponPayment * df) / (1 + r);
+        }
+        price += F * Math.pow(1 + r, -periods);
+        dPrice -= periods * F * Math.pow(1 + r, -(periods + 1));
+
+        const diff = price - P;
+        if (Math.abs(diff) < 0.0001) break;
+
+        ytm -= (diff / dPrice) * m;
+      }
+
+      return ytm;
+    }
+
+    function calculate() {
+      const F = parseFloat(faceValue.value) || 0;
+      const P = parseFloat(currentPrice.value) || 0;
+      const rate = parseFloat(couponRate.value) || 0;
+      const years = parseFloat(yearsToMaturity.value) || 0;
+      const m = parseInt(paymentsPerYear.value) || 2;
+
+      const C = F * (rate / 100);
+      const currentYield = P > 0 ? (C / P) * 100 : 0;
+      const totalCoupons = C * years;
+      const capitalChange = F - P;
+
+      let ytm = 0;
+      if (P > 0 && years > 0) {
+        ytm = calculateYTM(F, P, C, years, m) * 100;
+      }
+
+      if (ytmResult) ytmResult.textContent = ytm.toFixed(3) + "%";
+      if (currentYieldEl)
+        currentYieldEl.textContent = currentYield.toFixed(2) + "%";
+      if (totalCouponsEl)
+        totalCouponsEl.textContent = formatCurrency(totalCoupons);
+      if (capitalChangeEl) {
+        capitalChangeEl.textContent = formatCurrency(capitalChange);
+        capitalChangeEl.className =
+          capitalChange >= 0
+            ? "font-semibold text-green-600"
+            : "font-semibold text-red-600";
+      }
+    }
+
+    [faceValue, currentPrice, couponRate, yearsToMaturity].forEach((el) =>
+      el.addEventListener("input", calculate),
+    );
+    paymentsPerYear.addEventListener("change", calculate);
+
+    faceValue.value = "1000";
+    currentPrice.value = "920";
+    couponRate.value = "5";
+    yearsToMaturity.value = "10";
+    calculate();
+  </script>
+</CalculatorLayout>

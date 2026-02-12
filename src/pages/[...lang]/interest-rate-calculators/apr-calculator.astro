@@ -1,0 +1,389 @@
+---
+import CalculatorLayout, {
+  getStaticPaths as getStaticPathsCalc,
+} from "@theme/layouts/CalculatorLayout.astro";
+import { getTranslations, type Locale } from "@theme/i18n/utils";
+
+export const getStaticPaths = getStaticPathsCalc;
+
+const locale = (Astro.params.lang || "en") as Locale;
+const t = getTranslations(locale);
+
+const pageTitle = t.apr_calc_title || "APR Calculator";
+const pageDescription =
+  t.apr_calc_desc ||
+  "Calculate Annual Percentage Rate (APR) including fees and costs. Compare true loan costs.";
+
+const relatedCalculators = [
+  {
+    name: t.apy_calc_title || "APY Calculator",
+    url: "/interest-rate-calculators/apy-calculator/",
+  },
+  {
+    name: t.simple_interest_title || "Simple Interest Calculator",
+    url: "/interest-rate-calculators/simple-interest-calculator/",
+  },
+  {
+    name: t.compound_interest_title || "Compound Interest Calculator",
+    url: "/interest-rate-calculators/compound-interest-calculator/",
+  },
+];
+
+const faqs = t.apr_faqs || [
+  {
+    question: "What is APR?",
+    answer:
+      "APR (Annual Percentage Rate) is the total yearly cost of borrowing, including interest rate plus fees, expressed as a percentage. It helps compare loans with different fee structures.",
+  },
+  {
+    question: "How is APR different from interest rate?",
+    answer:
+      "Interest rate is just the cost of borrowing the principal. APR includes the interest rate PLUS other costs like origination fees, closing costs, and points, giving you the true cost.",
+  },
+  {
+    question: "Why is APR higher than interest rate?",
+    answer:
+      "APR is typically higher because it includes additional fees and costs. A loan with 6% interest and $2,000 in fees will have a higher APR than 6%.",
+  },
+];
+---
+
+<CalculatorLayout
+  title={pageTitle}
+  description={pageDescription}
+  calculatorType="interest"
+  relatedCalculators={relatedCalculators}
+  faqs={faqs}
+>
+  <section class="bg-white rounded-2xl shadow-lg p-6">
+    <h1 class="text-2xl font-semibold text-slate-800">{pageTitle}</h1>
+    <p class="text-sm text-slate-500 mt-1">
+      {
+        t.apr_subtitle ||
+          "Calculate the true annual cost of a loan including all fees."
+      }
+    </p>
+
+    <div class="mt-6 space-y-5">
+      <!-- Input: Loan Amount -->
+      <div>
+        <label for="loan-amount" class="block text-sm mb-2 text-slate-600">
+          {t.loan_amount || "Loan Amount"}
+        </label>
+        <div class="relative">
+          <span
+            class="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
+            >$</span
+          >
+          <input
+            id="loan-amount"
+            type="number"
+            inputmode="decimal"
+            step="1000"
+            class="w-full bg-white border border-slate-200 rounded-lg py-3 px-4 pl-8 focus:outline-none focus:ring-2 focus:ring-sky-200"
+            placeholder="200000"
+          />
+        </div>
+      </div>
+
+      <!-- Input: Interest Rate -->
+      <div>
+        <label for="interest-rate" class="block text-sm mb-2 text-slate-600">
+          {t.stated_interest_rate || "Stated Interest Rate"}
+        </label>
+        <div class="relative">
+          <input
+            id="interest-rate"
+            type="number"
+            inputmode="decimal"
+            step="0.125"
+            class="w-full bg-white border border-slate-200 rounded-lg py-3 px-4 pr-10 focus:outline-none focus:ring-2 focus:ring-sky-200"
+            placeholder="6.5"
+          />
+          <span
+            class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-slate-400"
+            >%</span
+          >
+        </div>
+      </div>
+
+      <!-- Input: Loan Term -->
+      <div>
+        <label for="loan-term" class="block text-sm mb-2 text-slate-600">
+          {t.loan_term_years || "Loan Term (Years)"}
+        </label>
+        <input
+          id="loan-term"
+          type="number"
+          inputmode="decimal"
+          step="1"
+          class="w-full bg-white border border-slate-200 rounded-lg py-3 px-4 focus:outline-none focus:ring-2 focus:ring-sky-200"
+          placeholder="30"
+        />
+      </div>
+
+      <!-- Input: Total Fees -->
+      <div>
+        <label for="total-fees" class="block text-sm mb-2 text-slate-600">
+          {t.total_fees || "Total Fees & Costs"}
+        </label>
+        <div class="relative">
+          <span
+            class="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
+            >$</span
+          >
+          <input
+            id="total-fees"
+            type="number"
+            inputmode="decimal"
+            step="100"
+            class="w-full bg-white border border-slate-200 rounded-lg py-3 px-4 pl-8 focus:outline-none focus:ring-2 focus:ring-sky-200"
+            placeholder="5000"
+          />
+        </div>
+        <p class="text-xs text-slate-400 mt-1">
+          Include origination fees, points, closing costs, etc.
+        </p>
+      </div>
+
+      <!-- Results -->
+      <div class="grid grid-cols-2 gap-4 pt-4">
+        <div class="bg-sky-50 rounded-lg p-4">
+          <label class="block text-sm text-slate-600 mb-1"
+            >{t.calculated_apr || "Calculated APR"}</label
+          >
+          <div id="apr-result" class="text-3xl font-bold text-sky-600">
+            0.00%
+          </div>
+        </div>
+        <div class="bg-slate-50 rounded-lg p-4">
+          <label class="block text-sm text-slate-600 mb-1"
+            >{t.stated_rate || "Stated Rate"}</label
+          >
+          <div id="stated-rate" class="text-3xl font-bold text-slate-600">
+            0.00%
+          </div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-2 gap-4">
+        <div class="bg-green-50 rounded-lg p-4">
+          <label class="block text-sm text-slate-600 mb-1"
+            >{t.monthly_payment || "Monthly Payment"}</label
+          >
+          <div id="monthly-payment" class="text-xl font-bold text-green-600">
+            $0.00
+          </div>
+        </div>
+        <div class="bg-orange-50 rounded-lg p-4">
+          <label class="block text-sm text-slate-600 mb-1"
+            >{t.total_cost || "Total Cost"}</label
+          >
+          <div id="total-cost" class="text-xl font-bold text-orange-600">
+            $0.00
+          </div>
+        </div>
+      </div>
+
+      <!-- APR Impact Explanation -->
+      <div
+        id="apr-explanation"
+        class="hidden p-4 bg-amber-50 rounded-lg border border-amber-100"
+      >
+        <p class="text-amber-800 text-sm" id="apr-text"></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- What's Included in APR -->
+  <section class="bg-white rounded-2xl shadow-lg p-6 mt-6">
+    <h2 class="text-xl font-semibold text-slate-800">
+      {t.whats_in_apr || "What's Included in APR?"}
+    </h2>
+    <div class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div class="p-4 bg-green-50 rounded-lg">
+        <h3 class="font-medium text-green-800 mb-2">✓ Typically Included</h3>
+        <ul class="text-sm text-green-700 space-y-1">
+          <li>• Interest charges</li>
+          <li>• Origination fees</li>
+          <li>• Discount points</li>
+          <li>• Mortgage broker fees</li>
+          <li>• Closing costs</li>
+        </ul>
+      </div>
+      <div class="p-4 bg-red-50 rounded-lg">
+        <h3 class="font-medium text-red-800 mb-2">✗ Usually Excluded</h3>
+        <ul class="text-sm text-red-700 space-y-1">
+          <li>• Title insurance</li>
+          <li>• Appraisal fees</li>
+          <li>• Credit report fees</li>
+          <li>• Notary fees</li>
+          <li>• Prepaid items (taxes, insurance)</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- APR vs Interest Rate -->
+  <section class="bg-white rounded-2xl shadow-lg p-6 mt-6">
+    <h2 class="text-xl font-semibold text-slate-800">
+      {t.apr_vs_rate || "APR vs Interest Rate Example"}
+    </h2>
+    <p class="text-sm text-slate-500 mt-1">$200,000 loan for 30 years</p>
+    <div class="mt-4 overflow-x-auto">
+      <table class="w-full text-sm">
+        <thead>
+          <tr class="border-b border-slate-200">
+            <th class="text-left py-2 px-3 font-medium text-slate-600">Loan</th>
+            <th class="text-left py-2 px-3 font-medium text-slate-600"
+              >Interest Rate</th
+            >
+            <th class="text-left py-2 px-3 font-medium text-slate-600">Fees</th>
+            <th class="text-left py-2 px-3 font-medium text-slate-600">APR</th>
+            <th class="text-left py-2 px-3 font-medium text-slate-600"
+              >True Cost</th
+            >
+          </tr>
+        </thead>
+        <tbody class="text-slate-700">
+          <tr class="border-b border-slate-100">
+            <td class="py-2 px-3">Loan A</td>
+            <td class="py-2 px-3">6.00%</td>
+            <td class="py-2 px-3">$8,000</td>
+            <td class="py-2 px-3 font-medium text-sky-600">6.27%</td>
+            <td class="py-2 px-3">$439,465</td>
+          </tr>
+          <tr class="border-b border-slate-100">
+            <td class="py-2 px-3">Loan B</td>
+            <td class="py-2 px-3">6.25%</td>
+            <td class="py-2 px-3">$2,000</td>
+            <td class="py-2 px-3 font-medium text-sky-600">6.32%</td>
+            <td class="py-2 px-3">$445,377</td>
+          </tr>
+          <tr>
+            <td class="py-2 px-3">Loan C</td>
+            <td class="py-2 px-3">6.50%</td>
+            <td class="py-2 px-3">$0</td>
+            <td class="py-2 px-3 font-medium text-sky-600">6.50%</td>
+            <td class="py-2 px-3">$455,089</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="text-sm text-slate-600 mt-4">
+      <strong>Key insight:</strong> The lowest interest rate isn't always the best
+      deal. Compare APR to see the true cost.
+    </p>
+  </section>
+
+  <script>
+    const loanAmountInput = document.getElementById(
+      "loan-amount",
+    ) as HTMLInputElement;
+    const interestRateInput = document.getElementById(
+      "interest-rate",
+    ) as HTMLInputElement;
+    const loanTermInput = document.getElementById(
+      "loan-term",
+    ) as HTMLInputElement;
+    const totalFeesInput = document.getElementById(
+      "total-fees",
+    ) as HTMLInputElement;
+
+    const aprResult = document.getElementById("apr-result");
+    const statedRate = document.getElementById("stated-rate");
+    const monthlyPayment = document.getElementById("monthly-payment");
+    const totalCost = document.getElementById("total-cost");
+    const aprExplanation = document.getElementById("apr-explanation");
+    const aprText = document.getElementById("apr-text");
+
+    function formatCurrency(value: number): string {
+      return new Intl.NumberFormat("en-US", {
+        style: "currency",
+        currency: "USD",
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      }).format(value);
+    }
+
+    function calculateMonthlyPayment(
+      principal: number,
+      annualRate: number,
+      years: number,
+    ): number {
+      const monthlyRate = annualRate / 100 / 12;
+      const numPayments = years * 12;
+
+      if (monthlyRate === 0) return principal / numPayments;
+
+      return (
+        (principal * (monthlyRate * Math.pow(1 + monthlyRate, numPayments))) /
+        (Math.pow(1 + monthlyRate, numPayments) - 1)
+      );
+    }
+
+    function calculate() {
+      const loanAmount = parseFloat(loanAmountInput.value) || 0;
+      const rate = parseFloat(interestRateInput.value) || 0;
+      const term = parseFloat(loanTermInput.value) || 0;
+      const fees = parseFloat(totalFeesInput.value) || 0;
+
+      if (loanAmount <= 0 || rate <= 0 || term <= 0) {
+        return;
+      }
+
+      // Calculate monthly payment on full loan
+      const payment = calculateMonthlyPayment(loanAmount, rate, term);
+
+      // APR calculation: Find rate where payment on (loanAmount - fees) equals actual payment
+      // Using Newton-Raphson approximation
+      let aprGuess = rate / 100;
+      const effectiveAmount = loanAmount - fees;
+      const numPayments = term * 12;
+
+      for (let i = 0; i < 100; i++) {
+        const monthlyApr = aprGuess / 12;
+        const factor = Math.pow(1 + monthlyApr, numPayments);
+        const calculatedPayment =
+          (effectiveAmount * (monthlyApr * factor)) / (factor - 1);
+
+        const diff = calculatedPayment - payment;
+        if (Math.abs(diff) < 0.01) break;
+
+        // Adjust guess
+        aprGuess += diff / (effectiveAmount * 10);
+      }
+
+      const apr = aprGuess * 100;
+      const totalPaid = payment * numPayments;
+
+      if (aprResult) aprResult.textContent = apr.toFixed(3) + "%";
+      if (statedRate) statedRate.textContent = rate.toFixed(3) + "%";
+      if (monthlyPayment) monthlyPayment.textContent = formatCurrency(payment);
+      if (totalCost) totalCost.textContent = formatCurrency(totalPaid);
+
+      // Show explanation
+      if (aprExplanation && aprText && fees > 0) {
+        aprExplanation.classList.remove("hidden");
+        const aprDiff = (apr - rate).toFixed(2);
+        aprText.innerHTML =
+          `The ${formatCurrency(fees)} in fees increases your effective rate by <strong>${aprDiff} percentage points</strong>. ` +
+          `Over ${term} years, you'll pay ${formatCurrency(totalPaid - loanAmount)} in total interest and fees.`;
+      } else if (aprExplanation) {
+        aprExplanation.classList.add("hidden");
+      }
+    }
+
+    loanAmountInput.addEventListener("input", calculate);
+    interestRateInput.addEventListener("input", calculate);
+    loanTermInput.addEventListener("input", calculate);
+    totalFeesInput.addEventListener("input", calculate);
+
+    // Initialize with default values
+    loanAmountInput.value = "200000";
+    interestRateInput.value = "6.5";
+    loanTermInput.value = "30";
+    totalFeesInput.value = "5000";
+    calculate();
+  </script>
+</CalculatorLayout>

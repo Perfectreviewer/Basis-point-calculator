@@ -1,0 +1,284 @@
+---
+import CalculatorLayout, {
+  getStaticPaths as getStaticPathsCalc,
+} from "@theme/layouts/CalculatorLayout.astro";
+import { getTranslations, type Locale } from "@theme/i18n/utils";
+
+export const getStaticPaths = getStaticPathsCalc;
+
+const locale = (Astro.params.lang || "en") as Locale;
+const t = getTranslations(locale);
+
+const pageTitle = t.bp_diff_title || "Basis Point Difference Calculator";
+const pageDescription =
+  t.bp_diff_desc ||
+  "Calculate the absolute difference between two values expressed in basis points. Free online financial calculator.";
+
+const relatedCalculators = [
+  {
+    name: t.bp_to_pct_title || "Basis Points to Percentage",
+    url: "/basis-point-calculators/basis-point-to-percentage/",
+  },
+  {
+    name: t.pct_to_bp_title || "Percentage to Basis Points",
+    url: "/basis-point-calculators/percentage-to-basis-point/",
+  },
+  {
+    name: t.bp_change_title || "Basis Point Change Calculator",
+    url: "/basis-point-calculators/basis-point-change-calculator/",
+  },
+];
+
+const faqs = t.bp_diff_faqs || [
+  {
+    question:
+      "What is the difference between change and difference in basis points?",
+    answer:
+      "Change considers direction (increase or decrease), while difference gives you the absolute value regardless of which value is higher.",
+  },
+  {
+    question: "When should I use the difference calculator?",
+    answer:
+      "Use this when you want to know the gap or spread between two rates without caring about direction, such as comparing competitor rates or calculating yield spreads.",
+  },
+  {
+    question: "What is a basis point spread?",
+    answer:
+      "A spread is the difference between two rates expressed in basis points. For example, if a corporate bond yields 5.50% and Treasury bonds yield 4.00%, the spread is 150 basis points.",
+  },
+];
+---
+
+<CalculatorLayout
+  title={pageTitle}
+  description={pageDescription}
+  calculatorType="difference"
+  relatedCalculators={relatedCalculators}
+  faqs={faqs}
+>
+  <section class="bg-white rounded-2xl shadow-lg p-6">
+    <h1 class="text-2xl font-semibold text-slate-800">{pageTitle}</h1>
+    <p class="text-sm text-slate-500 mt-1">
+      {
+        t.bp_diff_subtitle ||
+          "Calculate the absolute difference (spread) between two rates in basis points."
+      }
+    </p>
+
+    <div class="mt-6 space-y-5">
+      <!-- Input: First Value -->
+      <div>
+        <label for="value1" class="block text-sm mb-2 text-slate-600">
+          {t.first_value || "First Value"}
+        </label>
+        <div class="relative">
+          <input
+            id="value1"
+            type="number"
+            inputmode="decimal"
+            step="0.01"
+            class="w-full bg-white border border-slate-200 rounded-lg py-3 px-4 pr-10 focus:outline-none focus:ring-2 focus:ring-sky-200"
+            placeholder="5.50"
+          />
+          <span
+            class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-slate-400"
+            >%</span
+          >
+        </div>
+      </div>
+
+      <!-- Input: Second Value -->
+      <div>
+        <label for="value2" class="block text-sm mb-2 text-slate-600">
+          {t.second_value || "Second Value"}
+        </label>
+        <div class="relative">
+          <input
+            id="value2"
+            type="number"
+            inputmode="decimal"
+            step="0.01"
+            class="w-full bg-white border border-slate-200 rounded-lg py-3 px-4 pr-10 focus:outline-none focus:ring-2 focus:ring-sky-200"
+            placeholder="4.00"
+          />
+          <span
+            class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-slate-400"
+            >%</span
+          >
+        </div>
+      </div>
+
+      <!-- Output: Difference in Basis Points -->
+      <div>
+        <label for="bp-diff" class="block text-sm mb-2 text-slate-600">
+          {t.difference_in_bps || "Difference (Spread)"}
+        </label>
+        <div class="relative">
+          <input
+            id="bp-diff"
+            type="text"
+            class="w-full bg-slate-50 border border-slate-200 rounded-lg py-3 px-4 pr-14 text-slate-700 font-medium"
+            placeholder="150"
+            readonly
+          />
+          <span
+            class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-slate-400"
+            >bps</span
+          >
+        </div>
+      </div>
+
+      <!-- Also show percentage difference -->
+      <div>
+        <label for="pct-diff" class="block text-sm mb-2 text-slate-600">
+          {t.difference_in_pct || "Difference in Percentage"}
+        </label>
+        <div class="relative">
+          <input
+            id="pct-diff"
+            type="text"
+            class="w-full bg-slate-50 border border-slate-200 rounded-lg py-3 px-4 pr-10 text-slate-700 font-medium"
+            placeholder="1.50"
+            readonly
+          />
+          <span
+            class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-slate-400"
+            >%</span
+          >
+        </div>
+      </div>
+
+      <!-- Result Explanation -->
+      <div
+        id="result-explanation"
+        class="hidden p-4 bg-sky-50 rounded-lg border border-sky-100"
+      >
+        <p class="text-slate-700 text-sm" id="result-text"></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Formula Section -->
+  <section class="bg-white rounded-2xl shadow-lg p-6 mt-6">
+    <h2 class="text-xl font-semibold text-slate-800">
+      {t.formula_title || "Formula"}
+    </h2>
+    <div class="mt-4 p-4 bg-slate-50 rounded-lg">
+      <code class="text-lg text-slate-800">
+        {t.bp_diff_formula || "Difference (bps) = |Value₁ - Value₂| × 100"}
+      </code>
+    </div>
+    <div class="mt-4 text-slate-600 text-sm space-y-2">
+      <p>
+        {
+          t.bp_diff_formula_explain ||
+            "To find the absolute difference in basis points, subtract one value from the other, take the absolute value, then multiply by 100 to convert to basis points."
+        }
+      </p>
+    </div>
+  </section>
+
+  <!-- Examples Section -->
+  <section class="bg-white rounded-2xl shadow-lg p-6 mt-6">
+    <h2 class="text-xl font-semibold text-slate-800">
+      {t.examples_title || "Common Spread Examples"}
+    </h2>
+    <div class="mt-4 overflow-x-auto">
+      <table class="w-full text-sm">
+        <thead>
+          <tr class="border-b border-slate-200">
+            <th class="text-left py-2 px-3 font-medium text-slate-600"
+              >{t.comparison || "Comparison"}</th
+            >
+            <th class="text-left py-2 px-3 font-medium text-slate-600"
+              >{t.rate1 || "Rate 1"}</th
+            >
+            <th class="text-left py-2 px-3 font-medium text-slate-600"
+              >{t.rate2 || "Rate 2"}</th
+            >
+            <th class="text-left py-2 px-3 font-medium text-slate-600"
+              >{t.spread || "Spread"}</th
+            >
+          </tr>
+        </thead>
+        <tbody class="text-slate-700">
+          <tr class="border-b border-slate-100"
+            ><td class="py-2 px-3">Treasury vs Corporate Bond</td><td
+              class="py-2 px-3">4.00%</td
+            ><td class="py-2 px-3">5.50%</td><td class="py-2 px-3">150 bps</td
+            ></tr
+          >
+          <tr class="border-b border-slate-100"
+            ><td class="py-2 px-3">Bank A vs Bank B Mortgage</td><td
+              class="py-2 px-3">6.25%</td
+            ><td class="py-2 px-3">6.50%</td><td class="py-2 px-3">25 bps</td
+            ></tr
+          >
+          <tr class="border-b border-slate-100"
+            ><td class="py-2 px-3">Savings Account Rates</td><td
+              class="py-2 px-3">4.50%</td
+            ><td class="py-2 px-3">5.00%</td><td class="py-2 px-3">50 bps</td
+            ></tr
+          >
+          <tr class="border-b border-slate-100"
+            ><td class="py-2 px-3">10-Year vs 2-Year Treasury</td><td
+              class="py-2 px-3">4.25%</td
+            ><td class="py-2 px-3">4.75%</td><td class="py-2 px-3">50 bps</td
+            ></tr
+          >
+          <tr
+            ><td class="py-2 px-3">Investment Fund Expense</td><td
+              class="py-2 px-3">0.03%</td
+            ><td class="py-2 px-3">0.95%</td><td class="py-2 px-3">92 bps</td
+            ></tr
+          >
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <script>
+    const value1Input = document.getElementById("value1") as HTMLInputElement;
+    const value2Input = document.getElementById("value2") as HTMLInputElement;
+    const bpDiffOutput = document.getElementById("bp-diff") as HTMLInputElement;
+    const pctDiffOutput = document.getElementById(
+      "pct-diff",
+    ) as HTMLInputElement;
+    const resultExplanation = document.getElementById("result-explanation");
+    const resultText = document.getElementById("result-text");
+
+    function calculate() {
+      const val1 = parseFloat(value1Input.value);
+      const val2 = parseFloat(value2Input.value);
+
+      if (isNaN(val1) || isNaN(val2)) {
+        bpDiffOutput.value = "";
+        pctDiffOutput.value = "";
+        resultExplanation?.classList.add("hidden");
+        return;
+      }
+
+      const pctDiff = Math.abs(val1 - val2);
+      const bpsDiff = pctDiff * 100;
+
+      bpDiffOutput.value = bpsDiff.toFixed(2).replace(/\.?0+$/, "");
+      pctDiffOutput.value = pctDiff.toFixed(4).replace(/\.?0+$/, "");
+
+      // Show explanation
+      if (resultExplanation && resultText) {
+        resultExplanation.classList.remove("hidden");
+        const higher = val1 > val2 ? val1 : val2;
+        const lower = val1 < val2 ? val1 : val2;
+        resultText.innerHTML = `The spread between <strong>${higher}%</strong> and <strong>${lower}%</strong> is <strong>${bpsDiff.toFixed(2).replace(/\.?0+$/, "")} basis points</strong> (or ${pctDiff.toFixed(4).replace(/\.?0+$/, "")}%)`;
+      }
+    }
+
+    value1Input.addEventListener("input", calculate);
+    value2Input.addEventListener("input", calculate);
+
+    // Initialize with default values
+    value1Input.value = "5.50";
+    value2Input.value = "4.00";
+    calculate();
+  </script>
+</CalculatorLayout>

@@ -1,0 +1,202 @@
+---
+import CalculatorLayout, {
+  getStaticPaths as getStaticPathsCalc,
+} from "@theme/layouts/CalculatorLayout.astro";
+import {
+  getTranslations,
+  type Locale,
+  getLocalizedUrl,
+} from "@theme/i18n/utils";
+
+export const getStaticPaths = getStaticPathsCalc;
+
+const locale = (Astro.params.lang || "en") as Locale;
+const t = getTranslations(locale);
+
+const pageTitle = t.interest_section_title || "Interest Rate Calculators";
+const pageDescription =
+  t.interest_section_desc ||
+  "Free online interest rate calculators. Calculate simple interest, compound interest, APR, APY, and compare rates.";
+
+const calculators = [
+  {
+    title: t.simple_interest_title || "Simple Interest Calculator",
+    description:
+      t.simple_interest_short || "Calculate interest without compounding",
+    url: "/interest-rate-calculators/simple-interest-calculator/",
+    icon: "📊",
+    color: "sky",
+  },
+  {
+    title: t.compound_interest_title || "Compound Interest Calculator",
+    description:
+      t.compound_interest_short ||
+      "See how your money grows with compound interest",
+    url: "/interest-rate-calculators/compound-interest-calculator/",
+    icon: "📈",
+    color: "green",
+  },
+  {
+    title: t.apr_calc_title || "APR Calculator",
+    description:
+      t.apr_calc_short || "Calculate true annual cost of loans including fees",
+    url: "/interest-rate-calculators/apr-calculator/",
+    icon: "💳",
+    color: "orange",
+  },
+  {
+    title: t.apy_calc_title || "APY Calculator",
+    description:
+      t.apy_calc_short || "Convert interest rates to annual percentage yield",
+    url: "/interest-rate-calculators/apy-calculator/",
+    icon: "💰",
+    color: "purple",
+  },
+  {
+    title: t.rate_comparison_title || "Interest Rate Comparison",
+    description:
+      t.rate_comparison_short || "Compare two rates and see the difference",
+    url: "/interest-rate-calculators/interest-rate-comparison/",
+    icon: "⚖️",
+    color: "indigo",
+  },
+];
+
+const colorClasses = {
+  sky: "bg-sky-50 border-sky-200 hover:border-sky-400",
+  green: "bg-green-50 border-green-200 hover:border-green-400",
+  orange: "bg-orange-50 border-orange-200 hover:border-orange-400",
+  purple: "bg-purple-50 border-purple-200 hover:border-purple-400",
+  indigo: "bg-indigo-50 border-indigo-200 hover:border-indigo-400",
+};
+---
+
+<CalculatorLayout
+  title={pageTitle}
+  description={pageDescription}
+  calculatorType="index"
+  relatedCalculators={[]}
+  faqs={[]}
+>
+  <section class="space-y-6">
+    <div class="text-center">
+      <h1 class="text-3xl font-bold text-slate-800">{pageTitle}</h1>
+      <p class="text-slate-600 mt-2 max-w-2xl mx-auto">
+        {
+          t.interest_section_intro ||
+            "Understand how interest works on loans, savings, and investments. Our free calculators help you make informed financial decisions."
+        }
+      </p>
+    </div>
+
+    <!-- Calculator Cards Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-8">
+      {
+        calculators.map((calc) => (
+          <a
+            href={getLocalizedUrl(calc.url, locale)}
+            class={`block p-5 rounded-xl border-2 transition-all duration-200 hover:shadow-lg hover:-translate-y-1 ${colorClasses[calc.color as keyof typeof colorClasses]}`}
+          >
+            <div class="flex items-start gap-4">
+              <span class="text-3xl">{calc.icon}</span>
+              <div>
+                <h2 class="font-semibold text-slate-800">{calc.title}</h2>
+                <p class="text-sm text-slate-600 mt-1">{calc.description}</p>
+              </div>
+            </div>
+          </a>
+        ))
+      }
+    </div>
+
+    <!-- Interest Rate Concepts -->
+    <section class="bg-white rounded-2xl shadow-lg p-6 mt-8">
+      <h2 class="text-xl font-semibold text-slate-800">
+        {t.understanding_interest || "Understanding Interest Rates"}
+      </h2>
+      <div class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <h3 class="font-medium text-slate-700 mb-2">
+            Simple vs Compound Interest
+          </h3>
+          <p class="text-sm text-slate-600">
+            Simple interest is calculated only on the principal amount, while
+            compound interest is calculated on both the principal and
+            accumulated interest. Compound interest makes your money grow faster
+            over time.
+          </p>
+        </div>
+        <div>
+          <h3 class="font-medium text-slate-700 mb-2">APR vs APY</h3>
+          <p class="text-sm text-slate-600">
+            APR (Annual Percentage Rate) shows the yearly cost of borrowing
+            without compounding. APY (Annual Percentage Yield) includes the
+            effect of compounding, showing what you actually earn on deposits.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Quick Reference -->
+    <section class="bg-white rounded-2xl shadow-lg p-6">
+      <h2 class="text-xl font-semibold text-slate-800">
+        {t.quick_formulas || "Quick Reference Formulas"}
+      </h2>
+      <div class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="p-4 bg-slate-50 rounded-lg">
+          <h3 class="font-medium text-slate-700 mb-2">Simple Interest</h3>
+          <code class="text-sky-600">I = P × r × t</code>
+          <p class="text-xs text-slate-500 mt-1">
+            Interest = Principal × Rate × Time
+          </p>
+        </div>
+        <div class="p-4 bg-slate-50 rounded-lg">
+          <h3 class="font-medium text-slate-700 mb-2">Compound Interest</h3>
+          <code class="text-sky-600">A = P(1 + r/n)^(nt)</code>
+          <p class="text-xs text-slate-500 mt-1">
+            Final Amount with compounding
+          </p>
+        </div>
+        <div class="p-4 bg-slate-50 rounded-lg">
+          <h3 class="font-medium text-slate-700 mb-2">APY Formula</h3>
+          <code class="text-sky-600">APY = (1 + r/n)^n - 1</code>
+          <p class="text-xs text-slate-500 mt-1">
+            Annual Percentage Yield from APR
+          </p>
+        </div>
+        <div class="p-4 bg-slate-50 rounded-lg">
+          <h3 class="font-medium text-slate-700 mb-2">Rule of 72</h3>
+          <code class="text-sky-600">Years to Double ≈ 72 / rate</code>
+          <p class="text-xs text-slate-500 mt-1">
+            Quick doubling time estimate
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Related Sections -->
+    <section
+      class="bg-gradient-to-r from-sky-50 to-blue-50 rounded-2xl p-6 border border-sky-100"
+    >
+      <h2 class="text-lg font-semibold text-slate-800 mb-4">
+        {t.explore_more || "Explore More Calculators"}
+      </h2>
+      <div class="flex flex-wrap gap-3">
+        <a
+          href={getLocalizedUrl("/basis-point-calculators/", locale)}
+          class="inline-flex items-center gap-2 px-4 py-2 bg-white rounded-lg border border-slate-200 hover:border-sky-400 transition-colors text-sm"
+        >
+          <span>📐</span>
+          <span>{t.bp_section_title || "Basis Point Calculators"}</span>
+        </a>
+        <a
+          href={getLocalizedUrl("/", locale)}
+          class="inline-flex items-center gap-2 px-4 py-2 bg-white rounded-lg border border-slate-200 hover:border-sky-400 transition-colors text-sm"
+        >
+          <span>🏠</span>
+          <span>{t.Home || "Home"}</span>
+        </a>
+      </div>
+    </section>
+  </section>
+</CalculatorLayout>

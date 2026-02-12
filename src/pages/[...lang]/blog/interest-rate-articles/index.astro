@@ -1,0 +1,120 @@
+---
+import Layout from "@theme/layouts/Layout.astro";
+import {
+  getTranslations,
+  type Locale,
+  getLocalizedUrl,
+} from "@theme/i18n/utils";
+
+export function getStaticPaths() {
+  return [
+    { params: { lang: undefined } },
+    { params: { lang: "en" } },
+    { params: { lang: "es" } },
+    { params: { lang: "fr" } },
+    { params: { lang: "de" } },
+  ];
+}
+
+const locale = (Astro.params.lang || "en") as Locale;
+const t = getTranslations(locale);
+
+const pageTitle = "Interest Rate Articles | Financial Education Blog";
+const pageDescription =
+  "Expert articles on interest rates, how they work, and strategies for managing rate changes.";
+
+const articles = [
+  {
+    title: "Fixed vs Variable Interest Rates: Making the Right Choice",
+    excerpt:
+      "Understanding when to lock in a fixed rate and when variable rates might save you money.",
+    date: "2024-02-05",
+    readTime: "6 min read",
+    tag: "Strategy",
+  },
+  {
+    title: "When Should You Refinance? A Rate-Based Decision Guide",
+    excerpt:
+      "The magic number of basis points that makes refinancing worth the costs and hassle.",
+    date: "2024-01-30",
+    readTime: "7 min read",
+    tag: "Mortgages",
+  },
+  {
+    title: "How the Federal Reserve Sets Interest Rates",
+    excerpt:
+      "Inside the FOMC meetings and monetary policy tools that determine the rates you pay.",
+    date: "2024-01-22",
+    readTime: "8 min read",
+    tag: "Fed Policy",
+  },
+  {
+    title: "Credit Card APR: What You're Really Paying",
+    excerpt:
+      "Breaking down credit card interest calculations and strategies to minimize costs.",
+    date: "2024-01-18",
+    readTime: "5 min read",
+    tag: "Credit Cards",
+  },
+];
+---
+
+<Layout title={pageTitle} description={pageDescription}>
+  <main class="max-w-4xl mx-auto px-4 py-12">
+    <nav class="text-sm text-slate-500 mb-6">
+      <a href={getLocalizedUrl("/blog/", locale)} class="hover:text-sky-600"
+        >Blog</a
+      >
+      <span class="mx-2">/</span>
+      <span class="text-slate-800">Interest Rate Articles</span>
+    </nav>
+
+    <div class="mb-12">
+      <h1 class="text-3xl font-bold text-slate-800 mb-4">
+        Interest Rate Articles
+      </h1>
+      <p class="text-slate-600">
+        Everything you need to know about interest rates and how they affect
+        your financial life.
+      </p>
+    </div>
+
+    <div class="space-y-6">
+      {
+        articles.map((article) => (
+          <article class="bg-white rounded-xl border border-slate-200 p-6 hover:shadow-lg transition-shadow">
+            <div class="flex items-start justify-between gap-4">
+              <div>
+                <span class="inline-block text-xs font-medium text-green-600 bg-green-50 px-2 py-1 rounded mb-3">
+                  {article.tag}
+                </span>
+                <h2 class="text-xl font-semibold text-slate-800 hover:text-green-600 cursor-pointer">
+                  {article.title}
+                </h2>
+                <p class="text-slate-600 mt-2">{article.excerpt}</p>
+                <div class="flex items-center gap-4 mt-4 text-sm text-slate-500">
+                  <span>{article.date}</span>
+                  <span>•</span>
+                  <span>{article.readTime}</span>
+                </div>
+              </div>
+            </div>
+          </article>
+        ))
+      }
+    </div>
+
+    <div class="mt-12 p-6 bg-green-50 rounded-xl border border-green-200">
+      <h3 class="font-semibold text-slate-800 mb-2">Calculate Your Interest</h3>
+      <p class="text-slate-600 text-sm mb-4">
+        Compare rates and see how they impact your loans.
+      </p>
+      <a
+        href={getLocalizedUrl("/interest-rate-calculators/", locale)}
+        class="inline-flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors text-sm"
+      >
+        Open Calculators →
+      </a>
+    </div>
+  </main>
+</Layout>

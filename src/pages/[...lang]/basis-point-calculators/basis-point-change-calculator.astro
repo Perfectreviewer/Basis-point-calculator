@@ -1,0 +1,312 @@
+---
+import CalculatorLayout, {
+  getStaticPaths as getStaticPathsCalc,
+} from "@theme/layouts/CalculatorLayout.astro";
+import { getTranslations, type Locale } from "@theme/i18n/utils";
+
+export const getStaticPaths = getStaticPathsCalc;
+
+const locale = (Astro.params.lang || "en") as Locale;
+const t = getTranslations(locale);
+
+const pageTitle = t.bp_change_title || "Basis Point Change Calculator";
+const pageDescription =
+  t.bp_change_desc ||
+  "Calculate the change between two interest rates or values in basis points. Free online financial calculator.";
+
+const relatedCalculators = [
+  {
+    name: t.bp_to_pct_title || "Basis Points to Percentage",
+    url: "/basis-point-calculators/basis-point-to-percentage/",
+  },
+  {
+    name: t.pct_to_bp_title || "Percentage to Basis Points",
+    url: "/basis-point-calculators/percentage-to-basis-point/",
+  },
+  {
+    name: t.bp_diff_title || "Basis Point Difference Calculator",
+    url: "/basis-point-calculators/basis-point-difference-calculator/",
+  },
+];
+
+const faqs = t.bp_change_faqs || [
+  {
+    question: "How do I calculate basis point change?",
+    answer:
+      "Subtract the old rate from the new rate, then multiply by 100. For example, if the rate changed from 3.50% to 3.75%, the change is (3.75 - 3.50) × 100 = 25 basis points.",
+  },
+  {
+    question: "What does a 25 basis point increase mean?",
+    answer:
+      "A 25 basis point increase means the rate went up by 0.25 percentage points. For example, from 5.00% to 5.25%.",
+  },
+  {
+    question: "How do central banks use basis points?",
+    answer:
+      "Central banks often adjust interest rates in increments of 25 or 50 basis points (0.25% or 0.50%) to manage inflation and economic growth.",
+  },
+];
+---
+
+<CalculatorLayout
+  title={pageTitle}
+  description={pageDescription}
+  calculatorType="change"
+  relatedCalculators={relatedCalculators}
+  faqs={faqs}
+>
+  <section class="bg-white rounded-2xl shadow-lg p-6">
+    <h1 class="text-2xl font-semibold text-slate-800">{pageTitle}</h1>
+    <p class="text-sm text-slate-500 mt-1">
+      {
+        t.bp_change_subtitle ||
+          "Calculate the change between two rates in basis points."
+      }
+    </p>
+
+    <div class="mt-6 space-y-5">
+      <!-- Input: Old Rate -->
+      <div>
+        <label for="old-rate" class="block text-sm mb-2 text-slate-600">
+          {t.old_rate || "Old Rate / Starting Value"}
+        </label>
+        <div class="relative">
+          <input
+            id="old-rate"
+            type="number"
+            inputmode="decimal"
+            step="0.01"
+            class="w-full bg-white border border-slate-200 rounded-lg py-3 px-4 pr-10 focus:outline-none focus:ring-2 focus:ring-sky-200"
+            placeholder="3.50"
+          />
+          <span
+            class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-slate-400"
+            >%</span
+          >
+        </div>
+      </div>
+
+      <!-- Input: New Rate -->
+      <div>
+        <label for="new-rate" class="block text-sm mb-2 text-slate-600">
+          {t.new_rate || "New Rate / Ending Value"}
+        </label>
+        <div class="relative">
+          <input
+            id="new-rate"
+            type="number"
+            inputmode="decimal"
+            step="0.01"
+            class="w-full bg-white border border-slate-200 rounded-lg py-3 px-4 pr-10 focus:outline-none focus:ring-2 focus:ring-sky-200"
+            placeholder="3.75"
+          />
+          <span
+            class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-slate-400"
+            >%</span
+          >
+        </div>
+      </div>
+
+      <!-- Output: Change in Basis Points -->
+      <div>
+        <label for="bp-change" class="block text-sm mb-2 text-slate-600">
+          {t.change_in_bps || "Change in Basis Points"}
+        </label>
+        <div class="relative">
+          <input
+            id="bp-change"
+            type="text"
+            class="w-full bg-slate-50 border border-slate-200 rounded-lg py-3 px-4 pr-14 text-slate-700 font-medium"
+            placeholder="25"
+            readonly
+          />
+          <span
+            class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-slate-400"
+            >bps</span
+          >
+        </div>
+      </div>
+
+      <!-- Result Explanation -->
+      <div id="result-explanation" class="hidden p-4 rounded-lg border">
+        <p class="text-sm" id="result-text"></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Formula Section -->
+  <section class="bg-white rounded-2xl shadow-lg p-6 mt-6">
+    <h2 class="text-xl font-semibold text-slate-800">
+      {t.formula_title || "Formula"}
+    </h2>
+    <div class="mt-4 p-4 bg-slate-50 rounded-lg">
+      <code class="text-lg text-slate-800">
+        {t.bp_change_formula || "Change (bps) = (New Rate - Old Rate) × 100"}
+      </code>
+    </div>
+    <div class="mt-4 text-slate-600 text-sm space-y-2">
+      <p>
+        {
+          t.bp_change_formula_explain ||
+            "To find the change in basis points, subtract the old rate from the new rate (both in percentage), then multiply by 100 to convert to basis points."
+        }
+      </p>
+    </div>
+  </section>
+
+  <!-- Examples Section -->
+  <section class="bg-white rounded-2xl shadow-lg p-6 mt-6">
+    <h2 class="text-xl font-semibold text-slate-800">
+      {t.examples_title || "Common Rate Changes"}
+    </h2>
+    <div class="mt-4 overflow-x-auto">
+      <table class="w-full text-sm">
+        <thead>
+          <tr class="border-b border-slate-200">
+            <th class="text-left py-2 px-3 font-medium text-slate-600"
+              >{t.old_rate || "Old Rate"}</th
+            >
+            <th class="text-left py-2 px-3 font-medium text-slate-600"
+              >{t.new_rate || "New Rate"}</th
+            >
+            <th class="text-left py-2 px-3 font-medium text-slate-600"
+              >{t.change_bps || "Change (bps)"}</th
+            >
+            <th class="text-left py-2 px-3 font-medium text-slate-600"
+              >{t.direction || "Direction"}</th
+            >
+          </tr>
+        </thead>
+        <tbody class="text-slate-700">
+          <tr class="border-b border-slate-100"
+            ><td class="py-2 px-3">5.00%</td><td class="py-2 px-3">5.25%</td><td
+              class="py-2 px-3">+25 bps</td
+            ><td class="py-2 px-3 text-green-600">↑ Increase</td></tr
+          >
+          <tr class="border-b border-slate-100"
+            ><td class="py-2 px-3">4.50%</td><td class="py-2 px-3">5.00%</td><td
+              class="py-2 px-3">+50 bps</td
+            ><td class="py-2 px-3 text-green-600">↑ Increase</td></tr
+          >
+          <tr class="border-b border-slate-100"
+            ><td class="py-2 px-3">3.75%</td><td class="py-2 px-3">4.00%</td><td
+              class="py-2 px-3">+25 bps</td
+            ><td class="py-2 px-3 text-green-600">↑ Increase</td></tr
+          >
+          <tr class="border-b border-slate-100"
+            ><td class="py-2 px-3">5.50%</td><td class="py-2 px-3">5.25%</td><td
+              class="py-2 px-3">-25 bps</td
+            ><td class="py-2 px-3 text-red-600">↓ Decrease</td></tr
+          >
+          <tr class="border-b border-slate-100"
+            ><td class="py-2 px-3">6.00%</td><td class="py-2 px-3">5.50%</td><td
+              class="py-2 px-3">-50 bps</td
+            ><td class="py-2 px-3 text-red-600">↓ Decrease</td></tr
+          >
+          <tr
+            ><td class="py-2 px-3">4.25%</td><td class="py-2 px-3">3.50%</td><td
+              class="py-2 px-3">-75 bps</td
+            ><td class="py-2 px-3 text-red-600">↓ Decrease</td></tr
+          >
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- Use Cases Section -->
+  <section class="bg-white rounded-2xl shadow-lg p-6 mt-6">
+    <h2 class="text-xl font-semibold text-slate-800">
+      {t.use_cases_title || "When to Use This Calculator"}
+    </h2>
+    <div class="mt-4 text-slate-600 text-sm space-y-3">
+      <ul class="list-disc pl-5 space-y-2">
+        <li>
+          {
+            t.bp_change_use1 ||
+              "Tracking Federal Reserve or central bank interest rate decisions"
+          }
+        </li>
+        <li>
+          {t.bp_change_use2 || "Comparing mortgage rate changes over time"}
+        </li>
+        <li>{t.bp_change_use3 || "Analyzing bond yield movements"}</li>
+        <li>
+          {
+            t.bp_change_use4 ||
+              "Evaluating changes in investment fund expense ratios"
+          }
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <script>
+    const oldRateInput = document.getElementById(
+      "old-rate",
+    ) as HTMLInputElement;
+    const newRateInput = document.getElementById(
+      "new-rate",
+    ) as HTMLInputElement;
+    const bpChangeOutput = document.getElementById(
+      "bp-change",
+    ) as HTMLInputElement;
+    const resultExplanation = document.getElementById("result-explanation");
+    const resultText = document.getElementById("result-text");
+
+    function calculate() {
+      const oldRate = parseFloat(oldRateInput.value);
+      const newRate = parseFloat(newRateInput.value);
+
+      if (isNaN(oldRate) || isNaN(newRate)) {
+        bpChangeOutput.value = "";
+        resultExplanation?.classList.add("hidden");
+        return;
+      }
+
+      const change = (newRate - oldRate) * 100;
+      const changeFormatted = change.toFixed(2).replace(/\.?0+$/, "");
+      bpChangeOutput.value = (change >= 0 ? "+" : "") + changeFormatted;
+
+      // Show explanation with color coding
+      if (resultExplanation && resultText) {
+        resultExplanation.classList.remove("hidden");
+
+        if (change > 0) {
+          resultExplanation.className =
+            "p-4 rounded-lg border bg-green-50 border-green-100";
+          resultText.innerHTML = `<span class="text-green-700">The rate <strong>increased</strong> by <strong>${Math.abs(
+            change,
+          )
+            .toFixed(2)
+            .replace(
+              /\.?0+$/,
+              "",
+            )} basis points</strong> (from ${oldRate}% to ${newRate}%)</span>`;
+        } else if (change < 0) {
+          resultExplanation.className =
+            "p-4 rounded-lg border bg-red-50 border-red-100";
+          resultText.innerHTML = `<span class="text-red-700">The rate <strong>decreased</strong> by <strong>${Math.abs(
+            change,
+          )
+            .toFixed(2)
+            .replace(
+              /\.?0+$/,
+              "",
+            )} basis points</strong> (from ${oldRate}% to ${newRate}%)</span>`;
+        } else {
+          resultExplanation.className =
+            "p-4 rounded-lg border bg-slate-50 border-slate-100";
+          resultText.innerHTML = `<span class="text-slate-700">No change - both rates are equal at <strong>${oldRate}%</strong></span>`;
+        }
+      }
+    }
+
+    oldRateInput.addEventListener("input", calculate);
+    newRateInput.addEventListener("input", calculate);
+
+    // Initialize with default values
+    oldRateInput.value = "3.50";
+    newRateInput.value = "3.75";
+    calculate();
+  </script>
+</CalculatorLayout>

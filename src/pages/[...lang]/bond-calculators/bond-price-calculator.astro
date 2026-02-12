@@ -1,0 +1,271 @@
+---
+import CalculatorLayout, {
+  getStaticPaths as getStaticPathsCalc,
+} from "@theme/layouts/CalculatorLayout.astro";
+import { getTranslations, type Locale } from "@theme/i18n/utils";
+
+export const getStaticPaths = getStaticPathsCalc;
+
+const locale = (Astro.params.lang || "en") as Locale;
+const t = getTranslations(locale);
+
+const pageTitle = "Bond Price Calculator";
+const pageDescription =
+  "Calculate the fair price of a bond given its yield, coupon rate, and time to maturity.";
+
+const relatedCalculators = [
+  {
+    name: "Bond Yield Calculator",
+    url: "/bond-calculators/bond-yield-calculator/",
+  },
+  {
+    name: "Yield to Maturity Calculator",
+    url: "/bond-calculators/yield-to-maturity-calculator/",
+  },
+  {
+    name: "Bond Duration Calculator",
+    url: "/bond-calculators/bond-duration-calculator/",
+  },
+];
+
+const faqs = [
+  {
+    question: "How is bond price calculated?",
+    answer:
+      "Bond price is the present value of all future cash flows (coupon payments and face value) discounted at the required yield.",
+  },
+  {
+    question: "What makes bond prices change?",
+    answer:
+      "Interest rates, credit risk, time to maturity, and market conditions all affect bond prices.",
+  },
+  {
+    question: "What's clean vs dirty price?",
+    answer:
+      "Clean price excludes accrued interest; dirty price (settlement price) includes accrued interest since the last coupon.",
+  },
+];
+---
+
+<CalculatorLayout
+  title={pageTitle}
+  description={pageDescription}
+  calculatorType="bond"
+  relatedCalculators={relatedCalculators}
+  faqs={faqs}
+>
+  <section class="bg-white rounded-2xl shadow-lg p-6">
+    <h1 class="text-2xl font-semibold text-slate-800">{pageTitle}</h1>
+    <p class="text-sm text-slate-500 mt-1">
+      Calculate the theoretical fair value of a bond.
+    </p>
+
+    <div class="mt-6 space-y-5">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label for="face-value" class="block text-sm mb-2 text-slate-600"
+            >Face Value (Par)</label
+          >
+          <div class="relative">
+            <span
+              class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
+              >$</span
+            >
+            <input
+              id="face-value"
+              type="number"
+              step="100"
+              class="w-full bg-white border border-slate-200 rounded-lg py-3 px-4 pl-8 focus:outline-none focus:ring-2 focus:ring-sky-200"
+              placeholder="1000"
+            />
+          </div>
+        </div>
+        <div>
+          <label for="coupon-rate" class="block text-sm mb-2 text-slate-600"
+            >Coupon Rate</label
+          >
+          <div class="relative">
+            <input
+              id="coupon-rate"
+              type="number"
+              step="0.125"
+              class="w-full bg-white border border-slate-200 rounded-lg py-3 px-4 pr-10 focus:outline-none focus:ring-2 focus:ring-sky-200"
+              placeholder="5"
+            />
+            <span
+              class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400"
+              >%</span
+            >
+          </div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div>
+          <label for="market-yield" class="block text-sm mb-2 text-slate-600"
+            >Market Yield (YTM)</label
+          >
+          <div class="relative">
+            <input
+              id="market-yield"
+              type="number"
+              step="0.1"
+              class="w-full bg-white border border-slate-200 rounded-lg py-3 px-4 pr-10 focus:outline-none focus:ring-2 focus:ring-sky-200"
+              placeholder="6"
+            />
+            <span
+              class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400"
+              >%</span
+            >
+          </div>
+        </div>
+        <div>
+          <label
+            for="years-to-maturity"
+            class="block text-sm mb-2 text-slate-600">Years to Maturity</label
+          >
+          <input
+            id="years-to-maturity"
+            type="number"
+            step="0.5"
+            class="w-full bg-white border border-slate-200 rounded-lg py-3 px-4 focus:outline-none focus:ring-2 focus:ring-sky-200"
+            placeholder="10"
+          />
+        </div>
+        <div>
+          <label
+            for="payments-per-year"
+            class="block text-sm mb-2 text-slate-600">Payments/Year</label
+          >
+          <select
+            id="payments-per-year"
+            class="w-full bg-white border border-slate-200 rounded-lg py-3 px-4"
+          >
+            <option value="1">Annual (1)</option>
+            <option value="2" selected>Semi-annual (2)</option>
+            <option value="4">Quarterly (4)</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="bg-gradient-to-r from-purple-50 to-indigo-50 rounded-xl p-6">
+        <div class="text-center">
+          <span class="text-sm text-slate-600">Bond Price</span>
+          <div id="bond-price" class="text-4xl font-bold text-purple-600 mt-1">
+            $0.00
+          </div>
+          <div id="price-status" class="text-sm mt-2"></div>
+        </div>
+        <div class="grid grid-cols-3 gap-4 mt-4 text-center">
+          <div class="bg-white rounded-lg p-3">
+            <div class="text-xs text-slate-500">PV of Coupons</div>
+            <div id="pv-coupons" class="font-semibold text-slate-800">$0</div>
+          </div>
+          <div class="bg-white rounded-lg p-3">
+            <div class="text-xs text-slate-500">PV of Face Value</div>
+            <div id="pv-face" class="font-semibold text-slate-800">$0</div>
+          </div>
+          <div class="bg-white rounded-lg p-3">
+            <div class="text-xs text-slate-500">Total Coupons</div>
+            <div id="total-coupons" class="font-semibold text-slate-800">
+              $0
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-white rounded-2xl shadow-lg p-6 mt-6">
+    <h2 class="text-xl font-semibold text-slate-800">Bond Pricing Formula</h2>
+    <div class="mt-4 p-4 bg-slate-50 rounded-lg">
+      <code class="text-slate-800">Price = Σ[C/(1+r)^t] + F/(1+r)^n</code>
+    </div>
+    <div class="mt-4 text-slate-600 text-sm space-y-2">
+      <p><strong>C</strong> = Coupon payment per period</p>
+      <p><strong>r</strong> = Required yield per period</p>
+      <p><strong>F</strong> = Face value</p>
+      <p><strong>n</strong> = Total number of periods</p>
+    </div>
+  </section>
+
+  <script>
+    const faceValue = document.getElementById("face-value") as HTMLInputElement;
+    const couponRate = document.getElementById(
+      "coupon-rate",
+    ) as HTMLInputElement;
+    const marketYield = document.getElementById(
+      "market-yield",
+    ) as HTMLInputElement;
+    const yearsToMaturity = document.getElementById(
+      "years-to-maturity",
+    ) as HTMLInputElement;
+    const paymentsPerYear = document.getElementById(
+      "payments-per-year",
+    ) as HTMLSelectElement;
+
+    const bondPriceEl = document.getElementById("bond-price");
+    const priceStatusEl = document.getElementById("price-status");
+    const pvCouponsEl = document.getElementById("pv-coupons");
+    const pvFaceEl = document.getElementById("pv-face");
+    const totalCouponsEl = document.getElementById("total-coupons");
+
+    function formatCurrency(v: number) {
+      return new Intl.NumberFormat("en-US", {
+        style: "currency",
+        currency: "USD",
+        maximumFractionDigits: 2,
+      }).format(v);
+    }
+
+    function calculate() {
+      const F = parseFloat(faceValue.value) || 0;
+      const coupon = parseFloat(couponRate.value) || 0;
+      const ytm = parseFloat(marketYield.value) || 0;
+      const years = parseFloat(yearsToMaturity.value) || 0;
+      const m = parseInt(paymentsPerYear.value) || 2;
+
+      const C = (F * (coupon / 100)) / m;
+      const r = ytm / 100 / m;
+      const n = years * m;
+
+      let pvCoupons = 0;
+      for (let t = 1; t <= n; t++) {
+        pvCoupons += C / Math.pow(1 + r, t);
+      }
+      const pvFace = F / Math.pow(1 + r, n);
+      const price = pvCoupons + pvFace;
+      const totalCoupons = C * n;
+
+      if (bondPriceEl) bondPriceEl.textContent = formatCurrency(price);
+      if (pvCouponsEl) pvCouponsEl.textContent = formatCurrency(pvCoupons);
+      if (pvFaceEl) pvFaceEl.textContent = formatCurrency(pvFace);
+      if (totalCouponsEl)
+        totalCouponsEl.textContent = formatCurrency(totalCoupons);
+
+      if (priceStatusEl) {
+        if (price < F) {
+          priceStatusEl.className = "text-sm mt-2 text-orange-600";
+          priceStatusEl.textContent = `Trading at discount (${((1 - price / F) * 100).toFixed(1)}% below par)`;
+        } else if (price > F) {
+          priceStatusEl.className = "text-sm mt-2 text-green-600";
+          priceStatusEl.textContent = `Trading at premium (${((price / F - 1) * 100).toFixed(1)}% above par)`;
+        } else {
+          priceStatusEl.className = "text-sm mt-2 text-slate-600";
+          priceStatusEl.textContent = "Trading at par";
+        }
+      }
+    }
+
+    [faceValue, couponRate, marketYield, yearsToMaturity].forEach((el) =>
+      el.addEventListener("input", calculate),
+    );
+    paymentsPerYear.addEventListener("change", calculate);
+
+    faceValue.value = "1000";
+    couponRate.value = "5";
+    marketYield.value = "6";
+    yearsToMaturity.value = "10";
+    calculate();
+  </script>
+</CalculatorLayout>

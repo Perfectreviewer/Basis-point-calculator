@@ -1,0 +1,163 @@
+---
+import CalculatorLayout, {
+  getStaticPaths as getStaticPathsCalc,
+} from "@theme/layouts/CalculatorLayout.astro";
+import {
+  getTranslations,
+  type Locale,
+  getLocalizedUrl,
+} from "@theme/i18n/utils";
+
+export const getStaticPaths = getStaticPathsCalc;
+
+const locale = (Astro.params.lang || "en") as Locale;
+const t = getTranslations(locale);
+
+const pageTitle = "Investment Calculators";
+const pageDescription =
+  "Free investment calculators for ROI, future value, present value, and inflation analysis.";
+
+const calculators = [
+  {
+    title: "ROI Calculator",
+    description: "Calculate return on investment",
+    url: "/investment-calculators/roi-calculator/",
+    icon: "📈",
+    color: "green",
+  },
+  {
+    title: "Future Value Calculator",
+    description: "See how investments grow over time",
+    url: "/investment-calculators/future-value-calculator/",
+    icon: "🚀",
+    color: "sky",
+  },
+  {
+    title: "Present Value Calculator",
+    description: "Find today's value of future money",
+    url: "/investment-calculators/present-value-calculator/",
+    icon: "💎",
+    color: "purple",
+  },
+  {
+    title: "Inflation Calculator",
+    description: "See how inflation affects purchasing power",
+    url: "/investment-calculators/inflation-calculator/",
+    icon: "📉",
+    color: "orange",
+  },
+];
+
+const colorClasses: Record<string, string> = {
+  green: "bg-green-50 border-green-200 hover:border-green-400",
+  sky: "bg-sky-50 border-sky-200 hover:border-sky-400",
+  purple: "bg-purple-50 border-purple-200 hover:border-purple-400",
+  orange: "bg-orange-50 border-orange-200 hover:border-orange-400",
+};
+---
+
+<CalculatorLayout
+  title={pageTitle}
+  description={pageDescription}
+  calculatorType="index"
+  relatedCalculators={[]}
+  faqs={[]}
+>
+  <section class="space-y-6">
+    <div class="text-center">
+      <h1 class="text-3xl font-bold text-slate-800">{pageTitle}</h1>
+      <p class="text-slate-600 mt-2 max-w-2xl mx-auto">
+        Make informed investment decisions with our free calculators. Analyze
+        returns, project growth, and understand the time value of money.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-8">
+      {
+        calculators.map((calc) => (
+          <a
+            href={getLocalizedUrl(calc.url, locale)}
+            class={`block p-5 rounded-xl border-2 transition-all duration-200 hover:shadow-lg hover:-translate-y-1 ${colorClasses[calc.color]}`}
+          >
+            <div class="flex items-start gap-4">
+              <span class="text-3xl">{calc.icon}</span>
+              <div>
+                <h2 class="font-semibold text-slate-800">{calc.title}</h2>
+                <p class="text-sm text-slate-600 mt-1">{calc.description}</p>
+              </div>
+            </div>
+          </a>
+        ))
+      }
+    </div>
+
+    <section class="bg-white rounded-2xl shadow-lg p-6 mt-8">
+      <h2 class="text-xl font-semibold text-slate-800">Investment Concepts</h2>
+      <div
+        class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-6 text-sm text-slate-600"
+      >
+        <div>
+          <h3 class="font-medium text-slate-700 mb-2">Time Value of Money</h3>
+          <p>
+            Money today is worth more than the same amount in the future due to
+            its earning potential.
+          </p>
+        </div>
+        <div>
+          <h3 class="font-medium text-slate-700 mb-2">Compound Growth</h3>
+          <p>
+            Earnings on earnings accelerate wealth building. Start early for
+            maximum compounding benefit.
+          </p>
+        </div>
+        <div>
+          <h3 class="font-medium text-slate-700 mb-2">
+            Real vs Nominal Returns
+          </h3>
+          <p>
+            Nominal returns don't account for inflation. Real returns show
+            actual purchasing power gained.
+          </p>
+        </div>
+        <div>
+          <h3 class="font-medium text-slate-700 mb-2">Risk and Return</h3>
+          <p>
+            Higher potential returns typically come with higher risk.
+            Diversification helps manage risk.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section
+      class="bg-gradient-to-r from-green-50 to-emerald-50 rounded-2xl p-6 border border-green-100"
+    >
+      <h2 class="text-lg font-semibold text-slate-800 mb-4">
+        Related Calculators
+      </h2>
+      <div class="flex flex-wrap gap-3">
+        <a
+          href={getLocalizedUrl("/interest-rate-calculators/", locale)}
+          class="inline-flex items-center gap-2 px-4 py-2 bg-white rounded-lg border border-slate-200 hover:border-green-400 transition-colors text-sm"
+        >
+          <span>📊</span>
+          <span>Interest Rate Calculators</span>
+        </a>
+        <a
+          href={getLocalizedUrl("/loan-calculators/", locale)}
+          class="inline-flex items-center gap-2 px-4 py-2 bg-white rounded-lg border border-slate-200 hover:border-green-400 transition-colors text-sm"
+        >
+          <span>💰</span>
+          <span>Loan Calculators</span>
+        </a>
+        <a
+          href={getLocalizedUrl("/bond-calculators/", locale)}
+          class="inline-flex items-center gap-2 px-4 py-2 bg-white rounded-lg border border-slate-200 hover:border-green-400 transition-colors text-sm"
+        >
+          <span>📈</span>
+          <span>Bond Calculators</span>
+        </a>
+      </div>
+    </section>
+  </section>
+</CalculatorLayout>

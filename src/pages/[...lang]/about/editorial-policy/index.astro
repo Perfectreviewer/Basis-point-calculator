@@ -1,0 +1,128 @@
+---
+import Layout from "@theme/layouts/Layout.astro";
+import {
+  getTranslations,
+  type Locale,
+  getLocalizedUrl,
+} from "@theme/i18n/utils";
+
+export function getStaticPaths() {
+  return [
+    { params: { lang: undefined } },
+    { params: { lang: "en" } },
+    { params: { lang: "es" } },
+    { params: { lang: "fr" } },
+    { params: { lang: "de" } },
+  ];
+}
+
+const locale = (Astro.params.lang || "en") as Locale;
+const t = getTranslations(locale);
+
+const pageTitle = "Editorial Policy | BasisPointCalculator.com";
+const pageDescription =
+  "Our standards for creating accurate, helpful financial calculator tools and educational content.";
+---
+
+<Layout title={pageTitle} description={pageDescription}>
+  <main class="max-w-4xl mx-auto px-4 py-12">
+    <nav class="text-sm text-slate-500 mb-6">
+      <a href={getLocalizedUrl("/about/", locale)} class="hover:text-sky-600"
+        >About</a
+      >
+      <span class="mx-2">/</span>
+      <span class="text-slate-800">Editorial Policy</span>
+    </nav>
+
+    <article class="prose prose-slate max-w-none">
+      <h1>Editorial Policy</h1>
+
+      <p class="lead text-xl text-slate-600">
+        We hold ourselves to high standards of accuracy, clarity, and integrity
+        in everything we publish.
+      </p>
+
+      <h2>Calculator Standards</h2>
+      <p>Every calculator on BasisPointCalculator.com is:</p>
+      <ul>
+        <li>
+          <strong>Formula-verified:</strong> Based on standard financial formulas
+          used in the industry
+        </li>
+        <li>
+          <strong>Tested:</strong> Checked against known results and edge cases
+        </li>
+        <li>
+          <strong>Documented:</strong> Includes explanations of the formulas used
+        </li>
+        <li>
+          <strong>Maintained:</strong> Regularly reviewed and updated as needed
+        </li>
+      </ul>
+
+      <h2>Content Guidelines</h2>
+      <p>Our educational content follows these principles:</p>
+      <ul>
+        <li>
+          <strong>Accuracy:</strong> Facts are verified against authoritative sources
+        </li>
+        <li>
+          <strong>Clarity:</strong> Complex topics are explained in accessible language
+        </li>
+        <li>
+          <strong>Objectivity:</strong> We present balanced information without bias
+        </li>
+        <li>
+          <strong>Timeliness:</strong> Content is updated to reflect current practices
+        </li>
+      </ul>
+
+      <h2>Sources & References</h2>
+      <p>We rely on authoritative sources including:</p>
+      <ul>
+        <li>Federal Reserve publications</li>
+        <li>SEC educational materials</li>
+        <li>Academic finance textbooks</li>
+        <li>Industry standard practices</li>
+      </ul>
+
+      <h2>Corrections</h2>
+      <p>
+        If you find an error in our calculators or content, please <a
+          href={getLocalizedUrl("/about/contact/", locale)}>contact us</a
+        >
+        immediately. We take accuracy seriously and will investigate and correct any
+        verified errors promptly.
+      </p>
+
+      <h2>Independence</h2>
+      <p>
+        BasisPointCalculator.com maintains editorial independence. We do not allow
+        advertisers or sponsors to influence our calculator formulas, content,
+        or recommendations. Any sponsored content or affiliate relationships
+        will be clearly disclosed.
+      </p>
+
+      <h2>Updates</h2>
+      <p>
+        This policy was last updated on February 2024. We review our editorial
+        standards regularly and update them as needed.
+      </p>
+    </article>
+
+    <div class="mt-12 flex gap-4">
+      <a
+        href={getLocalizedUrl("/about/about-us/", locale)}
+        class="inline-flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 rounded-lg hover:border-sky-400 transition-colors text-sm"
+      >
+        About Us
+      </a>
+      <a
+        href={getLocalizedUrl("/about/contact/", locale)}
+        class="inline-flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 rounded-lg hover:border-sky-400 transition-colors text-sm"
+      >
+        Contact
+      </a>
+    </div>
+  </main>
+</Layout>

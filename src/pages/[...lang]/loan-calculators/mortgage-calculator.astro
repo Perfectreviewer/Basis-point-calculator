@@ -1,0 +1,305 @@
+---
+import CalculatorLayout, {
+  getStaticPaths as getStaticPathsCalc,
+} from "@theme/layouts/CalculatorLayout.astro";
+import { getTranslations, type Locale } from "@theme/i18n/utils";
+
+export const getStaticPaths = getStaticPathsCalc;
+
+const locale = (Astro.params.lang || "en") as Locale;
+const t = getTranslations(locale);
+
+const pageTitle = t.mortgage_calc_title || "Mortgage Calculator";
+const pageDescription =
+  t.mortgage_calc_desc ||
+  "Calculate your monthly mortgage payment including principal, interest, taxes, and insurance (PITI).";
+
+const relatedCalculators = [
+  {
+    name: t.loan_payment_title || "Loan Payment Calculator",
+    url: "/loan-calculators/loan-payment-calculator/",
+  },
+  {
+    name: t.amortization_title || "Amortization Calculator",
+    url: "/loan-calculators/loan-amortization-calculator/",
+  },
+  {
+    name: t.apr_calc_title || "APR Calculator",
+    url: "/interest-rate-calculators/apr-calculator/",
+  },
+];
+
+const faqs = [
+  {
+    question: "What is PITI?",
+    answer:
+      "PITI stands for Principal, Interest, Taxes, and Insurance - the four components of a typical mortgage payment.",
+  },
+  {
+    question: "How much house can I afford?",
+    answer:
+      "A common guideline is that your total housing costs (PITI) should not exceed 28% of your gross monthly income.",
+  },
+  {
+    question: "What's a good interest rate for a mortgage?",
+    answer:
+      "Interest rates fluctuate based on market conditions. Compare current rates from multiple lenders to find the best deal.",
+  },
+];
+---
+
+<CalculatorLayout
+  title={pageTitle}
+  description={pageDescription}
+  calculatorType="loan"
+  relatedCalculators={relatedCalculators}
+  faqs={faqs}
+>
+  <section class="bg-white rounded-2xl shadow-lg p-6">
+    <h1 class="text-2xl font-semibold text-slate-800">{pageTitle}</h1>
+    <p class="text-sm text-slate-500 mt-1">
+      Estimate your monthly mortgage payment with taxes and insurance.
+    </p>
+
+    <div class="mt-6 space-y-5">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label for="home-price" class="block text-sm mb-2 text-slate-600"
+            >Home Price</label
+          >
+          <div class="relative">
+            <span
+              class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
+              >$</span
+            >
+            <input
+              id="home-price"
+              type="number"
+              step="10000"
+              class="w-full bg-white border border-slate-200 rounded-lg py-3 px-4 pl-8 focus:outline-none focus:ring-2 focus:ring-sky-200"
+              placeholder="400000"
+            />
+          </div>
+        </div>
+        <div>
+          <label for="down-payment" class="block text-sm mb-2 text-slate-600"
+            >Down Payment</label
+          >
+          <div class="relative">
+            <span
+              class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
+              >$</span
+            >
+            <input
+              id="down-payment"
+              type="number"
+              step="5000"
+              class="w-full bg-white border border-slate-200 rounded-lg py-3 px-4 pl-8 focus:outline-none focus:ring-2 focus:ring-sky-200"
+              placeholder="80000"
+            />
+          </div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label for="interest-rate" class="block text-sm mb-2 text-slate-600"
+            >Interest Rate</label
+          >
+          <div class="relative">
+            <input
+              id="interest-rate"
+              type="number"
+              step="0.125"
+              class="w-full bg-white border border-slate-200 rounded-lg py-3 px-4 pr-10 focus:outline-none focus:ring-2 focus:ring-sky-200"
+              placeholder="6.5"
+            />
+            <span
+              class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400"
+              >%</span
+            >
+          </div>
+        </div>
+        <div>
+          <label for="loan-term" class="block text-sm mb-2 text-slate-600"
+            >Loan Term (Years)</label
+          >
+          <select
+            id="loan-term"
+            class="w-full bg-white border border-slate-200 rounded-lg py-3 px-4"
+          >
+            <option value="30">30 years</option>
+            <option value="20">20 years</option>
+            <option value="15">15 years</option>
+            <option value="10">10 years</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label for="property-tax" class="block text-sm mb-2 text-slate-600"
+            >Annual Property Tax</label
+          >
+          <div class="relative">
+            <span
+              class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
+              >$</span
+            >
+            <input
+              id="property-tax"
+              type="number"
+              step="100"
+              class="w-full bg-white border border-slate-200 rounded-lg py-3 px-4 pl-8 focus:outline-none focus:ring-2 focus:ring-sky-200"
+              placeholder="4800"
+            />
+          </div>
+        </div>
+        <div>
+          <label for="insurance" class="block text-sm mb-2 text-slate-600"
+            >Annual Insurance</label
+          >
+          <div class="relative">
+            <span
+              class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
+              >$</span
+            >
+            <input
+              id="insurance"
+              type="number"
+              step="100"
+              class="w-full bg-white border border-slate-200 rounded-lg py-3 px-4 pl-8 focus:outline-none focus:ring-2 focus:ring-sky-200"
+              placeholder="1800"
+            />
+          </div>
+        </div>
+      </div>
+
+      <!-- Results -->
+      <div class="bg-gradient-to-r from-sky-50 to-blue-50 rounded-xl p-6 mt-6">
+        <div class="text-center mb-4">
+          <span class="text-sm text-slate-600">Estimated Monthly Payment</span>
+          <div id="total-payment" class="text-4xl font-bold text-sky-600 mt-1">
+            $0
+          </div>
+        </div>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+          <div class="bg-white rounded-lg p-3">
+            <div class="text-xs text-slate-500">Principal & Interest</div>
+            <div id="pi-payment" class="font-semibold text-slate-800">$0</div>
+          </div>
+          <div class="bg-white rounded-lg p-3">
+            <div class="text-xs text-slate-500">Property Tax</div>
+            <div id="tax-payment" class="font-semibold text-slate-800">$0</div>
+          </div>
+          <div class="bg-white rounded-lg p-3">
+            <div class="text-xs text-slate-500">Insurance</div>
+            <div id="ins-payment" class="font-semibold text-slate-800">$0</div>
+          </div>
+          <div class="bg-white rounded-lg p-3">
+            <div class="text-xs text-slate-500">Loan Amount</div>
+            <div id="loan-amount" class="font-semibold text-slate-800">$0</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-2 gap-4">
+        <div class="bg-orange-50 rounded-lg p-4">
+          <label class="block text-sm text-slate-600 mb-1"
+            >Total Interest Paid</label
+          >
+          <div id="total-interest" class="text-xl font-bold text-orange-600">
+            $0
+          </div>
+        </div>
+        <div class="bg-purple-50 rounded-lg p-4">
+          <label class="block text-sm text-slate-600 mb-1"
+            >Total Cost Over Life</label
+          >
+          <div id="total-cost" class="text-xl font-bold text-purple-600">
+            $0
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    const homePrice = document.getElementById("home-price") as HTMLInputElement;
+    const downPayment = document.getElementById(
+      "down-payment",
+    ) as HTMLInputElement;
+    const rateInput = document.getElementById(
+      "interest-rate",
+    ) as HTMLInputElement;
+    const termSelect = document.getElementById(
+      "loan-term",
+    ) as HTMLSelectElement;
+    const taxInput = document.getElementById(
+      "property-tax",
+    ) as HTMLInputElement;
+    const insInput = document.getElementById("insurance") as HTMLInputElement;
+
+    const totalPaymentEl = document.getElementById("total-payment");
+    const piPaymentEl = document.getElementById("pi-payment");
+    const taxPaymentEl = document.getElementById("tax-payment");
+    const insPaymentEl = document.getElementById("ins-payment");
+    const loanAmountEl = document.getElementById("loan-amount");
+    const totalInterestEl = document.getElementById("total-interest");
+    const totalCostEl = document.getElementById("total-cost");
+
+    function formatCurrency(v: number) {
+      return new Intl.NumberFormat("en-US", {
+        style: "currency",
+        currency: "USD",
+        maximumFractionDigits: 0,
+      }).format(v);
+    }
+
+    function calculate() {
+      const price = parseFloat(homePrice.value) || 0;
+      const down = parseFloat(downPayment.value) || 0;
+      const P = price - down;
+      const annualRate = parseFloat(rateInput.value) || 0;
+      const years = parseInt(termSelect.value) || 30;
+      const annualTax = parseFloat(taxInput.value) || 0;
+      const annualIns = parseFloat(insInput.value) || 0;
+
+      const r = annualRate / 100 / 12;
+      const n = years * 12;
+      const monthlyTax = annualTax / 12;
+      const monthlyIns = annualIns / 12;
+
+      let piPayment = 0;
+      if (P > 0 && r > 0 && n > 0) {
+        piPayment = (P * (r * Math.pow(1 + r, n))) / (Math.pow(1 + r, n) - 1);
+      }
+
+      const totalMonthly = piPayment + monthlyTax + monthlyIns;
+      const totalPaid = totalMonthly * n;
+      const totalInterest = piPayment * n - P;
+
+      if (totalPaymentEl)
+        totalPaymentEl.textContent = formatCurrency(totalMonthly);
+      if (piPaymentEl) piPaymentEl.textContent = formatCurrency(piPayment);
+      if (taxPaymentEl) taxPaymentEl.textContent = formatCurrency(monthlyTax);
+      if (insPaymentEl) insPaymentEl.textContent = formatCurrency(monthlyIns);
+      if (loanAmountEl) loanAmountEl.textContent = formatCurrency(P);
+      if (totalInterestEl)
+        totalInterestEl.textContent = formatCurrency(totalInterest);
+      if (totalCostEl) totalCostEl.textContent = formatCurrency(totalPaid);
+    }
+
+    [homePrice, downPayment, rateInput, taxInput, insInput].forEach((el) =>
+      el.addEventListener("input", calculate),
+    );
+    termSelect.addEventListener("change", calculate);
+
+    homePrice.value = "400000";
+    downPayment.value = "80000";
+    rateInput.value = "6.5";
+    taxInput.value = "4800";
+    insInput.value = "1800";
+    calculate();
+  </script>
+</CalculatorLayout>

@@ -1,0 +1,7 @@
+---
+import PageBlogPost, { getStaticPaths as getStaticPathsBlogPost, type Props } from '@theme/layouts/SinglePost.astro';
+
+export const getStaticPaths = getStaticPathsBlogPost;
+---
+
+<PageBlogPost {...Astro.props} />

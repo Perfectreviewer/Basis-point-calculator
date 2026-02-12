@@ -1,0 +1,207 @@
+---
+import CalculatorLayout, {
+  getStaticPaths as getStaticPathsCalc,
+} from "@theme/layouts/CalculatorLayout.astro";
+import {
+  getTranslations,
+  type Locale,
+  getLocalizedUrl,
+} from "@theme/i18n/utils";
+
+export const getStaticPaths = getStaticPathsCalc;
+
+const locale = (Astro.params.lang || "en") as Locale;
+const t = getTranslations(locale);
+
+const pageTitle = "Impact of Basis Points on Loans";
+const pageDescription =
+  "Understand how small basis point changes in interest rates can significantly affect your loan payments and total cost.";
+
+const relatedCalculators = [
+  {
+    name: "Mortgage Calculator",
+    url: "/loan-calculators/mortgage-calculator/",
+  },
+  {
+    name: "Loan Payment Calculator",
+    url: "/loan-calculators/loan-payment-calculator/",
+  },
+  {
+    name: "Basis Point Calculator",
+    url: "/basis-point-calculators/basis-point-to-percentage/",
+  },
+];
+---
+
+<CalculatorLayout
+  title={pageTitle}
+  description={pageDescription}
+  calculatorType="guide"
+  relatedCalculators={relatedCalculators}
+  faqs={[]}
+>
+  <article class="prose prose-slate max-w-none">
+    <h1 class="text-3xl font-bold text-slate-800">{pageTitle}</h1>
+
+    <div class="not-prose bg-orange-50 rounded-xl p-6 my-6">
+      <p class="text-lg text-slate-700">
+        <strong>The Bottom Line:</strong> A seemingly small 25 basis point (0.25%)
+        rate difference can cost you tens of thousands of dollars over the life of
+        a mortgage. Always shop rates carefully!
+      </p>
+    </div>
+
+    <h2>Real Dollar Impact</h2>
+    <p>
+      Let's look at how different rate changes affect a $300,000, 30-year
+      mortgage:
+    </p>
+
+    <div class="not-prose overflow-x-auto my-6">
+      <table class="w-full text-sm">
+        <thead class="bg-slate-100">
+          <tr>
+            <th class="px-4 py-2 text-left">Interest Rate</th>
+            <th class="px-4 py-2 text-right">Monthly Payment</th>
+            <th class="px-4 py-2 text-right">Total Interest</th>
+            <th class="px-4 py-2 text-right">vs 6.00% (extra cost)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="border-b bg-green-50"
+            ><td class="px-4 py-2 font-medium">6.00%</td><td
+              class="px-4 py-2 text-right">$1,799</td
+            ><td class="px-4 py-2 text-right">$347,515</td><td
+              class="px-4 py-2 text-right text-green-600">Baseline</td
+            ></tr
+          >
+          <tr class="border-b"
+            ><td class="px-4 py-2">6.25% (+25 bps)</td><td
+              class="px-4 py-2 text-right">$1,847</td
+            ><td class="px-4 py-2 text-right">$364,820</td><td
+              class="px-4 py-2 text-right text-orange-600">+$17,305</td
+            ></tr
+          >
+          <tr class="border-b"
+            ><td class="px-4 py-2">6.50% (+50 bps)</td><td
+              class="px-4 py-2 text-right">$1,896</td
+            ><td class="px-4 py-2 text-right">$382,633</td><td
+              class="px-4 py-2 text-right text-orange-600">+$35,118</td
+            ></tr
+          >
+          <tr class="border-b"
+            ><td class="px-4 py-2">6.75% (+75 bps)</td><td
+              class="px-4 py-2 text-right">$1,946</td
+            ><td class="px-4 py-2 text-right">$400,934</td><td
+              class="px-4 py-2 text-right text-red-600">+$53,419</td
+            ></tr
+          >
+          <tr class="border-b"
+            ><td class="px-4 py-2">7.00% (+100 bps)</td><td
+              class="px-4 py-2 text-right">$1,996</td
+            ><td class="px-4 py-2 text-right">$419,705</td><td
+              class="px-4 py-2 text-right text-red-600">+$72,190</td
+            ></tr
+          >
+        </tbody>
+      </table>
+    </div>
+
+    <div class="not-prose bg-red-50 border-l-4 border-red-400 p-4 my-6">
+      <p class="font-medium text-red-800">Key Insight</p>
+      <p class="text-red-700 mt-2">
+        Just 100 basis points (1%) higher rate costs an extra <strong
+          >$72,190</strong
+        > in interest and adds nearly <strong>$200/month</strong> to your payment
+        on a $300,000 loan.
+      </p>
+    </div>
+
+    <h2>Impact on Different Loan Types</h2>
+    <div class="not-prose grid grid-cols-1 md:grid-cols-2 gap-4 my-6">
+      <div class="bg-slate-50 rounded-lg p-4">
+        <h4 class="font-medium text-slate-700">Mortgages</h4>
+        <p class="text-sm text-slate-600 mt-1">
+          Long terms amplify the impact. 25 bps on a 30-year mortgage affects
+          payment for decades.
+        </p>
+      </div>
+      <div class="bg-slate-50 rounded-lg p-4">
+        <h4 class="font-medium text-slate-700">Auto Loans</h4>
+        <p class="text-sm text-slate-600 mt-1">
+          Shorter terms reduce total impact, but 50 bps still means hundreds in
+          extra interest.
+        </p>
+      </div>
+      <div class="bg-slate-50 rounded-lg p-4">
+        <h4 class="font-medium text-slate-700">Credit Cards</h4>
+        <p class="text-sm text-slate-600 mt-1">
+          High rates mean basis point changes are proportionally smaller but
+          still significant on large balances.
+        </p>
+      </div>
+      <div class="bg-slate-50 rounded-lg p-4">
+        <h4 class="font-medium text-slate-700">Student Loans</h4>
+        <p class="text-sm text-slate-600 mt-1">
+          Extended repayment terms can make rate differences add up
+          substantially.
+        </p>
+      </div>
+    </div>
+
+    <h2>Strategies to Get Lower Rates</h2>
+    <ul>
+      <li>
+        <strong>Improve credit score:</strong> 50 points can save 25-50 bps
+      </li>
+      <li>
+        <strong>Shop multiple lenders:</strong> Rates can vary by 50+ bps between
+        lenders
+      </li>
+      <li>
+        <strong>Larger down payment:</strong> Lower loan-to-value often means lower
+        rates
+      </li>
+      <li>
+        <strong>Pay for points:</strong> Each point (1% of loan) typically lowers
+        rate by 25 bps
+      </li>
+      <li>
+        <strong>Shorter term:</strong> 15-year mortgages usually have lower rates
+        than 30-year
+      </li>
+    </ul>
+
+    <h2>When Basis Points Matter Most</h2>
+    <div class="not-prose my-6">
+      <div class="bg-sky-50 rounded-lg p-6">
+        <h4 class="font-medium text-slate-700 mb-3">
+          Focus on rate shopping when:
+        </h4>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+          <div class="bg-white rounded p-3 text-center">
+            <div class="text-2xl font-bold text-sky-600">Large Loans</div>
+            <p class="text-slate-500 mt-1">$250,000+</p>
+          </div>
+          <div class="bg-white rounded p-3 text-center">
+            <div class="text-2xl font-bold text-sky-600">Long Terms</div>
+            <p class="text-slate-500 mt-1">15+ years</p>
+          </div>
+          <div class="bg-white rounded p-3 text-center">
+            <div class="text-2xl font-bold text-sky-600">Variable Rates</div>
+            <p class="text-slate-500 mt-1">Can change over time</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="not-prose mt-8">
+      <a
+        href={getLocalizedUrl("/loan-calculators/", locale)}
+        class="inline-flex items-center gap-2 px-6 py-3 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition-colors"
+      >
+        Calculate Your Loan Impact →
+      </a>
+    </div>
+  </article>
+</CalculatorLayout>

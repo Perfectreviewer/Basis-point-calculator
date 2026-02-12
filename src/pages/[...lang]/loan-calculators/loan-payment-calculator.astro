@@ -1,0 +1,243 @@
+---
+import CalculatorLayout, {
+  getStaticPaths as getStaticPathsCalc,
+} from "@theme/layouts/CalculatorLayout.astro";
+import { getTranslations, type Locale } from "@theme/i18n/utils";
+
+export const getStaticPaths = getStaticPathsCalc;
+
+const locale = (Astro.params.lang || "en") as Locale;
+const t = getTranslations(locale);
+
+const pageTitle = t.loan_payment_title || "Loan Payment Calculator";
+const pageDescription =
+  t.loan_payment_desc ||
+  "Calculate your monthly loan payment, total interest, and amortization schedule.";
+
+const relatedCalculators = [
+  {
+    name: t.mortgage_calc_title || "Mortgage Calculator",
+    url: "/loan-calculators/mortgage-calculator/",
+  },
+  {
+    name: t.amortization_title || "Amortization Calculator",
+    url: "/loan-calculators/loan-amortization-calculator/",
+  },
+  {
+    name: t.apr_calc_title || "APR Calculator",
+    url: "/interest-rate-calculators/apr-calculator/",
+  },
+];
+
+const faqs = [
+  {
+    question: "How is monthly payment calculated?",
+    answer:
+      "Monthly payment uses the formula: M = P[r(1+r)^n]/[(1+r)^n-1], where P is principal, r is monthly rate, and n is number of payments.",
+  },
+  {
+    question: "What's included in a loan payment?",
+    answer:
+      "A loan payment typically includes principal (the amount borrowed) and interest. Mortgages may also include taxes and insurance (PITI).",
+  },
+  {
+    question: "How can I pay off my loan faster?",
+    answer:
+      "Make extra payments toward principal, pay bi-weekly instead of monthly, or refinance to a shorter term.",
+  },
+];
+---
+
+<CalculatorLayout
+  title={pageTitle}
+  description={pageDescription}
+  calculatorType="loan"
+  relatedCalculators={relatedCalculators}
+  faqs={faqs}
+>
+  <section class="bg-white rounded-2xl shadow-lg p-6">
+    <h1 class="text-2xl font-semibold text-slate-800">{pageTitle}</h1>
+    <p class="text-sm text-slate-500 mt-1">
+      Calculate your monthly payment and see total loan costs.
+    </p>
+
+    <div class="mt-6 space-y-5">
+      <div>
+        <label for="loan-amount" class="block text-sm mb-2 text-slate-600"
+          >Loan Amount</label
+        >
+        <div class="relative">
+          <span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
+            >$</span
+          >
+          <input
+            id="loan-amount"
+            type="number"
+            step="1000"
+            class="w-full bg-white border border-slate-200 rounded-lg py-3 px-4 pl-8 focus:outline-none focus:ring-2 focus:ring-sky-200"
+            placeholder="250000"
+          />
+        </div>
+      </div>
+
+      <div>
+        <label for="interest-rate" class="block text-sm mb-2 text-slate-600"
+          >Annual Interest Rate</label
+        >
+        <div class="relative">
+          <input
+            id="interest-rate"
+            type="number"
+            step="0.125"
+            class="w-full bg-white border border-slate-200 rounded-lg py-3 px-4 pr-10 focus:outline-none focus:ring-2 focus:ring-sky-200"
+            placeholder="6.5"
+          />
+          <span class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400"
+            >%</span
+          >
+        </div>
+      </div>
+
+      <div>
+        <label for="loan-term" class="block text-sm mb-2 text-slate-600"
+          >Loan Term</label
+        >
+        <div class="flex gap-3">
+          <input
+            id="loan-term"
+            type="number"
+            step="1"
+            class="flex-1 bg-white border border-slate-200 rounded-lg py-3 px-4 focus:outline-none focus:ring-2 focus:ring-sky-200"
+            placeholder="30"
+          />
+          <select
+            id="term-unit"
+            class="bg-white border border-slate-200 rounded-lg py-3 px-4"
+          >
+            <option value="years">Years</option>
+            <option value="months">Months</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 pt-4">
+        <div class="bg-sky-50 rounded-lg p-4">
+          <label class="block text-sm text-slate-600 mb-1"
+            >Monthly Payment</label
+          >
+          <div id="monthly-payment" class="text-2xl font-bold text-sky-600">
+            $0
+          </div>
+        </div>
+        <div class="bg-green-50 rounded-lg p-4">
+          <label class="block text-sm text-slate-600 mb-1">Total Interest</label
+          >
+          <div id="total-interest" class="text-2xl font-bold text-green-600">
+            $0
+          </div>
+        </div>
+        <div class="bg-purple-50 rounded-lg p-4">
+          <label class="block text-sm text-slate-600 mb-1">Total Cost</label>
+          <div id="total-cost" class="text-2xl font-bold text-purple-600">
+            $0
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-4">
+        <div class="flex justify-between text-sm text-slate-600 mb-2">
+          <span>Principal</span>
+          <span>Interest</span>
+        </div>
+        <div class="h-4 rounded-full overflow-hidden flex">
+          <div
+            id="bar-principal"
+            class="bg-sky-400 h-full transition-all"
+            style="width: 50%"
+          >
+          </div>
+          <div
+            id="bar-interest"
+            class="bg-orange-400 h-full transition-all"
+            style="width: 50%"
+          >
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-white rounded-2xl shadow-lg p-6 mt-6">
+    <h2 class="text-xl font-semibold text-slate-800">Payment Formula</h2>
+    <div class="mt-4 p-4 bg-slate-50 rounded-lg">
+      <code class="text-lg text-slate-800"
+        >M = P × [r(1+r)^n] / [(1+r)^n - 1]</code
+      >
+    </div>
+    <div class="mt-4 text-slate-600 text-sm space-y-2">
+      <p><strong>M</strong> = Monthly payment</p>
+      <p><strong>P</strong> = Principal (loan amount)</p>
+      <p><strong>r</strong> = Monthly interest rate (annual rate / 12)</p>
+      <p><strong>n</strong> = Total number of payments</p>
+    </div>
+  </section>
+
+  <script>
+    const loanInput = document.getElementById(
+      "loan-amount",
+    ) as HTMLInputElement;
+    const rateInput = document.getElementById(
+      "interest-rate",
+    ) as HTMLInputElement;
+    const termInput = document.getElementById("loan-term") as HTMLInputElement;
+    const termUnit = document.getElementById("term-unit") as HTMLSelectElement;
+    const monthlyEl = document.getElementById("monthly-payment");
+    const interestEl = document.getElementById("total-interest");
+    const costEl = document.getElementById("total-cost");
+    const barPrincipal = document.getElementById("bar-principal");
+    const barInterest = document.getElementById("bar-interest");
+
+    function formatCurrency(v: number) {
+      return new Intl.NumberFormat("en-US", {
+        style: "currency",
+        currency: "USD",
+        maximumFractionDigits: 0,
+      }).format(v);
+    }
+
+    function calculate() {
+      const P = parseFloat(loanInput.value) || 0;
+      const annualRate = parseFloat(rateInput.value) || 0;
+      let term = parseFloat(termInput.value) || 0;
+      if (termUnit.value === "years") term *= 12;
+
+      const r = annualRate / 100 / 12;
+      const n = term;
+
+      if (P <= 0 || r <= 0 || n <= 0) return;
+
+      const M = (P * (r * Math.pow(1 + r, n))) / (Math.pow(1 + r, n) - 1);
+      const totalPaid = M * n;
+      const totalInterest = totalPaid - P;
+
+      if (monthlyEl) monthlyEl.textContent = formatCurrency(M);
+      if (interestEl) interestEl.textContent = formatCurrency(totalInterest);
+      if (costEl) costEl.textContent = formatCurrency(totalPaid);
+
+      const pctPrincipal = (P / totalPaid) * 100;
+      const pctInterest = (totalInterest / totalPaid) * 100;
+      if (barPrincipal) barPrincipal.style.width = `${pctPrincipal}%`;
+      if (barInterest) barInterest.style.width = `${pctInterest}%`;
+    }
+
+    [loanInput, rateInput, termInput].forEach((el) =>
+      el.addEventListener("input", calculate),
+    );
+    termUnit.addEventListener("change", calculate);
+
+    loanInput.value = "250000";
+    rateInput.value = "6.5";
+    termInput.value = "30";
+    calculate();
+  </script>
+</CalculatorLayout>

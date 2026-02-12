@@ -1,0 +1,247 @@
+---
+import CalculatorLayout, {
+  getStaticPaths as getStaticPathsCalc,
+} from "@theme/layouts/CalculatorLayout.astro";
+import { getTranslations, type Locale } from "@theme/i18n/utils";
+
+export const getStaticPaths = getStaticPathsCalc;
+
+const locale = (Astro.params.lang || "en") as Locale;
+const t = getTranslations(locale);
+
+const pageTitle = "Inflation Calculator";
+const pageDescription =
+  "Calculate how inflation affects purchasing power and adjust values for inflation over time.";
+
+const relatedCalculators = [
+  {
+    name: "Present Value Calculator",
+    url: "/investment-calculators/present-value-calculator/",
+  },
+  {
+    name: "Future Value Calculator",
+    url: "/investment-calculators/future-value-calculator/",
+  },
+  { name: "ROI Calculator", url: "/investment-calculators/roi-calculator/" },
+];
+
+const faqs = [
+  {
+    question: "What is inflation?",
+    answer:
+      "Inflation is the rate at which prices for goods and services increase over time, reducing purchasing power.",
+  },
+  {
+    question: "What's a typical inflation rate?",
+    answer:
+      "Central banks typically target 2% annual inflation. Historical US average is around 3% per year.",
+  },
+  {
+    question: "How does inflation affect investments?",
+    answer:
+      "Investments need to beat inflation to generate real returns. A 7% nominal return with 3% inflation gives 4% real return.",
+  },
+];
+---
+
+<CalculatorLayout
+  title={pageTitle}
+  description={pageDescription}
+  calculatorType="investment"
+  relatedCalculators={relatedCalculators}
+  faqs={faqs}
+>
+  <section class="bg-white rounded-2xl shadow-lg p-6">
+    <h1 class="text-2xl font-semibold text-slate-800">{pageTitle}</h1>
+    <p class="text-sm text-slate-500 mt-1">
+      See how inflation erodes purchasing power over time.
+    </p>
+
+    <div class="mt-6 space-y-5">
+      <div>
+        <label for="current-amount" class="block text-sm mb-2 text-slate-600"
+          >Amount Today</label
+        >
+        <div class="relative">
+          <span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
+            >$</span
+          >
+          <input
+            id="current-amount"
+            type="number"
+            step="100"
+            class="w-full bg-white border border-slate-200 rounded-lg py-3 px-4 pl-8 focus:outline-none focus:ring-2 focus:ring-sky-200"
+            placeholder="100"
+          />
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label for="inflation-rate" class="block text-sm mb-2 text-slate-600"
+            >Annual Inflation Rate</label
+          >
+          <div class="relative">
+            <input
+              id="inflation-rate"
+              type="number"
+              step="0.1"
+              class="w-full bg-white border border-slate-200 rounded-lg py-3 px-4 pr-10 focus:outline-none focus:ring-2 focus:ring-sky-200"
+              placeholder="3"
+            />
+            <span
+              class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400"
+              >%</span
+            >
+          </div>
+        </div>
+        <div>
+          <label for="time-years" class="block text-sm mb-2 text-slate-600"
+            >Time Period (Years)</label
+          >
+          <input
+            id="time-years"
+            type="number"
+            step="1"
+            class="w-full bg-white border border-slate-200 rounded-lg py-3 px-4 focus:outline-none focus:ring-2 focus:ring-sky-200"
+            placeholder="20"
+          />
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4">
+        <div class="bg-orange-50 rounded-lg p-4">
+          <label class="block text-sm text-slate-600 mb-1"
+            >Future Purchasing Power</label
+          >
+          <div id="future-power" class="text-2xl font-bold text-orange-600">
+            $0
+          </div>
+          <p class="text-xs text-slate-500 mt-1">
+            What today's amount will buy in the future
+          </p>
+        </div>
+        <div class="bg-red-50 rounded-lg p-4">
+          <label class="block text-sm text-slate-600 mb-1"
+            >Purchasing Power Lost</label
+          >
+          <div id="power-lost" class="text-2xl font-bold text-red-600">$0</div>
+          <p class="text-xs text-slate-500 mt-1">Value eroded by inflation</p>
+        </div>
+      </div>
+
+      <div class="bg-sky-50 rounded-lg p-4">
+        <label class="block text-sm text-slate-600 mb-1"
+          >Equivalent Future Amount Needed</label
+        >
+        <div id="future-equivalent" class="text-2xl font-bold text-sky-600">
+          $0
+        </div>
+        <p class="text-xs text-slate-500 mt-1">
+          How much you'll need to maintain same purchasing power
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Inflation Table -->
+  <section class="bg-white rounded-2xl shadow-lg p-6 mt-6">
+    <h2 class="text-xl font-semibold text-slate-800">Inflation Over Time</h2>
+    <div class="overflow-x-auto mt-4">
+      <table class="w-full text-sm">
+        <thead>
+          <tr class="border-b border-slate-200">
+            <th class="text-left py-2 px-3 font-medium text-slate-600">Year</th>
+            <th class="text-right py-2 px-3 font-medium text-slate-600"
+              >Purchasing Power</th
+            >
+            <th class="text-right py-2 px-3 font-medium text-slate-600"
+              >% Remaining</th
+            >
+            <th class="text-right py-2 px-3 font-medium text-slate-600"
+              >Equivalent Needed</th
+            >
+          </tr>
+        </thead>
+        <tbody id="inflation-table"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <script>
+    const currentAmount = document.getElementById(
+      "current-amount",
+    ) as HTMLInputElement;
+    const inflationRate = document.getElementById(
+      "inflation-rate",
+    ) as HTMLInputElement;
+    const timeYears = document.getElementById("time-years") as HTMLInputElement;
+
+    const futurePowerEl = document.getElementById("future-power");
+    const powerLostEl = document.getElementById("power-lost");
+    const futureEquivalentEl = document.getElementById("future-equivalent");
+    const inflationTable = document.getElementById("inflation-table");
+
+    function formatCurrency(v: number) {
+      return new Intl.NumberFormat("en-US", {
+        style: "currency",
+        currency: "USD",
+        maximumFractionDigits: 2,
+      }).format(v);
+    }
+
+    function calculate() {
+      const amount = parseFloat(currentAmount.value) || 0;
+      const rate = parseFloat(inflationRate.value) || 0;
+      const years = parseInt(timeYears.value) || 0;
+
+      const r = rate / 100;
+
+      // Future purchasing power (in today's dollars)
+      const futurePower = amount / Math.pow(1 + r, years);
+      const powerLost = amount - futurePower;
+
+      // Equivalent needed to maintain purchasing power
+      const futureEquivalent = amount * Math.pow(1 + r, years);
+
+      if (futurePowerEl)
+        futurePowerEl.textContent = formatCurrency(futurePower);
+      if (powerLostEl) powerLostEl.textContent = formatCurrency(powerLost);
+      if (futureEquivalentEl)
+        futureEquivalentEl.textContent = formatCurrency(futureEquivalent);
+
+      // Build table
+      if (inflationTable) {
+        inflationTable.innerHTML = "";
+        const intervals = [1, 5, 10, 15, 20, 25, 30].filter((y) => y <= years);
+        if (!intervals.includes(years) && years > 0) intervals.push(years);
+        intervals.sort((a, b) => a - b);
+
+        for (const y of intervals) {
+          const pp = amount / Math.pow(1 + r, y);
+          const pct = (pp / amount) * 100;
+          const equiv = amount * Math.pow(1 + r, y);
+
+          const row = document.createElement("tr");
+          row.className = "border-b border-slate-100";
+          row.innerHTML = `
+            <td class="py-2 px-3">${y}</td>
+            <td class="py-2 px-3 text-right text-orange-600">${formatCurrency(pp)}</td>
+            <td class="py-2 px-3 text-right">${pct.toFixed(1)}%</td>
+            <td class="py-2 px-3 text-right text-sky-600">${formatCurrency(equiv)}</td>
+          `;
+          inflationTable.appendChild(row);
+        }
+      }
+    }
+
+    [currentAmount, inflationRate, timeYears].forEach((el) =>
+      el.addEventListener("input", calculate),
+    );
+
+    currentAmount.value = "100";
+    inflationRate.value = "3";
+    timeYears.value = "20";
+    calculate();
+  </script>
+</CalculatorLayout>

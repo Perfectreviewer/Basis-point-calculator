@@ -1,0 +1,193 @@
+---
+import Layout from "@theme/layouts/Layout.astro";
+import {
+  getTranslations,
+  type Locale,
+  getLocalizedUrl,
+} from "@theme/i18n/utils";
+
+export function getStaticPaths() {
+  return [
+    { params: { lang: undefined } },
+    { params: { lang: "en" } },
+    { params: { lang: "es" } },
+    { params: { lang: "fr" } },
+    { params: { lang: "de" } },
+  ];
+}
+
+const locale = (Astro.params.lang || "en") as Locale;
+const t = getTranslations(locale);
+
+const pageTitle = "Legal Information | BasisPointCalculator.com";
+const pageDescription =
+  "Privacy policy, terms of service, disclaimers, and legal information for BasisPointCalculator.com. We believe in transparency and protecting your rights.";
+
+const links = [
+  {
+    title: "Privacy Policy",
+    url: "/legal/privacy-policy/",
+    icon: "🔒",
+    description:
+      "How we collect, use, and protect your information. Spoiler: we don't collect much.",
+    color: "sky",
+    updated: "2026-01-15",
+  },
+  {
+    title: "Terms & Conditions",
+    url: "/legal/terms-and-conditions/",
+    icon: "📜",
+    description:
+      "The rules and guidelines for using BasisPointCalculator.com and its calculators.",
+    color: "green",
+    updated: "2026-01-15",
+  },
+  {
+    title: "Disclaimer",
+    url: "/legal/disclaimer/",
+    icon: "⚠️",
+    description:
+      "Important notices about our calculations and limitations of our tools.",
+    color: "orange",
+    updated: "2026-01-15",
+  },
+];
+
+const colorClasses: Record<string, string> = {
+  sky: "bg-sky-50 border-sky-200 hover:border-sky-400",
+  green: "bg-green-50 border-green-200 hover:border-green-400",
+  orange: "bg-orange-50 border-orange-200 hover:border-orange-400",
+};
+
+const rights = [
+  {
+    icon: "🔒",
+    title: "Your Data Stays Local",
+    description:
+      "All calculator inputs are processed in your browser. We never transmit, store, or sell your financial data.",
+  },
+  {
+    icon: "🚫",
+    title: "No Tracking Cookies",
+    description:
+      "We use minimal analytics to improve the site. We do not use tracking cookies or sell data to advertisers.",
+  },
+  {
+    icon: "📧",
+    title: "Right to Contact",
+    description:
+      "You can always reach out with questions about our policies or request information about any data we hold.",
+  },
+  {
+    icon: "⚖️",
+    title: "Educational Use Only",
+    description:
+      "Our tools are for educational purposes. We are not licensed financial advisors and our tools do not constitute financial advice.",
+  },
+];
+---
+
+<Layout title={pageTitle} description={pageDescription}>
+  <!-- Hero -->
+  <section class="text-center mb-12">
+    <nav class="text-sm text-slate-500 mb-6" aria-label="Breadcrumb">
+      <a href={getLocalizedUrl("/", locale)} class="hover:text-sky-600">Home</a>
+      <span class="mx-2">›</span>
+      <span class="text-slate-700">Legal</span>
+    </nav>
+    <h1 class="text-4xl font-bold text-slate-800 mb-4">Legal Information</h1>
+    <p class="text-lg text-slate-600 max-w-3xl mx-auto">
+      We believe in transparency. Here you'll find our full legal policies,
+      written in plain language whenever possible.
+    </p>
+  </section>
+
+  <!-- Transparency Statement -->
+  <section class="bg-white rounded-2xl shadow-lg p-8 mb-8">
+    <h2 class="text-xl font-semibold text-slate-800 mb-4">
+      Our Commitment to Transparency
+    </h2>
+    <div class="text-slate-600 space-y-3 text-sm leading-relaxed">
+      <p>
+        BasisPointCalculator.com is built on trust. We provide free financial tools
+        because we believe access to accurate calculations shouldn't cost money.
+        In return, we're upfront about how the site works, what we do (and
+        don't) collect, and the limitations of our tools.
+      </p>
+      <p>
+        Our legal pages are written to be as clear as possible. If anything is
+        confusing, <a
+          href={getLocalizedUrl("/about/contact/", locale)}
+          class="text-sky-600 hover:underline">contact us</a
+        > and we'll explain it in plain language.
+      </p>
+    </div>
+  </section>
+
+  <!-- Policy Cards -->
+  <section class="mb-10">
+    <h2 class="text-2xl font-bold text-slate-800 mb-6">Our Policies</h2>
+    <div class="grid gap-4">
+      {
+        links.map((link) => (
+          <a
+            href={getLocalizedUrl(link.url, locale)}
+            class={`flex items-center gap-4 p-6 rounded-xl border-2 transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5 ${colorClasses[link.color]}`}
+          >
+            <span class="text-4xl">{link.icon}</span>
+            <div class="flex-1">
+              <h3 class="font-semibold text-slate-800 text-lg">{link.title}</h3>
+              <p class="text-sm text-slate-600 mt-1">{link.description}</p>
+              <p class="text-xs text-slate-400 mt-2">
+                Last updated: {link.updated}
+              </p>
+            </div>
+            <svg
+              class="w-5 h-5 text-slate-400 shrink-0"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M9 5l7 7-7 7"
+              />
+            </svg>
+          </a>
+        ))
+      }
+    </div>
+  </section>
+
+  <!-- Your Rights -->
+  <section class="bg-white rounded-2xl shadow-lg p-8 mb-8">
+    <h2 class="text-xl font-semibold text-slate-800 mb-6">
+      Your Rights at a Glance
+    </h2>
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+      {
+        rights.map((right) => (
+          <div class="flex items-start gap-3">
+            <span class="text-2xl">{right.icon}</span>
+            <div>
+              <h3 class="font-medium text-slate-800">{right.title}</h3>
+              <p class="text-sm text-slate-600 mt-0.5">{right.description}</p>
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section class="bg-slate-50 rounded-xl p-6 text-sm text-slate-600">
+    <p>
+      If you have questions about our legal policies, please <a
+        href={getLocalizedUrl("/about/contact/", locale)}
+        class="text-sky-600 hover:underline">contact us</a
+      >. We're happy to clarify anything.
+    </p>
+  </section>
+</Layout>

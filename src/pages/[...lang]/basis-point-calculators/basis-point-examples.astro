@@ -1,0 +1,369 @@
+---
+import CalculatorLayout, {
+  getStaticPaths as getStaticPathsCalc,
+} from "@theme/layouts/CalculatorLayout.astro";
+import { getTranslations, type Locale } from "@theme/i18n/utils";
+
+export const getStaticPaths = getStaticPathsCalc;
+
+const locale = (Astro.params.lang || "en") as Locale;
+const t = getTranslations(locale);
+
+const pageTitle = t.bp_examples_title || "Basis Point Examples";
+const pageDescription =
+  t.bp_examples_desc ||
+  "Comprehensive reference table of basis point examples with conversions to percentage, decimal, and real-world applications.";
+
+const relatedCalculators = [
+  {
+    name: t.bp_to_pct_title || "Basis Points to Percentage",
+    url: "/basis-point-calculators/basis-point-to-percentage/",
+  },
+  {
+    name: t.pct_to_bp_title || "Percentage to Basis Points",
+    url: "/basis-point-calculators/percentage-to-basis-point/",
+  },
+  {
+    name: t.bp_change_title || "Basis Point Change Calculator",
+    url: "/basis-point-calculators/basis-point-change-calculator/",
+  },
+];
+
+const faqs = t.bp_examples_faqs || [
+  {
+    question: "What are the most common basis point increments?",
+    answer:
+      "Central banks typically move rates in 25 basis point (0.25%) increments. 50 basis points (0.50%) is considered a larger move, while 75 bps is aggressive.",
+  },
+  {
+    question: "How do I quickly estimate basis points?",
+    answer:
+      "Remember that 100 bps = 1%. So 25 bps is a quarter percent, 50 bps is half a percent, and 10 bps is one-tenth of a percent.",
+  },
+  {
+    question: "What is the smallest basis point change that matters?",
+    answer:
+      "Even 1 basis point (0.01%) can be significant on large amounts. On a $1 million loan, 1 bps equals $100 per year in interest.",
+  },
+];
+---
+
+<CalculatorLayout
+  title={pageTitle}
+  description={pageDescription}
+  calculatorType="reference"
+  relatedCalculators={relatedCalculators}
+  faqs={faqs}
+>
+  <section class="bg-white rounded-2xl shadow-lg p-6">
+    <h1 class="text-2xl font-semibold text-slate-800">{pageTitle}</h1>
+    <p class="text-sm text-slate-500 mt-1">
+      {
+        t.bp_examples_subtitle ||
+          "Complete reference table for basis point conversions and examples."
+      }
+    </p>
+
+    <!-- Quick Reference Cards -->
+    <div class="mt-6 grid grid-cols-2 sm:grid-cols-4 gap-4">
+      <div class="bg-sky-50 rounded-lg p-4 text-center">
+        <div class="text-2xl font-bold text-sky-700">1 bps</div>
+        <div class="text-sm text-slate-600 mt-1">= 0.01%</div>
+      </div>
+      <div class="bg-sky-50 rounded-lg p-4 text-center">
+        <div class="text-2xl font-bold text-sky-700">10 bps</div>
+        <div class="text-sm text-slate-600 mt-1">= 0.10%</div>
+      </div>
+      <div class="bg-sky-50 rounded-lg p-4 text-center">
+        <div class="text-2xl font-bold text-sky-700">100 bps</div>
+        <div class="text-sm text-slate-600 mt-1">= 1.00%</div>
+      </div>
+      <div class="bg-sky-50 rounded-lg p-4 text-center">
+        <div class="text-2xl font-bold text-sky-700">1000 bps</div>
+        <div class="text-sm text-slate-600 mt-1">= 10.00%</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Comprehensive Reference Table -->
+  <section class="bg-white rounded-2xl shadow-lg p-6 mt-6">
+    <h2 class="text-xl font-semibold text-slate-800">
+      {t.complete_reference || "Complete Basis Point Reference Table"}
+    </h2>
+    <div class="mt-4 overflow-x-auto">
+      <table class="w-full text-sm">
+        <thead>
+          <tr class="border-b border-slate-200 bg-slate-50">
+            <th class="text-left py-3 px-3 font-medium text-slate-600"
+              >{t.basis_points || "Basis Points"}</th
+            >
+            <th class="text-left py-3 px-3 font-medium text-slate-600"
+              >{t.percent || "Percentage"}</th
+            >
+            <th class="text-left py-3 px-3 font-medium text-slate-600"
+              >{t.decimal_value || "Decimal"}</th
+            >
+            <th
+              class="text-left py-3 px-3 font-medium text-slate-600 hidden sm:table-cell"
+              >{t.per_million || "Per $1M"}</th
+            >
+          </tr>
+        </thead>
+        <tbody class="text-slate-700">
+          <tr class="border-b border-slate-100"
+            ><td class="py-2 px-3 font-medium">1 bps</td><td class="py-2 px-3"
+              >0.01%</td
+            ><td class="py-2 px-3">0.0001</td><td
+              class="py-2 px-3 hidden sm:table-cell">$100</td
+            ></tr
+          >
+          <tr class="border-b border-slate-100"
+            ><td class="py-2 px-3 font-medium">2 bps</td><td class="py-2 px-3"
+              >0.02%</td
+            ><td class="py-2 px-3">0.0002</td><td
+              class="py-2 px-3 hidden sm:table-cell">$200</td
+            ></tr
+          >
+          <tr class="border-b border-slate-100"
+            ><td class="py-2 px-3 font-medium">5 bps</td><td class="py-2 px-3"
+              >0.05%</td
+            ><td class="py-2 px-3">0.0005</td><td
+              class="py-2 px-3 hidden sm:table-cell">$500</td
+            ></tr
+          >
+          <tr class="border-b border-slate-100 bg-sky-50"
+            ><td class="py-2 px-3 font-medium">10 bps</td><td class="py-2 px-3"
+              >0.10%</td
+            ><td class="py-2 px-3">0.001</td><td
+              class="py-2 px-3 hidden sm:table-cell">$1,000</td
+            ></tr
+          >
+          <tr class="border-b border-slate-100"
+            ><td class="py-2 px-3 font-medium">15 bps</td><td class="py-2 px-3"
+              >0.15%</td
+            ><td class="py-2 px-3">0.0015</td><td
+              class="py-2 px-3 hidden sm:table-cell">$1,500</td
+            ></tr
+          >
+          <tr class="border-b border-slate-100"
+            ><td class="py-2 px-3 font-medium">20 bps</td><td class="py-2 px-3"
+              >0.20%</td
+            ><td class="py-2 px-3">0.002</td><td
+              class="py-2 px-3 hidden sm:table-cell">$2,000</td
+            ></tr
+          >
+          <tr class="border-b border-slate-100 bg-green-50"
+            ><td class="py-2 px-3 font-medium">25 bps</td><td class="py-2 px-3"
+              >0.25%</td
+            ><td class="py-2 px-3">0.0025</td><td
+              class="py-2 px-3 hidden sm:table-cell">$2,500</td
+            ></tr
+          >
+          <tr class="border-b border-slate-100"
+            ><td class="py-2 px-3 font-medium">30 bps</td><td class="py-2 px-3"
+              >0.30%</td
+            ><td class="py-2 px-3">0.003</td><td
+              class="py-2 px-3 hidden sm:table-cell">$3,000</td
+            ></tr
+          >
+          <tr class="border-b border-slate-100"
+            ><td class="py-2 px-3 font-medium">40 bps</td><td class="py-2 px-3"
+              >0.40%</td
+            ><td class="py-2 px-3">0.004</td><td
+              class="py-2 px-3 hidden sm:table-cell">$4,000</td
+            ></tr
+          >
+          <tr class="border-b border-slate-100 bg-green-50"
+            ><td class="py-2 px-3 font-medium">50 bps</td><td class="py-2 px-3"
+              >0.50%</td
+            ><td class="py-2 px-3">0.005</td><td
+              class="py-2 px-3 hidden sm:table-cell">$5,000</td
+            ></tr
+          >
+          <tr class="border-b border-slate-100"
+            ><td class="py-2 px-3 font-medium">60 bps</td><td class="py-2 px-3"
+              >0.60%</td
+            ><td class="py-2 px-3">0.006</td><td
+              class="py-2 px-3 hidden sm:table-cell">$6,000</td
+            ></tr
+          >
+          <tr class="border-b border-slate-100 bg-orange-50"
+            ><td class="py-2 px-3 font-medium">75 bps</td><td class="py-2 px-3"
+              >0.75%</td
+            ><td class="py-2 px-3">0.0075</td><td
+              class="py-2 px-3 hidden sm:table-cell">$7,500</td
+            ></tr
+          >
+          <tr class="border-b border-slate-100"
+            ><td class="py-2 px-3 font-medium">80 bps</td><td class="py-2 px-3"
+              >0.80%</td
+            ><td class="py-2 px-3">0.008</td><td
+              class="py-2 px-3 hidden sm:table-cell">$8,000</td
+            ></tr
+          >
+          <tr class="border-b border-slate-100"
+            ><td class="py-2 px-3 font-medium">90 bps</td><td class="py-2 px-3"
+              >0.90%</td
+            ><td class="py-2 px-3">0.009</td><td
+              class="py-2 px-3 hidden sm:table-cell">$9,000</td
+            ></tr
+          >
+          <tr class="border-b border-slate-100 bg-sky-50"
+            ><td class="py-2 px-3 font-medium">100 bps</td><td class="py-2 px-3"
+              >1.00%</td
+            ><td class="py-2 px-3">0.01</td><td
+              class="py-2 px-3 hidden sm:table-cell">$10,000</td
+            ></tr
+          >
+          <tr class="border-b border-slate-100"
+            ><td class="py-2 px-3 font-medium">125 bps</td><td class="py-2 px-3"
+              >1.25%</td
+            ><td class="py-2 px-3">0.0125</td><td
+              class="py-2 px-3 hidden sm:table-cell">$12,500</td
+            ></tr
+          >
+          <tr class="border-b border-slate-100"
+            ><td class="py-2 px-3 font-medium">150 bps</td><td class="py-2 px-3"
+              >1.50%</td
+            ><td class="py-2 px-3">0.015</td><td
+              class="py-2 px-3 hidden sm:table-cell">$15,000</td
+            ></tr
+          >
+          <tr class="border-b border-slate-100"
+            ><td class="py-2 px-3 font-medium">175 bps</td><td class="py-2 px-3"
+              >1.75%</td
+            ><td class="py-2 px-3">0.0175</td><td
+              class="py-2 px-3 hidden sm:table-cell">$17,500</td
+            ></tr
+          >
+          <tr class="border-b border-slate-100 bg-sky-50"
+            ><td class="py-2 px-3 font-medium">200 bps</td><td class="py-2 px-3"
+              >2.00%</td
+            ><td class="py-2 px-3">0.02</td><td
+              class="py-2 px-3 hidden sm:table-cell">$20,000</td
+            ></tr
+          >
+          <tr class="border-b border-slate-100"
+            ><td class="py-2 px-3 font-medium">250 bps</td><td class="py-2 px-3"
+              >2.50%</td
+            ><td class="py-2 px-3">0.025</td><td
+              class="py-2 px-3 hidden sm:table-cell">$25,000</td
+            ></tr
+          >
+          <tr class="border-b border-slate-100"
+            ><td class="py-2 px-3 font-medium">300 bps</td><td class="py-2 px-3"
+              >3.00%</td
+            ><td class="py-2 px-3">0.03</td><td
+              class="py-2 px-3 hidden sm:table-cell">$30,000</td
+            ></tr
+          >
+          <tr class="border-b border-slate-100"
+            ><td class="py-2 px-3 font-medium">400 bps</td><td class="py-2 px-3"
+              >4.00%</td
+            ><td class="py-2 px-3">0.04</td><td
+              class="py-2 px-3 hidden sm:table-cell">$40,000</td
+            ></tr
+          >
+          <tr class="border-b border-slate-100 bg-sky-50"
+            ><td class="py-2 px-3 font-medium">500 bps</td><td class="py-2 px-3"
+              >5.00%</td
+            ><td class="py-2 px-3">0.05</td><td
+              class="py-2 px-3 hidden sm:table-cell">$50,000</td
+            ></tr
+          >
+          <tr
+            ><td class="py-2 px-3 font-medium">1000 bps</td><td
+              class="py-2 px-3">10.00%</td
+            ><td class="py-2 px-3">0.10</td><td
+              class="py-2 px-3 hidden sm:table-cell">$100,000</td
+            ></tr
+          >
+        </tbody>
+      </table>
+    </div>
+    <p class="text-xs text-slate-500 mt-3">
+      * "Per $1M" column shows the annual interest/cost for $1,000,000 at that
+      rate
+    </p>
+  </section>
+
+  <!-- Real-World Examples -->
+  <section class="bg-white rounded-2xl shadow-lg p-6 mt-6">
+    <h2 class="text-xl font-semibold text-slate-800">
+      {t.real_world_examples || "Real-World Examples"}
+    </h2>
+    <div class="mt-4 space-y-4">
+      <div class="p-4 bg-slate-50 rounded-lg">
+        <h3 class="font-medium text-slate-800">
+          {t.central_bank || "Central Bank Rate Decisions"}
+        </h3>
+        <p class="text-sm text-slate-600 mt-1">
+          {
+            t.central_bank_example ||
+              "Central banks like the Federal Reserve typically adjust rates by 25 bps (0.25%). A 50 bps move is considered significant, and 75 bps is aggressive."
+          }
+        </p>
+      </div>
+      <div class="p-4 bg-slate-50 rounded-lg">
+        <h3 class="font-medium text-slate-800">
+          {t.mortgage_rates || "Mortgage Rates"}
+        </h3>
+        <p class="text-sm text-slate-600 mt-1">
+          {
+            t.mortgage_example ||
+              "On a $400,000 mortgage, a 25 bps (0.25%) rate difference equals approximately $55 per month or $660 per year."
+          }
+        </p>
+      </div>
+      <div class="p-4 bg-slate-50 rounded-lg">
+        <h3 class="font-medium text-slate-800">
+          {t.investment_fees || "Investment Fund Fees"}
+        </h3>
+        <p class="text-sm text-slate-600 mt-1">
+          {
+            t.investment_example ||
+              "A low-cost index fund might charge 3 bps (0.03%) while an actively managed fund charges 75 bps (0.75%). On $100,000, that's $30 vs $750 per year."
+          }
+        </p>
+      </div>
+      <div class="p-4 bg-slate-50 rounded-lg">
+        <h3 class="font-medium text-slate-800">
+          {t.credit_spreads || "Credit Spreads"}
+        </h3>
+        <p class="text-sm text-slate-600 mt-1">
+          {
+            t.credit_spread_example ||
+              "Corporate bonds typically trade at a spread of 50-300 basis points above treasury rates, depending on the company's credit rating."
+          }
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Memory Aid -->
+  <section class="bg-white rounded-2xl shadow-lg p-6 mt-6">
+    <h2 class="text-xl font-semibold text-slate-800">
+      {t.memory_aid || "Quick Memory Aid"}
+    </h2>
+    <div class="mt-4 p-4 bg-gradient-to-r from-sky-50 to-indigo-50 rounded-lg">
+      <ul class="space-y-2 text-slate-700">
+        <li class="flex items-center gap-2">
+          <span class="text-2xl">📍</span>
+          <span><strong>1 basis point</strong> = 1/100th of 1% = 0.01%</span>
+        </li>
+        <li class="flex items-center gap-2">
+          <span class="text-2xl">🎯</span>
+          <span><strong>100 basis points</strong> = Exactly 1%</span>
+        </li>
+        <li class="flex items-center gap-2">
+          <span class="text-2xl">➗</span>
+          <span><strong>BPS to %</strong>: Divide by 100</span>
+        </li>
+        <li class="flex items-center gap-2">
+          <span class="text-2xl">✖️</span>
+          <span><strong>% to BPS</strong>: Multiply by 100</span>
+        </li>
+      </ul>
+    </div>
+  </section>
+</CalculatorLayout>

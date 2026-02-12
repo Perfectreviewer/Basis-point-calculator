@@ -1,0 +1,64 @@
+---
+
+---
+
+<form id="contact-form" class="space-y-4 bg-white shadow mt-6 p-6 rounded-xl">
+  <div>
+    <label class="block mb-1 text-slate-700 text-sm" for="name">Your name</label>
+    <input required id="name" name="name" type="text" placeholder="Jane Doe" class="px-4 py-2 border border-slate-200 rounded-lg w-full" />
+  </div>
+
+  <div>
+    <label class="block mb-1 text-slate-700 text-sm" for="email">Email</label>
+    <input required id="email" name="email" type="email" placeholder="you@example.com" class="px-4 py-2 border border-slate-200 rounded-lg w-full" />
+  </div>
+
+  <div>
+    <label class="block mb-1 text-slate-700 text-sm" for="message">Message</label>
+    <textarea required id="message" name="message" rows="6" placeholder="How can we help?" class="px-4 py-2 border border-slate-200 rounded-lg w-full"></textarea>
+  </div>
+
+  <!-- Web3Forms access key -->
+  <input type="hidden" name="access_key" value="919fae56-32cd-4db4-a166-cb45159ae574" />
+
+  <div class="flex justify-between items-center">
+    <button type="submit" class="bg-sky-600 hover:bg-sky-700 px-5 py-2 rounded-lg text-white"> Send </button>
+    <a class="text-sky-600" href="mailto:aleemiqbalbhatti@hotmail.com"> Or email us directly </a>
+  </div>
+
+  <span id="form-result" class="text-slate-600 text-sm"></span>
+</form>
+
+<script is:inline>
+  (function () {
+    const form = document.getElementById('contact-form');
+    const resultEl = document.getElementById('form-result');
+
+    if (!form || !resultEl) return;
+
+    form.addEventListener('submit', async function (event) {
+      event.preventDefault();
+      resultEl.textContent = 'Sending...';
+
+      const formData = new FormData(form);
+
+      try {
+        const response = await fetch('https://api.web3forms.com/submit', {
+          method: 'POST',
+          body: formData,
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+          resultEl.textContent = 'Form submitted successfully.';
+          form.reset();
+        } else {
+          resultEl.textContent = 'Error submitting form. Please try again.';
+        }
+      } catch (error) {
+        resultEl.textContent = 'Network error. Please try again.';
+      }
+    });
+  })();
+</script>

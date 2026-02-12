@@ -1,0 +1,389 @@
+---
+import CalculatorLayout, {
+  getStaticPaths as getStaticPathsCalc,
+} from "@theme/layouts/CalculatorLayout.astro";
+import { getTranslations, type Locale } from "@theme/i18n/utils";
+
+export const getStaticPaths = getStaticPathsCalc;
+
+const locale = (Astro.params.lang || "en") as Locale;
+const t = getTranslations(locale);
+
+const pageTitle = t.bp_guide_title || "The Complete Guide to Basis Points";
+const pageDescription =
+  t.bp_guide_desc ||
+  "Everything you need to know about basis points: definition, calculations, real-world applications, and why they matter in finance.";
+
+const relatedCalculators = [
+  {
+    name: t.bp_to_pct_title || "Basis Points to Percentage",
+    url: "/basis-point-calculators/basis-point-to-percentage/",
+  },
+  {
+    name: t.pct_to_bp_title || "Percentage to Basis Points",
+    url: "/basis-point-calculators/percentage-to-basis-point/",
+  },
+  {
+    name: t.bp_examples_title || "Basis Point Examples",
+    url: "/basis-point-calculators/basis-point-examples/",
+  },
+  {
+    name: t.bp_vs_pct_title || "Basis Points vs Percentage",
+    url: "/basis-point-calculators/basis-point-vs-percentage/",
+  },
+];
+
+const faqs = t.bp_guide_faqs || [
+  {
+    question: "What is a basis point (bps)?",
+    answer:
+      "A basis point is a unit of measure equal to 1/100th of 1 percent (0.01%). It is commonly used in finance to describe small changes in interest rates, yields, and other percentages.",
+  },
+  {
+    question: "Why is it called a 'basis' point?",
+    answer:
+      "The term comes from the 'basis' or 'base' difference between two percentages. It provides a standardized way to discuss the difference or spread between rates.",
+  },
+  {
+    question: "How do you pronounce basis points?",
+    answer:
+      "It's pronounced 'BAY-sis points' and commonly abbreviated as 'bps' (pronounced 'bips'). You might hear 'The Fed raised rates by 25 bips.'",
+  },
+  {
+    question: "Is 1 basis point significant?",
+    answer:
+      "Yes! On large amounts, even 1 basis point matters. On a $10 million portfolio, 1 bps equals $1,000 annually. On a $1 billion bond, it's $100,000 per year.",
+  },
+];
+---
+
+<CalculatorLayout
+  title={pageTitle}
+  description={pageDescription}
+  calculatorType="guide"
+  relatedCalculators={relatedCalculators}
+  faqs={faqs}
+>
+  <!-- Introduction -->
+  <section class="bg-white rounded-2xl shadow-lg p-6">
+    <h1 class="text-2xl font-semibold text-slate-800">{pageTitle}</h1>
+    <p class="text-slate-600 mt-3">
+      {
+        t.bp_guide_intro ||
+          "Basis points (bps) are an essential unit of measure in finance, used to express interest rates, yields, fees, and other percentage-based values with precision. This comprehensive guide covers everything from the basics to advanced applications."
+      }
+    </p>
+
+    <!-- Table of Contents -->
+    <nav class="mt-6 p-4 bg-slate-50 rounded-lg">
+      <h2 class="font-medium text-slate-800 mb-3">
+        {t.table_of_contents || "Table of Contents"}
+      </h2>
+      <ol class="space-y-1 text-sm text-sky-600">
+        <li>
+          <a href="#what-is-bp" class="hover:underline"
+            >{t.toc_what || "1. What is a Basis Point?"}</a>
+        </li>
+        <li>
+          <a href="#why-use-bp" class="hover:underline"
+            >{t.toc_why || "2. Why Use Basis Points?"}</a>
+        </li>
+        <li>
+          <a href="#calculations" class="hover:underline"
+            >{t.toc_calc || "3. Basis Point Calculations"}</a>
+        </li>
+        <li>
+          <a href="#applications" class="hover:underline"
+            >{t.toc_apps || "4. Real-World Applications"}</a>
+        </li>
+        <li>
+          <a href="#history" class="hover:underline"
+            >{t.toc_history || "5. History & Origins"}</a>
+        </li>
+      </ol>
+    </nav>
+  </section>
+
+  <!-- What is a Basis Point -->
+  <section id="what-is-bp" class="bg-white rounded-2xl shadow-lg p-6 mt-6">
+    <h2 class="text-xl font-semibold text-slate-800">
+      {t.section_what || "What is a Basis Point?"}
+    </h2>
+    <div class="mt-4 space-y-4 text-slate-600">
+      <p>
+        {
+          t.what_bp_p1 ||
+            "A basis point (plural: basis points, abbreviated 'bp' or 'bps') is a unit of measure used in finance to describe percentage changes or percentage-point differences."
+        }
+      </p>
+
+      <div class="p-4 bg-sky-50 rounded-lg border border-sky-100">
+        <p class="text-lg font-medium text-sky-800 text-center">
+          {
+            t.bp_definition ||
+              "1 Basis Point = 0.01% = 1/100th of 1% = 0.0001 (decimal)"
+          }
+        </p>
+      </div>
+
+      <p>
+        {
+          t.what_bp_p2 ||
+            "The term 'bps' is often pronounced as 'bips.' When you hear financial news saying 'The Federal Reserve raised rates by 25 bips,' they mean 0.25 percentage points."
+        }
+      </p>
+
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mt-4">
+        <div class="p-3 bg-slate-50 rounded-lg text-center">
+          <div class="text-xl font-bold text-slate-800">1 bps</div>
+          <div class="text-sm text-slate-500">= 0.01%</div>
+        </div>
+        <div class="p-3 bg-slate-50 rounded-lg text-center">
+          <div class="text-xl font-bold text-slate-800">10 bps</div>
+          <div class="text-sm text-slate-500">= 0.10%</div>
+        </div>
+        <div class="p-3 bg-slate-50 rounded-lg text-center">
+          <div class="text-xl font-bold text-slate-800">100 bps</div>
+          <div class="text-sm text-slate-500">= 1.00%</div>
+        </div>
+        <div class="p-3 bg-slate-50 rounded-lg text-center">
+          <div class="text-xl font-bold text-slate-800">1000 bps</div>
+          <div class="text-sm text-slate-500">= 10.00%</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Why Use Basis Points -->
+  <section id="why-use-bp" class="bg-white rounded-2xl shadow-lg p-6 mt-6">
+    <h2 class="text-xl font-semibold text-slate-800">
+      {t.section_why || "Why Use Basis Points?"}
+    </h2>
+    <div class="mt-4 space-y-4 text-slate-600">
+      <p>
+        {
+          t.why_bp_intro ||
+            "There are several compelling reasons why the financial industry adopted basis points as the standard for discussing rate changes:"
+        }
+      </p>
+
+      <div class="space-y-4">
+        <div class="p-4 bg-green-50 rounded-lg border border-green-100">
+          <h3 class="font-medium text-green-800">
+            {t.reason1_title || "1. Eliminates Ambiguity"}
+          </h3>
+          <p class="text-sm mt-1">
+            {
+              t.reason1_text ||
+                "Saying 'the rate increased by 1%' could mean either a relative change (1% of the current rate) or an absolute change (1 percentage point). Basis points always mean absolute change."
+            }
+          </p>
+        </div>
+
+        <div class="p-4 bg-blue-50 rounded-lg border border-blue-100">
+          <h3 class="font-medium text-blue-800">
+            {t.reason2_title || "2. Precision for Small Changes"}
+          </h3>
+          <p class="text-sm mt-1">
+            {
+              t.reason2_text ||
+                "When dealing with interest rates, even tiny changes matter. Saying '15 bps' is cleaner than saying '0.15 percentage points' or '0.0015 in decimal form.'"
+            }
+          </p>
+        </div>
+
+        <div class="p-4 bg-purple-50 rounded-lg border border-purple-100">
+          <h3 class="font-medium text-purple-800">
+            {t.reason3_title || "3. Universal Standard"}
+          </h3>
+          <p class="text-sm mt-1">
+            {
+              t.reason3_text ||
+                "Basis points are understood globally in finance. Whether you're in New York, London, Tokyo, or Mumbai, 25 bps means the same thing."
+            }
+          </p>
+        </div>
+
+        <div class="p-4 bg-orange-50 rounded-lg border border-orange-100">
+          <h3 class="font-medium text-orange-800">
+            {t.reason4_title || "4. Easier Comparisons"}
+          </h3>
+          <p class="text-sm mt-1">
+            {
+              t.reason4_text ||
+                "Comparing spreads, fees, and rates becomes simpler with basis points. 'Fund A charges 20 bps more than Fund B' is immediately clear."
+            }
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Calculations -->
+  <section id="calculations" class="bg-white rounded-2xl shadow-lg p-6 mt-6">
+    <h2 class="text-xl font-semibold text-slate-800">
+      {t.section_calc || "Basis Point Calculations"}
+    </h2>
+    <div class="mt-4 space-y-4 text-slate-600">
+      <h3 class="font-medium text-slate-800">
+        {t.conversion_formulas || "Conversion Formulas"}
+      </h3>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="p-4 bg-slate-50 rounded-lg">
+          <h4 class="font-medium text-slate-700">
+            {t.bp_to_pct || "Basis Points → Percentage"}
+          </h4>
+          <code class="block mt-2 p-2 bg-white rounded text-slate-800"
+            >Percentage = BPS ÷ 100</code
+          >
+          <p class="text-sm text-slate-500 mt-2">
+            Example: 75 bps ÷ 100 = 0.75%
+          </p>
+        </div>
+        <div class="p-4 bg-slate-50 rounded-lg">
+          <h4 class="font-medium text-slate-700">
+            {t.pct_to_bp || "Percentage → Basis Points"}
+          </h4>
+          <code class="block mt-2 p-2 bg-white rounded text-slate-800"
+            >BPS = Percentage × 100</code
+          >
+          <p class="text-sm text-slate-500 mt-2">
+            Example: 0.50% × 100 = 50 bps
+          </p>
+        </div>
+        <div class="p-4 bg-slate-50 rounded-lg">
+          <h4 class="font-medium text-slate-700">
+            {t.bp_to_dec || "Basis Points → Decimal"}
+          </h4>
+          <code class="block mt-2 p-2 bg-white rounded text-slate-800"
+            >Decimal = BPS ÷ 10,000</code
+          >
+          <p class="text-sm text-slate-500 mt-2">
+            Example: 250 bps ÷ 10,000 = 0.025
+          </p>
+        </div>
+        <div class="p-4 bg-slate-50 rounded-lg">
+          <h4 class="font-medium text-slate-700">
+            {t.dec_to_bp || "Decimal → Basis Points"}
+          </h4>
+          <code class="block mt-2 p-2 bg-white rounded text-slate-800"
+            >BPS = Decimal × 10,000</code
+          >
+          <p class="text-sm text-slate-500 mt-2">
+            Example: 0.0075 × 10,000 = 75 bps
+          </p>
+        </div>
+      </div>
+
+      <h3 class="font-medium text-slate-800 mt-6">
+        {t.value_calc || "Calculating Dollar Value"}
+      </h3>
+      <div class="p-4 bg-slate-50 rounded-lg">
+        <code class="block p-2 bg-white rounded text-slate-800"
+          >Dollar Impact = Principal × (BPS ÷ 10,000)</code
+        >
+        <p class="text-sm text-slate-500 mt-2">
+          Example: On a $500,000 loan, 25 bps = $500,000 × 0.0025 = $1,250 per
+          year
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Applications -->
+  <section id="applications" class="bg-white rounded-2xl shadow-lg p-6 mt-6">
+    <h2 class="text-xl font-semibold text-slate-800">
+      {t.section_apps || "Real-World Applications"}
+    </h2>
+    <div class="mt-4 space-y-4">
+      <div class="p-4 bg-slate-50 rounded-lg">
+        <h3 class="font-medium text-slate-800">
+          {t.app_central_banks || "Central Bank Policy"}
+        </h3>
+        <p class="text-sm text-slate-600 mt-1">
+          {
+            t.app_central_banks_text ||
+              "The Federal Reserve, ECB, Bank of England, and other central banks adjust interest rates in basis point increments—typically 25, 50, or 75 bps at a time."
+          }
+        </p>
+      </div>
+      <div class="p-4 bg-slate-50 rounded-lg">
+        <h3 class="font-medium text-slate-800">
+          {t.app_mortgages || "Mortgage Rates"}
+        </h3>
+        <p class="text-sm text-slate-600 mt-1">
+          {
+            t.app_mortgages_text ||
+              "Mortgage lenders quote rates in basis points. A 25 bps difference on a $400,000 mortgage equals roughly $55/month or $660/year."
+          }
+        </p>
+      </div>
+      <div class="p-4 bg-slate-50 rounded-lg">
+        <h3 class="font-medium text-slate-800">
+          {t.app_bonds || "Bond Markets"}
+        </h3>
+        <p class="text-sm text-slate-600 mt-1">
+          {
+            t.app_bonds_text ||
+              "Bond yields, credit spreads, and yield curve movements are all discussed in basis points. The spread between corporate and treasury bonds is often 50-300 bps."
+          }
+        </p>
+      </div>
+      <div class="p-4 bg-slate-50 rounded-lg">
+        <h3 class="font-medium text-slate-800">
+          {t.app_funds || "Investment Funds"}
+        </h3>
+        <p class="text-sm text-slate-600 mt-1">
+          {
+            t.app_funds_text ||
+              "Expense ratios for ETFs and mutual funds are quoted in basis points. A low-cost index fund might charge 3-10 bps, while actively managed funds charge 50-150 bps."
+          }
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- History -->
+  <section id="history" class="bg-white rounded-2xl shadow-lg p-6 mt-6">
+    <h2 class="text-xl font-semibold text-slate-800">
+      {t.section_history || "History & Origins"}
+    </h2>
+    <div class="mt-4 text-slate-600 space-y-3">
+      <p>
+        {
+          t.history_p1 ||
+            "The term 'basis point' originated in the bond trading world. The 'basis' refers to the spread or difference between two interest rates. Over time, the term became standardized across all of finance."
+        }
+      </p>
+      <p>
+        {
+          t.history_p2 ||
+            "As financial markets became more sophisticated and required greater precision, the need for a standardized small unit of measurement grew. Basis points filled this need perfectly."
+        }
+      </p>
+      <p>
+        {
+          t.history_p3 ||
+            "Today, basis points are universally used in banking, investments, real estate finance, and central bank communications worldwide."
+        }
+      </p>
+    </div>
+  </section>
+
+  <!-- Summary Box -->
+  <section
+    class="bg-gradient-to-r from-sky-500 to-indigo-500 rounded-2xl shadow-lg p-6 mt-6 text-white"
+  >
+    <h2 class="text-xl font-semibold">{t.summary || "Summary"}</h2>
+    <ul class="mt-4 space-y-2 text-sm">
+      <li>✓ {t.summary1 || "1 basis point = 0.01% = 0.0001 decimal"}</li>
+      <li>✓ {t.summary2 || "100 basis points = 1 percentage point"}</li>
+      <li>✓ {t.summary3 || "Divide bps by 100 to get percentage"}</li>
+      <li>✓ {t.summary4 || "Multiply percentage by 100 to get bps"}</li>
+      <li>
+        ✓ {t.summary5 || "Used globally in finance for precision and clarity"}
+      </li>
+    </ul>
+  </section>
+</CalculatorLayout>

@@ -1,0 +1,287 @@
+---
+import CalculatorLayout, {
+  getStaticPaths as getStaticPathsCalc,
+} from "@theme/layouts/CalculatorLayout.astro";
+import { getTranslations, type Locale } from "@theme/i18n/utils";
+
+export const getStaticPaths = getStaticPathsCalc;
+
+const locale = (Astro.params.lang || "en") as Locale;
+const t = getTranslations(locale);
+
+const pageTitle = t.auto_loan_title || "Auto Loan Calculator";
+const pageDescription =
+  t.auto_loan_desc ||
+  "Calculate your monthly car payment and total cost of financing a vehicle.";
+
+const relatedCalculators = [
+  {
+    name: t.loan_payment_title || "Loan Payment Calculator",
+    url: "/loan-calculators/loan-payment-calculator/",
+  },
+  {
+    name: t.personal_loan_title || "Personal Loan Calculator",
+    url: "/loan-calculators/personal-loan-calculator/",
+  },
+  {
+    name: t.simple_interest_title || "Simple Interest Calculator",
+    url: "/interest-rate-calculators/simple-interest-calculator/",
+  },
+];
+
+const faqs = [
+  {
+    question: "What's a good auto loan rate?",
+    answer:
+      "Auto loan rates vary based on credit score, loan term, and whether the car is new or used. Excellent credit can get rates under 5%.",
+  },
+  {
+    question: "Should I choose a longer loan term?",
+    answer:
+      "Longer terms mean lower monthly payments but more total interest. A 60-month term is often a good balance.",
+  },
+  {
+    question: "Does down payment matter?",
+    answer:
+      "A larger down payment reduces your loan amount, resulting in lower monthly payments and less interest over time.",
+  },
+];
+---
+
+<CalculatorLayout
+  title={pageTitle}
+  description={pageDescription}
+  calculatorType="loan"
+  relatedCalculators={relatedCalculators}
+  faqs={faqs}
+>
+  <section class="bg-white rounded-2xl shadow-lg p-6">
+    <h1 class="text-2xl font-semibold text-slate-800">{pageTitle}</h1>
+    <p class="text-sm text-slate-500 mt-1">
+      Estimate your monthly car payment and total financing cost.
+    </p>
+
+    <div class="mt-6 space-y-5">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label for="vehicle-price" class="block text-sm mb-2 text-slate-600"
+            >Vehicle Price</label
+          >
+          <div class="relative">
+            <span
+              class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
+              >$</span
+            >
+            <input
+              id="vehicle-price"
+              type="number"
+              step="1000"
+              class="w-full bg-white border border-slate-200 rounded-lg py-3 px-4 pl-8 focus:outline-none focus:ring-2 focus:ring-sky-200"
+              placeholder="35000"
+            />
+          </div>
+        </div>
+        <div>
+          <label for="down-payment" class="block text-sm mb-2 text-slate-600"
+            >Down Payment</label
+          >
+          <div class="relative">
+            <span
+              class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
+              >$</span
+            >
+            <input
+              id="down-payment"
+              type="number"
+              step="500"
+              class="w-full bg-white border border-slate-200 rounded-lg py-3 px-4 pl-8 focus:outline-none focus:ring-2 focus:ring-sky-200"
+              placeholder="5000"
+            />
+          </div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label for="trade-in" class="block text-sm mb-2 text-slate-600"
+            >Trade-in Value <span class="text-slate-400">(optional)</span
+            ></label
+          >
+          <div class="relative">
+            <span
+              class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
+              >$</span
+            >
+            <input
+              id="trade-in"
+              type="number"
+              step="500"
+              class="w-full bg-white border border-slate-200 rounded-lg py-3 px-4 pl-8 focus:outline-none focus:ring-2 focus:ring-sky-200"
+              placeholder="0"
+            />
+          </div>
+        </div>
+        <div>
+          <label for="sales-tax" class="block text-sm mb-2 text-slate-600"
+            >Sales Tax Rate</label
+          >
+          <div class="relative">
+            <input
+              id="sales-tax"
+              type="number"
+              step="0.1"
+              class="w-full bg-white border border-slate-200 rounded-lg py-3 px-4 pr-10 focus:outline-none focus:ring-2 focus:ring-sky-200"
+              placeholder="7"
+            />
+            <span
+              class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400"
+              >%</span
+            >
+          </div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label for="interest-rate" class="block text-sm mb-2 text-slate-600"
+            >Interest Rate (APR)</label
+          >
+          <div class="relative">
+            <input
+              id="interest-rate"
+              type="number"
+              step="0.1"
+              class="w-full bg-white border border-slate-200 rounded-lg py-3 px-4 pr-10 focus:outline-none focus:ring-2 focus:ring-sky-200"
+              placeholder="6.5"
+            />
+            <span
+              class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400"
+              >%</span
+            >
+          </div>
+        </div>
+        <div>
+          <label for="loan-term" class="block text-sm mb-2 text-slate-600"
+            >Loan Term</label
+          >
+          <select
+            id="loan-term"
+            class="w-full bg-white border border-slate-200 rounded-lg py-3 px-4"
+          >
+            <option value="36">36 months (3 years)</option>
+            <option value="48">48 months (4 years)</option>
+            <option value="60" selected>60 months (5 years)</option>
+            <option value="72">72 months (6 years)</option>
+            <option value="84">84 months (7 years)</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Results -->
+      <div class="bg-gradient-to-r from-sky-50 to-blue-50 rounded-xl p-6 mt-6">
+        <div class="text-center mb-4">
+          <span class="text-sm text-slate-600">Monthly Payment</span>
+          <div
+            id="monthly-payment"
+            class="text-4xl font-bold text-sky-600 mt-1"
+          >
+            $0
+          </div>
+        </div>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+          <div class="bg-white rounded-lg p-3">
+            <div class="text-xs text-slate-500">Loan Amount</div>
+            <div id="loan-amount" class="font-semibold text-slate-800">$0</div>
+          </div>
+          <div class="bg-white rounded-lg p-3">
+            <div class="text-xs text-slate-500">Sales Tax</div>
+            <div id="tax-amount" class="font-semibold text-slate-800">$0</div>
+          </div>
+          <div class="bg-white rounded-lg p-3">
+            <div class="text-xs text-slate-500">Total Interest</div>
+            <div id="total-interest" class="font-semibold text-orange-600">
+              $0
+            </div>
+          </div>
+          <div class="bg-white rounded-lg p-3">
+            <div class="text-xs text-slate-500">Total Cost</div>
+            <div id="total-cost" class="font-semibold text-purple-600">$0</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    const vehiclePrice = document.getElementById(
+      "vehicle-price",
+    ) as HTMLInputElement;
+    const downPayment = document.getElementById(
+      "down-payment",
+    ) as HTMLInputElement;
+    const tradeIn = document.getElementById("trade-in") as HTMLInputElement;
+    const salesTax = document.getElementById("sales-tax") as HTMLInputElement;
+    const rateInput = document.getElementById(
+      "interest-rate",
+    ) as HTMLInputElement;
+    const termSelect = document.getElementById(
+      "loan-term",
+    ) as HTMLSelectElement;
+
+    const monthlyEl = document.getElementById("monthly-payment");
+    const loanAmountEl = document.getElementById("loan-amount");
+    const taxAmountEl = document.getElementById("tax-amount");
+    const totalInterestEl = document.getElementById("total-interest");
+    const totalCostEl = document.getElementById("total-cost");
+
+    function formatCurrency(v: number) {
+      return new Intl.NumberFormat("en-US", {
+        style: "currency",
+        currency: "USD",
+        maximumFractionDigits: 0,
+      }).format(v);
+    }
+
+    function calculate() {
+      const price = parseFloat(vehiclePrice.value) || 0;
+      const down = parseFloat(downPayment.value) || 0;
+      const trade = parseFloat(tradeIn.value) || 0;
+      const taxRate = (parseFloat(salesTax.value) || 0) / 100;
+      const annualRate = parseFloat(rateInput.value) || 0;
+      const months = parseInt(termSelect.value) || 60;
+
+      const taxableAmount = price - trade;
+      const tax = taxableAmount * taxRate;
+      const P = taxableAmount + tax - down;
+      const r = annualRate / 100 / 12;
+      const n = months;
+
+      let monthly = 0;
+      if (P > 0 && r > 0 && n > 0) {
+        monthly = (P * (r * Math.pow(1 + r, n))) / (Math.pow(1 + r, n) - 1);
+      }
+
+      const totalPaid = monthly * n;
+      const totalInterest = totalPaid - P;
+
+      if (monthlyEl) monthlyEl.textContent = formatCurrency(monthly);
+      if (loanAmountEl) loanAmountEl.textContent = formatCurrency(P);
+      if (taxAmountEl) taxAmountEl.textContent = formatCurrency(tax);
+      if (totalInterestEl)
+        totalInterestEl.textContent = formatCurrency(totalInterest);
+      if (totalCostEl) totalCostEl.textContent = formatCurrency(totalPaid);
+    }
+
+    [vehiclePrice, downPayment, tradeIn, salesTax, rateInput].forEach((el) =>
+      el.addEventListener("input", calculate),
+    );
+    termSelect.addEventListener("change", calculate);
+
+    vehiclePrice.value = "35000";
+    downPayment.value = "5000";
+    tradeIn.value = "0";
+    salesTax.value = "7";
+    rateInput.value = "6.5";
+    calculate();
+  </script>
+</CalculatorLayout>

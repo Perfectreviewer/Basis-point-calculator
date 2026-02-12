@@ -1,0 +1,1079 @@
+---
+// Blog Management — WordPress-like Editor with Image Upload
+import AdminLayout from '@admin/components/AdminLayout.astro';
+import { listBlogFiles, readBlogFile, ensureDataDir } from '@admin/utils/storage';
+import { getSessionFromCookies, validateSessionToken } from '@admin/utils/auth';
+import { hasPermission } from '@admin/utils/roles';
+import type { Role } from '@admin/utils/roles';
+
+export const prerender = false;
+
+const session = getSessionFromCookies(Astro.request.headers.get('cookie'));
+let user: any = null;
+if (session) user = await validateSessionToken(session);
+if (!user) return Astro.redirect('/admin/login');
+
+const canWrite = hasPermission(user.role as Role, 'blog:write');
+const canDelete = hasPermission(user.role as Role, 'blog:delete');
+
+ensureDataDir();
+const files = listBlogFiles();
+
+function parseFrontmatter(content: string) {
+  const match = content.match(/^---\n([\s\S]*?)\n---\n([\s\S]*)$/);
+  if (!match) return {};
+  const fm: Record<string, string> = {};
+  for (const line of match[1].split('\n')) {
+    const i = line.indexOf(':');
+    if (i > 0) {
+      const key = line.substring(0, i).trim();
+      let val = line.substring(i + 1).trim();
+      if ((val.startsWith('"') && val.endsWith('"')) || (val.startsWith("'") && val.endsWith("'"))) val = val.slice(1, -1);
+      fm[key] = val;
+    }
+  }
+  return fm;
+}
+
+const posts: any[] = files.map(f => {
+  const content = readBlogFile(f);
+  const fm = parseFrontmatter(content);
+  return { filename: f, ...fm };
+});
+
+// Check if we should open editor
+const url = new URL(Astro.request.url);
+const editFile = url.searchParams.get('edit');
+const isNew = url.searchParams.get('new') === '1';
+const showEditor = editFile || isNew;
+
+let editContent = '';
+let editFrontmatter: Record<string, string> = {};
+if (editFile) {
+  const raw = readBlogFile(editFile);
+  const match = raw.match(/^---\n([\s\S]*?)\n---\n([\s\S]*)$/);
+  if (match) {
+    editFrontmatter = parseFrontmatter(raw);
+    editContent = match[2];
+  }
+}
+---
+
+<AdminLayout title={showEditor ? (editFile ? 'Edit Post' : 'New Post') : 'Blog Posts'} activeNav="blog">
+  {showEditor ? (
+    <!-- WordPress-Like Blog Editor -->
+    <div class="editor-wrap">
+      <div class="editor-topbar mb-24">
+        <a href="/admin/blog/" class="btn-secondary">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 18-6-6 6-6"/></svg>
+          Back to posts
+        </a>
+        <div class="flex items-center gap-12">
+          <div id="saveMsg" style="display: none;"></div>
+          <button type="submit" form="postForm" class="btn-primary" id="saveBtn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><polyline points="17,21 17,13 7,13 7,21"/><polyline points="7,3 7,8 15,8"/></svg>
+            {editFrontmatter.status === 'draft' ? 'Save Draft' : 'Publish'}
+          </button>
+        </div>
+      </div>
+
+      <form id="postForm" class="editor-grid">
+        <!-- Content Editor (main area) -->
+        <div class="editor-main">
+          <!-- Title -->
+          <input type="text" class="title-input" id="postTitle" value={editFrontmatter.title || ''} placeholder="Post title..." required />
+
+          <!-- Content -->
+          <div class="content-card">
+            <div class="content-toolbar">
+              <div class="toolbar-group">
+                <button type="button" class="toolbar-btn" title="Bold" data-insert="**" data-wrap="true"><strong>B</strong></button>
+                <button type="button" class="toolbar-btn" title="Italic" data-insert="*" data-wrap="true"><em>I</em></button>
+                <button type="button" class="toolbar-btn" title="Link" data-insert="[text](url)" data-wrap="false">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>
+                </button>
+                <button type="button" class="toolbar-btn" title="Heading" data-insert="## " data-wrap="false">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12h8M4 18V6M12 18V6M17 10l3 3v1M20 10l-3 3"/></svg>
+                </button>
+                <div class="toolbar-sep"></div>
+                <button type="button" class="toolbar-btn" title="Bullet List" data-insert="- " data-wrap="false">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+                </button>
+                <button type="button" class="toolbar-btn" title="Quote" data-insert="> " data-wrap="false">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21c3 0 7-1 7-8V5c0-1.25-.756-2.017-2-2H4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .008-1 1.031V21z"/><path d="M15 21c3 0 7-1 7-8V5c0-1.25-.757-2.017-2-2h-4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2h.75c0 2.25.25 4-2.75 4v3z"/></svg>
+                </button>
+                <div class="toolbar-sep"></div>
+                <button type="button" class="toolbar-btn" id="insertImageBtn" title="Insert Image">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
+                </button>
+              </div>
+              <span class="toolbar-badge">Markdown</span>
+            </div>
+            <textarea class="form-input content-editor" id="postContent" placeholder="Write your blog post in Markdown...">{editContent}</textarea>
+          </div>
+        </div>
+
+        <!-- Settings Sidebar (WordPress-like panels) -->
+        <div class="editor-sidebar">
+          <!-- Publish Panel -->
+          <div class="settings-panel">
+            <div class="panel-toggle active" data-panel="publish">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><polyline points="17,21 17,13 7,13 7,21"/><polyline points="7,3 7,8 15,8"/></svg>
+              Publish
+              <svg class="chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+            </div>
+            <div class="panel-body" id="panel-publish">
+              <div class="setting-row">
+                <label class="setting-label">Status</label>
+                <select class="form-input setting-input" id="postStatus">
+                  <option value="published" selected={editFrontmatter.status !== 'draft'}>Published</option>
+                  <option value="draft" selected={editFrontmatter.status === 'draft'}>Draft</option>
+                </select>
+              </div>
+              <div class="setting-row">
+                <label class="setting-label">Visibility</label>
+                <select class="form-input setting-input" id="postVisibility">
+                  <option value="public" selected={editFrontmatter.visibility !== 'private'}>Public</option>
+                  <option value="private" selected={editFrontmatter.visibility === 'private'}>Private</option>
+                </select>
+              </div>
+              <div class="setting-row">
+                <label class="setting-label">Date</label>
+                <input type="date" class="form-input setting-input" id="postDate" value={editFrontmatter.date?.split('T')[0] || new Date().toISOString().split('T')[0]} />
+              </div>
+              <div class="setting-row">
+                <label class="setting-label">Slug</label>
+                <input type="text" class="form-input setting-input" id="postSlug" value={editFile?.replace(/\.(md|mdx)$/, '') || ''} placeholder="post-slug" required />
+              </div>
+            </div>
+          </div>
+
+          <!-- Category & Tags Panel -->
+          <div class="settings-panel">
+            <div class="panel-toggle active" data-panel="taxonomy">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+              Categories & Tags
+              <svg class="chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+            </div>
+            <div class="panel-body" id="panel-taxonomy">
+              <div class="setting-row">
+                <label class="setting-label">Category</label>
+                <input type="text" class="form-input setting-input" id="postCategory" value={editFrontmatter.category || ''} placeholder="e.g. Finance" />
+              </div>
+              <div class="setting-row">
+                <label class="setting-label">Tags</label>
+                <input type="text" class="form-input setting-input" id="postTags" value={editFrontmatter.tags || ''} placeholder="tag1, tag2, tag3" />
+                <span class="setting-hint">Comma separated</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Author Panel -->
+          <div class="settings-panel">
+            <div class="panel-toggle active" data-panel="author">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              Author & SEO
+              <svg class="chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+            </div>
+            <div class="panel-body" id="panel-author">
+              <div class="setting-row">
+                <label class="setting-label">Author</label>
+                <input type="text" class="form-input setting-input" id="postAuthor" value={editFrontmatter.author || user.username} placeholder="Author name" />
+              </div>
+              <div class="setting-row">
+                <label class="setting-label">Description</label>
+                <textarea class="form-input setting-input" id="postDescription" placeholder="SEO description" style="min-height:60px;">{editFrontmatter.description || ''}</textarea>
+              </div>
+              <div class="setting-row">
+                <label class="setting-label">Excerpt</label>
+                <textarea class="form-input setting-input" id="postExcerpt" placeholder="Custom excerpt for blog listing" style="min-height:60px;">{editFrontmatter.excerpt || ''}</textarea>
+              </div>
+            </div>
+          </div>
+
+          <!-- Featured Image Panel -->
+          <div class="settings-panel">
+            <div class="panel-toggle active" data-panel="featured">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
+              Featured Image
+              <svg class="chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+            </div>
+            <div class="panel-body" id="panel-featured">
+              <div id="featuredImageWrap">
+                <div id="featuredPreview" class="featured-preview" style={editFrontmatter.image ? '' : 'display:none'}>
+                  <img id="featuredImg" src={editFrontmatter.image || ''} alt="Featured" />
+                  <button type="button" class="remove-featured" id="removeFeatured">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+                    Remove
+                  </button>
+                </div>
+                <div id="featuredUploadArea" class="upload-area" style={editFrontmatter.image ? 'display:none' : ''}>
+                  <input type="file" id="featuredFileInput" accept="image/*" style="display:none" />
+                  <div class="upload-content">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="margin-bottom:8px; opacity:0.4;"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                    <span class="upload-text">Click to upload or drag & drop</span>
+                    <span class="upload-hint">JPG, PNG, WebP, GIF — Max 5MB</span>
+                  </div>
+                </div>
+                <input type="hidden" id="postImage" value={editFrontmatter.image || ''} />
+                <div class="upload-or">
+                  <span>or enter URL</span>
+                </div>
+                <input type="text" class="form-input setting-input" id="postImageUrl" value={editFrontmatter.image || ''} placeholder="https://example.com/image.jpg" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <!-- Image Picker Modal -->
+    <div class="modal-overlay" id="imageModal">
+      <div class="modal-card" style="max-width: 700px;">
+        <div class="modal-header">
+          <h3>Insert Image</h3>
+          <button class="modal-close" id="closeImageModal">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+          </button>
+        </div>
+
+        <div class="modal-tabs">
+          <button class="modal-tab active" data-tab="upload">Upload</button>
+          <button class="modal-tab" data-tab="library">Media Library</button>
+          <button class="modal-tab" data-tab="url">From URL</button>
+        </div>
+
+        <div class="modal-body">
+          <!-- Upload Tab -->
+          <div class="tab-content active" id="tab-upload">
+            <div class="upload-area upload-area-lg" id="modalUploadArea">
+              <input type="file" id="modalFileInput" accept="image/*" style="display:none" />
+              <div class="upload-content">
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" style="margin-bottom:12px; opacity:0.3;"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                <span class="upload-text">Click to upload or drag & drop</span>
+                <span class="upload-hint">JPG, PNG, WebP, GIF, SVG — Max 5MB</span>
+              </div>
+            </div>
+            <div id="uploadProgress" style="display:none;" class="upload-progress">
+              <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+              <span class="progress-text" id="progressText">Uploading...</span>
+            </div>
+          </div>
+
+          <!-- Library Tab -->
+          <div class="tab-content" id="tab-library">
+            <div id="mediaGrid" class="media-grid">
+              <div class="loading-state">Loading media library...</div>
+            </div>
+          </div>
+
+          <!-- URL Tab -->
+          <div class="tab-content" id="tab-url">
+            <div class="form-group">
+              <label>Image URL</label>
+              <input type="text" class="form-input" id="modalImageUrl" placeholder="https://example.com/image.jpg" />
+            </div>
+            <div id="urlPreview" class="url-preview" style="display:none;">
+              <img id="urlPreviewImg" alt="Preview" />
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button class="btn-secondary" id="cancelImageModal">Cancel</button>
+          <button class="btn-primary" id="insertImageConfirm">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
+            Insert Image
+          </button>
+        </div>
+      </div>
+    </div>
+
+  ) : (
+    <!-- Blog Posts List -->
+    <div>
+      <div class="flex justify-between items-center mb-24">
+        <p class="text-muted text-sm fw-600">{posts.length} post{posts.length !== 1 ? 's' : ''}</p>
+        {canWrite && (
+          <a href="/admin/blog/?new=1" class="btn-primary">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+            New Post
+          </a>
+        )}
+      </div>
+
+      {posts.length === 0 ? (
+        <div class="card">
+          <div class="empty-state">
+            <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" style="opacity:0.2; margin-bottom: 12px;"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+            <p style="margin-bottom: 16px;">No blog posts yet. Start creating content.</p>
+            {canWrite && (
+              <a href="/admin/blog/?new=1" class="btn-primary">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+                Create First Post
+              </a>
+            )}
+          </div>
+        </div>
+      ) : (
+        <div class="posts-list-grid">
+          {posts.map((post) => (
+            <div class="post-list-card">
+              <div class="post-list-thumb" style={post.image ? `background-image: url(${post.image})` : ''}>
+                {!post.image && (
+                  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" style="opacity:0.2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
+                )}
+              </div>
+              <div class="post-list-body">
+                <div class="post-list-meta">
+                  {post.status === 'draft' && <span class="post-draft-pill">Draft</span>}
+                  {post.category && <span class="post-category-pill">{post.category}</span>}
+                  <span class="post-list-date">{post.date || '—'}</span>
+                  {post.author && <span class="post-list-author">by {post.author}</span>}
+                </div>
+                <div class="post-list-title">{post.title || post.filename}</div>
+                {post.description && <p class="post-list-desc">{post.description}</p>}
+              </div>
+              <div class="post-list-actions">
+                {canWrite && (
+                  <a href={`/admin/blog/?edit=${encodeURIComponent(post.filename)}`} class="btn-secondary">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+                    Edit
+                  </a>
+                )}
+                {canDelete && (
+                  <button class="btn-danger delete-btn" data-filename={post.filename}>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3,6 5,6 21,6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg>
+                    Delete
+                  </button>
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  )}
+
+  <script is:inline>
+    // ── Auto-generate slug from title ──
+    const titleInput = document.getElementById('postTitle');
+    const slugInput = document.getElementById('postSlug');
+    if (titleInput && slugInput && !slugInput.value) {
+      titleInput.addEventListener('input', () => {
+        slugInput.value = titleInput.value
+          .toLowerCase()
+          .replace(/[^a-z0-9\s-]/g, '')
+          .replace(/\s+/g, '-')
+          .replace(/-+/g, '-')
+          .substring(0, 60);
+      });
+    }
+
+    // ── Panel Toggle (collapsible settings) ──
+    document.querySelectorAll('.panel-toggle').forEach(toggle => {
+      toggle.addEventListener('click', () => {
+        toggle.classList.toggle('active');
+        const panelId = 'panel-' + toggle.dataset.panel;
+        const body = document.getElementById(panelId);
+        if (body) body.style.display = toggle.classList.contains('active') ? 'block' : 'none';
+      });
+    });
+
+    // ── Toolbar buttons ──
+    document.querySelectorAll('.toolbar-btn[data-insert]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const editor = document.getElementById('postContent');
+        const insert = btn.dataset.insert;
+        const wrap = btn.dataset.wrap === 'true';
+        const start = editor.selectionStart;
+        const end = editor.selectionEnd;
+        const selected = editor.value.substring(start, end);
+        
+        if (wrap && selected) {
+          editor.value = editor.value.substring(0, start) + insert + selected + insert + editor.value.substring(end);
+          editor.selectionStart = start;
+          editor.selectionEnd = end + insert.length * 2;
+        } else {
+          editor.value = editor.value.substring(0, start) + insert + editor.value.substring(end);
+          editor.selectionStart = editor.selectionEnd = start + insert.length;
+        }
+        editor.focus();
+      });
+    });
+
+    // ── Featured Image Upload ──
+    const featuredUploadArea = document.getElementById('featuredUploadArea');
+    const featuredFileInput = document.getElementById('featuredFileInput');
+    const featuredPreview = document.getElementById('featuredPreview');
+    const featuredImg = document.getElementById('featuredImg');
+    const postImageHidden = document.getElementById('postImage');
+    const postImageUrl = document.getElementById('postImageUrl');
+
+    featuredUploadArea?.addEventListener('click', () => featuredFileInput?.click());
+    featuredUploadArea?.addEventListener('dragover', (e) => { e.preventDefault(); featuredUploadArea.classList.add('dragover'); });
+    featuredUploadArea?.addEventListener('dragleave', () => featuredUploadArea.classList.remove('dragover'));
+    featuredUploadArea?.addEventListener('drop', (e) => {
+      e.preventDefault();
+      featuredUploadArea.classList.remove('dragover');
+      const file = e.dataTransfer?.files?.[0];
+      if (file) uploadFeaturedImage(file);
+    });
+
+    featuredFileInput?.addEventListener('change', () => {
+      const file = featuredFileInput.files?.[0];
+      if (file) uploadFeaturedImage(file);
+    });
+
+    async function uploadFeaturedImage(file) {
+      const fd = new FormData();
+      fd.append('file', file);
+      featuredUploadArea.querySelector('.upload-text').textContent = 'Uploading...';
+      try {
+        const res = await fetch('/api/upload/', { method: 'POST', body: fd });
+        const data = await res.json();
+        if (res.ok) {
+          setFeaturedImage(data.url);
+        } else {
+          alert(data.error || 'Upload failed');
+        }
+      } catch { alert('Upload failed'); }
+      featuredUploadArea.querySelector('.upload-text').textContent = 'Click to upload or drag & drop';
+    }
+
+    function setFeaturedImage(url) {
+      postImageHidden.value = url;
+      postImageUrl.value = url;
+      featuredImg.src = url;
+      featuredPreview.style.display = 'block';
+      featuredUploadArea.style.display = 'none';
+    }
+
+    postImageUrl?.addEventListener('input', () => {
+      const val = postImageUrl.value.trim();
+      if (val) {
+        setFeaturedImage(val);
+      }
+    });
+
+    document.getElementById('removeFeatured')?.addEventListener('click', () => {
+      postImageHidden.value = '';
+      postImageUrl.value = '';
+      featuredPreview.style.display = 'none';
+      featuredUploadArea.style.display = 'block';
+    });
+
+    // ── Image Picker Modal ──
+    const imageModal = document.getElementById('imageModal');
+    let insertImageTarget = 'content'; // 'content' or 'featured'
+    let selectedImageUrl = '';
+
+    document.getElementById('insertImageBtn')?.addEventListener('click', () => {
+      insertImageTarget = 'content';
+      imageModal?.classList.add('show');
+      loadMediaLibrary();
+    });
+
+    document.getElementById('closeImageModal')?.addEventListener('click', () => imageModal?.classList.remove('show'));
+    document.getElementById('cancelImageModal')?.addEventListener('click', () => imageModal?.classList.remove('show'));
+    imageModal?.addEventListener('click', (e) => { if (e.target === imageModal) imageModal.classList.remove('show'); });
+
+    // Modal tabs
+    document.querySelectorAll('.modal-tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        document.querySelectorAll('.modal-tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+        tab.classList.add('active');
+        document.getElementById('tab-' + tab.dataset.tab)?.classList.add('active');
+      });
+    });
+
+    // Modal upload
+    const modalUploadArea = document.getElementById('modalUploadArea');
+    const modalFileInput = document.getElementById('modalFileInput');
+
+    modalUploadArea?.addEventListener('click', () => modalFileInput?.click());
+    modalUploadArea?.addEventListener('dragover', (e) => { e.preventDefault(); modalUploadArea.classList.add('dragover'); });
+    modalUploadArea?.addEventListener('dragleave', () => modalUploadArea.classList.remove('dragover'));
+    modalUploadArea?.addEventListener('drop', (e) => {
+      e.preventDefault();
+      modalUploadArea.classList.remove('dragover');
+      const file = e.dataTransfer?.files?.[0];
+      if (file) uploadModalImage(file);
+    });
+    modalFileInput?.addEventListener('change', () => {
+      const file = modalFileInput.files?.[0];
+      if (file) uploadModalImage(file);
+    });
+
+    async function uploadModalImage(file) {
+      const progress = document.getElementById('uploadProgress');
+      const progressFill = document.getElementById('progressFill');
+      const progressText = document.getElementById('progressText');
+      progress.style.display = 'block';
+      progressFill.style.width = '30%';
+      progressText.textContent = 'Uploading...';
+
+      const fd = new FormData();
+      fd.append('file', file);
+      try {
+        progressFill.style.width = '60%';
+        const res = await fetch('/api/upload/', { method: 'POST', body: fd });
+        const data = await res.json();
+        progressFill.style.width = '100%';
+        if (res.ok) {
+          selectedImageUrl = data.url;
+          progressText.textContent = 'Uploaded! Click "Insert Image" to add.';
+          loadMediaLibrary(); // refresh library
+        } else {
+          progressText.textContent = data.error || 'Upload failed';
+        }
+      } catch {
+        progressText.textContent = 'Upload failed';
+      }
+    }
+
+    // Media library
+    async function loadMediaLibrary() {
+      const grid = document.getElementById('mediaGrid');
+      try {
+        const res = await fetch('/api/upload/');
+        const data = await res.json();
+        if (data.files?.length > 0) {
+          grid.innerHTML = data.files.map(f => `
+            <div class="media-item ${selectedImageUrl === f.url ? 'selected' : ''}" data-url="${f.url}">
+              <img src="${f.url}" alt="${f.filename}" loading="lazy" />
+              <div class="media-name">${f.filename.replace(/^\d+-/, '')}</div>
+            </div>
+          `).join('');
+          grid.querySelectorAll('.media-item').forEach(item => {
+            item.addEventListener('click', () => {
+              grid.querySelectorAll('.media-item').forEach(i => i.classList.remove('selected'));
+              item.classList.add('selected');
+              selectedImageUrl = item.dataset.url;
+            });
+          });
+        } else {
+          grid.innerHTML = '<div class="empty-state" style="padding:40px 20px;"><p>No images uploaded yet. Use the Upload tab to add images.</p></div>';
+        }
+      } catch {
+        grid.innerHTML = '<div class="empty-state" style="padding:40px 20px;"><p>Failed to load media library.</p></div>';
+      }
+    }
+
+    // URL preview
+    document.getElementById('modalImageUrl')?.addEventListener('input', () => {
+      const val = document.getElementById('modalImageUrl').value.trim();
+      const preview = document.getElementById('urlPreview');
+      const img = document.getElementById('urlPreviewImg');
+      if (val) {
+        img.src = val;
+        preview.style.display = 'block';
+        selectedImageUrl = val;
+      } else {
+        preview.style.display = 'none';
+      }
+    });
+
+    // Insert image
+    document.getElementById('insertImageConfirm')?.addEventListener('click', () => {
+      if (!selectedImageUrl) { alert('Please select or upload an image first.'); return; }
+      if (insertImageTarget === 'content') {
+        const editor = document.getElementById('postContent');
+        const pos = editor.selectionStart;
+        const md = `![Image description](${selectedImageUrl})\n`;
+        editor.value = editor.value.substring(0, pos) + md + editor.value.substring(pos);
+        editor.focus();
+      }
+      imageModal?.classList.remove('show');
+      selectedImageUrl = '';
+    });
+
+    // ── Save Post ──
+    document.getElementById('postForm')?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const btn = document.getElementById('saveBtn');
+      const msg = document.getElementById('saveMsg');
+      btn.disabled = true;
+      btn.innerHTML = '<span style="opacity:0.7">Saving...</span>';
+
+      try {
+        const res = await fetch('/api/blog/save/', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            slug: document.getElementById('postSlug').value,
+            title: document.getElementById('postTitle').value,
+            description: document.getElementById('postDescription').value,
+            category: document.getElementById('postCategory').value,
+            author: document.getElementById('postAuthor').value,
+            date: document.getElementById('postDate').value,
+            image: document.getElementById('postImage').value,
+            status: document.getElementById('postStatus').value,
+            visibility: document.getElementById('postVisibility').value,
+            tags: document.getElementById('postTags').value,
+            excerpt: document.getElementById('postExcerpt').value,
+            content: document.getElementById('postContent').value,
+          }),
+        });
+        const data = await res.json();
+        if (res.ok) {
+          msg.className = 'alert-success';
+          msg.textContent = 'Post saved!';
+          msg.style.display = 'block';
+          setTimeout(() => window.location.href = '/admin/blog/', 1000);
+        } else {
+          msg.className = 'alert-error';
+          msg.textContent = data.error || 'Failed to save';
+          msg.style.display = 'block';
+        }
+      } catch (err) {
+        msg.className = 'alert-error';
+        msg.textContent = 'Network error';
+        msg.style.display = 'block';
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><polyline points="17,21 17,13 7,13 7,21"/><polyline points="7,3 7,8 15,8"/></svg> Publish';
+      }
+    });
+
+    // ── Delete post ──
+    document.querySelectorAll('.delete-btn').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        const filename = btn.dataset.filename;
+        if (!confirm(`Delete "${filename}"?`)) return;
+        btn.disabled = true;
+        try {
+          const res = await fetch('/api/blog/delete/', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ filename }),
+          });
+          if (res.ok) btn.closest('.post-list-card')?.remove();
+          else alert('Failed to delete post');
+        } catch { alert('Network error'); }
+      });
+    });
+  </script>
+</AdminLayout>
+
+<style is:global>
+  /* ─── Editor Layout ─── */
+  .editor-topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .editor-grid {
+    display: grid;
+    grid-template-columns: 1fr 340px;
+    gap: 24px;
+    align-items: start;
+  }
+
+  /* ─── Title Input ─── */
+  .title-input {
+    width: 100%;
+    font-size: 26px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid var(--border-subtle);
+    color: var(--text-primary);
+    padding: 12px 0;
+    margin-bottom: 20px;
+    outline: none;
+    font-family: inherit;
+    transition: border-color var(--transition);
+  }
+  .title-input::placeholder { color: var(--text-muted); }
+  .title-input:focus { border-color: var(--accent-blue); }
+
+  /* ─── Content Card ─── */
+  .content-card {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+  .content-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--border-subtle);
+    background: rgba(0,0,0,0.15);
+  }
+  .toolbar-group { display: flex; align-items: center; gap: 2px; }
+  .toolbar-btn {
+    width: 32px; height: 32px;
+    border-radius: 6px;
+    border: none;
+    background: transparent;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all var(--transition);
+    font-family: inherit;
+    font-size: 14px;
+  }
+  .toolbar-btn:hover {
+    background: var(--bg-hover);
+    color: var(--text-primary);
+  }
+  .toolbar-sep {
+    width: 1px;
+    height: 20px;
+    background: var(--border-subtle);
+    margin: 0 6px;
+  }
+  .toolbar-badge {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--accent-blue);
+    background: rgba(56, 152, 236, 0.1);
+    padding: 3px 10px;
+    border-radius: 4px;
+  }
+
+  .content-editor {
+    min-height: 450px;
+    font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+    font-size: 13.5px;
+    line-height: 1.7;
+    resize: vertical;
+    border: none !important;
+    border-radius: 0 !important;
+    padding: 20px !important;
+    background: var(--bg-deep) !important;
+  }
+  .content-editor:focus { box-shadow: none !important; }
+
+  /* ─── Settings Sidebar (WordPress panels) ─── */
+  .editor-sidebar { display: flex; flex-direction: column; gap: 12px; }
+  .settings-panel {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+  }
+  .panel-toggle {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 16px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-primary);
+    cursor: pointer;
+    user-select: none;
+    border-bottom: 1px solid transparent;
+    transition: all var(--transition);
+  }
+  .panel-toggle.active {
+    border-bottom-color: var(--border-subtle);
+  }
+  .panel-toggle:hover { background: var(--bg-hover); }
+  .panel-toggle .chevron {
+    margin-left: auto;
+    transition: transform 0.2s;
+    color: var(--text-muted);
+  }
+  .panel-toggle.active .chevron { transform: rotate(180deg); }
+  .panel-body { padding: 12px 16px 16px; }
+
+  .setting-row { margin-bottom: 14px; }
+  .setting-row:last-child { margin-bottom: 0; }
+  .setting-label {
+    display: block;
+    font-size: 11.5px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    margin-bottom: 6px;
+    letter-spacing: 0.2px;
+  }
+  .setting-input {
+    font-size: 13px !important;
+    padding: 8px 12px !important;
+  }
+  .setting-hint {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-top: 3px;
+    display: block;
+  }
+
+  /* ─── Upload Area ─── */
+  .upload-area {
+    border: 2px dashed var(--border-medium);
+    border-radius: var(--radius-md);
+    padding: 24px;
+    text-align: center;
+    cursor: pointer;
+    transition: all var(--transition);
+    background: rgba(0,0,0,0.1);
+  }
+  .upload-area:hover, .upload-area.dragover {
+    border-color: var(--accent-blue);
+    background: rgba(56, 152, 236, 0.05);
+  }
+  .upload-area-lg { padding: 48px 24px; }
+  .upload-content { display: flex; flex-direction: column; align-items: center; }
+  .upload-text {
+    font-size: 14px;
+    color: var(--text-secondary);
+    font-weight: 500;
+    margin-bottom: 4px;
+  }
+  .upload-hint {
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+  .upload-or {
+    text-align: center;
+    padding: 10px 0;
+    font-size: 11px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  /* ─── Featured Image ─── */
+  .featured-preview {
+    position: relative;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    border: 1px solid var(--border-subtle);
+  }
+  .featured-preview img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    display: block;
+  }
+  .remove-featured {
+    position: absolute;
+    bottom: 8px;
+    right: 8px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 6px 12px;
+    border-radius: 6px;
+    background: rgba(0,0,0,0.7);
+    border: 1px solid rgba(255,255,255,0.1);
+    color: var(--accent-red);
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--transition);
+    font-family: inherit;
+  }
+  .remove-featured:hover { background: rgba(248, 113, 113, 0.2); }
+
+  /* ─── Upload Progress ─── */
+  .upload-progress {
+    margin-top: 16px;
+    text-align: center;
+  }
+  .progress-bar {
+    height: 4px;
+    background: var(--bg-deep);
+    border-radius: 2px;
+    overflow: hidden;
+    margin-bottom: 8px;
+  }
+  .progress-fill {
+    height: 100%;
+    background: var(--gradient-primary);
+    border-radius: 2px;
+    transition: width 0.3s;
+  }
+  .progress-text {
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+
+  /* ─── Media Grid ─── */
+  .media-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 10px;
+    max-height: 320px;
+    overflow-y: auto;
+    padding: 4px;
+  }
+  .media-item {
+    border-radius: 8px;
+    overflow: hidden;
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: all var(--transition);
+    background: var(--bg-deep);
+  }
+  .media-item:hover { border-color: var(--border-medium); }
+  .media-item.selected {
+    border-color: var(--accent-blue);
+    box-shadow: 0 0 0 2px rgba(56, 152, 236, 0.2);
+  }
+  .media-item img {
+    width: 100%;
+    height: 90px;
+    object-fit: cover;
+    display: block;
+  }
+  .media-name {
+    padding: 4px 6px;
+    font-size: 9px;
+    color: var(--text-muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* ─── URL Preview ─── */
+  .url-preview {
+    margin-top: 12px;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    border: 1px solid var(--border-subtle);
+  }
+  .url-preview img {
+    width: 100%;
+    max-height: 200px;
+    object-fit: cover;
+    display: block;
+  }
+
+  /* ─── Modal Tabs ─── */
+  .modal-tabs {
+    display: flex;
+    border-bottom: 1px solid var(--border-subtle);
+    padding: 0 24px;
+  }
+  .modal-tab {
+    padding: 12px 18px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-muted);
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    transition: all var(--transition);
+    font-family: inherit;
+  }
+  .modal-tab:hover { color: var(--text-primary); }
+  .modal-tab.active {
+    color: var(--accent-blue);
+    border-bottom-color: var(--accent-blue);
+  }
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  /* ─── Modal ─── */
+  .modal-overlay {
+    display: none;
+    position: fixed; inset: 0; z-index: 100;
+    background: rgba(0,0,0,0.7);
+    backdrop-filter: blur(6px);
+    align-items: center;
+    justify-content: center;
+  }
+  .modal-overlay.show { display: flex; }
+  .modal-card {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-medium);
+    border-radius: var(--radius-lg);
+    width: 100%;
+    margin: 20px;
+    box-shadow: var(--shadow-lg);
+    animation: modalIn 0.2s ease-out;
+  }
+  @keyframes modalIn {
+    from { opacity: 0; transform: scale(0.95) translateY(10px); }
+    to { opacity: 1; transform: scale(1) translateY(0); }
+  }
+  .modal-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 20px 24px;
+    border-bottom: 1px solid var(--border-subtle);
+  }
+  .modal-header h3 { font-size: 16px; font-weight: 700; color: var(--text-primary); }
+  .modal-close {
+    width: 32px; height: 32px;
+    border-radius: 8px;
+    background: transparent;
+    border: 1px solid var(--border-subtle);
+    color: var(--text-muted);
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: all var(--transition);
+  }
+  .modal-close:hover { background: rgba(248, 113, 113, 0.1); color: var(--accent-red); }
+  .modal-body { padding: 24px; }
+  .modal-footer {
+    display: flex; gap: 12px; justify-content: flex-end;
+    padding: 16px 24px;
+    border-top: 1px solid var(--border-subtle);
+    background: rgba(0,0,0,0.1);
+    border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+  }
+
+  /* ─── Posts List ─── */
+  .posts-list-grid { display: flex; flex-direction: column; gap: 12px; }
+  .post-list-card {
+    display: flex; align-items: center; gap: 20px;
+    padding: 16px 20px;
+    background: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    transition: all var(--transition);
+  }
+  .post-list-card:hover { border-color: var(--border-medium); background: var(--bg-elevated); }
+  .post-list-thumb {
+    width: 80px; height: 56px;
+    border-radius: 8px;
+    background: var(--bg-deep);
+    background-size: cover;
+    background-position: center;
+    flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--text-muted);
+  }
+  .post-list-body { flex: 1; min-width: 0; }
+  .post-list-meta { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
+  .post-category-pill {
+    font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;
+    padding: 2px 8px; border-radius: 4px;
+    background: rgba(56, 152, 236, 0.12); color: var(--accent-blue);
+  }
+  .post-draft-pill {
+    font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;
+    padding: 2px 8px; border-radius: 4px;
+    background: rgba(251, 191, 36, 0.12); color: #fbbf24;
+  }
+  .post-list-date, .post-list-author { font-size: 12px; color: var(--text-muted); }
+  .post-list-title {
+    font-size: 15px; font-weight: 600; color: var(--text-primary);
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .post-list-desc { font-size: 13px; color: var(--text-secondary); margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .post-list-actions { display: flex; gap: 8px; flex-shrink: 0; }
+  .loading-state { padding: 40px 20px; text-align: center; color: var(--text-muted); font-size: 13px; }
+
+  @media (max-width: 768px) {
+    .editor-grid { grid-template-columns: 1fr; }
+    .post-list-card { flex-direction: column; align-items: stretch; gap: 12px; }
+    .post-list-thumb { width: 100%; height: 120px; }
+    .post-list-actions { justify-content: flex-end; }
+  }
+</style>

@@ -1,0 +1,197 @@
+---
+import Layout from "@theme/layouts/Layout.astro";
+import {
+  getTranslations,
+  type Locale,
+  getLocalizedUrl,
+} from "@theme/i18n/utils";
+
+export function getStaticPaths() {
+  return [
+    { params: { lang: undefined } },
+    { params: { lang: "en" } },
+    { params: { lang: "es" } },
+    { params: { lang: "fr" } },
+    { params: { lang: "de" } },
+  ];
+}
+
+const locale = (Astro.params.lang || "en") as Locale;
+const t = getTranslations(locale);
+
+const pageTitle = "About BasisPointCalculator.com — Free Financial Calculators";
+const pageDescription =
+  "Learn about BasisPointCalculator.com, our mission to make financial calculations accessible, our editorial standards, and how to get in touch.";
+
+const links = [
+  {
+    title: "About Us",
+    url: "/about/about-us/",
+    icon: "👥",
+    description: "Our mission, story, and the team behind BasisPointCalculator.com.",
+    color: "sky",
+  },
+  {
+    title: "Editorial Policy",
+    url: "/about/editorial-policy/",
+    icon: "📝",
+    description:
+      "How we research, write, and fact-check every piece of content.",
+    color: "green",
+  },
+  {
+    title: "Contact",
+    url: "/about/contact/",
+    icon: "✉️",
+    description:
+      "Have a question, suggestion, or found an error? Reach out to us.",
+    color: "purple",
+  },
+];
+
+const colorClasses: Record<string, string> = {
+  sky: "bg-sky-50 border-sky-200 hover:border-sky-400 hover:shadow-sky-100",
+  green:
+    "bg-green-50 border-green-200 hover:border-green-400 hover:shadow-green-100",
+  purple:
+    "bg-purple-50 border-purple-200 hover:border-purple-400 hover:shadow-purple-100",
+};
+
+const trustSignals = [
+  {
+    icon: "✅",
+    title: "Accurate Formulas",
+    description:
+      "Every calculator uses standard, industry-accepted financial formulas.",
+  },
+  {
+    icon: "🆓",
+    title: "100% Free",
+    description:
+      "No subscriptions, no ads, no hidden costs. Every tool is free forever.",
+  },
+  {
+    icon: "🔒",
+    title: "Privacy First",
+    description:
+      "All calculations run locally in your browser. We never store your data.",
+  },
+  {
+    icon: "🌍",
+    title: "Multilingual",
+    description:
+      "Available in multiple languages to serve users around the world.",
+  },
+];
+---
+
+<Layout title={pageTitle} description={pageDescription}>
+  <!-- Hero -->
+  <section class="text-center mb-12">
+    <nav class="text-sm text-slate-500 mb-6" aria-label="Breadcrumb">
+      <a href={getLocalizedUrl("/", locale)} class="hover:text-sky-600">Home</a>
+      <span class="mx-2">›</span>
+      <span class="text-slate-700">About</span>
+    </nav>
+    <h1 class="text-4xl font-bold text-slate-800 mb-4">About BasisPointCalculator.com</h1>
+    <p class="text-lg text-slate-600 max-w-3xl mx-auto">
+      Making financial calculations simple, accurate, and accessible for
+      everyone — from students to professionals.
+    </p>
+  </section>
+
+  <!-- Mission -->
+  <section class="bg-white rounded-2xl shadow-lg p-8 mb-8">
+    <h2 class="text-xl font-semibold text-slate-800 mb-4">Our Mission</h2>
+    <div class="text-slate-600 space-y-3 text-sm leading-relaxed">
+      <p>
+        BasisPointCalculator.com was created with a simple belief: everyone should have
+        access to accurate financial tools without barriers. Too many people pay
+        for basic calculations that should be free, or worse, make important
+        financial decisions on guesswork alone.
+      </p>
+      <p>
+        We build free, open, browser-based calculators that cover basis points,
+        interest rates, loans, bonds, and investments. Every tool is designed
+        for clarity — not just giving you a number, but explaining the math so
+        you understand <em>why</em> the answer is what it is.
+      </p>
+    </div>
+  </section>
+
+  <!-- Navigation Cards -->
+  <section class="mb-10">
+    <h2 class="text-2xl font-bold text-slate-800 mb-6">Learn More</h2>
+    <div class="grid gap-4">
+      {
+        links.map((link) => (
+          <a
+            href={getLocalizedUrl(link.url, locale)}
+            class={`flex items-center gap-4 p-6 rounded-xl border-2 transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5 ${colorClasses[link.color]}`}
+          >
+            <span class="text-4xl">{link.icon}</span>
+            <div class="flex-1">
+              <h3 class="font-semibold text-slate-800 text-lg">{link.title}</h3>
+              <p class="text-sm text-slate-600 mt-1">{link.description}</p>
+            </div>
+            <svg
+              class="w-5 h-5 text-slate-400 shrink-0"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M9 5l7 7-7 7"
+              />
+            </svg>
+          </a>
+        ))
+      }
+    </div>
+  </section>
+
+  <!-- Trust Signals -->
+  <section class="bg-white rounded-2xl shadow-lg p-8 mb-8">
+    <h2 class="text-xl font-semibold text-slate-800 mb-6">Why Trust Us</h2>
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+      {
+        trustSignals.map((signal) => (
+          <div class="flex items-start gap-3">
+            <span class="text-2xl">{signal.icon}</span>
+            <div>
+              <h3 class="font-medium text-slate-800">{signal.title}</h3>
+              <p class="text-sm text-slate-600 mt-0.5">{signal.description}</p>
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section
+    class="bg-gradient-to-r from-sky-50 to-blue-50 rounded-2xl p-8 text-center border border-slate-200"
+  >
+    <h2 class="text-xl font-semibold text-slate-800 mb-3">Start Calculating</h2>
+    <p class="text-slate-600 mb-6 text-sm">
+      Explore our 25+ free financial calculators — no signup required.
+    </p>
+    <div class="flex flex-wrap justify-center gap-3">
+      <a
+        href={getLocalizedUrl("/calculators/", locale)}
+        class="inline-flex items-center gap-2 px-6 py-3 bg-sky-600 text-white rounded-lg hover:bg-sky-700 transition-colors"
+      >
+        🧮 Open Calculators
+      </a>
+      <a
+        href={getLocalizedUrl("/guides/", locale)}
+        class="inline-flex items-center gap-2 px-6 py-3 bg-white rounded-lg border border-slate-200 hover:border-sky-400 transition-colors text-sm"
+      >
+        📚 Read Guides
+      </a>
+    </div>
+  </section>
+</Layout>

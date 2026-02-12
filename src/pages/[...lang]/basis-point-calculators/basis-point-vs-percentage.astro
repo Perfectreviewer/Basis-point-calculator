@@ -1,0 +1,325 @@
+---
+import CalculatorLayout, {
+  getStaticPaths as getStaticPathsCalc,
+} from "@theme/layouts/CalculatorLayout.astro";
+import { getTranslations, type Locale } from "@theme/i18n/utils";
+
+export const getStaticPaths = getStaticPathsCalc;
+
+const locale = (Astro.params.lang || "en") as Locale;
+const t = getTranslations(locale);
+
+const pageTitle =
+  t.bp_vs_pct_title || "Basis Points vs Percentage: What's the Difference?";
+const pageDescription =
+  t.bp_vs_pct_desc ||
+  "Learn the difference between basis points and percentage. Understand when to use basis points vs percentage in finance, with examples.";
+
+const relatedCalculators = [
+  {
+    name: t.bp_to_pct_title || "Basis Points to Percentage",
+    url: "/basis-point-calculators/basis-point-to-percentage/",
+  },
+  {
+    name: t.pct_to_bp_title || "Percentage to Basis Points",
+    url: "/basis-point-calculators/percentage-to-basis-point/",
+  },
+  {
+    name: t.bp_examples_title || "Basis Point Examples",
+    url: "/basis-point-calculators/basis-point-examples/",
+  },
+];
+
+const faqs = t.bp_vs_pct_faqs || [
+  {
+    question: "Why use basis points instead of percentages?",
+    answer:
+      "Basis points eliminate the ambiguity between 'percent' and 'percentage points.' When rates change, saying '25 basis points' is clearer than saying '0.25%' which could be confused with '0.25 percent OF the rate.'",
+  },
+  {
+    question: "Are basis points only used in finance?",
+    answer:
+      "Basis points are primarily used in finance, including interest rates, bond yields, equity index returns, and investment fees. They're rarely used outside of financial contexts.",
+  },
+  {
+    question: "How do I convert between basis points and percentage?",
+    answer:
+      "To convert basis points to percentage, divide by 100 (e.g., 50 bps = 0.50%). To convert percentage to basis points, multiply by 100 (e.g., 0.75% = 75 bps).",
+  },
+];
+---
+
+<CalculatorLayout
+  title={pageTitle}
+  description={pageDescription}
+  calculatorType="educational"
+  relatedCalculators={relatedCalculators}
+  faqs={faqs}
+>
+  <section class="bg-white rounded-2xl shadow-lg p-6">
+    <h1 class="text-2xl font-semibold text-slate-800">{pageTitle}</h1>
+    <p class="text-slate-600 mt-3">
+      {
+        t.bp_vs_pct_intro ||
+          "Understanding the difference between basis points (bps) and percentages is crucial for anyone working in finance. While they both measure proportions, they serve different purposes and prevent common communication errors."
+      }
+    </p>
+  </section>
+
+  <!-- Visual Comparison -->
+  <section class="bg-white rounded-2xl shadow-lg p-6 mt-6">
+    <h2 class="text-xl font-semibold text-slate-800">
+      {t.at_a_glance || "At a Glance Comparison"}
+    </h2>
+    <div class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div class="p-5 bg-sky-50 rounded-xl border border-sky-100">
+        <h3 class="text-lg font-semibold text-sky-800">
+          {t.basis_points || "Basis Points"}
+        </h3>
+        <ul class="mt-3 space-y-2 text-sm text-slate-700">
+          <li class="flex items-start gap-2">
+            <span class="text-sky-600 mt-0.5">✓</span>
+            <span
+              >{t.bp_feature1 || "1 basis point = 0.01% (1/100th of 1%)"}</span
+            >
+          </li>
+          <li class="flex items-start gap-2">
+            <span class="text-sky-600 mt-0.5">✓</span>
+            <span>{t.bp_feature2 || "Always represents absolute change"}</span>
+          </li>
+          <li class="flex items-start gap-2">
+            <span class="text-sky-600 mt-0.5">✓</span>
+            <span>{t.bp_feature3 || "Eliminates percentage ambiguity"}</span>
+          </li>
+          <li class="flex items-start gap-2">
+            <span class="text-sky-600 mt-0.5">✓</span>
+            <span>{t.bp_feature4 || "Standard in financial industry"}</span>
+          </li>
+        </ul>
+      </div>
+      <div class="p-5 bg-emerald-50 rounded-xl border border-emerald-100">
+        <h3 class="text-lg font-semibold text-emerald-800">
+          {t.percent || "Percentage"}
+        </h3>
+        <ul class="mt-3 space-y-2 text-sm text-slate-700">
+          <li class="flex items-start gap-2">
+            <span class="text-emerald-600 mt-0.5">✓</span>
+            <span>{t.pct_feature1 || "1% = 100 basis points"}</span>
+          </li>
+          <li class="flex items-start gap-2">
+            <span class="text-emerald-600 mt-0.5">✓</span>
+            <span
+              >{t.pct_feature2 || "Can mean relative or absolute change"}</span
+            >
+          </li>
+          <li class="flex items-start gap-2">
+            <span class="text-emerald-600 mt-0.5">✓</span>
+            <span>{t.pct_feature3 || "Familiar to general public"}</span>
+          </li>
+          <li class="flex items-start gap-2">
+            <span class="text-emerald-600 mt-0.5">✓</span>
+            <span>{t.pct_feature4 || "Used universally across contexts"}</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- The Ambiguity Problem -->
+  <section class="bg-white rounded-2xl shadow-lg p-6 mt-6">
+    <h2 class="text-xl font-semibold text-slate-800">
+      {t.ambiguity_problem || "The Percentage Ambiguity Problem"}
+    </h2>
+    <div class="mt-4 text-slate-600 space-y-4">
+      <p>
+        {
+          t.ambiguity_explain ||
+            "Consider this scenario: An interest rate is currently 5.00%, and someone says it 'increased by 1%.' This is ambiguous:"
+        }
+      </p>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="p-4 bg-red-50 rounded-lg border border-red-100">
+          <h4 class="font-medium text-red-800">
+            {t.interpretation1 || "Interpretation 1: Relative Change"}
+          </h4>
+          <p class="text-sm text-slate-600 mt-1">
+            {t.interpretation1_explain || "1% OF 5.00% = 0.05%"}
+          </p>
+          <p class="text-sm text-slate-600">
+            {t.interpretation1_result || "New rate: 5.05%"}
+          </p>
+        </div>
+        <div class="p-4 bg-amber-50 rounded-lg border border-amber-100">
+          <h4 class="font-medium text-amber-800">
+            {t.interpretation2 || "Interpretation 2: Absolute Change"}
+          </h4>
+          <p class="text-sm text-slate-600 mt-1">
+            {t.interpretation2_explain || "1 percentage point added"}
+          </p>
+          <p class="text-sm text-slate-600">
+            {t.interpretation2_result || "New rate: 6.00%"}
+          </p>
+        </div>
+      </div>
+
+      <div class="p-4 bg-green-50 rounded-lg border border-green-100">
+        <h4 class="font-medium text-green-800">
+          {t.bps_solution || "With Basis Points: Crystal Clear"}
+        </h4>
+        <p class="text-sm text-slate-600 mt-1">
+          {
+            t.bps_solution_explain ||
+              '"The rate increased by 100 basis points" unambiguously means the rate went from 5.00% to 6.00%.'
+          }
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- When to Use Each -->
+  <section class="bg-white rounded-2xl shadow-lg p-6 mt-6">
+    <h2 class="text-xl font-semibold text-slate-800">
+      {t.when_to_use || "When to Use Each"}
+    </h2>
+    <div class="mt-4 overflow-x-auto">
+      <table class="w-full text-sm">
+        <thead>
+          <tr class="border-b border-slate-200">
+            <th class="text-left py-3 px-3 font-medium text-slate-600"
+              >{t.use_case || "Use Case"}</th
+            >
+            <th class="text-left py-3 px-3 font-medium text-slate-600"
+              >{t.recommended || "Recommended"}</th
+            >
+            <th class="text-left py-3 px-3 font-medium text-slate-600"
+              >{t.example_usage || "Example"}</th
+            >
+          </tr>
+        </thead>
+        <tbody class="text-slate-700">
+          <tr class="border-b border-slate-100">
+            <td class="py-2 px-3"
+              >{t.use_interest_rates || "Interest rate changes"}</td
+            >
+            <td class="py-2 px-3 text-sky-600 font-medium"
+              >{t.basis_points || "Basis Points"}</td
+            >
+            <td class="py-2 px-3">"Fed raised rates by 25 bps"</td>
+          </tr>
+          <tr class="border-b border-slate-100">
+            <td class="py-2 px-3"
+              >{t.use_bond_yields || "Bond yield movements"}</td
+            >
+            <td class="py-2 px-3 text-sky-600 font-medium"
+              >{t.basis_points || "Basis Points"}</td
+            >
+            <td class="py-2 px-3">"10-year yield up 15 bps"</td>
+          </tr>
+          <tr class="border-b border-slate-100">
+            <td class="py-2 px-3"
+              >{t.use_fund_fees || "Investment fund fees"}</td
+            >
+            <td class="py-2 px-3 text-sky-600 font-medium"
+              >{t.basis_points || "Basis Points"}</td
+            >
+            <td class="py-2 px-3">"Expense ratio: 5 bps"</td>
+          </tr>
+          <tr class="border-b border-slate-100">
+            <td class="py-2 px-3">{t.use_stock_returns || "Stock returns"}</td>
+            <td class="py-2 px-3 text-emerald-600 font-medium"
+              >{t.percent || "Percentage"}</td
+            >
+            <td class="py-2 px-3">"S&P 500 up 2.5%"</td>
+          </tr>
+          <tr class="border-b border-slate-100">
+            <td class="py-2 px-3">{t.use_tax_rates || "Tax rates"}</td>
+            <td class="py-2 px-3 text-emerald-600 font-medium"
+              >{t.percent || "Percentage"}</td
+            >
+            <td class="py-2 px-3">"Tax rate is 25%"</td>
+          </tr>
+          <tr>
+            <td class="py-2 px-3">{t.use_general || "General proportions"}</td>
+            <td class="py-2 px-3 text-emerald-600 font-medium"
+              >{t.percent || "Percentage"}</td
+            >
+            <td class="py-2 px-3">"50% complete"</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- Conversion Reference -->
+  <section class="bg-white rounded-2xl shadow-lg p-6 mt-6">
+    <h2 class="text-xl font-semibold text-slate-800">
+      {t.conversion_formulas || "Conversion Formulas"}
+    </h2>
+    <div class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div class="p-4 bg-slate-50 rounded-lg">
+        <h4 class="font-medium text-slate-800">
+          {t.bp_to_pct || "Basis Points → Percentage"}
+        </h4>
+        <code class="block mt-2 text-slate-700"
+          >Percentage = Basis Points ÷ 100</code
+        >
+        <p class="text-sm text-slate-500 mt-2">Example: 75 bps ÷ 100 = 0.75%</p>
+      </div>
+      <div class="p-4 bg-slate-50 rounded-lg">
+        <h4 class="font-medium text-slate-800">
+          {t.pct_to_bp || "Percentage → Basis Points"}
+        </h4>
+        <code class="block mt-2 text-slate-700"
+          >Basis Points = Percentage × 100</code
+        >
+        <p class="text-sm text-slate-500 mt-2">Example: 0.50% × 100 = 50 bps</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Key Takeaways -->
+  <section
+    class="bg-gradient-to-r from-sky-500 to-indigo-500 rounded-2xl shadow-lg p-6 mt-6 text-white"
+  >
+    <h2 class="text-xl font-semibold">{t.key_takeaways || "Key Takeaways"}</h2>
+    <ul class="mt-4 space-y-2">
+      <li class="flex items-start gap-2">
+        <span class="mt-1">🎯</span>
+        <span
+          >{
+            t.takeaway1 ||
+              "Use basis points when precision matters and to avoid ambiguity"
+          }</span
+        >
+      </li>
+      <li class="flex items-start gap-2">
+        <span class="mt-1">📊</span>
+        <span
+          >{
+            t.takeaway2 ||
+              "100 basis points always equals exactly 1 percentage point"
+          }</span
+        >
+      </li>
+      <li class="flex items-start gap-2">
+        <span class="mt-1">💼</span>
+        <span
+          >{
+            t.takeaway3 ||
+              "Financial professionals prefer basis points for interest rates and yields"
+          }</span
+        >
+      </li>
+      <li class="flex items-start gap-2">
+        <span class="mt-1">🌍</span>
+        <span
+          >{
+            t.takeaway4 ||
+              "Percentages are better for general audiences and everyday contexts"
+          }</span
+        >
+      </li>
+    </ul>
+  </section>
+</CalculatorLayout>

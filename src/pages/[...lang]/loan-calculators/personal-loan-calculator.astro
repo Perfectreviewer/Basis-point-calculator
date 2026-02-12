@@ -1,0 +1,275 @@
+---
+import CalculatorLayout, {
+  getStaticPaths as getStaticPathsCalc,
+} from "@theme/layouts/CalculatorLayout.astro";
+import { getTranslations, type Locale } from "@theme/i18n/utils";
+
+export const getStaticPaths = getStaticPathsCalc;
+
+const locale = (Astro.params.lang || "en") as Locale;
+const t = getTranslations(locale);
+
+const pageTitle = t.personal_loan_title || "Personal Loan Calculator";
+const pageDescription =
+  t.personal_loan_desc ||
+  "Calculate monthly payments and total cost for personal loans.";
+
+const relatedCalculators = [
+  {
+    name: t.loan_payment_title || "Loan Payment Calculator",
+    url: "/loan-calculators/loan-payment-calculator/",
+  },
+  {
+    name: t.auto_loan_title || "Auto Loan Calculator",
+    url: "/loan-calculators/auto-loan-calculator/",
+  },
+  {
+    name: t.apr_calc_title || "APR Calculator",
+    url: "/interest-rate-calculators/apr-calculator/",
+  },
+];
+
+const faqs = [
+  {
+    question: "What is a personal loan?",
+    answer:
+      "A personal loan is an unsecured loan for personal use - debt consolidation, home improvements, medical expenses, or major purchases.",
+  },
+  {
+    question: "What affects personal loan rates?",
+    answer:
+      "Credit score, income, debt-to-income ratio, loan amount, and loan term all affect the interest rate you'll receive.",
+  },
+  {
+    question: "Is a personal loan better than a credit card?",
+    answer:
+      "Personal loans typically have lower interest rates than credit cards and fixed monthly payments, making them better for large purchases.",
+  },
+];
+---
+
+<CalculatorLayout
+  title={pageTitle}
+  description={pageDescription}
+  calculatorType="loan"
+  relatedCalculators={relatedCalculators}
+  faqs={faqs}
+>
+  <section class="bg-white rounded-2xl shadow-lg p-6">
+    <h1 class="text-2xl font-semibold text-slate-800">{pageTitle}</h1>
+    <p class="text-sm text-slate-500 mt-1">
+      Estimate your personal loan payment and total cost.
+    </p>
+
+    <div class="mt-6 space-y-5">
+      <div>
+        <label for="loan-amount" class="block text-sm mb-2 text-slate-600"
+          >Loan Amount</label
+        >
+        <div class="relative">
+          <span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
+            >$</span
+          >
+          <input
+            id="loan-amount"
+            type="number"
+            step="500"
+            class="w-full bg-white border border-slate-200 rounded-lg py-3 px-4 pl-8 focus:outline-none focus:ring-2 focus:ring-sky-200"
+            placeholder="15000"
+          />
+        </div>
+        <input
+          type="range"
+          id="loan-slider"
+          min="1000"
+          max="100000"
+          step="500"
+          class="w-full mt-2 h-2 bg-slate-200 rounded-lg cursor-pointer"
+        />
+      </div>
+
+      <div>
+        <label for="interest-rate" class="block text-sm mb-2 text-slate-600"
+          >Interest Rate (APR)</label
+        >
+        <div class="relative">
+          <input
+            id="interest-rate"
+            type="number"
+            step="0.1"
+            class="w-full bg-white border border-slate-200 rounded-lg py-3 px-4 pr-10 focus:outline-none focus:ring-2 focus:ring-sky-200"
+            placeholder="10"
+          />
+          <span class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400"
+            >%</span
+          >
+        </div>
+        <input
+          type="range"
+          id="rate-slider"
+          min="3"
+          max="36"
+          step="0.1"
+          class="w-full mt-2 h-2 bg-slate-200 rounded-lg cursor-pointer"
+        />
+      </div>
+
+      <div>
+        <label for="loan-term" class="block text-sm mb-2 text-slate-600"
+          >Loan Term (Months)</label
+        >
+        <select
+          id="loan-term"
+          class="w-full bg-white border border-slate-200 rounded-lg py-3 px-4"
+        >
+          <option value="12">12 months (1 year)</option>
+          <option value="24">24 months (2 years)</option>
+          <option value="36" selected>36 months (3 years)</option>
+          <option value="48">48 months (4 years)</option>
+          <option value="60">60 months (5 years)</option>
+          <option value="72">72 months (6 years)</option>
+          <option value="84">84 months (7 years)</option>
+        </select>
+      </div>
+
+      <div>
+        <label for="origination-fee" class="block text-sm mb-2 text-slate-600"
+          >Origination Fee <span class="text-slate-400">(optional)</span></label
+        >
+        <div class="relative">
+          <input
+            id="origination-fee"
+            type="number"
+            step="0.5"
+            class="w-full bg-white border border-slate-200 rounded-lg py-3 px-4 pr-10 focus:outline-none focus:ring-2 focus:ring-sky-200"
+            placeholder="0"
+          />
+          <span class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400"
+            >%</span
+          >
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 pt-4">
+        <div class="bg-sky-50 rounded-lg p-4">
+          <label class="block text-sm text-slate-600 mb-1"
+            >Monthly Payment</label
+          >
+          <div id="monthly-payment" class="text-2xl font-bold text-sky-600">
+            $0
+          </div>
+        </div>
+        <div class="bg-orange-50 rounded-lg p-4">
+          <label class="block text-sm text-slate-600 mb-1">Total Interest</label
+          >
+          <div id="total-interest" class="text-2xl font-bold text-orange-600">
+            $0
+          </div>
+        </div>
+        <div class="bg-purple-50 rounded-lg p-4">
+          <label class="block text-sm text-slate-600 mb-1">Total Cost</label>
+          <div id="total-cost" class="text-2xl font-bold text-purple-600">
+            $0
+          </div>
+        </div>
+      </div>
+
+      <div
+        id="fee-notice"
+        class="hidden p-3 bg-amber-50 rounded-lg text-sm text-amber-700"
+      >
+        <strong>Note:</strong> Origination fee of <span id="fee-amount">$0</span
+        > will be deducted from your loan proceeds.
+      </div>
+    </div>
+  </section>
+
+  <script>
+    const loanInput = document.getElementById(
+      "loan-amount",
+    ) as HTMLInputElement;
+    const loanSlider = document.getElementById(
+      "loan-slider",
+    ) as HTMLInputElement;
+    const rateInput = document.getElementById(
+      "interest-rate",
+    ) as HTMLInputElement;
+    const rateSlider = document.getElementById(
+      "rate-slider",
+    ) as HTMLInputElement;
+    const termSelect = document.getElementById(
+      "loan-term",
+    ) as HTMLSelectElement;
+    const feeInput = document.getElementById(
+      "origination-fee",
+    ) as HTMLInputElement;
+
+    const monthlyEl = document.getElementById("monthly-payment");
+    const interestEl = document.getElementById("total-interest");
+    const costEl = document.getElementById("total-cost");
+    const feeNotice = document.getElementById("fee-notice");
+    const feeAmountEl = document.getElementById("fee-amount");
+
+    function formatCurrency(v: number) {
+      return new Intl.NumberFormat("en-US", {
+        style: "currency",
+        currency: "USD",
+        maximumFractionDigits: 0,
+      }).format(v);
+    }
+
+    function calculate() {
+      const P = parseFloat(loanInput.value) || 0;
+      const annualRate = parseFloat(rateInput.value) || 0;
+      const months = parseInt(termSelect.value) || 36;
+      const feeRate = (parseFloat(feeInput.value) || 0) / 100;
+
+      const r = annualRate / 100 / 12;
+      const n = months;
+      const fee = P * feeRate;
+
+      let monthly = 0;
+      if (P > 0 && r > 0 && n > 0) {
+        monthly = (P * (r * Math.pow(1 + r, n))) / (Math.pow(1 + r, n) - 1);
+      }
+
+      const totalPaid = monthly * n;
+      const totalInterest = totalPaid - P;
+
+      if (monthlyEl) monthlyEl.textContent = formatCurrency(monthly);
+      if (interestEl)
+        interestEl.textContent = formatCurrency(totalInterest + fee);
+      if (costEl) costEl.textContent = formatCurrency(totalPaid);
+
+      if (feeNotice && feeAmountEl) {
+        if (fee > 0) {
+          feeNotice.classList.remove("hidden");
+          feeAmountEl.textContent = formatCurrency(fee);
+        } else {
+          feeNotice.classList.add("hidden");
+        }
+      }
+
+      loanSlider.value = loanInput.value;
+      rateSlider.value = rateInput.value;
+    }
+
+    loanInput.addEventListener("input", calculate);
+    loanSlider.addEventListener("input", () => {
+      loanInput.value = loanSlider.value;
+      calculate();
+    });
+    rateInput.addEventListener("input", calculate);
+    rateSlider.addEventListener("input", () => {
+      rateInput.value = rateSlider.value;
+      calculate();
+    });
+    termSelect.addEventListener("change", calculate);
+    feeInput.addEventListener("input", calculate);
+
+    loanInput.value = "15000";
+    rateInput.value = "10";
+    feeInput.value = "0";
+    calculate();
+  </script>
+</CalculatorLayout>

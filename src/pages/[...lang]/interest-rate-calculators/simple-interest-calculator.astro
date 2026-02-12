@@ -1,0 +1,329 @@
+---
+import CalculatorLayout, {
+  getStaticPaths as getStaticPathsCalc,
+} from "@theme/layouts/CalculatorLayout.astro";
+import { getTranslations, type Locale } from "@theme/i18n/utils";
+
+export const getStaticPaths = getStaticPathsCalc;
+
+const locale = (Astro.params.lang || "en") as Locale;
+const t = getTranslations(locale);
+
+const pageTitle = t.simple_interest_title || "Simple Interest Calculator";
+const pageDescription =
+  t.simple_interest_desc ||
+  "Calculate simple interest on loans, savings, and investments. Free online calculator with formula and examples.";
+
+const relatedCalculators = [
+  {
+    name: t.compound_interest_title || "Compound Interest Calculator",
+    url: "/interest-rate-calculators/compound-interest-calculator/",
+  },
+  {
+    name: t.apr_calc_title || "APR Calculator",
+    url: "/interest-rate-calculators/apr-calculator/",
+  },
+  {
+    name: t.apy_calc_title || "APY Calculator",
+    url: "/interest-rate-calculators/apy-calculator/",
+  },
+];
+
+const faqs = t.simple_interest_faqs || [
+  {
+    question: "What is simple interest?",
+    answer:
+      "Simple interest is calculated only on the principal amount. It does not compound, meaning you don't earn interest on previously earned interest.",
+  },
+  {
+    question: "What is the simple interest formula?",
+    answer:
+      "Simple Interest = Principal × Rate × Time. For example, $10,000 at 5% for 3 years = $10,000 × 0.05 × 3 = $1,500.",
+  },
+  {
+    question: "When is simple interest used?",
+    answer:
+      "Simple interest is commonly used for short-term loans, car loans, some personal loans, and calculating interest for specific periods.",
+  },
+];
+---
+
+<CalculatorLayout
+  title={pageTitle}
+  description={pageDescription}
+  calculatorType="interest"
+  relatedCalculators={relatedCalculators}
+  faqs={faqs}
+>
+  <section class="bg-white rounded-2xl shadow-lg p-6">
+    <h1 class="text-2xl font-semibold text-slate-800">{pageTitle}</h1>
+    <p class="text-sm text-slate-500 mt-1">
+      {
+        t.simple_interest_subtitle ||
+          "Calculate interest earned or owed using the simple interest formula."
+      }
+    </p>
+
+    <div class="mt-6 space-y-5">
+      <!-- Input: Principal -->
+      <div>
+        <label for="principal" class="block text-sm mb-2 text-slate-600">
+          {t.principal_amount || "Principal Amount"}
+        </label>
+        <div class="relative">
+          <span
+            class="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
+            >$</span
+          >
+          <input
+            id="principal"
+            type="number"
+            inputmode="decimal"
+            step="100"
+            class="w-full bg-white border border-slate-200 rounded-lg py-3 px-4 pl-8 focus:outline-none focus:ring-2 focus:ring-sky-200"
+            placeholder="10000"
+          />
+        </div>
+      </div>
+
+      <!-- Input: Interest Rate -->
+      <div>
+        <label for="rate" class="block text-sm mb-2 text-slate-600">
+          {t.annual_interest_rate || "Annual Interest Rate"}
+        </label>
+        <div class="relative">
+          <input
+            id="rate"
+            type="number"
+            inputmode="decimal"
+            step="0.1"
+            class="w-full bg-white border border-slate-200 rounded-lg py-3 px-4 pr-10 focus:outline-none focus:ring-2 focus:ring-sky-200"
+            placeholder="5"
+          />
+          <span
+            class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-slate-400"
+            >%</span
+          >
+        </div>
+      </div>
+
+      <!-- Input: Time Period -->
+      <div>
+        <label for="time" class="block text-sm mb-2 text-slate-600">
+          {t.time_period || "Time Period"}
+        </label>
+        <div class="flex gap-3">
+          <div class="relative flex-1">
+            <input
+              id="time"
+              type="number"
+              inputmode="decimal"
+              step="1"
+              class="w-full bg-white border border-slate-200 rounded-lg py-3 px-4 focus:outline-none focus:ring-2 focus:ring-sky-200"
+              placeholder="3"
+            />
+          </div>
+          <select
+            id="time-unit"
+            class="bg-white border border-slate-200 rounded-lg py-3 px-4 focus:outline-none focus:ring-2 focus:ring-sky-200"
+          >
+            <option value="years">{t.years || "Years"}</option>
+            <option value="months">{t.months || "Months"}</option>
+            <option value="days">{t.days || "Days"}</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Results -->
+      <div class="grid grid-cols-2 gap-4 pt-4">
+        <div class="bg-sky-50 rounded-lg p-4">
+          <label class="block text-sm text-slate-600 mb-1"
+            >{t.interest_earned || "Interest"}</label
+          >
+          <div id="interest-result" class="text-2xl font-bold text-sky-600">
+            $0.00
+          </div>
+        </div>
+        <div class="bg-green-50 rounded-lg p-4">
+          <label class="block text-sm text-slate-600 mb-1"
+            >{t.total_amount || "Total Amount"}</label
+          >
+          <div id="total-result" class="text-2xl font-bold text-green-600">
+            $0.00
+          </div>
+        </div>
+      </div>
+
+      <!-- Result Explanation -->
+      <div
+        id="result-explanation"
+        class="hidden p-4 bg-slate-50 rounded-lg border border-slate-100"
+      >
+        <p class="text-slate-700 text-sm" id="result-text"></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Formula Section -->
+  <section class="bg-white rounded-2xl shadow-lg p-6 mt-6">
+    <h2 class="text-xl font-semibold text-slate-800">
+      {t.formula_title || "Simple Interest Formula"}
+    </h2>
+    <div class="mt-4 p-4 bg-slate-50 rounded-lg">
+      <code class="text-lg text-slate-800"> I = P × r × t </code>
+    </div>
+    <div class="mt-4 text-slate-600 text-sm space-y-2">
+      <p><strong>I</strong> = Interest earned</p>
+      <p><strong>P</strong> = Principal (initial amount)</p>
+      <p><strong>r</strong> = Annual interest rate (as decimal)</p>
+      <p><strong>t</strong> = Time in years</p>
+    </div>
+  </section>
+
+  <!-- Examples Section -->
+  <section class="bg-white rounded-2xl shadow-lg p-6 mt-6">
+    <h2 class="text-xl font-semibold text-slate-800">
+      {t.examples_title || "Examples"}
+    </h2>
+    <div class="mt-4 overflow-x-auto">
+      <table class="w-full text-sm">
+        <thead>
+          <tr class="border-b border-slate-200">
+            <th class="text-left py-2 px-3 font-medium text-slate-600"
+              >Principal</th
+            >
+            <th class="text-left py-2 px-3 font-medium text-slate-600">Rate</th>
+            <th class="text-left py-2 px-3 font-medium text-slate-600">Time</th>
+            <th class="text-left py-2 px-3 font-medium text-slate-600"
+              >Interest</th
+            >
+            <th class="text-left py-2 px-3 font-medium text-slate-600">Total</th
+            >
+          </tr>
+        </thead>
+        <tbody class="text-slate-700">
+          <tr class="border-b border-slate-100">
+            <td class="py-2 px-3">$1,000</td>
+            <td class="py-2 px-3">5%</td>
+            <td class="py-2 px-3">1 year</td>
+            <td class="py-2 px-3">$50</td>
+            <td class="py-2 px-3">$1,050</td>
+          </tr>
+          <tr class="border-b border-slate-100">
+            <td class="py-2 px-3">$5,000</td>
+            <td class="py-2 px-3">7%</td>
+            <td class="py-2 px-3">2 years</td>
+            <td class="py-2 px-3">$700</td>
+            <td class="py-2 px-3">$5,700</td>
+          </tr>
+          <tr class="border-b border-slate-100">
+            <td class="py-2 px-3">$10,000</td>
+            <td class="py-2 px-3">4.5%</td>
+            <td class="py-2 px-3">3 years</td>
+            <td class="py-2 px-3">$1,350</td>
+            <td class="py-2 px-3">$11,350</td>
+          </tr>
+          <tr>
+            <td class="py-2 px-3">$25,000</td>
+            <td class="py-2 px-3">6%</td>
+            <td class="py-2 px-3">5 years</td>
+            <td class="py-2 px-3">$7,500</td>
+            <td class="py-2 px-3">$32,500</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- When to Use Section -->
+  <section class="bg-white rounded-2xl shadow-lg p-6 mt-6">
+    <h2 class="text-xl font-semibold text-slate-800">
+      {t.when_to_use || "When to Use Simple Interest"}
+    </h2>
+    <div class="mt-4 text-slate-600 text-sm space-y-3">
+      <ul class="list-disc pl-5 space-y-2">
+        <li>Short-term loans (less than 1 year)</li>
+        <li>Car loans and auto financing</li>
+        <li>Some personal loans</li>
+        <li>Treasury bills and short-term bonds</li>
+        <li>Calculating interest for partial periods</li>
+      </ul>
+    </div>
+  </section>
+
+  <script>
+    const principalInput = document.getElementById(
+      "principal",
+    ) as HTMLInputElement;
+    const rateInput = document.getElementById("rate") as HTMLInputElement;
+    const timeInput = document.getElementById("time") as HTMLInputElement;
+    const timeUnitSelect = document.getElementById(
+      "time-unit",
+    ) as HTMLSelectElement;
+    const interestResult = document.getElementById("interest-result");
+    const totalResult = document.getElementById("total-result");
+    const resultExplanation = document.getElementById("result-explanation");
+    const resultText = document.getElementById("result-text");
+
+    function formatCurrency(value: number): string {
+      return new Intl.NumberFormat("en-US", {
+        style: "currency",
+        currency: "USD",
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      }).format(value);
+    }
+
+    function calculate() {
+      const principal = parseFloat(principalInput.value) || 0;
+      const rate = parseFloat(rateInput.value) || 0;
+      let time = parseFloat(timeInput.value) || 0;
+      const timeUnit = timeUnitSelect.value;
+
+      // Convert time to years
+      if (timeUnit === "months") {
+        time = time / 12;
+      } else if (timeUnit === "days") {
+        time = time / 365;
+      }
+
+      // Calculate simple interest: I = P × r × t
+      const interest = principal * (rate / 100) * time;
+      const total = principal + interest;
+
+      if (interestResult) interestResult.textContent = formatCurrency(interest);
+      if (totalResult) totalResult.textContent = formatCurrency(total);
+
+      // Show explanation
+      if (
+        resultExplanation &&
+        resultText &&
+        principal > 0 &&
+        rate > 0 &&
+        time > 0
+      ) {
+        resultExplanation.classList.remove("hidden");
+        const timeText =
+          timeUnit === "years"
+            ? `${parseFloat(timeInput.value)} year(s)`
+            : timeUnit === "months"
+              ? `${parseFloat(timeInput.value)} month(s)`
+              : `${parseFloat(timeInput.value)} day(s)`;
+        resultText.innerHTML = `Investing <strong>${formatCurrency(principal)}</strong> at <strong>${rate}%</strong> for <strong>${timeText}</strong> earns <strong>${formatCurrency(interest)}</strong> in interest, for a total of <strong>${formatCurrency(total)}</strong>.`;
+      } else if (resultExplanation) {
+        resultExplanation.classList.add("hidden");
+      }
+    }
+
+    principalInput.addEventListener("input", calculate);
+    rateInput.addEventListener("input", calculate);
+    timeInput.addEventListener("input", calculate);
+    timeUnitSelect.addEventListener("change", calculate);
+
+    // Initialize with default values
+    principalInput.value = "10000";
+    rateInput.value = "5";
+    timeInput.value = "3";
+    calculate();
+  </script>
+</CalculatorLayout>
