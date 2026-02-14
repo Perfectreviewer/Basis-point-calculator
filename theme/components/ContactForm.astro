@@ -1,63 +1,68 @@
 ---
+import siteSettings from "~/config/site-settings.json";
 
+const cp = siteSettings.contactPage || {};
+const accessKey = cp.formAccessKey || "";
+const directEmail = cp.directEmail || "";
+const directEmailText = cp.directEmailText || "Or email us directly";
+const submitText = cp.submitButtonText || "Send";
+const successMsg = cp.successMessage || "Form submitted successfully.";
+const errorMsg = cp.errorMessage || "Error submitting form. Please try again.";
+const fields = cp.fields || [];
 ---
 
-<form id="contact-form" class="space-y-4 bg-white shadow mt-6 p-6 rounded-xl">
-  <div>
-    <label class="block mb-1 text-slate-700 text-sm" for="name">Your name</label
-    >
-    <input
-      required
-      id="name"
-      name="name"
-      type="text"
-      placeholder="Jane Doe"
-      class="px-4 py-2 border border-slate-200 rounded-lg w-full"
-    />
-  </div>
-
-  <div>
-    <label class="block mb-1 text-slate-700 text-sm" for="email">Email</label>
-    <input
-      required
-      id="email"
-      name="email"
-      type="email"
-      placeholder="you@example.com"
-      class="px-4 py-2 border border-slate-200 rounded-lg w-full"
-    />
-  </div>
-
-  <div>
-    <label class="block mb-1 text-slate-700 text-sm" for="message"
-      >Message</label
-    >
-    <textarea
-      required
-      id="message"
-      name="message"
-      rows="6"
-      placeholder="How can we help?"
-      class="px-4 py-2 border border-slate-200 rounded-lg w-full"></textarea>
-  </div>
+<form
+  id="contact-form"
+  class="space-y-4 bg-white shadow mt-6 p-6 rounded-xl"
+  data-success={successMsg}
+  data-error={errorMsg}
+>
+  {
+    fields.map((field: any) => (
+      <div>
+        <label class="block mb-1 text-slate-700 text-sm" for={field.name}>
+          {field.label}
+        </label>
+        {field.type === "textarea" ? (
+          <textarea
+            required={field.required}
+            id={field.name}
+            name={field.name}
+            rows={field.rows || 4}
+            placeholder={field.placeholder}
+            class="px-4 py-2 border border-slate-200 rounded-lg w-full"
+          />
+        ) : (
+          <input
+            required={field.required}
+            id={field.name}
+            name={field.name}
+            type={field.type || "text"}
+            placeholder={field.placeholder}
+            class="px-4 py-2 border border-slate-200 rounded-lg w-full"
+          />
+        )}
+      </div>
+    ))
+  }
 
   <!-- Web3Forms access key -->
-  <input
-    type="hidden"
-    name="access_key"
-    value="919fae56-32cd-4db4-a166-cb45159ae574"
-  />
+  <input type="hidden" name="access_key" value={accessKey} />
 
   <div class="flex justify-between items-center">
     <button
       type="submit"
       class="bg-sky-600 hover:bg-sky-700 px-5 py-2 rounded-lg text-white"
     >
-      Send
+      {submitText}
     </button>
-    <a class="text-sky-600" href="mailto:aleemiqbalbhatti@hotmail.com">
-      Or email us directly
-    </a>
+    {
+      directEmail && (
+        <a class="text-sky-600" href={`mailto:${directEmail}`}>
+          {directEmailText}
+        </a>
+      )
+    }
   </div>
 
   <span id="form-result" class="text-slate-600 text-sm"></span>
@@ -69,6 +74,12 @@
     const resultEl = document.getElementById("form-result");
 
     if (!form || !resultEl) return;
+
+    const successMsg =
+      form.getAttribute("data-success") || "Form submitted successfully.";
+    const errorMsg =
+      form.getAttribute("data-error") ||
+      "Error submitting form. Please try again.";
 
     form.addEventListener("submit", async function (event) {
       event.preventDefault();
@@ -85,10 +96,10 @@
         const data = await response.json();
 
         if (data.success) {
-          resultEl.textContent = "Form submitted successfully.";
+          resultEl.textContent = successMsg;
           form.reset();
         } else {
-          resultEl.textContent = "Error submitting form. Please try again.";
+          resultEl.textContent = errorMsg;
         }
       } catch (error) {
         resultEl.textContent = "Network error. Please try again.";

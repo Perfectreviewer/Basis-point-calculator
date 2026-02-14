@@ -172,7 +172,7 @@ if (editFile) {
           <div class="settings-panel">
             <div class="panel-toggle active" data-panel="author">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-              Author & SEO
+              Author
               <svg class="chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
             </div>
             <div class="panel-body" id="panel-author">
@@ -220,6 +220,50 @@ if (editFile) {
                   <span>or enter URL</span>
                 </div>
                 <input type="text" class="form-input setting-input" id="postImageUrl" value={editFrontmatter.image || ''} placeholder="https://example.com/image.jpg" />
+              </div>
+            </div>
+          </div>
+
+          <!-- SEO Panel -->
+          <div class="settings-panel">
+            <div class="panel-toggle" data-panel="seo">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+              SEO Settings
+              <svg class="chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+            </div>
+            <div class="panel-body" id="panel-seo" style="display:none;">
+              <div class="setting-row">
+                <label class="setting-label">Meta Title <span class="setting-hint">(overrides post title)</span></label>
+                <input type="text" class="form-input setting-input" id="postSeoTitle" value={editFrontmatter.seoTitle || ''} placeholder="Custom SEO title..." />
+              </div>
+              <div class="setting-row">
+                <label class="setting-label">Meta Keywords</label>
+                <input type="text" class="form-input setting-input" id="postSeoKeywords" value={editFrontmatter.seoKeywords || ''} placeholder="keyword1, keyword2" />
+                <span class="setting-hint">Comma separated</span>
+              </div>
+              <div class="setting-row">
+                <label class="setting-label">Canonical URL</label>
+                <input type="text" class="form-input setting-input" id="postCanonicalUrl" value={editFrontmatter.canonicalUrl || ''} placeholder="https://..." />
+              </div>
+              <div class="setting-row">
+                <label class="setting-label">Robots Directives</label>
+                <div class="seo-toggle-row">
+                  <label class="seo-checkbox"><input type="checkbox" id="postRobotsIndex" checked={editFrontmatter.robotsIndex !== 'false'} /> Index</label>
+                  <label class="seo-checkbox"><input type="checkbox" id="postRobotsFollow" checked={editFrontmatter.robotsFollow !== 'false'} /> Follow</label>
+                </div>
+              </div>
+              <div class="setting-row">
+                <label class="setting-label">OG Title</label>
+                <input type="text" class="form-input setting-input" id="postOgTitle" value={editFrontmatter.ogTitle || ''} placeholder="Social share title" />
+              </div>
+              <div class="setting-row">
+                <label class="setting-label">OG Description</label>
+                <textarea class="form-input setting-input" id="postOgDescription" placeholder="Social share description" style="min-height:60px;">{editFrontmatter.ogDescription || ''}</textarea>
+              </div>
+              <div class="setting-row">
+                <label class="setting-label">OG Image URL</label>
+                <input type="text" class="form-input setting-input" id="postOgImage" value={editFrontmatter.ogImage || ''} placeholder="https://...image.jpg" />
+                <span class="setting-hint">Recommended: 1200×630px</span>
               </div>
             </div>
           </div>
@@ -614,6 +658,14 @@ if (editFile) {
             tags: document.getElementById('postTags').value,
             excerpt: document.getElementById('postExcerpt').value,
             content: document.getElementById('postContent').value,
+            seoTitle: document.getElementById('postSeoTitle')?.value || '',
+            seoKeywords: document.getElementById('postSeoKeywords')?.value || '',
+            canonicalUrl: document.getElementById('postCanonicalUrl')?.value || '',
+            robotsIndex: document.getElementById('postRobotsIndex')?.checked !== false,
+            robotsFollow: document.getElementById('postRobotsFollow')?.checked !== false,
+            ogTitle: document.getElementById('postOgTitle')?.value || '',
+            ogDescription: document.getElementById('postOgDescription')?.value || '',
+            ogImage: document.getElementById('postOgImage')?.value || '',
           }),
         });
         const data = await res.json();
@@ -809,6 +861,9 @@ if (editFile) {
     margin-top: 3px;
     display: block;
   }
+  .seo-toggle-row { display: flex; gap: 16px; margin-top: 4px; }
+  .seo-checkbox { display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--text-secondary); cursor: pointer; }
+  .seo-checkbox input { accent-color: var(--accent-blue); cursor: pointer; }
 
   /* ─── Upload Area ─── */
   .upload-area {

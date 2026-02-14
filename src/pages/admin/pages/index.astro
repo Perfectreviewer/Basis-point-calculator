@@ -1,5 +1,4 @@
 ---
-// Page SEO Editor — Premium Redesign
 import AdminLayout from "@admin/components/AdminLayout.astro";
 import {
   readJSON,
@@ -16,50 +15,25 @@ const session = getSessionFromCookies(Astro.request.headers.get("cookie"));
 let user = null;
 if (session) user = await validateSessionToken(session);
 if (!user) return Astro.redirect("/admin/login/");
-
 const canWrite = hasPermission(user.role as Role, "pages:write");
 
 ensureDataDir();
 const seoFile = getSeoConfigPath();
 const seoData = readJSON<Record<string, any>>(seoFile);
 
-// Common site pages with categories
-const pageMap: Record<
-  string,
-  { label: string; icon: string; category: string }
-> = {
-  "/": { label: "Homepage", icon: "home", category: "Main" },
-  "/calculators/": { label: "Calculators", icon: "calc", category: "Main" },
-  "/guides/": { label: "Guides", icon: "book", category: "Main" },
-  "/blog/": { label: "Blog", icon: "edit", category: "Main" },
-  "/faq/": { label: "FAQ", icon: "help", category: "Main" },
-  "/about/": { label: "About", icon: "info", category: "Main" },
-  "/legal/": { label: "Legal", icon: "shield", category: "Main" },
-  "/basis-point-calculators/": {
-    label: "Basis Point Calcs",
-    icon: "calc",
-    category: "Calculators",
-  },
-  "/interest-rate-calculators/": {
-    label: "Interest Rate Calcs",
-    icon: "calc",
-    category: "Calculators",
-  },
-  "/loan-calculators/": {
-    label: "Loan Calculators",
-    icon: "calc",
-    category: "Calculators",
-  },
-  "/bond-calculators/": {
-    label: "Bond Calculators",
-    icon: "calc",
-    category: "Calculators",
-  },
-  "/investment-calculators/": {
-    label: "Investment Calcs",
-    icon: "calc",
-    category: "Calculators",
-  },
+const pageMap: Record<string, { label: string; icon: string }> = {
+  "/": { label: "Homepage", icon: "home" },
+  "/calculators/": { label: "Calculators", icon: "calc" },
+  "/guides/": { label: "Guides", icon: "book" },
+  "/blog/": { label: "Blog", icon: "edit" },
+  "/faq/": { label: "FAQ", icon: "help" },
+  "/about/": { label: "About", icon: "info" },
+  "/legal/": { label: "Legal", icon: "shield" },
+  "/basis-point-calculators/": { label: "Basis Point Calcs", icon: "calc" },
+  "/interest-rate-calculators/": { label: "Interest Rate Calcs", icon: "calc" },
+  "/loan-calculators/": { label: "Loan Calculators", icon: "calc" },
+  "/bond-calculators/": { label: "Bond Calculators", icon: "calc" },
+  "/investment-calculators/": { label: "Investment Calcs", icon: "calc" },
 };
 
 const defaultPages = Object.keys(pageMap);
@@ -69,11 +43,10 @@ const allPages = [
 const configuredCount = allPages.filter((p) => seoData[p]).length;
 ---
 
-<AdminLayout title="Page SEO Settings" activeNav="pages">
+<AdminLayout title="SEO Configuration" activeNav="pages">
   <div class="seo-layout">
     <!-- Page List Sidebar -->
     <div class="page-sidebar">
-      <!-- Search -->
       <div class="sidebar-search">
         <svg
           class="search-icon"
@@ -93,24 +66,19 @@ const configuredCount = allPages.filter((p) => seoData[p]).length;
           placeholder="Search pages..."
         />
       </div>
-
-      <!-- Stats Bar -->
       <div class="sidebar-stats">
         <div class="stat-chip">
-          <span class="stat-chip-num">{allPages.length}</span>
-          <span>Total</span>
+          <span class="stat-chip-num">{allPages.length}</span><span>Total</span>
         </div>
         <div class="stat-chip configured">
-          <span class="stat-chip-num">{configuredCount}</span>
-          <span>Configured</span>
+          <span class="stat-chip-num">{configuredCount}</span><span
+            >Configured</span>
         </div>
         <div class="stat-chip pending">
-          <span class="stat-chip-num">{allPages.length - configuredCount}</span>
-          <span>Pending</span>
+          <span class="stat-chip-num">{allPages.length - configuredCount}</span
+          ><span>Pending</span>
         </div>
       </div>
-
-      <!-- Page Items -->
       <div class="page-items" id="pageList">
         {
           allPages.map((path) => {
@@ -123,109 +91,36 @@ const configuredCount = allPages.filter((p) => seoData[p]).length;
                 data-label={info?.label || path}
               >
                 <div class={`page-item-icon ${configured ? "configured" : ""}`}>
-                  {info?.icon === "home" ? (
-                    <svg
-                      width="15"
-                      height="15"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="2"
-                    >
-                      <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
-                      <polyline points="9 22 9 12 15 12 15 22" />
-                    </svg>
-                  ) : info?.icon === "calc" ? (
-                    <svg
-                      width="15"
-                      height="15"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="2"
-                    >
-                      <rect x="4" y="2" width="16" height="20" rx="2" />
-                      <line x1="8" y1="6" x2="16" y2="6" />
-                      <line x1="8" y1="10" x2="10" y2="10" />
-                      <line x1="14" y1="10" x2="16" y2="10" />
-                      <line x1="8" y1="14" x2="10" y2="14" />
-                      <line x1="14" y1="14" x2="16" y2="14" />
-                      <line x1="8" y1="18" x2="10" y2="18" />
-                      <line x1="14" y1="18" x2="16" y2="18" />
-                    </svg>
-                  ) : info?.icon === "book" ? (
-                    <svg
-                      width="15"
-                      height="15"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="2"
-                    >
-                      <path d="M4 19.5A2.5 2.5 0 016.5 17H20" />
-                      <path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z" />
-                    </svg>
-                  ) : info?.icon === "edit" ? (
-                    <svg
-                      width="15"
-                      height="15"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="2"
-                    >
-                      <path d="M12 20h9" />
-                      <path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z" />
-                    </svg>
-                  ) : info?.icon === "help" ? (
-                    <svg
-                      width="15"
-                      height="15"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="2"
-                    >
-                      <circle cx="12" cy="12" r="10" />
-                      <path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3" />
-                      <line x1="12" y1="17" x2="12.01" y2="17" />
-                    </svg>
-                  ) : info?.icon === "info" ? (
-                    <svg
-                      width="15"
-                      height="15"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="2"
-                    >
-                      <circle cx="12" cy="12" r="10" />
-                      <path d="M12 16v-4M12 8h.01" />
-                    </svg>
-                  ) : info?.icon === "shield" ? (
-                    <svg
-                      width="15"
-                      height="15"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="2"
-                    >
-                      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-                    </svg>
-                  ) : (
-                    <svg
-                      width="15"
-                      height="15"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="2"
-                    >
-                      <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
-                      <polyline points="14,2 14,8 20,8" />
-                    </svg>
-                  )}
+                  <svg
+                    width="15"
+                    height="15"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    {info?.icon === "home" ? (
+                      <>
+                        <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+                        <polyline points="9 22 9 12 15 12 15 22" />
+                      </>
+                    ) : info?.icon === "calc" ? (
+                      <>
+                        <rect x="4" y="2" width="16" height="20" rx="2" />
+                        <line x1="8" y1="6" x2="16" y2="6" />
+                      </>
+                    ) : info?.icon === "book" ? (
+                      <>
+                        <path d="M4 19.5A2.5 2.5 0 016.5 17H20" />
+                        <path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z" />
+                      </>
+                    ) : (
+                      <>
+                        <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
+                        <polyline points="14,2 14,8 20,8" />
+                      </>
+                    )}
+                  </svg>
                 </div>
                 <div class="page-item-text">
                   <span class="page-item-label">{info?.label || path}</span>
@@ -233,7 +128,7 @@ const configuredCount = allPages.filter((p) => seoData[p]).length;
                 </div>
                 <div class="page-item-status">
                   {configured ? (
-                    <span class="seo-badge ok" title="SEO configured">
+                    <span class="seo-badge ok" title="Configured">
                       <svg
                         width="12"
                         height="12"
@@ -246,7 +141,7 @@ const configuredCount = allPages.filter((p) => seoData[p]).length;
                       </svg>
                     </span>
                   ) : (
-                    <span class="seo-badge missing" title="SEO not configured">
+                    <span class="seo-badge missing" title="Not configured">
                       <svg
                         width="12"
                         height="12"
@@ -265,8 +160,6 @@ const configuredCount = allPages.filter((p) => seoData[p]).length;
           })
         }
       </div>
-
-      <!-- Add Page -->
       {
         canWrite && (
           <div class="add-page-section">
@@ -326,8 +219,7 @@ const configuredCount = allPages.filter((p) => seoData[p]).length;
               fill="none"
               stroke="currentColor"
               stroke-width="2"><path d="M9 18l6-6-6-6"></path></svg
-            >
-            Write compelling title tags under 60 characters
+            >Write compelling title tags under 60 characters
           </div>
           <div class="empty-tip">
             <svg
@@ -337,8 +229,7 @@ const configuredCount = allPages.filter((p) => seoData[p]).length;
               fill="none"
               stroke="currentColor"
               stroke-width="2"><path d="M9 18l6-6-6-6"></path></svg
-            >
-            Include target keywords in meta descriptions
+            >Set Open Graph tags for social sharing
           </div>
           <div class="empty-tip">
             <svg
@@ -348,48 +239,35 @@ const configuredCount = allPages.filter((p) => seoData[p]).length;
               fill="none"
               stroke="currentColor"
               stroke-width="2"><path d="M9 18l6-6-6-6"></path></svg
-            >
-            Add structured data for rich search results
+            >Configure robots and canonical URLs
           </div>
         </div>
       </div>
 
       <!-- Editor Form -->
-      <div id="editorForm" style="display: none;">
-        <!-- Header -->
-        <div class="editor-top">
-          <div class="editor-top-left">
-            <div class="editor-breadcrumb">
-              <svg
-                width="14"
-                height="14"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                ><circle cx="11" cy="11" r="8"></circle><path
-                  d="m21 21-4.35-4.35"></path></svg
-              >
-              <span>SEO Settings</span>
-              <svg
-                width="12"
-                height="12"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"><path d="M9 18l6-6-6-6"></path></svg
-              >
-              <span class="editor-breadcrumb-page" id="editorPath"></span>
-            </div>
+      <div id="editorForm" style="display:none;">
+        <!-- Sticky Editor Header -->
+        <div class="editor-header">
+          <div class="editor-header-left">
+            <span class="editor-breadcrumb">SEO Config</span>
+            <svg
+              width="12"
+              height="12"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"><path d="M9 18l6-6-6-6"></path></svg
+            >
+            <span class="editor-breadcrumb-page" id="editorPath"></span>
           </div>
-          <div class="editor-top-right">
-            <div id="seoMsg" class="seo-msg" style="display: none;"></div>
+          <div class="editor-header-right">
+            <span id="saveStatus" class="save-status"></span>
             {
               canWrite && (
                 <button class="save-btn" id="saveSeoBtn">
                   <svg
-                    width="16"
-                    height="16"
+                    width="15"
+                    height="15"
                     viewBox="0 0 24 24"
                     fill="none"
                     stroke="currentColor"
@@ -408,117 +286,135 @@ const configuredCount = allPages.filter((p) => seoData[p]).length;
           </div>
         </div>
 
-        <!-- SEO Score -->
-        <div class="seo-score-card" id="seoScoreCard">
-          <div class="score-ring-wrap">
-            <svg class="score-ring" width="64" height="64" viewBox="0 0 64 64">
-              <circle
-                class="score-ring-bg"
-                cx="32"
-                cy="32"
-                r="26"
-                fill="none"
-                stroke-width="5"></circle>
-              <circle
-                class="score-ring-fill"
-                id="scoreRingFill"
-                cx="32"
-                cy="32"
-                r="26"
-                fill="none"
-                stroke-width="5"
-                stroke-dasharray="163.36"
-                stroke-dashoffset="163.36"
-                stroke-linecap="round"
-                transform="rotate(-90 32 32)"></circle>
-            </svg>
-            <span class="score-num" id="scoreNum">0</span>
+        <!-- SEO Score + SERP Preview row -->
+        <div class="score-serp-row">
+          <div class="seo-score-card" id="seoScoreCard">
+            <div class="score-ring-wrap">
+              <svg
+                class="score-ring"
+                width="64"
+                height="64"
+                viewBox="0 0 64 64"
+              >
+                <circle
+                  class="score-ring-bg"
+                  cx="32"
+                  cy="32"
+                  r="26"
+                  fill="none"
+                  stroke-width="5"></circle>
+                <circle
+                  class="score-ring-fill"
+                  id="scoreRingFill"
+                  cx="32"
+                  cy="32"
+                  r="26"
+                  fill="none"
+                  stroke-width="5"
+                  stroke-dasharray="163.36"
+                  stroke-dashoffset="163.36"
+                  stroke-linecap="round"
+                  transform="rotate(-90 32 32)"></circle>
+              </svg>
+              <span class="score-num" id="scoreNum">0</span>
+            </div>
+            <div class="score-details">
+              <div class="score-title">SEO Score</div>
+              <div class="score-checks">
+                <div class="score-check" id="chk-title">
+                  <span class="score-check-icon"></span><span>Meta title</span>
+                </div>
+                <div class="score-check" id="chk-desc">
+                  <span class="score-check-icon"></span><span>Description</span>
+                </div>
+                <div class="score-check" id="chk-kw">
+                  <span class="score-check-icon"></span><span>Keywords</span>
+                </div>
+                <div class="score-check" id="chk-og">
+                  <span class="score-check-icon"></span><span>Open Graph</span>
+                </div>
+                <div class="score-check" id="chk-canonical">
+                  <span class="score-check-icon"></span><span
+                    >Canonical URL</span>
+                </div>
+                <div class="score-check" id="chk-schema">
+                  <span class="score-check-icon"></span><span>Schema</span>
+                </div>
+              </div>
+            </div>
           </div>
-          <div class="score-details">
-            <div class="score-title">SEO Score</div>
-            <div class="score-checks">
-              <div class="score-check" id="check-title">
-                <span class="score-check-icon"></span>
-                <span>Meta title</span>
+          <div class="serp-card">
+            <div class="serp-label">Google Search Preview</div>
+            <div class="serp-body">
+              <div class="serp-url-row">
+                <div class="serp-favicon">
+                  <svg
+                    width="14"
+                    height="14"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="white"
+                    stroke-width="2"
+                    ><circle cx="12" cy="12" r="10"></circle></svg>
+                </div>
+                <div class="serp-url-text">
+                  <span class="serp-site-name">BasisPoint Calculator</span>
+                  <span class="serp-url" id="serpUrl"
+                    >basispointcalculator.com ›</span
+                  >
+                </div>
               </div>
-              <div class="score-check" id="check-desc">
-                <span class="score-check-icon"></span>
-                <span>Meta description</span>
-              </div>
-              <div class="score-check" id="check-keywords">
-                <span class="score-check-icon"></span>
-                <span>Keywords</span>
-              </div>
-              <div class="score-check" id="check-schema">
-                <span class="score-check-icon"></span>
-                <span>Structured data</span>
+              <div class="serp-title" id="serpTitle">Page Title</div>
+              <div class="serp-desc" id="serpDesc">
+                Page description will appear here…
               </div>
             </div>
           </div>
         </div>
 
-        <!-- SERP Preview -->
-        <div class="serp-section">
-          <div class="section-label">
+        <!-- Editor Tabs -->
+        <div class="editor-tabs">
+          <button class="editor-tab active" data-tab="general">
             <svg
-              width="16"
-              height="16"
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"><path d="M4 7V4h16v3M9 20h6M12 4v16"></path></svg
+            >
+            General
+          </button>
+          <button class="editor-tab" data-tab="social">
+            <svg
+              width="14"
+              height="14"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
               stroke-width="2"
-              ><circle cx="12" cy="12" r="10"></circle><path
-                d="M2 12h20M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"
-              ></path></svg
+              ><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path
+                d="M13.73 21a2 2 0 01-3.46 0"></path></svg
             >
-            Google Search Preview
-          </div>
-          <div class="serp-card">
-            <div class="serp-url-row">
-              <div class="serp-favicon">
-                <svg
-                  width="14"
-                  height="14"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="white"
-                  stroke-width="2"
-                  ><circle cx="12" cy="12" r="10"></circle><path
-                    d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"
-                  ></path></svg
-                >
-              </div>
-              <div class="serp-url-text">
-                <span class="serp-site-name">BasisPoint Calculator</span>
-                <span class="serp-url" id="serpUrl"
-                  >basispointcalculator.com ›</span
-                >
-              </div>
-              <svg
-                class="serp-dots"
-                width="16"
-                height="16"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="#9aa0a6"
-                stroke-width="2"
-                ><circle cx="12" cy="5" r="1"></circle><circle
-                  cx="12"
-                  cy="12"
-                  r="1"></circle><circle cx="12" cy="19" r="1"></circle></svg
-              >
-            </div>
-            <div class="serp-title" id="serpTitle">Page Title</div>
-            <div class="serp-desc" id="serpDesc">
-              Page description will appear here. Keep it under 160 characters
-              for best results in search engine results pages.
-            </div>
-          </div>
+            Social &amp; OG
+          </button>
+          <button class="editor-tab" data-tab="advanced">
+            <svg
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              ><polyline points="16 18 22 12 16 6"></polyline><polyline
+                points="8 6 2 12 8 18"></polyline></svg
+            >
+            Advanced
+          </button>
         </div>
 
-        <!-- Form Sections -->
-        <div class="seo-form-sections">
-          <!-- Meta Title -->
+        <!-- Tab: General -->
+        <div class="tab-panel active" id="panel-general">
           <div class="form-section">
             <div class="section-label">
               <svg
@@ -529,8 +425,7 @@ const configuredCount = allPages.filter((p) => seoData[p]).length;
                 stroke="currentColor"
                 stroke-width="2"
                 ><path d="M4 7V4h16v3M9 20h6M12 4v16"></path></svg
-              >
-              Meta Title
+              >Meta Title
             </div>
             <div class="input-wrap">
               <input
@@ -541,17 +436,12 @@ const configuredCount = allPages.filter((p) => seoData[p]).length;
               />
               <div class="input-meta">
                 <div class="char-bar">
-                  <div class="char-fill" id="titleProgress" style="width: 0%">
-                  </div>
-                </div>
-                <span class="char-label"
-                  ><span id="titleCount">0</span> / 60 characters</span
-                >
+                  <div class="char-fill" id="titleProgress"></div>
+                </div><span class="char-label"
+                  ><span id="titleCount">0</span> / 60</span>
               </div>
             </div>
           </div>
-
-          <!-- Meta Description -->
           <div class="form-section">
             <div class="section-label">
               <svg
@@ -562,34 +452,22 @@ const configuredCount = allPages.filter((p) => seoData[p]).length;
                 stroke="currentColor"
                 stroke-width="2"
                 ><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"
-                ></path><polyline points="14,2 14,8 20,8"></polyline><line
-                  x1="16"
-                  y1="13"
-                  x2="8"
-                  y2="13"></line><line x1="16" y1="17" x2="8" y2="17"
-                ></line></svg
-              >
-              Meta Description
+                ></path><polyline points="14,2 14,8 20,8"></polyline></svg
+              >Meta Description
             </div>
             <div class="input-wrap">
               <textarea
                 class="seo-input seo-textarea"
                 id="seoDescription"
-                placeholder="Write a concise description that entices users to click..."
-              ></textarea>
+                placeholder="Write a concise description…"></textarea>
               <div class="input-meta">
                 <div class="char-bar">
-                  <div class="char-fill" id="descProgress" style="width: 0%">
-                  </div>
-                </div>
-                <span class="char-label"
-                  ><span id="descCount">0</span> / 160 characters</span
-                >
+                  <div class="char-fill" id="descProgress"></div>
+                </div><span class="char-label"
+                  ><span id="descCount">0</span> / 160</span>
               </div>
             </div>
           </div>
-
-          <!-- Keywords -->
           <div class="form-section">
             <div class="section-label">
               <svg
@@ -602,21 +480,209 @@ const configuredCount = allPages.filter((p) => seoData[p]).length;
                 ><path
                   d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"
                 ></path><line x1="7" y1="7" x2="7.01" y2="7"></line></svg
-              >
-              Meta Keywords
+              >Meta Keywords
             </div>
             <div class="input-wrap">
               <input
                 type="text"
                 class="seo-input"
                 id="seoKeywords"
-                placeholder="basis points, calculator, finance, interest rates"
+                placeholder="basis points, calculator, finance"
               />
               <span class="input-hint">Separate keywords with commas</span>
             </div>
           </div>
+          <div class="form-row-2">
+            <div class="form-section">
+              <div class="section-label">
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  ><path
+                    d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"
+                  ></path><path
+                    d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"
+                  ></path></svg
+                >Canonical URL
+              </div>
+              <div class="input-wrap">
+                <input
+                  type="text"
+                  class="seo-input"
+                  id="seoCanonical"
+                  placeholder="https://basispointcalculator.com/page/"
+                />
+                <span class="input-hint"
+                  >Leave empty to use the page URL as canonical</span
+                >
+              </div>
+            </div>
+            <div class="form-section">
+              <div class="section-label">
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  ><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"
+                  ></path></svg
+                >Robots Directives
+              </div>
+              <div class="robots-toggles">
+                <label class="toggle-label"
+                  ><input type="checkbox" id="robotsIndex" checked /><span
+                    class="toggle-text">Index</span
+                  ><span class="toggle-hint">Allow search engines to index</span
+                  ></label
+                >
+                <label class="toggle-label"
+                  ><input type="checkbox" id="robotsFollow" checked /><span
+                    class="toggle-text">Follow</span
+                  ><span class="toggle-hint"
+                    >Allow search engines to follow links</span
+                  ></label
+                >
+              </div>
+            </div>
+          </div>
+        </div>
 
-          <!-- Schema / JSON-LD -->
+        <!-- Tab: Social -->
+        <div class="tab-panel" id="panel-social" style="display:none;">
+          <div class="social-info-bar">
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              ><circle cx="12" cy="12" r="10"></circle><path
+                d="M12 16v-4M12 8h.01"></path></svg
+            >
+            Open Graph tags control how your page appears when shared on Facebook,
+            Twitter, LinkedIn, and other platforms. If left empty, the meta title
+            and description will be used.
+          </div>
+          <div class="form-section">
+            <div class="section-label">
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                ><path d="M4 7V4h16v3M9 20h6M12 4v16"></path></svg
+              >OG Title
+            </div>
+            <div class="input-wrap">
+              <input
+                type="text"
+                class="seo-input"
+                id="ogTitle"
+                placeholder="Override title for social sharing (optional)"
+              />
+            </div>
+          </div>
+          <div class="form-section">
+            <div class="section-label">
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                ><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"
+                ></path></svg
+              >OG Description
+            </div>
+            <div class="input-wrap">
+              <textarea
+                class="seo-input seo-textarea"
+                id="ogDescription"
+                placeholder="Override description for social sharing (optional)"
+              ></textarea>
+            </div>
+          </div>
+          <div class="form-section">
+            <div class="section-label">
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                ><rect x="3" y="3" width="18" height="18" rx="2" ry="2"
+                ></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline
+                  points="21 15 16 10 5 21"></polyline></svg
+              >OG Image URL
+            </div>
+            <div class="input-wrap">
+              <input
+                type="text"
+                class="seo-input"
+                id="ogImage"
+                placeholder="https://basispointcalculator.com/images/og-image.jpg"
+              />
+              <span class="input-hint"
+                >Recommended: 1200×630px image for best display</span
+              >
+            </div>
+          </div>
+          <!-- Social Preview -->
+          <div class="social-preview-section">
+            <div class="section-label">
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                ><rect x="2" y="3" width="20" height="14" rx="2" ry="2"
+                ></rect><line x1="8" y1="21" x2="16" y2="21"></line><line
+                  x1="12"
+                  y1="17"
+                  x2="12"
+                  y2="21"></line></svg
+              >Social Share Preview
+            </div>
+            <div class="social-preview-card">
+              <div class="sp-image" id="spImage">
+                <svg
+                  width="32"
+                  height="32"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1"
+                  opacity="0.3"
+                  ><rect x="3" y="3" width="18" height="18" rx="2"
+                  ></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline
+                    points="21 15 16 10 5 21"></polyline></svg>
+              </div>
+              <div class="sp-text">
+                <div class="sp-domain" id="spDomain">
+                  basispointcalculator.com
+                </div>
+                <div class="sp-title" id="spTitle">Page Title</div>
+                <div class="sp-desc" id="spDesc">Page description…</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab: Advanced -->
+        <div class="tab-panel" id="panel-advanced" style="display:none;">
           <div class="form-section">
             <div class="section-label">
               <svg
@@ -628,8 +694,7 @@ const configuredCount = allPages.filter((p) => seoData[p]).length;
                 stroke-width="2"
                 ><polyline points="16 18 22 12 16 6"></polyline><polyline
                   points="8 6 2 12 8 18"></polyline></svg
-              >
-              Structured Data (JSON-LD)
+              >Structured Data (JSON-LD)
             </div>
             <div class="input-wrap">
               <textarea
@@ -641,27 +706,65 @@ const configuredCount = allPages.filter((p) => seoData[p]).length;
               >
             </div>
           </div>
+          <div class="form-section">
+            <div class="section-label">
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                ><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"
+                ></path><polyline points="14,2 14,8 20,8"></polyline></svg
+              >Custom Head Tags
+            </div>
+            <div class="input-wrap">
+              <textarea
+                class="seo-input seo-code"
+                id="customHeadTags"
+                placeholder='<meta name="author" content="Your Name">'
+              ></textarea>
+              <span class="input-hint"
+                >Raw HTML to inject into the &lt;head&gt; section of this page</span
+              >
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </div>
+  <div id="toast" class="toast"></div>
 
   <script is:inline define:vars={{ seoData: JSON.stringify(seoData) }}>
     const data = JSON.parse(seoData);
     let currentPath = "";
 
-    // ── Search/Filter ──
+    // DOM refs
+    const titleInput = document.getElementById("seoTitle");
+    const descInput = document.getElementById("seoDescription");
+    const kwInput = document.getElementById("seoKeywords");
+    const schemaInput = document.getElementById("seoSchema");
+    const canonicalInput = document.getElementById("seoCanonical");
+    const robotsIndex = document.getElementById("robotsIndex");
+    const robotsFollow = document.getElementById("robotsFollow");
+    const ogTitleInput = document.getElementById("ogTitle");
+    const ogDescInput = document.getElementById("ogDescription");
+    const ogImageInput = document.getElementById("ogImage");
+    const customHeadInput = document.getElementById("customHeadTags");
+
+    // Search
     document.getElementById("pageSearch")?.addEventListener("input", (e) => {
       const q = e.target.value.toLowerCase();
       document.querySelectorAll(".page-item").forEach((item) => {
-        const path = item.dataset.path.toLowerCase();
-        const label = (item.dataset.label || "").toLowerCase();
-        item.style.display =
-          path.includes(q) || label.includes(q) ? "" : "none";
+        const match =
+          item.dataset.path.toLowerCase().includes(q) ||
+          (item.dataset.label || "").toLowerCase().includes(q);
+        item.style.display = match ? "" : "none";
       });
     });
 
-    // ── Page selection ──
+    // Page selection
     document.querySelectorAll(".page-item").forEach((btn) => {
       btn.addEventListener("click", () => {
         document
@@ -673,35 +776,70 @@ const configuredCount = allPages.filter((p) => seoData[p]).length;
       });
     });
 
+    // Editor tabs
+    document.querySelectorAll(".editor-tab").forEach((tab) => {
+      tab.addEventListener("click", () => {
+        document
+          .querySelectorAll(".editor-tab")
+          .forEach((t) => t.classList.remove("active"));
+        document.querySelectorAll(".tab-panel").forEach((p) => {
+          p.style.display = "none";
+          p.classList.remove("active");
+        });
+        tab.classList.add("active");
+        const panel = document.getElementById("panel-" + tab.dataset.tab);
+        if (panel) {
+          panel.style.display = "block";
+          panel.classList.add("active");
+        }
+      });
+    });
+
     function loadPageSeo(path) {
       document.getElementById("editorEmpty").style.display = "none";
       document.getElementById("editorForm").style.display = "block";
       document.getElementById("editorPath").textContent = path;
 
       const seo = data[path] || {};
-      document.getElementById("seoTitle").value = seo.title || "";
-      document.getElementById("seoDescription").value = seo.description || "";
-      document.getElementById("seoKeywords").value = seo.keywords || "";
-      document.getElementById("seoSchema").value = seo.schema
-        ? JSON.stringify(seo.schema, null, 2)
-        : "";
+      titleInput.value = seo.title || "";
+      descInput.value = seo.description || "";
+      kwInput.value = seo.keywords || "";
+      schemaInput.value = seo.schema ? JSON.stringify(seo.schema, null, 2) : "";
+      canonicalInput.value = seo.canonicalUrl || "";
+      robotsIndex.checked = seo.robots?.index !== false;
+      robotsFollow.checked = seo.robots?.follow !== false;
+      ogTitleInput.value = seo.ogTitle || "";
+      ogDescInput.value = seo.ogDescription || "";
+      ogImageInput.value = seo.ogImage || "";
+      customHeadInput.value = seo.customHeadTags || "";
+
       updatePreview();
       updateCounts();
       updateScore();
+      updateSocialPreview();
     }
 
-    // ── Live SERP preview ──
-    const titleInput = document.getElementById("seoTitle");
-    const descInput = document.getElementById("seoDescription");
-    const kwInput = document.getElementById("seoKeywords");
-    const schemaInput = document.getElementById("seoSchema");
-
-    [titleInput, descInput, kwInput, schemaInput].forEach((el) => {
+    // Live updates
+    [
+      titleInput,
+      descInput,
+      kwInput,
+      schemaInput,
+      canonicalInput,
+      ogTitleInput,
+      ogDescInput,
+      ogImageInput,
+      customHeadInput,
+    ].forEach((el) => {
       el?.addEventListener("input", () => {
         updatePreview();
         updateCounts();
         updateScore();
+        updateSocialPreview();
       });
+    });
+    [robotsIndex, robotsFollow].forEach((el) => {
+      el?.addEventListener("change", () => updateScore());
     });
 
     function updatePreview() {
@@ -710,22 +848,40 @@ const configuredCount = allPages.filter((p) => seoData[p]).length;
       document.getElementById("serpUrl").textContent =
         "basispointcalculator.com" + currentPath;
       document.getElementById("serpDesc").textContent =
-        descInput.value ||
-        "Page description will appear here. Keep it under 160 characters for best results.";
+        descInput.value || "Page description will appear here…";
+    }
+
+    function updateSocialPreview() {
+      document.getElementById("spTitle").textContent =
+        ogTitleInput.value || titleInput.value || "Page Title";
+      document.getElementById("spDesc").textContent =
+        ogDescInput.value || descInput.value || "Page description…";
+      document.getElementById("spDomain").textContent =
+        "basispointcalculator.com";
+      const imgEl = document.getElementById("spImage");
+      if (ogImageInput.value) {
+        imgEl.style.backgroundImage = `url(${ogImageInput.value})`;
+        imgEl.style.backgroundSize = "cover";
+        imgEl.style.backgroundPosition = "center";
+        imgEl.innerHTML = "";
+      } else {
+        imgEl.style.backgroundImage = "";
+        imgEl.innerHTML =
+          '<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" opacity="0.3"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>';
+      }
     }
 
     function updateCounts() {
-      const tLen = titleInput.value.length;
-      const dLen = descInput.value.length;
+      const tLen = titleInput.value.length,
+        dLen = descInput.value.length;
       document.getElementById("titleCount").textContent = tLen;
       document.getElementById("descCount").textContent = dLen;
-      const tPct = Math.min((tLen / 60) * 100, 100);
-      const dPct = Math.min((dLen / 160) * 100, 100);
-      const tFill = document.getElementById("titleProgress");
-      const dFill = document.getElementById("descProgress");
+      const tPct = Math.min((tLen / 60) * 100, 100),
+        dPct = Math.min((dLen / 160) * 100, 100);
+      const tFill = document.getElementById("titleProgress"),
+        dFill = document.getElementById("descProgress");
       tFill.style.width = tPct + "%";
       dFill.style.width = dPct + "%";
-      // Color coding: green=good, yellow=warning, red=over
       tFill.className =
         "char-fill " + (tLen > 60 ? "over" : tLen > 45 ? "good" : "");
       dFill.className =
@@ -734,59 +890,56 @@ const configuredCount = allPages.filter((p) => seoData[p]).length;
 
     function updateScore() {
       let score = 0;
+      const total = 6;
       const checks = {
-        "check-title":
+        "chk-title":
           titleInput.value.length > 0 && titleInput.value.length <= 60,
-        "check-desc":
-          descInput.value.length > 0 && descInput.value.length <= 160,
-        "check-keywords": kwInput.value.trim().length > 0,
-        "check-schema": schemaInput.value.trim().length > 0,
+        "chk-desc": descInput.value.length > 0 && descInput.value.length <= 160,
+        "chk-kw": kwInput.value.trim().length > 0,
+        "chk-og":
+          ogTitleInput.value.trim().length > 0 ||
+          ogDescInput.value.trim().length > 0,
+        "chk-canonical": canonicalInput.value.trim().length > 0,
+        "chk-schema": schemaInput.value.trim().length > 0,
       };
       Object.entries(checks).forEach(([id, ok]) => {
-        const el = document.getElementById(id);
-        el.className = "score-check " + (ok ? "pass" : "fail");
-        if (ok) score += 25;
+        document.getElementById(id).className =
+          "score-check " + (ok ? "pass" : "fail");
+        if (ok) score++;
       });
-      document.getElementById("scoreNum").textContent = score;
+      const pct = Math.round((score / total) * 100);
+      document.getElementById("scoreNum").textContent = pct;
       const ring = document.getElementById("scoreRingFill");
-      const circumference = 163.36;
-      ring.style.strokeDashoffset =
-        circumference - (score / 100) * circumference;
-      ring.style.stroke =
-        score >= 75
+      ring.style.strokeDashoffset = 163.36 - (pct / 100) * 163.36;
+      const color =
+        pct >= 75
           ? "var(--accent-green)"
-          : score >= 50
+          : pct >= 50
             ? "#fbbf24"
             : "var(--accent-red)";
-      document.getElementById("scoreNum").style.color =
-        score >= 75
-          ? "var(--accent-green)"
-          : score >= 50
-            ? "#fbbf24"
-            : "var(--accent-red)";
+      ring.style.stroke = color;
+      document.getElementById("scoreNum").style.color = color;
     }
 
-    // ── Save ──
+    // Save
     document
       .getElementById("saveSeoBtn")
       ?.addEventListener("click", async () => {
         const btn = document.getElementById("saveSeoBtn");
-        const msg = document.getElementById("seoMsg");
+        const status = document.getElementById("saveStatus");
         btn.disabled = true;
         btn.innerHTML = '<span class="save-spinner"></span> Saving...';
 
         let schema = null;
-        const schemaStr = document.getElementById("seoSchema").value.trim();
+        const schemaStr = schemaInput.value.trim();
         if (schemaStr) {
           try {
             schema = JSON.parse(schemaStr);
           } catch {
-            msg.className = "seo-msg error";
-            msg.textContent = "Invalid JSON in schema field";
-            msg.style.display = "block";
+            showToast("Invalid JSON in schema field", "error");
             btn.disabled = false;
             btn.innerHTML =
-              '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><polyline points="17,21 17,13 7,13 7,21"/><polyline points="7,3 7,8 15,8"/></svg> Save Changes';
+              '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><polyline points="17,21 17,13 7,13 7,21"/><polyline points="7,3 7,8 15,8"/></svg> Save Changes';
             return;
           }
         }
@@ -801,26 +954,41 @@ const configuredCount = allPages.filter((p) => seoData[p]).length;
               description: descInput.value,
               keywords: kwInput.value,
               schema,
+              canonicalUrl: canonicalInput.value,
+              robots: {
+                index: robotsIndex.checked,
+                follow: robotsFollow.checked,
+              },
+              ogTitle: ogTitleInput.value,
+              ogDescription: ogDescInput.value,
+              ogImage: ogImageInput.value,
+              customHeadTags: customHeadInput.value,
             }),
           });
           if (res.ok) {
-            msg.className = "seo-msg success";
-            msg.textContent = "✓ Settings saved successfully";
             data[currentPath] = {
               title: titleInput.value,
               description: descInput.value,
               keywords: kwInput.value,
               schema,
+              canonicalUrl: canonicalInput.value,
+              robots: {
+                index: robotsIndex.checked,
+                follow: robotsFollow.checked,
+              },
+              ogTitle: ogTitleInput.value,
+              ogDescription: ogDescInput.value,
+              ogImage: ogImageInput.value,
+              customHeadTags: customHeadInput.value,
             };
-            // Update the page item status
+            showToast("✓ Settings saved successfully", "success");
             const item = document.querySelector(
               `.page-item[data-path="${currentPath}"]`,
             );
-            if (item)
+            if (item) {
               item
                 .querySelector(".page-item-icon")
                 ?.classList.add("configured");
-            if (item) {
               const badge = item.querySelector(".seo-badge");
               if (badge) {
                 badge.className = "seo-badge ok";
@@ -830,48 +998,28 @@ const configuredCount = allPages.filter((p) => seoData[p]).length;
             }
           } else {
             const d = await res.json();
-            msg.className = "seo-msg error";
-            msg.textContent = d.error || "Failed to save";
+            showToast(d.error || "Failed to save", "error");
           }
         } catch {
-          msg.className = "seo-msg error";
-          msg.textContent = "Network error — please try again";
+          showToast("Network error", "error");
         }
-        msg.style.display = "block";
         btn.disabled = false;
         btn.innerHTML =
-          '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><polyline points="17,21 17,13 7,13 7,21"/><polyline points="7,3 7,8 15,8"/></svg> Save Changes';
-        setTimeout(() => {
-          msg.style.display = "none";
-        }, 3500);
+          '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><polyline points="17,21 17,13 7,13 7,21"/><polyline points="7,3 7,8 15,8"/></svg> Save Changes';
       });
 
-    // ── Add custom page ──
+    // Add page
     document.getElementById("addPageBtn")?.addEventListener("click", () => {
       const input = document.getElementById("newPagePath");
       let path = input.value.trim();
       if (!path) return;
       if (!path.startsWith("/")) path = "/" + path;
       if (!path.endsWith("/")) path += "/";
-
       const btn = document.createElement("button");
       btn.className = "page-item";
       btn.dataset.path = path;
       btn.dataset.label = path;
-      btn.innerHTML = `
-        <div class="page-item-icon">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14,2 14,8 20,8"/></svg>
-        </div>
-        <div class="page-item-text">
-          <span class="page-item-label">${path}</span>
-          <span class="page-item-path">${path}</span>
-        </div>
-        <div class="page-item-status">
-          <span class="seo-badge missing">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><circle cx="12" cy="12" r="1"/></svg>
-          </span>
-        </div>
-      `;
+      btn.innerHTML = `<div class="page-item-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14,2 14,8 20,8"/></svg></div><div class="page-item-text"><span class="page-item-label">${path}</span><span class="page-item-path">${path}</span></div><div class="page-item-status"><span class="seo-badge missing"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><circle cx="12" cy="12" r="1"/></svg></span></div>`;
       btn.addEventListener("click", () => {
         document
           .querySelectorAll(".page-item")
@@ -883,11 +1031,17 @@ const configuredCount = allPages.filter((p) => seoData[p]).length;
       document.getElementById("pageList").appendChild(btn);
       input.value = "";
     });
+
+    function showToast(msg, type) {
+      const t = document.getElementById("toast");
+      t.textContent = msg;
+      t.className = `toast ${type} show`;
+      setTimeout(() => t.classList.remove("show"), 3500);
+    }
   </script>
 </AdminLayout>
 
 <style is:global>
-  /* ─── SEO Layout ─── */
   .seo-layout {
     display: grid;
     grid-template-columns: 320px 1fr;
@@ -895,160 +1049,113 @@ const configuredCount = allPages.filter((p) => seoData[p]).length;
     align-items: start;
   }
 
-  /* ─── Page Sidebar ─── */
+  /* Sidebar */
   .page-sidebar {
     background: var(--bg-surface);
     border: 1px solid var(--border-subtle);
     border-radius: var(--radius-lg);
     overflow: hidden;
-    max-height: calc(100vh - 130px);
-    display: flex;
-    flex-direction: column;
     position: sticky;
     top: 80px;
   }
-
   .sidebar-search {
-    position: relative;
-    padding: 14px 14px 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border-subtle);
   }
   .search-icon {
-    position: absolute;
-    left: 26px;
-    top: 50%;
-    transform: translateY(-20%);
     color: var(--text-muted);
-    pointer-events: none;
+    flex-shrink: 0;
   }
   .search-input {
-    width: 100%;
-    padding: 10px 14px 10px 38px;
-    background: var(--bg-deep);
-    border: 1px solid var(--border-subtle);
-    border-radius: var(--radius-md);
+    background: transparent;
+    border: none;
     color: var(--text-primary);
-    font-size: 13px;
-    font-family: inherit;
+    font-size: 14px;
+    width: 100%;
     outline: none;
-    transition: all var(--transition);
+    font-family: inherit;
   }
-  .search-input::placeholder {
-    color: var(--text-muted);
-  }
-  .search-input:focus {
-    border-color: var(--accent-blue);
-    box-shadow: 0 0 0 3px rgba(56, 152, 236, 0.1);
-  }
-
-  /* Stat Chips */
   .sidebar-stats {
     display: flex;
-    gap: 6px;
-    padding: 12px 14px;
+    gap: 4px;
+    padding: 10px 12px;
     border-bottom: 1px solid var(--border-subtle);
   }
   .stat-chip {
     flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 8px 4px;
-    border-radius: var(--radius-sm);
-    background: rgba(0, 0, 0, 0.15);
-    font-size: 10px;
+    text-align: center;
+    padding: 6px 4px;
+    border-radius: 6px;
+    background: var(--bg-elevated);
+    font-size: 11px;
     color: var(--text-muted);
-    font-weight: 500;
-    line-height: 1.3;
   }
   .stat-chip-num {
+    display: block;
     font-size: 16px;
     font-weight: 700;
     color: var(--text-primary);
-    line-height: 1;
-    margin-bottom: 2px;
   }
   .stat-chip.configured .stat-chip-num {
     color: var(--accent-green);
   }
   .stat-chip.pending .stat-chip-num {
-    color: #fbbf24;
+    color: var(--accent-amber, #f59e0b);
   }
-
-  /* Page Items */
   .page-items {
-    flex: 1;
+    max-height: calc(100vh - 320px);
     overflow-y: auto;
-    padding: 8px;
   }
-  .page-items::-webkit-scrollbar {
-    width: 4px;
-  }
-  .page-items::-webkit-scrollbar-thumb {
-    background: var(--border-medium);
-    border-radius: 2px;
-  }
-  .page-items::-webkit-scrollbar-track {
-    background: transparent;
-  }
-
   .page-item {
     display: flex;
     align-items: center;
     gap: 10px;
     width: 100%;
-    text-align: left;
-    padding: 10px 12px;
-    border-radius: var(--radius-md);
-    border: 1px solid transparent;
+    padding: 10px 16px;
     background: transparent;
-    color: var(--text-secondary);
+    border: none;
+    border-bottom: 1px solid var(--border-subtle);
+    color: var(--text-primary);
     cursor: pointer;
-    transition: all 0.15s ease;
+    transition: all 0.15s;
+    text-align: left;
     font-family: inherit;
-    margin-bottom: 2px;
   }
   .page-item:hover {
     background: var(--bg-hover);
-    border-color: var(--border-subtle);
-    color: var(--text-primary);
   }
   .page-item.selected {
     background: rgba(56, 152, 236, 0.08);
-    border-color: rgba(56, 152, 236, 0.25);
-    color: var(--text-primary);
+    border-left: 3px solid var(--accent-blue);
   }
-  .page-item.selected .page-item-icon {
-    background: rgba(56, 152, 236, 0.15);
-    color: var(--accent-blue);
-  }
-
   .page-item-icon {
-    width: 32px;
-    height: 32px;
-    border-radius: 8px;
-    background: rgba(255, 255, 255, 0.04);
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    background: var(--bg-elevated);
     display: flex;
     align-items: center;
     justify-content: center;
-    flex-shrink: 0;
     color: var(--text-muted);
-    transition: all 0.15s ease;
+    flex-shrink: 0;
   }
   .page-item-icon.configured {
+    background: rgba(16, 185, 129, 0.1);
     color: var(--accent-green);
-    background: rgba(52, 211, 153, 0.08);
   }
-
   .page-item-text {
     flex: 1;
     min-width: 0;
     display: flex;
     flex-direction: column;
+    gap: 1px;
   }
   .page-item-label {
     font-size: 13px;
-    font-weight: 500;
-    line-height: 1.2;
+    font-weight: 600;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -1056,125 +1163,101 @@ const configuredCount = allPages.filter((p) => seoData[p]).length;
   .page-item-path {
     font-size: 11px;
     color: var(--text-muted);
+    font-family: monospace;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    font-family: "JetBrains Mono", "Courier New", monospace;
-    letter-spacing: -0.3px;
-  }
-
-  .page-item-status {
-    flex-shrink: 0;
   }
   .seo-badge {
-    width: 22px;
-    height: 22px;
+    width: 20px;
+    height: 20px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
   }
   .seo-badge.ok {
-    background: rgba(52, 211, 153, 0.12);
+    background: rgba(16, 185, 129, 0.15);
     color: var(--accent-green);
   }
   .seo-badge.missing {
-    background: rgba(255, 255, 255, 0.04);
+    background: rgba(255, 255, 255, 0.05);
     color: var(--text-muted);
   }
-
-  /* Add Page */
   .add-page-section {
-    padding: 12px 14px;
+    padding: 10px 12px;
     border-top: 1px solid var(--border-subtle);
   }
   .add-page-row {
     display: flex;
-    gap: 8px;
+    gap: 6px;
   }
   .add-page-input {
     flex: 1;
-    padding: 8px 12px;
-    background: var(--bg-deep);
+    background: var(--bg-elevated);
     border: 1px solid var(--border-subtle);
-    border-radius: var(--radius-sm);
+    border-radius: 6px;
+    padding: 8px 12px;
     color: var(--text-primary);
-    font-size: 12px;
-    font-family: "JetBrains Mono", "Courier New", monospace;
+    font-size: 13px;
+    font-family: monospace;
     outline: none;
-    transition: border-color var(--transition);
-  }
-  .add-page-input::placeholder {
-    color: var(--text-muted);
-  }
-  .add-page-input:focus {
-    border-color: var(--accent-blue);
   }
   .add-page-btn {
     width: 36px;
     height: 36px;
-    border-radius: var(--radius-sm);
-    background: var(--gradient-primary);
+    border-radius: 6px;
+    background: var(--accent-blue);
     border: none;
-    color: white;
+    color: #fff;
+    cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    cursor: pointer;
-    transition: all var(--transition);
     flex-shrink: 0;
   }
-  .add-page-btn:hover {
-    transform: scale(1.05);
-    box-shadow: 0 4px 12px rgba(56, 152, 236, 0.3);
-  }
 
-  /* ─── SEO Editor ─── */
+  /* Editor */
   .seo-editor {
-    min-height: 500px;
+    min-height: 400px;
   }
-
-  /* Empty State */
   .editor-empty {
-    background: var(--bg-surface);
-    border: 1px solid var(--border-subtle);
-    border-radius: var(--radius-lg);
-    padding: 60px 40px;
-    text-align: center;
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
+    padding: 80px 40px;
+    text-align: center;
+    background: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg);
   }
   .empty-icon-wrap {
     position: relative;
-    width: 80px;
-    height: 80px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 20px;
+    margin-bottom: 24px;
     color: var(--text-muted);
   }
   .empty-pulse {
     position: absolute;
-    inset: 0;
+    inset: -8px;
     border-radius: 50%;
-    border: 2px solid var(--border-subtle);
-    animation: emptyPulse 2.5s ease-in-out infinite;
+    border: 2px solid var(--accent-blue);
+    opacity: 0.2;
+    animation: pulse 2s ease-in-out infinite;
   }
-  @keyframes emptyPulse {
+  @keyframes pulse {
     0%,
     100% {
       transform: scale(1);
-      opacity: 0.3;
+      opacity: 0.2;
     }
     50% {
-      transform: scale(1.15);
+      transform: scale(1.2);
       opacity: 0;
     }
   }
   .empty-title {
-    font-size: 18px;
+    font-size: 20px;
     font-weight: 700;
     color: var(--text-primary);
     margin-bottom: 8px;
@@ -1182,11 +1265,14 @@ const configuredCount = allPages.filter((p) => seoData[p]).length;
   .empty-desc {
     font-size: 14px;
     color: var(--text-muted);
-    max-width: 400px;
+    max-width: 360px;
     line-height: 1.6;
-    margin-bottom: 28px;
+    margin-bottom: 24px;
   }
   .empty-tips {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
     text-align: left;
   }
   .empty-tip {
@@ -1195,71 +1281,75 @@ const configuredCount = allPages.filter((p) => seoData[p]).length;
     gap: 8px;
     font-size: 13px;
     color: var(--text-secondary);
-    padding: 6px 0;
-  }
-  .empty-tip svg {
-    color: var(--accent-blue);
-    flex-shrink: 0;
   }
 
-  /* Editor Top */
-  .editor-top {
+  /* Editor Header */
+  .editor-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 20px;
-    gap: 16px;
+    padding: 12px 20px;
+    background: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    margin-bottom: 16px;
+    position: sticky;
+    top: 65px;
+    z-index: 20;
+    backdrop-filter: blur(12px);
+    flex-wrap: wrap;
+    gap: 10px;
   }
-  .editor-breadcrumb {
+  .editor-header-left {
     display: flex;
     align-items: center;
     gap: 6px;
     font-size: 13px;
     color: var(--text-muted);
   }
+  .editor-breadcrumb {
+    font-weight: 600;
+  }
   .editor-breadcrumb-page {
     color: var(--accent-blue);
     font-weight: 600;
-    font-family: "JetBrains Mono", "Courier New", monospace;
-    font-size: 12px;
+    font-family: monospace;
   }
-  .editor-top-right {
+  .editor-header-right {
     display: flex;
     align-items: center;
     gap: 12px;
   }
-
+  .save-status {
+    font-size: 13px;
+  }
   .save-btn {
     display: flex;
     align-items: center;
-    gap: 8px;
-    padding: 10px 20px;
-    border-radius: var(--radius-md);
-    background: var(--gradient-primary);
+    gap: 7px;
+    padding: 8px 18px;
+    border-radius: 8px;
+    background: var(--accent-green);
     border: none;
-    color: white;
+    color: #fff;
     font-size: 13px;
     font-weight: 600;
     cursor: pointer;
+    transition: all 0.2s;
     font-family: inherit;
-    transition: all var(--transition);
-    white-space: nowrap;
   }
   .save-btn:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 4px 16px rgba(56, 152, 236, 0.3);
+    filter: brightness(1.1);
   }
   .save-btn:disabled {
     opacity: 0.6;
     cursor: not-allowed;
-    transform: none;
   }
-
   .save-spinner {
     width: 14px;
     height: 14px;
     border: 2px solid rgba(255, 255, 255, 0.3);
-    border-top-color: white;
+    border-top-color: #fff;
     border-radius: 50%;
     animation: spin 0.6s linear infinite;
     display: inline-block;
@@ -1270,45 +1360,21 @@ const configuredCount = allPages.filter((p) => seoData[p]).length;
     }
   }
 
-  .seo-msg {
-    font-size: 13px;
-    font-weight: 500;
-    padding: 8px 16px;
-    border-radius: var(--radius-sm);
-    white-space: nowrap;
-    animation: msgSlide 0.2s ease-out;
+  /* Score + SERP row */
+  .score-serp-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 16px;
   }
-  @keyframes msgSlide {
-    from {
-      opacity: 0;
-      transform: translateX(10px);
-    }
-    to {
-      opacity: 1;
-      transform: translateX(0);
-    }
-  }
-  .seo-msg.success {
-    background: rgba(52, 211, 153, 0.1);
-    color: var(--accent-green);
-    border: 1px solid rgba(52, 211, 153, 0.2);
-  }
-  .seo-msg.error {
-    background: rgba(248, 113, 113, 0.1);
-    color: var(--accent-red);
-    border: 1px solid rgba(248, 113, 113, 0.2);
-  }
-
-  /* ─── SEO Score Card ─── */
   .seo-score-card {
     display: flex;
     align-items: center;
-    gap: 24px;
-    padding: 20px 24px;
+    gap: 16px;
+    padding: 16px 20px;
     background: var(--bg-surface);
     border: 1px solid var(--border-subtle);
-    border-radius: var(--radius-lg);
-    margin-bottom: 20px;
+    border-radius: var(--radius-md);
   }
   .score-ring-wrap {
     position: relative;
@@ -1317,12 +1383,10 @@ const configuredCount = allPages.filter((p) => seoData[p]).length;
     flex-shrink: 0;
   }
   .score-ring-bg {
-    stroke: rgba(255, 255, 255, 0.06);
+    stroke: var(--border-subtle);
   }
   .score-ring-fill {
-    transition:
-      stroke-dashoffset 0.6s ease,
-      stroke 0.3s;
+    transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
   }
   .score-num {
     position: absolute;
@@ -1332,8 +1396,6 @@ const configuredCount = allPages.filter((p) => seoData[p]).length;
     justify-content: center;
     font-size: 18px;
     font-weight: 800;
-    color: var(--text-muted);
-    transition: color 0.3s;
   }
   .score-details {
     flex: 1;
@@ -1342,50 +1404,160 @@ const configuredCount = allPages.filter((p) => seoData[p]).length;
     font-size: 14px;
     font-weight: 700;
     color: var(--text-primary);
-    margin-bottom: 8px;
+    margin-bottom: 6px;
   }
   .score-checks {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 4px 20px;
+    gap: 3px;
   }
   .score-check {
     display: flex;
     align-items: center;
-    gap: 6px;
-    font-size: 12px;
+    gap: 5px;
+    font-size: 11px;
     color: var(--text-muted);
   }
   .score-check-icon {
-    width: 16px;
-    height: 16px;
+    width: 8px;
+    height: 8px;
     border-radius: 50%;
-    border: 1.5px solid var(--border-medium);
+    background: var(--border-subtle);
+    flex-shrink: 0;
+  }
+  .score-check.pass .score-check-icon {
+    background: var(--accent-green);
+  }
+  .score-check.fail .score-check-icon {
+    background: var(--accent-red, #ef4444);
+  }
+  .score-check.pass {
+    color: var(--accent-green);
+  }
+
+  /* SERP */
+  .serp-card {
+    padding: 16px 20px;
+    background: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+  }
+  .serp-label {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 10px;
+  }
+  .serp-body {
+    background: #fff;
+    border-radius: 8px;
+    padding: 14px 16px;
+  }
+  .serp-url-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 4px;
+  }
+  .serp-favicon {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: #4285f4;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
-    transition: all 0.2s;
   }
-  .score-check.pass .score-check-icon {
-    background: rgba(52, 211, 153, 0.15);
-    border-color: var(--accent-green);
+  .serp-site-name {
+    font-size: 13px;
+    color: #202124;
+    font-weight: 400;
   }
-  .score-check.pass .score-check-icon::after {
-    content: "";
+  .serp-url {
+    font-size: 12px;
+    color: #4d5156;
     display: block;
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: var(--accent-green);
   }
-  .score-check.pass {
-    color: var(--text-primary);
+  .serp-title {
+    font-size: 18px;
+    color: #1a0dab;
+    font-weight: 400;
+    line-height: 1.3;
+    margin-bottom: 4px;
+    cursor: pointer;
+  }
+  .serp-title:hover {
+    text-decoration: underline;
+  }
+  .serp-desc {
+    font-size: 13px;
+    color: #4d5156;
+    line-height: 1.5;
   }
 
-  /* ─── SERP Preview ─── */
-  .serp-section {
-    margin-bottom: 24px;
+  /* Editor Tabs */
+  .editor-tabs {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 16px;
+    padding: 4px;
+    background: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: 10px;
+  }
+  .editor-tab {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 10px 16px;
+    border-radius: 8px;
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: inherit;
+  }
+  .editor-tab:hover {
+    color: var(--text-primary);
+    background: var(--bg-hover);
+  }
+  .editor-tab.active {
+    background: rgba(56, 152, 236, 0.1);
+    color: var(--accent-blue);
+  }
+
+  /* Tab Panels */
+  .tab-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    animation: fadeIn 0.3s ease-out;
+  }
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(6px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Form sections */
+  .form-section {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    padding: 16px 20px;
   }
   .section-label {
     display: flex;
@@ -1393,181 +1565,216 @@ const configuredCount = allPages.filter((p) => seoData[p]).length;
     gap: 8px;
     font-size: 12px;
     font-weight: 700;
-    color: var(--text-muted);
+    color: var(--text-secondary);
     text-transform: uppercase;
-    letter-spacing: 0.6px;
+    letter-spacing: 0.5px;
     margin-bottom: 10px;
   }
-  .serp-card {
-    background: #202124;
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 12px;
-    padding: 20px;
-  }
-  .serp-url-row {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin-bottom: 8px;
-  }
-  .serp-favicon {
-    width: 28px;
-    height: 28px;
-    border-radius: 50%;
-    background: var(--gradient-primary);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-  }
-  .serp-url-text {
-    flex: 1;
-  }
-  .serp-site-name {
-    font-size: 14px;
-    color: #dadce0;
-    display: block;
-    line-height: 1.2;
-  }
-  .serp-url {
-    font-size: 12px;
-    color: #9aa0a6;
-  }
-  .serp-dots {
-    flex-shrink: 0;
-    cursor: pointer;
-  }
-  .serp-title {
-    font-size: 20px;
-    color: #8ab4f8;
-    line-height: 1.3;
-    margin-bottom: 6px;
-    cursor: pointer;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-  .serp-title:hover {
-    text-decoration: underline;
-  }
-  .serp-desc {
-    font-size: 14px;
-    color: #bdc1c6;
-    line-height: 1.58;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
-
-  /* ─── Form Sections ─── */
-  .seo-form-sections {
+  .input-wrap {
     display: flex;
     flex-direction: column;
-    gap: 20px;
-  }
-  .form-section {
-    background: var(--bg-surface);
-    border: 1px solid var(--border-subtle);
-    border-radius: var(--radius-lg);
-    padding: 20px;
-    transition: border-color 0.2s;
-  }
-  .form-section:focus-within {
-    border-color: rgba(56, 152, 236, 0.3);
-    box-shadow: 0 0 0 3px rgba(56, 152, 236, 0.06);
-  }
-
-  .input-wrap {
-    margin-top: 12px;
+    gap: 6px;
   }
   .seo-input {
-    width: 100%;
-    padding: 12px 16px;
-    background: var(--bg-deep);
+    background: var(--bg-elevated);
     border: 1px solid var(--border-subtle);
-    border-radius: var(--radius-md);
+    border-radius: 8px;
+    padding: 10px 14px;
     color: var(--text-primary);
     font-size: 14px;
-    font-family: inherit;
     outline: none;
-    transition: all var(--transition);
-    resize: vertical;
-  }
-  .seo-input::placeholder {
-    color: var(--text-muted);
+    transition: border-color 0.2s;
+    font-family: inherit;
+    width: 100%;
+    box-sizing: border-box;
   }
   .seo-input:focus {
     border-color: var(--accent-blue);
-    background: rgba(56, 152, 236, 0.03);
   }
-
   .seo-textarea {
-    min-height: 90px;
-    line-height: 1.6;
+    min-height: 80px;
+    resize: vertical;
   }
   .seo-code {
-    min-height: 140px;
-    font-family: "JetBrains Mono", "Fira Code", "Courier New", monospace;
+    min-height: 120px;
+    font-family: monospace;
     font-size: 13px;
-    line-height: 1.7;
+    resize: vertical;
   }
-
   .input-meta {
     display: flex;
     align-items: center;
-    gap: 12px;
-    margin-top: 8px;
+    gap: 10px;
   }
   .char-bar {
     flex: 1;
-    height: 3px;
-    background: rgba(255, 255, 255, 0.06);
-    border-radius: 3px;
+    height: 4px;
+    background: var(--border-subtle);
+    border-radius: 4px;
     overflow: hidden;
   }
   .char-fill {
     height: 100%;
     background: var(--accent-blue);
-    border-radius: 3px;
-    transition:
-      width 0.25s ease,
-      background 0.25s;
+    border-radius: 4px;
+    transition: all 0.3s;
   }
   .char-fill.good {
     background: var(--accent-green);
   }
   .char-fill.over {
-    background: var(--accent-red);
+    background: var(--accent-red, #ef4444);
   }
-
   .char-label {
     font-size: 11px;
     color: var(--text-muted);
     white-space: nowrap;
-    font-variant-numeric: tabular-nums;
   }
   .input-hint {
-    display: block;
-    margin-top: 6px;
     font-size: 11px;
     color: var(--text-muted);
   }
+  .form-row-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
 
-  @media (max-width: 900px) {
+  /* Robots toggles */
+  .robots-toggles {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .toggle-label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    padding: 8px 12px;
+    border-radius: 8px;
+    background: var(--bg-elevated);
+    border: 1px solid var(--border-subtle);
+    transition: all 0.15s;
+  }
+  .toggle-label:hover {
+    border-color: var(--border-medium);
+  }
+  .toggle-label input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    accent-color: var(--accent-blue);
+    cursor: pointer;
+  }
+  .toggle-text {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+  .toggle-hint {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-left: auto;
+  }
+
+  /* Social */
+  .social-info-bar {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 12px 16px;
+    background: rgba(56, 152, 236, 0.06);
+    border: 1px solid rgba(56, 152, 236, 0.15);
+    border-radius: 8px;
+    font-size: 12.5px;
+    color: var(--text-secondary);
+    line-height: 1.5;
+  }
+  .social-info-bar svg {
+    flex-shrink: 0;
+    margin-top: 2px;
+    color: var(--accent-blue);
+  }
+  .social-preview-card {
+    background: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid #ddd;
+  }
+  .sp-image {
+    height: 160px;
+    background: var(--bg-elevated);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 1px solid #ddd;
+  }
+  .sp-text {
+    padding: 12px 14px;
+  }
+  .sp-domain {
+    font-size: 11px;
+    color: #65676b;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    margin-bottom: 4px;
+  }
+  .sp-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: #1d2129;
+    line-height: 1.3;
+    margin-bottom: 4px;
+  }
+  .sp-desc {
+    font-size: 13px;
+    color: #65676b;
+    line-height: 1.4;
+  }
+
+  /* Toast */
+  .toast {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    padding: 14px 24px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #fff;
+    z-index: 999;
+    transform: translateY(100px);
+    opacity: 0;
+    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    pointer-events: none;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  }
+  .toast.show {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  .toast.success {
+    background: linear-gradient(135deg, #059669, #10b981);
+  }
+  .toast.error {
+    background: linear-gradient(135deg, #dc2626, #ef4444);
+  }
+
+  @media (max-width: 768px) {
     .seo-layout {
       grid-template-columns: 1fr;
     }
     .page-sidebar {
-      max-height: 350px;
       position: static;
     }
-    .seo-score-card {
-      flex-direction: column;
-      text-align: center;
-    }
-    .score-checks {
+    .score-serp-row {
       grid-template-columns: 1fr;
+    }
+    .form-row-2 {
+      grid-template-columns: 1fr;
+    }
+    .editor-header {
+      position: static;
     }
   }
 </style>

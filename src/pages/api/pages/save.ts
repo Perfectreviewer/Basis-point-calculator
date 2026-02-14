@@ -19,7 +19,8 @@ export const POST: APIRoute = async ({ request }) => {
 
     ensureDataDir();
     const body = await request.json();
-    const { path, title, description, keywords, schema } = body;
+    const { path, title, description, keywords, schema,
+        canonicalUrl, robots, ogTitle, ogDescription, ogImage, customHeadTags } = body;
 
     if (!path) {
         return new Response(JSON.stringify({ error: 'Page path is required' }), { status: 400 });
@@ -33,6 +34,12 @@ export const POST: APIRoute = async ({ request }) => {
         description: description || '',
         keywords: keywords || '',
         schema: schema || null,
+        canonicalUrl: canonicalUrl || '',
+        robots: robots || { index: true, follow: true },
+        ogTitle: ogTitle || '',
+        ogDescription: ogDescription || '',
+        ogImage: ogImage || '',
+        customHeadTags: customHeadTags || '',
         updatedAt: new Date().toISOString(),
     };
 

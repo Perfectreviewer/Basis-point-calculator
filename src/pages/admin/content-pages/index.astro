@@ -141,7 +141,7 @@ const translationLabels: Record<string, string> = {
 const pagePrettyName = siteEditPath ? siteEditPath.replace(/\.astro$/, '').replace(/\//g, ' / ').replace(/(^|\s)\w/g, c => c.toUpperCase()) : '';
 ---
 
-<AdminLayout title={showEditor ? (editMode === 'translations' ? 'Edit Translations' : editMode === 'faqs' ? 'Edit FAQs' : `Edit: ${pagePrettyName}`) : 'Content Pages'} activeNav="content-pages">
+<AdminLayout title={showEditor ? (editMode === 'translations' ? 'Edit Translations' : editMode === 'faqs' ? 'Edit FAQs' : `Edit: ${pagePrettyName}`) : 'Pages'} activeNav="content-pages">
 
   {editMode?.startsWith('site:') && extractedContent ? (
     <!-- ─── TEXT CONTENT EDITOR FOR ANY SITE PAGE ─── -->
@@ -416,58 +416,74 @@ const pagePrettyName = siteEditPath ? siteEditPath.replace(/\.astro$/, '').repla
   ) : (
     <!-- ─── PAGES LIST ─── -->
     <div class="pages-list-wrap">
-      <div class="pages-topbar">
-        <div class="pages-search-wrap">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
-          <input type="text" class="pages-search" id="pageSearch" placeholder="Search all pages..." oninput="filterPages(this.value)" />
+      <!-- Hero Header -->
+      <div class="pages-hero">
+        <div class="pages-hero-left">
+          <h1 class="pages-hero-title">Pages</h1>
+          <p class="pages-hero-sub">Manage text content, translations, and FAQs across your site</p>
         </div>
-        <div class="pages-topbar-right">
-          <div class="pages-stats">
-            <span class="stat-chip st-site">📄 {sitePages.length} Site Pages</span>
+        <div class="pages-hero-stats">
+          <div class="hero-stat">
+            <span class="hero-stat-num">{sitePages.length}</span>
+            <span class="hero-stat-label">Site Pages</span>
+          </div>
+          <div class="hero-stat">
+            <span class="hero-stat-num">{sortedCategories.length}</span>
+            <span class="hero-stat-label">Categories</span>
+          </div>
+          <div class="hero-stat">
+            <span class="hero-stat-num">{availableLanguages.length}</span>
+            <span class="hero-stat-label">Languages</span>
           </div>
         </div>
       </div>
 
-      <!-- i18n Content Editors -->
-      <div class="category-section">
-        <div class="category-header">
-          <h3 class="category-title">✏️ Global Content</h3>
-          <span class="category-count">2</span>
-        </div>
-        <div class="category-pages">
-          <a href="/admin/content-pages/?edit=translations" class="page-row" data-search="translations i18n text content labels">
-            <div class="page-row-icon i18n-icon">🌐</div>
-            <div class="page-row-info">
-              <span class="page-row-name">Site Translations</span>
-              <span class="page-row-path">Calculator labels, section titles, UI strings • {availableLanguages.length} languages</span>
-            </div>
-            <div class="page-row-badge"><span class="badge-type i18n">i18n</span></div>
-            <svg class="page-row-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
-          </a>
-          <a href="/admin/content-pages/?edit=faqs" class="page-row" data-search="faqs questions answers frequently asked">
-            <div class="page-row-icon faq-icon">❓</div>
-            <div class="page-row-info">
-              <span class="page-row-name">Homepage FAQs</span>
-              <span class="page-row-path">FAQ question &amp; answer pairs • {availableLanguages.length} languages</span>
-            </div>
-            <div class="page-row-badge"><span class="badge-type i18n">i18n</span></div>
-            <svg class="page-row-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
-          </a>
-        </div>
+      <!-- Search Bar -->
+      <div class="pages-search-bar">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+        <input type="text" class="pages-search" id="pageSearch" placeholder="Search pages, categories..." oninput="filterPages(this.value)" />
+      </div>
+
+      <!-- Global Content Cards -->
+      <div class="global-content-grid">
+        <a href="/admin/content-pages/?edit=translations" class="global-card gc-translations" data-search="translations i18n text content labels">
+          <div class="gc-icon">🌐</div>
+          <div class="gc-info">
+            <span class="gc-title">Site Translations</span>
+            <span class="gc-desc">Calculator labels, section titles, UI strings</span>
+          </div>
+          <div class="gc-meta">
+            <span class="gc-badge gc-badge-green">{availableLanguages.length} langs</span>
+            <svg class="gc-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </div>
+        </a>
+        <a href="/admin/content-pages/?edit=faqs" class="global-card gc-faqs" data-search="faqs questions answers frequently asked">
+          <div class="gc-icon">❓</div>
+          <div class="gc-info">
+            <span class="gc-title">Homepage FAQs</span>
+            <span class="gc-desc">FAQ question & answer pairs</span>
+          </div>
+          <div class="gc-meta">
+            <span class="gc-badge gc-badge-amber">{availableLanguages.length} langs</span>
+            <svg class="gc-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </div>
+        </a>
       </div>
 
       <!-- Site Pages by Category -->
       {sortedCategories.map(cat => (
         <div class="category-section" data-category={cat}>
           <div class="category-header">
-            <h3 class="category-title">{categoryLabels[cat] || `📁 ${cat}`}</h3>
-            <span class="category-count">{categoryMap[cat].length}</span>
+            <div class="cat-header-left">
+              <h3 class="category-title">{categoryLabels[cat] || `📁 ${cat}`}</h3>
+              <span class="category-count">{categoryMap[cat].length} page{categoryMap[cat].length !== 1 ? 's' : ''}</span>
+            </div>
           </div>
           <div class="category-pages">
             {categoryMap[cat].map(page => (
               <a href={`/admin/content-pages/?edit=site:${encodeURIComponent(page.relativePath)}`}
                  class="page-row" data-search={`${page.name} ${page.relativePath} ${cat}`}>
-                <div class="page-row-icon">
+                <div class={`page-row-icon ${page.isIndex ? 'pri' : ''}`}>
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     {page.isIndex ? (
                       <><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></>
@@ -480,7 +496,7 @@ const pagePrettyName = siteEditPath ? siteEditPath.replace(/\.astro$/, '').repla
                   <span class="page-row-name">{page.name}</span>
                   <span class="page-row-path">{page.relativePath}</span>
                 </div>
-                <div class="page-row-badge"><span class="badge-type site">Edit Text</span></div>
+                <span class="page-row-action">Edit Text</span>
                 <svg class="page-row-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
               </a>
             ))}
@@ -895,57 +911,119 @@ const pagePrettyName = siteEditPath ? siteEditPath.replace(/\.astro$/, '').repla
     .empty-state h3 { font-size: 16px; color: var(--text-primary); margin-bottom: 8px; }
     .empty-state p { font-size: 13px; color: var(--text-muted); }
 
-    /* Pages List */
+    /* ─── Pages List ─── */
     .pages-list-wrap { max-width: 1000px; }
-    .pages-topbar {
+
+    /* Hero Header */
+    .pages-hero {
       display: flex; align-items: center; justify-content: space-between;
-      margin-bottom: 24px; flex-wrap: wrap; gap: 14px;
+      padding: 24px 28px; margin-bottom: 20px;
+      background: linear-gradient(135deg, rgba(56,152,236,0.08) 0%, rgba(139,92,246,0.06) 100%);
+      border: 1px solid rgba(56,152,236,0.12);
+      border-radius: var(--radius-lg); flex-wrap: wrap; gap: 20px;
     }
-    .pages-search-wrap {
-      display: flex; align-items: center; gap: 10px;
+    .pages-hero-title {
+      font-size: 22px; font-weight: 800; color: var(--text-primary);
+      letter-spacing: -0.3px; margin: 0;
+    }
+    .pages-hero-sub {
+      font-size: 13px; color: var(--text-muted); margin: 4px 0 0;
+    }
+    .pages-hero-stats { display: flex; gap: 24px; }
+    .hero-stat { text-align: center; }
+    .hero-stat-num {
+      display: block; font-size: 22px; font-weight: 800;
+      background: linear-gradient(135deg, var(--accent-blue), #8b5cf6);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .hero-stat-label {
+      display: block; font-size: 10px; font-weight: 600;
+      color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-top: 2px;
+    }
+
+    /* Search */
+    .pages-search-bar {
+      display: flex; align-items: center; gap: 12px;
+      padding: 0 16px; margin-bottom: 20px;
       background: var(--bg-surface); border: 1px solid var(--border-subtle);
-      border-radius: var(--radius-md); padding: 0 14px; flex: 1; max-width: 400px;
+      border-radius: var(--radius-lg);
+      transition: border-color 0.2s;
     }
-    .pages-search-wrap svg { color: var(--text-muted); flex-shrink: 0; }
+    .pages-search-bar:focus-within { border-color: var(--accent-blue); }
+    .pages-search-bar svg { color: var(--text-muted); flex-shrink: 0; }
     .pages-search {
-      flex: 1; padding: 10px 0; background: transparent; border: none;
+      flex: 1; padding: 13px 0; background: transparent; border: none;
       color: var(--text-primary); font-size: 14px; font-family: inherit; outline: none;
     }
     .pages-search::placeholder { color: var(--text-muted); }
-    .pages-topbar-right { display: flex; align-items: center; gap: 14px; }
-    .pages-stats { display: flex; gap: 8px; }
-    .stat-chip {
-      display: inline-flex; align-items: center; gap: 6px;
-      font-size: 12px; font-weight: 600; padding: 6px 14px; border-radius: 20px;
-    }
-    .st-site { background: rgba(56,152,236,0.08); color: var(--accent-blue); }
 
-    .category-section { margin-bottom: 20px; }
+    /* Global Content Grid */
+    .global-content-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 28px;
+    }
+    .global-card {
+      display: flex; align-items: center; gap: 14px;
+      padding: 18px 20px; border-radius: var(--radius-lg);
+      text-decoration: none; color: inherit;
+      border: 1px solid var(--border-subtle);
+      transition: all 0.2s ease;
+    }
+    .global-card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.2); }
+    .gc-translations { background: linear-gradient(135deg, rgba(52,211,153,0.06) 0%, rgba(52,211,153,0.02) 100%); }
+    .gc-translations:hover { border-color: rgba(52,211,153,0.3); }
+    .gc-faqs { background: linear-gradient(135deg, rgba(251,191,36,0.06) 0%, rgba(251,191,36,0.02) 100%); }
+    .gc-faqs:hover { border-color: rgba(251,191,36,0.3); }
+    .gc-icon { font-size: 28px; flex-shrink: 0; }
+    .gc-info { flex: 1; min-width: 0; }
+    .gc-title { display: block; font-size: 14px; font-weight: 700; color: var(--text-primary); }
+    .gc-desc { display: block; font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+    .gc-meta { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+    .gc-badge {
+      font-size: 10px; font-weight: 700; padding: 4px 10px; border-radius: 10px;
+      text-transform: uppercase; letter-spacing: 0.3px;
+    }
+    .gc-badge-green { background: rgba(52,211,153,0.12); color: var(--accent-green); }
+    .gc-badge-amber { background: rgba(251,191,36,0.12); color: var(--accent-amber); }
+    .gc-arrow { color: var(--text-muted); opacity: 0; transition: all 0.2s; }
+    .global-card:hover .gc-arrow { opacity: 1; transform: translateX(3px); }
+
+    /* Category Sections */
+    .category-section {
+      margin-bottom: 8px;
+      background: var(--bg-surface); border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg); overflow: hidden;
+    }
     .category-header {
       display: flex; align-items: center; justify-content: space-between;
-      padding: 10px 0 8px; border-bottom: 1px solid var(--border-subtle); margin-bottom: 4px;
+      padding: 14px 20px;
+      background: rgba(255,255,255,0.02); border-bottom: 1px solid var(--border-subtle);
     }
-    .category-title { font-size: 14px; font-weight: 700; color: var(--text-primary); }
+    .cat-header-left { display: flex; align-items: center; gap: 10px; }
+    .category-title { font-size: 14px; font-weight: 700; color: var(--text-primary); margin: 0; }
     .category-count {
       font-size: 11px; font-weight: 600; padding: 2px 10px; border-radius: 10px;
-      background: var(--bg-elevated); color: var(--text-muted);
+      background: rgba(56,152,236,0.08); color: var(--accent-blue);
     }
     .category-pages { display: flex; flex-direction: column; }
     .page-row {
-      display: flex; align-items: center; gap: 12px;
-      padding: 10px 14px; border-radius: var(--radius-sm);
+      display: flex; align-items: center; gap: 14px;
+      padding: 12px 20px;
       text-decoration: none; color: inherit;
-      transition: all 0.12s ease; border: 1px solid transparent;
+      transition: all 0.15s ease;
+      border-bottom: 1px solid rgba(255,255,255,0.03);
     }
-    .page-row:hover { background: var(--bg-hover); border-color: var(--border-subtle); }
+    .page-row:last-child { border-bottom: none; }
+    .page-row:hover { background: rgba(56,152,236,0.04); }
     .page-row-icon {
-      width: 34px; height: 34px; border-radius: 8px;
+      width: 36px; height: 36px; border-radius: 10px;
       background: rgba(56,152,236,0.06);
       display: flex; align-items: center; justify-content: center;
       flex-shrink: 0; color: var(--accent-blue);
+      transition: all 0.2s;
     }
-    .page-row-icon.i18n-icon { background: rgba(52,211,153,0.08); font-size: 18px; }
-    .page-row-icon.faq-icon { background: rgba(251,191,36,0.08); font-size: 18px; }
+    .page-row-icon.pri { background: rgba(139,92,246,0.08); color: #8b5cf6; }
+    .page-row:hover .page-row-icon { background: rgba(56,152,236,0.12); }
+    .page-row:hover .page-row-icon.pri { background: rgba(139,92,246,0.15); }
     .page-row-info { flex: 1; min-width: 0; }
     .page-row-name {
       display: block; font-size: 13px; font-weight: 600; color: var(--text-primary);
@@ -957,18 +1035,20 @@ const pagePrettyName = siteEditPath ? siteEditPath.replace(/\.astro$/, '').repla
       font-family: 'JetBrains Mono', monospace;
       white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
     }
-    .page-row-badge { flex-shrink: 0; }
-    .badge-type {
-      font-size: 10px; font-weight: 700; padding: 3px 8px; border-radius: 6px;
-      text-transform: uppercase; letter-spacing: 0.3px;
+    .page-row-action {
+      font-size: 11px; font-weight: 600; padding: 4px 12px; border-radius: 6px;
+      background: rgba(56,152,236,0.08); color: var(--accent-blue);
+      flex-shrink: 0; opacity: 0; transition: opacity 0.2s;
     }
-    .badge-type.site { background: rgba(56,152,236,0.1); color: var(--accent-blue); }
-    .badge-type.i18n { background: rgba(52,211,153,0.1); color: var(--accent-green); }
-    .page-row-arrow { color: var(--text-muted); flex-shrink: 0; opacity: 0; transition: opacity 0.15s; }
-    .page-row:hover .page-row-arrow { opacity: 1; }
+    .page-row:hover .page-row-action { opacity: 1; }
+    .page-row-arrow { color: var(--text-muted); flex-shrink: 0; opacity: 0; transition: all 0.2s; }
+    .page-row:hover .page-row-arrow { opacity: 1; transform: translateX(2px); }
 
     @media (max-width: 700px) {
       .lang-selector-wrap { flex-direction: column; align-items: flex-start; }
+      .pages-hero { flex-direction: column; text-align: center; }
+      .pages-hero-stats { justify-content: center; }
+      .global-content-grid { grid-template-columns: 1fr; }
     }
   </style>
 </AdminLayout>

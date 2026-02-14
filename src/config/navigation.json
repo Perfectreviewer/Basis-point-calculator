@@ -1,278 +1,254 @@
 {
-	"header": [
-		{
-			"name": "Home",
-			"url": "/"
-		},
-		{
-			"name": "Calculators",
-			"url": "/calculators/",
-			"children": [
-				{
-					"name": "Basis Point Calculators",
-					"url": "/basis-point-calculators/",
-					"children": [
-						{
-							"name": "BPS to Percentage",
-							"url": "/basis-point-calculators/basis-point-to-percentage/"
-						},
-						{
-							"name": "Percentage to BPS",
-							"url": "/basis-point-calculators/percentage-to-basis-point/"
-						},
-						{
-							"name": "Change Calculator",
-							"url": "/basis-point-calculators/basis-point-change-calculator/"
-						},
-						{
-							"name": "Difference Calculator",
-							"url": "/basis-point-calculators/basis-point-difference-calculator/"
-						}
-					]
-				},
-				{
-					"name": "Interest Rate Calculators",
-					"url": "/interest-rate-calculators/",
-					"children": [
-						{
-							"name": "Simple Interest",
-							"url": "/interest-rate-calculators/simple-interest-calculator/"
-						},
-						{
-							"name": "Compound Interest",
-							"url": "/interest-rate-calculators/compound-interest-calculator/"
-						},
-						{
-							"name": "APR Calculator",
-							"url": "/interest-rate-calculators/apr-calculator/"
-						},
-						{
-							"name": "APY Calculator",
-							"url": "/interest-rate-calculators/apy-calculator/"
-						}
-					]
-				},
-				{
-					"name": "Loan Calculators",
-					"url": "/loan-calculators/",
-					"children": [
-						{
-							"name": "Loan Payment",
-							"url": "/loan-calculators/loan-payment-calculator/"
-						},
-						{
-							"name": "Mortgage Calculator",
-							"url": "/loan-calculators/mortgage-calculator/"
-						},
-						{
-							"name": "Auto Loan",
-							"url": "/loan-calculators/auto-loan-calculator/"
-						},
-						{
-							"name": "Amortization",
-							"url": "/loan-calculators/loan-amortization-calculator/"
-						}
-					]
-				},
-				{
-					"name": "Bond Calculators",
-					"url": "/bond-calculators/",
-					"children": [
-						{
-							"name": "Bond Yield",
-							"url": "/bond-calculators/bond-yield-calculator/"
-						},
-						{
-							"name": "Yield to Maturity",
-							"url": "/bond-calculators/yield-to-maturity-calculator/"
-						},
-						{
-							"name": "Bond Price",
-							"url": "/bond-calculators/bond-price-calculator/"
-						},
-						{
-							"name": "Bond Duration",
-							"url": "/bond-calculators/bond-duration-calculator/"
-						}
-					]
-				},
-				{
-					"name": "Investment Calculators",
-					"url": "/investment-calculators/",
-					"children": [
-						{
-							"name": "ROI Calculator",
-							"url": "/investment-calculators/roi-calculator/"
-						},
-						{
-							"name": "Future Value",
-							"url": "/investment-calculators/future-value-calculator/"
-						},
-						{
-							"name": "Present Value",
-							"url": "/investment-calculators/present-value-calculator/"
-						},
-						{
-							"name": "Inflation Calculator",
-							"url": "/investment-calculators/inflation-calculator/"
-						}
-					]
-				},
-				{
-					"name": "Financial Guides",
-					"url": "/guides/",
-					"children": [
-						{
-							"name": "What are Basis Points?",
-							"url": "/guides/what-are-basis-points/"
-						},
-						{
-							"name": "How Interest Rates Work",
-							"url": "/guides/how-interest-rates-work/"
-						},
-						{
-							"name": "APR vs Interest Rate",
-							"url": "/guides/apr-vs-interest-rate/"
-						}
-					]
-				}
-			]
-		},
-		{
-			"name": "Guides",
-			"url": "/guides/",
-			"children": [
-				{
-					"name": "What are Basis Points?",
-					"url": "/guides/what-are-basis-points/"
-				},
-				{
-					"name": "How Interest Rates Work",
-					"url": "/guides/how-interest-rates-work/"
-				},
-				{
-					"name": "Central Bank Rate Changes",
-					"url": "/guides/central-bank-rate-changes/"
-				},
-				{
-					"name": "Impact of Basis Points on Loans",
-					"url": "/guides/basis-points-impact-on-loans/"
-				},
-				{
-					"name": "APR vs Interest Rate",
-					"url": "/guides/apr-vs-interest-rate/"
-				}
-			]
-		},
-		{
-			"name": "Blog",
-			"url": "/blog/",
-			"children": [
-				{
-					"name": "Basis Point Articles",
-					"url": "/blog/basis-point-articles/"
-				},
-				{
-					"name": "Interest Rate Articles",
-					"url": "/blog/interest-rate-articles/"
-				},
-				{
-					"name": "Investment Articles",
-					"url": "/blog/investment-articles/"
-				}
-			]
-		},
-		{
-			"name": "FAQ",
-			"url": "/faq/",
-			"children": [
-				{
-					"name": "Basis Point FAQ",
-					"url": "/faq/basis-point-faq/"
-				},
-				{
-					"name": "Calculator Usage FAQ",
-					"url": "/faq/calculator-usage-faq/"
-				},
-				{
-					"name": "Financial Disclaimer",
-					"url": "/faq/financial-disclaimer/"
-				}
-			]
-		},
-		{
-			"name": "About",
-			"url": "/about-us/",
-			"children": [
-				{
-					"name": "About Us",
-					"url": "/about-us/"
-				},
-				{
-					"name": "Contact",
-					"url": "/contact-us/"
-				}
-			]
-		},
-		{
-			"name": "Legal",
-			"url": "/legal/",
-			"children": [
-				{
-					"name": "Privacy Policy",
-					"url": "/legal/privacy-policy/"
-				},
-				{
-					"name": "Terms & Conditions",
-					"url": "/legal/terms-and-conditions/"
-				},
-				{
-					"name": "Disclaimer",
-					"url": "/legal/disclaimer/"
-				}
-			]
-		}
-	],
-	"footer": [
-		{
-			"name": "Home",
-			"url": "/"
-		},
-		{
-			"name": "Calculators",
-			"url": "/calculators/"
-		},
-		{
-			"name": "Guides",
-			"url": "/guides/"
-		},
-		{
-			"name": "Blog",
-			"url": "/blog/"
-		},
-		{
-			"name": "FAQ",
-			"url": "/faq/"
-		},
-		{
-			"name": "About Us",
-			"url": "/about-us/"
-		},
-		{
-			"name": "Contact",
-			"url": "/contact-us/"
-		},
-		{
-			"name": "Privacy Policy",
-			"url": "/legal/privacy-policy/"
-		},
-		{
-			"name": "Terms & Conditions",
-			"url": "/legal/terms-and-conditions/"
-		},
-		{
-			"name": "Disclaimer",
-			"url": "/legal/disclaimer/"
-		}
-	]
+  "header": [
+    {
+      "name": "Home",
+      "url": "/"
+    },
+    {
+      "name": "Calculators",
+      "url": "/calculators/",
+      "children": [
+        {
+          "name": "Basis Point Calculators",
+          "url": "/basis-point-calculators/",
+          "children": [
+            {
+              "name": "BPS to Percentage",
+              "url": "/basis-point-calculators/basis-point-to-percentage/"
+            },
+            {
+              "name": "Percentage to BPS",
+              "url": "/basis-point-calculators/percentage-to-basis-point/"
+            },
+            {
+              "name": "Change Calculator",
+              "url": "/basis-point-calculators/basis-point-change-calculator/"
+            },
+            {
+              "name": "Difference Calculator",
+              "url": "/basis-point-calculators/basis-point-difference-calculator/"
+            }
+          ]
+        },
+        {
+          "name": "Interest Rate Calculators",
+          "url": "/interest-rate-calculators/",
+          "children": [
+            {
+              "name": "Simple Interest",
+              "url": "/interest-rate-calculators/simple-interest-calculator/"
+            },
+            {
+              "name": "Compound Interest",
+              "url": "/interest-rate-calculators/compound-interest-calculator/"
+            },
+            {
+              "name": "APR Calculator",
+              "url": "/interest-rate-calculators/apr-calculator/"
+            },
+            {
+              "name": "APY Calculator",
+              "url": "/interest-rate-calculators/apy-calculator/"
+            }
+          ]
+        },
+        {
+          "name": "Loan Calculators",
+          "url": "/loan-calculators/",
+          "children": [
+            {
+              "name": "Loan Payment",
+              "url": "/loan-calculators/loan-payment-calculator/"
+            },
+            {
+              "name": "Mortgage Calculator",
+              "url": "/loan-calculators/mortgage-calculator/"
+            },
+            {
+              "name": "Auto Loan",
+              "url": "/loan-calculators/auto-loan-calculator/"
+            },
+            {
+              "name": "Amortization",
+              "url": "/loan-calculators/loan-amortization-calculator/"
+            }
+          ]
+        },
+        {
+          "name": "Bond Calculators",
+          "url": "/bond-calculators/",
+          "children": [
+            {
+              "name": "Bond Yield",
+              "url": "/bond-calculators/bond-yield-calculator/"
+            },
+            {
+              "name": "Yield to Maturity",
+              "url": "/bond-calculators/yield-to-maturity-calculator/"
+            },
+            {
+              "name": "Bond Price",
+              "url": "/bond-calculators/bond-price-calculator/"
+            },
+            {
+              "name": "Bond Duration",
+              "url": "/bond-calculators/bond-duration-calculator/"
+            }
+          ]
+        },
+        {
+          "name": "Investment Calculators",
+          "url": "/investment-calculators/",
+          "children": [
+            {
+              "name": "ROI Calculator",
+              "url": "/investment-calculators/roi-calculator/"
+            },
+            {
+              "name": "Future Value",
+              "url": "/investment-calculators/future-value-calculator/"
+            },
+            {
+              "name": "Present Value",
+              "url": "/investment-calculators/present-value-calculator/"
+            },
+            {
+              "name": "Inflation Calculator",
+              "url": "/investment-calculators/inflation-calculator/"
+            }
+          ]
+        },
+        {
+          "name": "Financial Guides",
+          "url": "/guides/",
+          "children": [
+            {
+              "name": "What are Basis Points?",
+              "url": "/guides/what-are-basis-points/"
+            },
+            {
+              "name": "How Interest Rates Work",
+              "url": "/guides/how-interest-rates-work/"
+            },
+            {
+              "name": "APR vs Interest Rate",
+              "url": "/guides/apr-vs-interest-rate/"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Guides",
+      "url": "/guides/",
+      "children": [
+        {
+          "name": "What are Basis Points?",
+          "url": "/guides/what-are-basis-points/"
+        },
+        {
+          "name": "How Interest Rates Work",
+          "url": "/guides/how-interest-rates-work/"
+        },
+        {
+          "name": "Central Bank Rate Changes",
+          "url": "/guides/central-bank-rate-changes/"
+        },
+        {
+          "name": "Impact of Basis Points on Loans",
+          "url": "/guides/basis-points-impact-on-loans/"
+        },
+        {
+          "name": "APR vs Interest Rate",
+          "url": "/guides/apr-vs-interest-rate/"
+        }
+      ]
+    },
+    {
+      "name": "Blog",
+      "url": "/blog/",
+      "children": [
+        {
+          "name": "Basis Point Articles",
+          "url": "/blog/basis-point-articles/"
+        },
+        {
+          "name": "Interest Rate Articles",
+          "url": "/blog/interest-rate-articles/"
+        },
+        {
+          "name": "Investment Articles",
+          "url": "/blog/investment-articles/"
+        }
+      ]
+    },
+    {
+      "name": "FAQ",
+      "url": "/faq/",
+      "children": [
+        {
+          "name": "Basis Point FAQ",
+          "url": "/faq/basis-point-faq/"
+        },
+        {
+          "name": "Calculator Usage FAQ",
+          "url": "/faq/calculator-usage-faq/"
+        },
+        {
+          "name": "Financial Disclaimer",
+          "url": "/faq/financial-disclaimer/"
+        }
+      ]
+    },
+    {
+      "name": "About Us",
+      "url": "/about-us/"
+    },
+    {
+      "name": "Contact",
+      "url": "/contact-us/"
+    }
+  ],
+  "footer": [
+    {
+      "name": "Home",
+      "url": "/"
+    },
+    {
+      "name": "Calculators",
+      "url": "/calculators/"
+    },
+    {
+      "name": "Guides",
+      "url": "/guides/"
+    },
+    {
+      "name": "Blog",
+      "url": "/blog/"
+    },
+    {
+      "name": "FAQ",
+      "url": "/faq/"
+    },
+    {
+      "name": "About Us",
+      "url": "/about-us/"
+    },
+    {
+      "name": "Contact",
+      "url": "/contact-us/"
+    },
+    {
+      "name": "Privacy Policy",
+      "url": "/legal/privacy-policy/"
+    },
+    {
+      "name": "Terms & Conditions",
+      "url": "/legal/terms-and-conditions/"
+    },
+    {
+      "name": "Disclaimer",
+      "url": "/legal/disclaimer/"
+    }
+  ]
 }

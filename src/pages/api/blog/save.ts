@@ -21,7 +21,9 @@ export const POST: APIRoute = async ({ request }) => {
     const body = await request.json();
     const {
         slug, title, description, date, author, category, image,
-        status, visibility, tags, excerpt, content
+        status, visibility, tags, excerpt, content,
+        seoTitle, seoKeywords, canonicalUrl, robotsIndex, robotsFollow,
+        ogTitle, ogDescription, ogImage
     } = body;
 
     if (!slug || !title) {
@@ -50,6 +52,16 @@ export const POST: APIRoute = async ({ request }) => {
     if (visibility) fmLines.push(`visibility: "${visibility}"`);
     if (tags) fmLines.push(`tags: "${tags.replace(/"/g, '\\"')}"`);
     if (excerpt) fmLines.push(`excerpt: "${excerpt.replace(/"/g, '\\"')}"`);
+
+    // SEO fields — only include when set
+    if (seoTitle) fmLines.push(`seoTitle: "${seoTitle.replace(/"/g, '\\"')}"`);
+    if (seoKeywords) fmLines.push(`seoKeywords: "${seoKeywords.replace(/"/g, '\\"')}"`);
+    if (canonicalUrl) fmLines.push(`canonicalUrl: "${canonicalUrl.replace(/"/g, '\\"')}"`);
+    if (robotsIndex === false) fmLines.push(`robotsIndex: false`);
+    if (robotsFollow === false) fmLines.push(`robotsFollow: false`);
+    if (ogTitle) fmLines.push(`ogTitle: "${ogTitle.replace(/"/g, '\\"')}"`);
+    if (ogDescription) fmLines.push(`ogDescription: "${ogDescription.replace(/"/g, '\\"')}"`);
+    if (ogImage) fmLines.push(`ogImage: "${ogImage.replace(/"/g, '\\"')}"`);
 
     fmLines.push('---', '');
 

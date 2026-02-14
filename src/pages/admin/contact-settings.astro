@@ -1,0 +1,663 @@
+---
+import AdminLayout from "@admin/components/AdminLayout.astro";
+
+export const prerender = false;
+---
+
+<AdminLayout title="Contact Page" activeNav="contact-page">
+  <div class="page-header">
+    <h1>Contact Page</h1>
+    <p class="text-muted">
+      Manage the contact form, page content, and form handler settings.
+    </p>
+  </div>
+
+  <div id="settings-loading" class="loading-state">
+    <div class="spinner"></div>
+    <p>Loading settings...</p>
+  </div>
+
+  <div id="settings-container" style="display: none;">
+    <!-- Save bar -->
+    <div class="save-bar">
+      <div class="save-bar-info">
+        <span id="save-status" class="save-status">No unsaved changes</span>
+      </div>
+      <button id="save-all-btn" class="btn-primary success" disabled>
+        <span class="btn-text">Save Contact Settings</span>
+      </button>
+    </div>
+
+    <!-- ═══ Page Content & SEO ═══ -->
+    <div class="settings-section card">
+      <div class="section-header">
+        <div class="section-icon page-icon">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            ><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"
+            ></path><polyline points="14,2 14,8 20,8"></polyline></svg
+          >
+        </div>
+        <div>
+          <h3>Page Content & SEO</h3>
+          <p class="section-desc">
+            Title, subtitle, and search engine metadata for the contact page
+          </p>
+        </div>
+      </div>
+      <div class="section-body">
+        <div class="form-row-2col">
+          <div class="form-group">
+            <label for="contact-page-title">Page Title</label>
+            <input
+              type="text"
+              id="contact-page-title"
+              class="form-input setting-input"
+              placeholder="Contact Us"
+            />
+          </div>
+          <div class="form-group">
+            <label for="contact-seo-title">SEO Title</label>
+            <input
+              type="text"
+              id="contact-seo-title"
+              class="form-input setting-input"
+              placeholder="Contact Us | My Site"
+            />
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="contact-subtitle">Page Subtitle</label>
+          <textarea
+            id="contact-subtitle"
+            class="form-input form-textarea setting-input"
+            rows="2"
+            placeholder="A message shown below the title..."></textarea>
+        </div>
+        <div class="form-group">
+          <label for="contact-seo-desc">SEO Description</label>
+          <textarea
+            id="contact-seo-desc"
+            class="form-input form-textarea setting-input"
+            rows="2"
+            placeholder="Meta description for the contact page..."></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ Form Handler ═══ -->
+    <div class="settings-section card">
+      <div class="section-header">
+        <div class="section-icon handler-icon">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            ><path d="M22 11.08V12a10 10 0 11-5.93-9.14"></path><polyline
+              points="22 4 12 14.01 9 11.01"></polyline></svg
+          >
+        </div>
+        <div>
+          <h3>Form Handler & Messaging</h3>
+          <p class="section-desc">
+            Web3Forms integration, email fallback, and form response messages
+          </p>
+        </div>
+      </div>
+      <div class="section-body">
+        <div class="form-row-2col">
+          <div class="form-group">
+            <label for="contact-access-key">Web3Forms Access Key</label>
+            <input
+              type="text"
+              id="contact-access-key"
+              class="form-input setting-input"
+              placeholder="your-access-key"
+            />
+          </div>
+          <div class="form-group">
+            <label for="contact-direct-email">Direct Email Address</label>
+            <input
+              type="email"
+              id="contact-direct-email"
+              class="form-input setting-input"
+              placeholder="you@example.com"
+            />
+          </div>
+        </div>
+        <div class="form-row-2col">
+          <div class="form-group">
+            <label for="contact-email-text">Direct Email Link Text</label>
+            <input
+              type="text"
+              id="contact-email-text"
+              class="form-input setting-input"
+              placeholder="Or email us directly"
+            />
+          </div>
+          <div class="form-group">
+            <label for="contact-submit-btn">Submit Button Text</label>
+            <input
+              type="text"
+              id="contact-submit-btn"
+              class="form-input setting-input"
+              placeholder="Send"
+            />
+          </div>
+        </div>
+        <div class="form-row-2col">
+          <div class="form-group">
+            <label for="contact-success-msg">Success Message</label>
+            <input
+              type="text"
+              id="contact-success-msg"
+              class="form-input setting-input"
+              placeholder="Form submitted successfully."
+            />
+          </div>
+          <div class="form-group">
+            <label for="contact-error-msg">Error Message</label>
+            <input
+              type="text"
+              id="contact-error-msg"
+              class="form-input setting-input"
+              placeholder="Error submitting form. Please try again."
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ Form Fields ═══ -->
+    <div class="settings-section card">
+      <div class="section-header">
+        <div class="section-icon fields-icon">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            ><rect x="3" y="3" width="18" height="18" rx="2"></rect><path
+              d="M9 3v18"></path></svg
+          >
+        </div>
+        <div>
+          <h3>Form Fields</h3>
+          <p class="section-desc">
+            Add, remove, or edit the fields on your contact form
+          </p>
+        </div>
+      </div>
+      <div class="section-body">
+        <div id="contact-fields-list" class="columns-editor"></div>
+        <button type="button" class="btn-add" id="add-contact-field-btn"
+          >+ Add Field</button
+        >
+      </div>
+    </div>
+  </div>
+</AdminLayout>
+
+<style is:global>
+  .page-header {
+    margin-bottom: 24px;
+    animation: fadeIn 0.4s ease-out;
+  }
+  .page-header h1 {
+    font-size: 26px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    background: linear-gradient(135deg, #fff 0%, #a5b4fc 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .loading-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 80px 0;
+    color: var(--text-muted);
+    gap: 16px;
+  }
+  .spinner {
+    width: 32px;
+    height: 32px;
+    border: 3px solid var(--border-subtle);
+    border-top-color: var(--accent-blue);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  .save-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 24px;
+    background: var(--bg-elevated);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    margin-bottom: 24px;
+    position: sticky;
+    top: 65px;
+    z-index: 30;
+    backdrop-filter: blur(12px);
+  }
+  .save-status {
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+  .save-status.unsaved {
+    color: var(--accent-amber, #f59e0b);
+    font-weight: 600;
+  }
+  .save-status.saved {
+    color: var(--accent-green);
+    font-weight: 600;
+  }
+
+  .settings-section {
+    margin-bottom: 24px;
+  }
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border-subtle);
+  }
+  .section-header h3 {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 2px;
+  }
+  .section-desc {
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+  .section-icon {
+    width: 42px;
+    height: 42px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .section-icon svg {
+    width: 20px;
+    height: 20px;
+  }
+  .page-icon {
+    background: rgba(56, 152, 236, 0.12);
+    color: var(--accent-blue);
+  }
+  .handler-icon {
+    background: rgba(52, 211, 153, 0.12);
+    color: var(--accent-green);
+  }
+  .fields-icon {
+    background: rgba(124, 91, 240, 0.12);
+    color: var(--accent-violet);
+  }
+
+  .section-body {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .form-group label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .form-textarea {
+    resize: vertical;
+    min-height: 70px;
+    font-family: inherit;
+  }
+  .form-row-2col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  .btn-add {
+    align-self: flex-start;
+    padding: 8px 16px;
+    background: transparent;
+    border: 1px dashed var(--border-medium);
+    border-radius: 6px;
+    color: var(--text-muted);
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .btn-add:hover {
+    color: var(--accent-blue);
+    border-color: var(--accent-blue);
+    background: rgba(56, 152, 236, 0.05);
+  }
+
+  .columns-editor {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .field-block {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-sm);
+    padding: 16px;
+    position: relative;
+  }
+  .field-header {
+    display: grid;
+    grid-template-columns: 1fr 1fr 120px 36px;
+    gap: 10px;
+    align-items: end;
+  }
+  .field-header label {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    display: block;
+    margin-bottom: 4px;
+  }
+  .field-row-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 10px;
+  }
+  .remove-row-btn {
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: 1px solid var(--border-subtle);
+    border-radius: 6px;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all 0.15s;
+    font-size: 16px;
+  }
+  .remove-row-btn:hover {
+    color: var(--accent-red, #ef4444);
+    border-color: var(--accent-red, #ef4444);
+    background: rgba(239, 68, 68, 0.08);
+  }
+
+  @media (max-width: 768px) {
+    .form-row-2col {
+      grid-template-columns: 1fr;
+    }
+    .field-header {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+</style>
+
+<script>
+  let data: any = { siteSettings: {} };
+  let hasChanges = false;
+
+  const saveBtn = document.getElementById("save-all-btn") as HTMLButtonElement;
+  const saveStatus = document.getElementById("save-status")!;
+  const loadingEl = document.getElementById("settings-loading")!;
+  const containerEl = document.getElementById("settings-container")!;
+
+  function markDirty() {
+    hasChanges = true;
+    saveBtn.disabled = false;
+    saveStatus.textContent = "● Unsaved changes";
+    saveStatus.className = "save-status unsaved";
+  }
+
+  function esc(str: string) {
+    const d = document.createElement("div");
+    d.textContent = str;
+    return d.innerHTML;
+  }
+
+  async function init() {
+    try {
+      const res = await fetch("/api/admin/site-settings/");
+      if (res.ok) {
+        data = await res.json();
+      } else {
+        alert("Failed to load settings");
+        return;
+      }
+    } catch (e) {
+      alert("Network error");
+      return;
+    }
+
+    loadingEl.style.display = "none";
+    containerEl.style.display = "block";
+
+    const cp = data.siteSettings?.contactPage || {};
+
+    // Page content & SEO
+    (document.getElementById("contact-page-title") as HTMLInputElement).value =
+      cp.pageTitle || "";
+    (document.getElementById("contact-subtitle") as HTMLTextAreaElement).value =
+      cp.pageSubtitle || "";
+    (document.getElementById("contact-seo-title") as HTMLInputElement).value =
+      cp.seoTitle || "";
+    (document.getElementById("contact-seo-desc") as HTMLTextAreaElement).value =
+      cp.seoDescription || "";
+
+    // Form handler
+    (document.getElementById("contact-access-key") as HTMLInputElement).value =
+      cp.formAccessKey || "";
+    (
+      document.getElementById("contact-direct-email") as HTMLInputElement
+    ).value = cp.directEmail || "";
+    (document.getElementById("contact-email-text") as HTMLInputElement).value =
+      cp.directEmailText || "";
+    (document.getElementById("contact-submit-btn") as HTMLInputElement).value =
+      cp.submitButtonText || "";
+    (document.getElementById("contact-success-msg") as HTMLInputElement).value =
+      cp.successMessage || "";
+    (document.getElementById("contact-error-msg") as HTMLInputElement).value =
+      cp.errorMessage || "";
+
+    // Form fields
+    renderContactFields(cp.fields || []);
+
+    containerEl.addEventListener("input", markDirty);
+    containerEl.addEventListener("change", markDirty);
+    saveBtn.addEventListener("click", saveAll);
+
+    document
+      .getElementById("add-contact-field-btn")!
+      .addEventListener("click", () => {
+        addContactField({
+          name: "",
+          label: "",
+          type: "text",
+          placeholder: "",
+          required: true,
+        });
+        markDirty();
+      });
+  }
+
+  function renderContactFields(fields: any[]) {
+    const container = document.getElementById("contact-fields-list")!;
+    container.innerHTML = "";
+    fields.forEach((f: any) => addContactField(f));
+  }
+
+  function addContactField(field: any) {
+    const container = document.getElementById("contact-fields-list")!;
+    const block = document.createElement("div");
+    block.className = "field-block";
+
+    const typeOptions = ["text", "email", "tel", "url", "textarea"]
+      .map(
+        (t) =>
+          `<option value="${t}" ${field.type === t ? "selected" : ""}>${t.charAt(0).toUpperCase() + t.slice(1)}</option>`,
+      )
+      .join("");
+
+    block.innerHTML = `
+      <div class="field-header">
+        <div>
+          <label>Field Name (ID)</label>
+          <input type="text" class="form-input field-name" value="${esc(field.name)}" placeholder="field_name">
+        </div>
+        <div>
+          <label>Label</label>
+          <input type="text" class="form-input field-label" value="${esc(field.label)}" placeholder="Your name">
+        </div>
+        <div>
+          <label>Type</label>
+          <select class="form-input field-type">${typeOptions}</select>
+        </div>
+        <button type="button" class="remove-row-btn" title="Remove" style="align-self: end;">×</button>
+      </div>
+      <div class="field-row-2">
+        <div>
+          <label style="font-size:11px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:.5px;display:block;margin-bottom:4px;">Placeholder</label>
+          <input type="text" class="form-input field-placeholder" value="${esc(field.placeholder || "")}" placeholder="Placeholder text">
+        </div>
+        <div style="display:flex;align-items:end;gap:8px;">
+          <label style="font-size:12px;color:var(--text-secondary);display:flex;align-items:center;gap:6px;cursor:pointer;">
+            <input type="checkbox" class="field-required" ${field.required ? "checked" : ""}> Required
+          </label>
+        </div>
+      </div>
+    `;
+
+    block.querySelector(".remove-row-btn")!.addEventListener("click", () => {
+      block.remove();
+      markDirty();
+    });
+    container.appendChild(block);
+  }
+
+  function collectContactFields() {
+    const fields: any[] = [];
+    document
+      .querySelectorAll("#contact-fields-list .field-block")
+      .forEach((block) => {
+        const name = (
+          block.querySelector(".field-name") as HTMLInputElement
+        ).value.trim();
+        const label = (
+          block.querySelector(".field-label") as HTMLInputElement
+        ).value.trim();
+        const type = (block.querySelector(".field-type") as HTMLSelectElement)
+          .value;
+        const placeholder = (
+          block.querySelector(".field-placeholder") as HTMLInputElement
+        ).value.trim();
+        const required = (
+          block.querySelector(".field-required") as HTMLInputElement
+        ).checked;
+        if (name || label) {
+          const f: any = { name, label, type, placeholder, required };
+          if (type === "textarea") f.rows = 6;
+          fields.push(f);
+        }
+      });
+    return fields;
+  }
+
+  async function saveAll() {
+    saveBtn.disabled = true;
+    const btnText = saveBtn.querySelector(".btn-text")!;
+    btnText.textContent = "Saving...";
+
+    // Merge contact page data into the full settings
+    const contactPage = {
+      pageTitle: (
+        document.getElementById("contact-page-title") as HTMLInputElement
+      ).value.trim(),
+      pageSubtitle: (
+        document.getElementById("contact-subtitle") as HTMLTextAreaElement
+      ).value.trim(),
+      seoTitle: (
+        document.getElementById("contact-seo-title") as HTMLInputElement
+      ).value.trim(),
+      seoDescription: (
+        document.getElementById("contact-seo-desc") as HTMLTextAreaElement
+      ).value.trim(),
+      formAccessKey: (
+        document.getElementById("contact-access-key") as HTMLInputElement
+      ).value.trim(),
+      directEmail: (
+        document.getElementById("contact-direct-email") as HTMLInputElement
+      ).value.trim(),
+      directEmailText: (
+        document.getElementById("contact-email-text") as HTMLInputElement
+      ).value.trim(),
+      submitButtonText: (
+        document.getElementById("contact-submit-btn") as HTMLInputElement
+      ).value.trim(),
+      successMessage: (
+        document.getElementById("contact-success-msg") as HTMLInputElement
+      ).value.trim(),
+      errorMessage: (
+        document.getElementById("contact-error-msg") as HTMLInputElement
+      ).value.trim(),
+      fields: collectContactFields(),
+    };
+
+    // Preserve existing settings and just update contactPage
+    const updatedSettings = { ...data.siteSettings, contactPage };
+    const payload = { siteSettings: updatedSettings, social: data.social };
+
+    try {
+      const res = await fetch("/api/admin/site-settings/", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      if (res.ok) {
+        hasChanges = false;
+        data.siteSettings = updatedSettings;
+        saveStatus.textContent = "✓ Contact settings saved";
+        saveStatus.className = "save-status saved";
+        setTimeout(() => {
+          saveStatus.textContent = "No unsaved changes";
+          saveStatus.className = "save-status";
+        }, 3000);
+      } else {
+        alert("Failed to save");
+        saveBtn.disabled = false;
+      }
+    } catch (e) {
+      alert("Network error");
+      saveBtn.disabled = false;
+    } finally {
+      btnText.textContent = "Save Contact Settings";
+    }
+  }
+
+  init();
+</script>
