@@ -16,7 +16,7 @@ export const prerender = false;
 const session = getSessionFromCookies(Astro.request.headers.get("cookie"));
 let user: any = null;
 if (session) user = await validateSessionToken(session);
-if (!user) return Astro.redirect("/admin/login");
+if (!user) return Astro.redirect("/admin/login/");
 
 ensureDataDir();
 const blogFiles = listBlogFiles();

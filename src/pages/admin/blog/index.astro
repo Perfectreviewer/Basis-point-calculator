@@ -11,7 +11,7 @@ export const prerender = false;
 const session = getSessionFromCookies(Astro.request.headers.get('cookie'));
 let user: any = null;
 if (session) user = await validateSessionToken(session);
-if (!user) return Astro.redirect('/admin/login');
+if (!user) return Astro.redirect('/admin/login/');
 
 const canWrite = hasPermission(user.role as Role, 'blog:write');
 const canDelete = hasPermission(user.role as Role, 'blog:delete');

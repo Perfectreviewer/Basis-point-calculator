@@ -10,13 +10,13 @@ export const onRequest = defineMiddleware(async (context, next) => {
         const session = getSessionFromCookies(context.request.headers.get('cookie'));
 
         if (!session) {
-            return context.redirect('/admin/login');
+            return context.redirect('/admin/login/');
             // console.log("Middleware would redirect here");
         }
 
         const user = await validateSessionToken(session);
         if (!user) {
-            return context.redirect('/admin/login');
+            return context.redirect('/admin/login/');
             // console.log("Middleware would redirect here 2");
         }
     }
