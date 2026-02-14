@@ -408,6 +408,54 @@ export const prerender = false;
     color: var(--text-primary);
   }
 
+  /* Inline delete confirmation bar */
+  .delete-confirm-bar {
+    display: none;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 16px;
+    background: rgba(239, 68, 68, 0.1);
+    border-top: 1px solid rgba(239, 68, 68, 0.25);
+    animation: slideDown 0.2s ease-out;
+  }
+  .delete-confirm-bar.active {
+    display: flex;
+  }
+  .delete-confirm-bar span {
+    font-size: 13px;
+    color: var(--accent-red);
+    font-weight: 600;
+  }
+  .delete-confirm-bar .confirm-delete-btn {
+    padding: 5px 14px;
+    background: var(--accent-red);
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity 0.15s;
+  }
+  .delete-confirm-bar .confirm-delete-btn:hover {
+    opacity: 0.85;
+  }
+  .delete-confirm-bar .cancel-delete-btn {
+    padding: 5px 14px;
+    background: transparent;
+    color: var(--text-muted);
+    border: 1px solid var(--border-subtle);
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .delete-confirm-bar .cancel-delete-btn:hover {
+    color: var(--text-primary);
+    border-color: var(--border-medium);
+  }
+
   /* --- Nested Sub-menus --- */
   .sub-menu {
     border-top: 1px solid var(--border-subtle);
@@ -598,6 +646,11 @@ export const prerender = false;
             <span class="remove-link">Remove</span>
             <span class="cancel-link">Close</span>
         </div>
+        <div class="delete-confirm-bar">
+            <span>Delete this item?</span>
+            <button type="button" class="confirm-delete-btn">Delete</button>
+            <button type="button" class="cancel-delete-btn">Cancel</button>
+        </div>
     `;
     li.appendChild(settings);
 
@@ -613,6 +666,9 @@ export const prerender = false;
         settings.classList.remove("active");
         toggleBtn.classList.remove("active");
         toggleBtn.style.transform = "rotate(0deg)";
+        // Also hide the confirm bar when closing settings
+        const confirmBar = settings.querySelector(".delete-confirm-bar");
+        confirmBar?.classList.remove("active");
       } else {
         settings.classList.add("active");
         toggleBtn.classList.add("active");
@@ -623,12 +679,28 @@ export const prerender = false;
     toggleBtn.addEventListener("click", toggleSettings);
     cancelLink.addEventListener("click", toggleSettings);
 
-    // Remove Item
-    const removeLink = settings.querySelector(".remove-link");
-    removeLink?.addEventListener("click", () => {
-      if (confirm("Remove this menu item?")) {
-        li.remove();
-      }
+    // Remove Item — show inline confirmation instead of confirm()
+    const removeLink = settings.querySelector(".remove-link") as HTMLElement;
+    const confirmBar = settings.querySelector(
+      ".delete-confirm-bar",
+    ) as HTMLElement;
+    const confirmDeleteBtn = settings.querySelector(
+      ".confirm-delete-btn",
+    ) as HTMLElement;
+    const cancelDeleteBtn = settings.querySelector(
+      ".cancel-delete-btn",
+    ) as HTMLElement;
+
+    removeLink.addEventListener("click", () => {
+      confirmBar.classList.add("active");
+    });
+
+    confirmDeleteBtn.addEventListener("click", () => {
+      li.remove();
+    });
+
+    cancelDeleteBtn.addEventListener("click", () => {
+      confirmBar.classList.remove("active");
     });
 
     // Live Review Update
