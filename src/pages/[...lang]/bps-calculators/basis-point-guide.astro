@@ -1,4 +1,4 @@
----
+﻿---
 import CalculatorLayout, {
   getStaticPaths as getStaticPathsCalc,
 } from "@theme/layouts/CalculatorLayout.astro";
@@ -17,19 +17,19 @@ const pageDescription =
 const relatedCalculators = [
   {
     name: t.bp_to_pct_title || "Basis Points to Percentage",
-    url: "/basis-point-calculators/basis-point-to-percentage/",
+    url: "/bps-calculators/basis-point-to-percentage/",
   },
   {
     name: t.pct_to_bp_title || "Percentage to Basis Points",
-    url: "/basis-point-calculators/percentage-to-basis-point/",
+    url: "/bps-calculators/percentage-to-basis-point/",
   },
   {
     name: t.bp_examples_title || "Basis Point Examples",
-    url: "/basis-point-calculators/basis-point-examples/",
+    url: "/bps-calculators/basis-point-examples/",
   },
   {
     name: t.bp_vs_pct_title || "Basis Points vs Percentage",
-    url: "/basis-point-calculators/basis-point-vs-percentage/",
+    url: "/bps-calculators/basis-point-vs-percentage/",
   },
 ];
 
@@ -232,46 +232,46 @@ const faqs = t.bp_guide_faqs || [
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div class="p-4 bg-slate-50 rounded-lg">
           <h4 class="font-medium text-slate-700">
-            {t.bp_to_pct || "Basis Points → Percentage"}
+            {t.bp_to_pct || "Basis Points â†’ Percentage"}
           </h4>
           <code class="block mt-2 p-2 bg-white rounded text-slate-800"
-            >Percentage = BPS ÷ 100</code
+            >Percentage = BPS Ã· 100</code
           >
           <p class="text-sm text-slate-500 mt-2">
-            Example: 75 bps ÷ 100 = 0.75%
+            Example: 75 bps Ã· 100 = 0.75%
           </p>
         </div>
         <div class="p-4 bg-slate-50 rounded-lg">
           <h4 class="font-medium text-slate-700">
-            {t.pct_to_bp || "Percentage → Basis Points"}
+            {t.pct_to_bp || "Percentage â†’ Basis Points"}
           </h4>
           <code class="block mt-2 p-2 bg-white rounded text-slate-800"
-            >BPS = Percentage × 100</code
+            >BPS = Percentage Ã— 100</code
           >
           <p class="text-sm text-slate-500 mt-2">
-            Example: 0.50% × 100 = 50 bps
+            Example: 0.50% Ã— 100 = 50 bps
           </p>
         </div>
         <div class="p-4 bg-slate-50 rounded-lg">
           <h4 class="font-medium text-slate-700">
-            {t.bp_to_dec || "Basis Points → Decimal"}
+            {t.bp_to_dec || "Basis Points â†’ Decimal"}
           </h4>
           <code class="block mt-2 p-2 bg-white rounded text-slate-800"
-            >Decimal = BPS ÷ 10,000</code
+            >Decimal = BPS Ã· 10,000</code
           >
           <p class="text-sm text-slate-500 mt-2">
-            Example: 250 bps ÷ 10,000 = 0.025
+            Example: 250 bps Ã· 10,000 = 0.025
           </p>
         </div>
         <div class="p-4 bg-slate-50 rounded-lg">
           <h4 class="font-medium text-slate-700">
-            {t.dec_to_bp || "Decimal → Basis Points"}
+            {t.dec_to_bp || "Decimal â†’ Basis Points"}
           </h4>
           <code class="block mt-2 p-2 bg-white rounded text-slate-800"
-            >BPS = Decimal × 10,000</code
+            >BPS = Decimal Ã— 10,000</code
           >
           <p class="text-sm text-slate-500 mt-2">
-            Example: 0.0075 × 10,000 = 75 bps
+            Example: 0.0075 Ã— 10,000 = 75 bps
           </p>
         </div>
       </div>
@@ -281,10 +281,10 @@ const faqs = t.bp_guide_faqs || [
       </h3>
       <div class="p-4 bg-slate-50 rounded-lg">
         <code class="block p-2 bg-white rounded text-slate-800"
-          >Dollar Impact = Principal × (BPS ÷ 10,000)</code
+          >Dollar Impact = Principal Ã— (BPS Ã· 10,000)</code
         >
         <p class="text-sm text-slate-500 mt-2">
-          Example: On a $500,000 loan, 25 bps = $500,000 × 0.0025 = $1,250 per
+          Example: On a $500,000 loan, 25 bps = $500,000 Ã— 0.0025 = $1,250 per
           year
         </p>
       </div>
@@ -304,7 +304,7 @@ const faqs = t.bp_guide_faqs || [
         <p class="text-sm text-slate-600 mt-1">
           {
             t.app_central_banks_text ||
-              "The Federal Reserve, ECB, Bank of England, and other central banks adjust interest rates in basis point increments—typically 25, 50, or 75 bps at a time."
+              "The Federal Reserve, ECB, Bank of England, and other central banks adjust interest rates in basis point incrementsâ€”typically 25, 50, or 75 bps at a time."
           }
         </p>
       </div>
@@ -377,12 +377,12 @@ const faqs = t.bp_guide_faqs || [
   >
     <h2 class="text-xl font-semibold">{t.summary || "Summary"}</h2>
     <ul class="mt-4 space-y-2 text-sm">
-      <li>✓ {t.summary1 || "1 basis point = 0.01% = 0.0001 decimal"}</li>
-      <li>✓ {t.summary2 || "100 basis points = 1 percentage point"}</li>
-      <li>✓ {t.summary3 || "Divide bps by 100 to get percentage"}</li>
-      <li>✓ {t.summary4 || "Multiply percentage by 100 to get bps"}</li>
+      <li>âœ“ {t.summary1 || "1 basis point = 0.01% = 0.0001 decimal"}</li>
+      <li>âœ“ {t.summary2 || "100 basis points = 1 percentage point"}</li>
+      <li>âœ“ {t.summary3 || "Divide bps by 100 to get percentage"}</li>
+      <li>âœ“ {t.summary4 || "Multiply percentage by 100 to get bps"}</li>
       <li>
-        ✓ {t.summary5 || "Used globally in finance for precision and clarity"}
+        âœ“ {t.summary5 || "Used globally in finance for precision and clarity"}
       </li>
     </ul>
   </section>

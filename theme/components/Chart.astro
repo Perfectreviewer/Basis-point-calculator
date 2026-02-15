@@ -6,7 +6,7 @@ interface ChartData {
 
 const { title, data } = Astro.props as { title: string; data: ChartData[] };
 
-import { getTranslations, getLocaleFromUrl } from '@theme/i18n/utils';
+import { getTranslations, getLocaleFromUrl } from "@theme/i18n/utils";
 
 const locale = getLocaleFromUrl(Astro.url);
 const t = getTranslations(locale);
@@ -14,22 +14,28 @@ const t = getTranslations(locale);
 
 {
   data.length > 0 && (
-    <section class="bg-white shadow mt-8 p-6 rounded-xl">
-      <h2 class="font-semibold text-slate-900 text-xl">{title}</h2>
+    <section class="bg-white dark:bg-slate-800 dark:border-slate-700 shadow mt-8 p-6 rounded-xl border border-transparent">
+      <h2 class="font-semibold text-slate-900 dark:text-white text-xl">
+        {title}
+      </h2>
       <div class="mt-4">
         <table class="w-full">
           <thead>
             <tr>
               {data.map((item) => (
-                <th class="py-2 text-slate-700 text-left">{t[item.name]}</th>
+                <th class="py-2 text-slate-700 dark:text-slate-300 text-left">
+                  {t[item.name]}
+                </th>
               ))}
             </tr>
           </thead>
-          <tbody class="divide-y divide-slate-200">
+          <tbody class="divide-y divide-slate-200 dark:divide-slate-700">
             {data[0].value?.map((_, index) => (
               <tr>
                 {data.map((item) => (
-                  <td class="py-2 text-slate-900">{item.value[index]}</td>
+                  <td class="py-2 text-slate-900 dark:text-slate-100">
+                    {item.value[index]}
+                  </td>
                 ))}
               </tr>
             ))}

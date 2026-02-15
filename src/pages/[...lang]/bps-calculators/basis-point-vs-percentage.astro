@@ -1,4 +1,4 @@
----
+﻿---
 import CalculatorLayout, {
   getStaticPaths as getStaticPathsCalc,
 } from "@theme/layouts/CalculatorLayout.astro";
@@ -18,15 +18,15 @@ const pageDescription =
 const relatedCalculators = [
   {
     name: t.bp_to_pct_title || "Basis Points to Percentage",
-    url: "/basis-point-calculators/basis-point-to-percentage/",
+    url: "/bps-calculators/basis-point-to-percentage/",
   },
   {
     name: t.pct_to_bp_title || "Percentage to Basis Points",
-    url: "/basis-point-calculators/percentage-to-basis-point/",
+    url: "/bps-calculators/percentage-to-basis-point/",
   },
   {
     name: t.bp_examples_title || "Basis Point Examples",
-    url: "/basis-point-calculators/basis-point-examples/",
+    url: "/bps-calculators/basis-point-examples/",
   },
 ];
 
@@ -312,7 +312,7 @@ const faqs = t.bp_vs_pct_faqs || [
         >
       </li>
       <li class="flex items-start gap-2">
-        <span class="mt-1">🌍</span>
+        <span class="mt-1">🌐</span>
         <span
           >{
             t.takeaway4 ||

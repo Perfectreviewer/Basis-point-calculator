@@ -1,22 +1,186 @@
 ---
-import { getLocaleFromUrl, getLocalizedUrl } from '@theme/i18n/utils';
-import { languageMap } from '@theme/i18n/utils';
-
-import indexTranslations from '~/i18n/index.json';
-
-const availableLocalesPages = Object.keys(indexTranslations).map((locale) => {
-  return { href: getLocalizedUrl('/', locale as any), label: languageMap[locale as keyof typeof languageMap], locale };
-});
+import { getLocaleFromUrl, getLocalizedUrl } from "@theme/i18n/utils";
+import { languageMap } from "@theme/i18n/utils";
+import indexTranslations from "~/i18n/index.json";
 
 const currentLocale = getLocaleFromUrl(Astro.url);
+const currentLabel = languageMap[currentLocale as keyof typeof languageMap];
+
+// Map locales to ISO country codes for FlagCDN
+const countryCodeMap: Record<string, string> = {
+  en: "us",
+  hi: "in",
+  es: "es",
+  ru: "ru",
+  fr: "fr",
+  de: "de",
+  it: "it",
+  pt: "pt",
+  bn: "bd",
+  ja: "jp",
+  ko: "kr",
+  ms: "my",
+  pl: "pl",
+  id: "id",
+  ar: "sa",
+  bg: "bg",
+  tr: "tr",
+  sv: "se",
+};
+
+const currentCountryCode = countryCodeMap[currentLocale] || "us";
+
+const availableLocalesPages = Object.keys(indexTranslations).map((locale) => {
+  return {
+    href: getLocalizedUrl("/", locale as any),
+    label: languageMap[locale as keyof typeof languageMap],
+    locale,
+    countryCode: countryCodeMap[locale] || "us",
+    isActive: currentLocale === locale,
+  };
+});
 ---
 
-<div class="flex flex-wrap justify-center gap-4 max-w-4xl">
-  {
-    availableLocalesPages.map(({ href, label, locale }) => (
-      <a href={href} class={`rounded-lg border hover:bg-slate-100 px-2 py-1 text-sm text-slate-700 hover:text-slate-900 ${currentLocale === locale ? 'font-bold bg-slate-100' : ''}`}>
-        {label}
-      </a>
-    ))
-  }
+<div class="relative inline-block text-left group z-50">
+  <!-- Trigger Button -->
+  <button
+    type="button"
+    class="relative inline-flex items-center gap-2.5 px-5 py-2.5 bg-slate-900/80 backdrop-blur-xl border border-slate-700/50 rounded-full text-sm font-medium text-slate-300 transition-all duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] shadow-lg hover:shadow-sky-500/20 hover:border-sky-500/40 hover:text-white hover:-translate-y-0.5 group-hover:bg-slate-800/90"
+    id="language-menu-button"
+    aria-expanded="false"
+    aria-haspopup="true"
+  >
+    <!-- Subtle Gradient overlay -->
+    <div
+      class="absolute inset-0 rounded-full bg-gradient-to-tr from-sky-500/10 to-purple-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
+    >
+    </div>
+
+    <!-- Flag Image -->
+    <img
+      src={`https://flagcdn.com/w40/${currentCountryCode}.png`}
+      srcset={`https://flagcdn.com/w80/${currentCountryCode}.png 2x`}
+      width="20"
+      height="15"
+      alt={currentLabel}
+      class="rounded-sm shadow-sm object-cover"
+      style="min-width: 20px;"
+      loading="eager"
+    />
+
+    <span
+      class="tracking-wide text-xs uppercase font-bold text-slate-400 group-hover:text-slate-200 transition-colors"
+      >{currentLabel}</span
+    >
+
+    <svg
+      class="w-3.5 h-3.5 text-slate-500 transition-transform duration-500 group-hover:-rotate-180 group-hover:text-sky-400"
+      fill="none"
+      stroke="currentColor"
+      viewBox="0 0 24 24"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M19 9l-7 7-7-7"></path>
+    </svg>
+  </button>
+
+  <!-- Dropup Menu -->
+  <div
+    class="absolute bottom-full right-0 mb-4 w-[360px] origin-bottom-right bg-slate-900/95 backdrop-blur-3xl border border-slate-700/60 rounded-3xl shadow-2xl shadow-black/50 opacity-0 invisible translate-y-4 scale-90 transition-all duration-500 cubic-bezier(0.23, 1, 0.32, 1) group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 group-hover:scale-100 p-2 z-[100] ring-1 ring-white/10"
+    role="menu"
+    aria-orientation="vertical"
+    aria-labelledby="language-menu-button"
+  >
+    <div
+      class="px-5 py-4 border-b border-slate-800/80 mb-2 flex items-center justify-between bg-white/5 rounded-t-2xl"
+    >
+      <span class="text-xs font-bold text-slate-400 uppercase tracking-widest"
+        >Select Region</span
+      >
+      <span
+        class="text-[10px] text-sky-300 bg-sky-900/30 px-2 py-0.5 rounded-full border border-sky-700/30 shadow-[0_0_10px_rgba(14,165,233,0.2)]"
+        >{availableLocalesPages.length} Available</span
+      >
+    </div>
+
+    <div
+      class="grid grid-cols-2 gap-2 max-h-[320px] overflow-y-auto custom-scrollbar p-2"
+    >
+      {
+        availableLocalesPages.map(({ href, label, isActive, countryCode }) => (
+          <a
+            href={href}
+            class={`
+              flex items-center gap-3 px-3 py-3 rounded-2xl transition-all duration-300 group/item relative overflow-hidden
+              ${
+                isActive
+                  ? "bg-gradient-to-br from-sky-500/20 to-indigo-500/20 text-white border border-sky-500/30 shadow-[0_4px_20px_-5px_rgba(14,165,233,0.3)]"
+                  : "text-slate-400 hover:bg-white/5 hover:text-white border border-transparent hover:border-white/10 hover:shadow-lg"
+              }
+            `}
+            role="menuitem"
+          >
+            {/* Hover Glow */}
+            <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover/item:translate-x-full transition-transform duration-1000 ease-in-out pointer-events-none" />
+
+            <img
+              src={`https://flagcdn.com/w40/${countryCode}.png`}
+              srcset={`https://flagcdn.com/w80/${countryCode}.png 2x`}
+              width="24"
+              height="18"
+              alt={label}
+              class="rounded-sm shadow-md object-cover transform group-hover/item:scale-110 transition-transform duration-200"
+              loading="lazy"
+            />
+
+            <span class="text-sm font-medium truncate pr-2 relative z-10">
+              {label}
+            </span>
+
+            {isActive && (
+              <svg
+                class="w-4 h-4 text-sky-400 ml-auto"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M5 13l4 4L19 7"
+                />
+              </svg>
+            )}
+          </a>
+        ))
+      }
+    </div>
+  </div>
 </div>
+
+<style>
+  /* Custom scrollbar */
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: rgba(148, 163, 184, 0.2);
+    border-radius: 10px;
+    border: 2px solid rgba(15, 23, 42, 0.9);
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: rgba(148, 163, 184, 0.4);
+  }
+
+  /* Smooth springs */
+  .cubic-bezier {
+    transition-timing-function: cubic-bezier(0.23, 1, 0.32, 1);
+  }
+</style>

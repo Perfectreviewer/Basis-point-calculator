@@ -1,4 +1,4 @@
----
+﻿---
 import CalculatorLayout, {
   getStaticPaths as getStaticPathsCalc,
 } from "@theme/layouts/CalculatorLayout.astro";
@@ -17,15 +17,15 @@ const pageDescription =
 const relatedCalculators = [
   {
     name: t.bp_to_pct_title || "Basis Points to Percentage",
-    url: "/basis-point-calculators/basis-point-to-percentage/",
+    url: "/bps-calculators/basis-point-to-percentage/",
   },
   {
     name: t.bp_change_title || "Basis Point Change Calculator",
-    url: "/basis-point-calculators/basis-point-change-calculator/",
+    url: "/bps-calculators/basis-point-change-calculator/",
   },
   {
     name: t.bp_diff_title || "Basis Point Difference Calculator",
-    url: "/basis-point-calculators/basis-point-difference-calculator/",
+    url: "/bps-calculators/basis-point-difference-calculator/",
   },
 ];
 
@@ -33,7 +33,7 @@ const faqs = t.pct_to_bp_faqs || [
   {
     question: "How do I convert percentage to basis points?",
     answer:
-      "Multiply the percentage by 100. For example, 0.50% = 0.50 × 100 = 50 basis points",
+      "Multiply the percentage by 100. For example, 0.50% = 0.50 Ã— 100 = 50 basis points",
   },
   {
     question: "What is 1% in basis points?",
@@ -42,7 +42,7 @@ const faqs = t.pct_to_bp_faqs || [
   },
   {
     question: "How many basis points is 0.25%?",
-    answer: "0.25% equals 25 basis points (0.25 × 100 = 25 bps).",
+    answer: "0.25% equals 25 basis points (0.25 Ã— 100 = 25 bps).",
   },
 ];
 ---
@@ -122,7 +122,7 @@ const faqs = t.pct_to_bp_faqs || [
     </h2>
     <div class="mt-4 p-4 bg-slate-50 rounded-lg">
       <code class="text-lg text-slate-800">
-        {t.pct_to_bp_formula || "Basis Points = Percentage × 100"}
+        {t.pct_to_bp_formula || "Basis Points = Percentage Ã— 100"}
       </code>
     </div>
     <div class="mt-4 text-slate-600 text-sm space-y-2">
@@ -253,7 +253,7 @@ const faqs = t.pct_to_bp_faqs || [
       // Show explanation
       if (resultExplanation && resultText) {
         resultExplanation.classList.remove("hidden");
-        resultText.innerHTML = `<strong>${pct}%</strong> = <strong>${bps.toFixed(2).replace(/\.?0+$/, "")} basis points</strong> (calculated as ${pct} × 100 = ${bps.toFixed(2).replace(/\.?0+$/, "")})`;
+        resultText.innerHTML = `<strong>${pct}%</strong> = <strong>${bps.toFixed(2).replace(/\.?0+$/, "")} basis points</strong> (calculated as ${pct} Ã— 100 = ${bps.toFixed(2).replace(/\.?0+$/, "")})`;
       }
     }
 

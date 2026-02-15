@@ -14,7 +14,7 @@ const blog = defineCollection({
         author: z.string(),
         category: z.string(),
     }),
-    loader: glob({ pattern: "**/*.{md,mdx}", base: "./src/blog" }),
+    loader: glob({ pattern: "**/*.{md,mdx}", base: "../src/blog" }),
 });
 
 // 4. Export a single `collections` object to register your collection(s)

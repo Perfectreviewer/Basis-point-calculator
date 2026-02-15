@@ -89,6 +89,19 @@ const pageURL = Astro.url.href;
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+    <script is:inline>
+      // Check for saved theme or system preference and apply immediately
+      const theme = localStorage.getItem("theme");
+      if (
+        theme === "dark" ||
+        (!theme && window.matchMedia("(prefers-color-scheme: dark)").matches)
+      ) {
+        document.documentElement.classList.add("dark");
+      } else {
+        document.documentElement.classList.remove("dark");
+      }
+    </script>
+
     <title>{title}</title>
 
     <!-- favicon -->
@@ -269,7 +282,9 @@ const pageURL = Astro.url.href;
 
     <slot name="head" />
   </head>
-  <body class="flex flex-col justify-between bg-sky-50 min-h-screen">
+  <body
+    class="flex flex-col justify-between bg-sky-50 dark:bg-slate-950 dark:text-slate-100 min-h-screen"
+  >
     <Header />
     <main class="mx-auto px-3 md:px-6 py-5 md:py-10 w-full max-w-6xl">
       <slot />

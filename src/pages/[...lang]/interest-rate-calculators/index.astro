@@ -1,4 +1,4 @@
----
+﻿---
 import CalculatorLayout, {
   getStaticPaths as getStaticPathsCalc,
 } from "@theme/layouts/CalculatorLayout.astro";
@@ -183,10 +183,10 @@ const colorClasses = {
       </h2>
       <div class="flex flex-wrap gap-3">
         <a
-          href={getLocalizedUrl("/basis-point-calculators/", locale)}
+          href={getLocalizedUrl("/bps-calculators/", locale)}
           class="inline-flex items-center gap-2 px-4 py-2 bg-white rounded-lg border border-slate-200 hover:border-sky-400 transition-colors text-sm"
         >
-          <span>📐</span>
+          <span>📊</span>
           <span>{t.bp_section_title || "Basis Point Calculators"}</span>
         </a>
         <a

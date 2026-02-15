@@ -1,4 +1,4 @@
----
+﻿---
 import CalculatorLayout, {
   getStaticPaths as getStaticPathsCalc,
 } from "@theme/layouts/CalculatorLayout.astro";
@@ -24,7 +24,7 @@ const relatedCalculators = [
   },
   {
     name: "Basis Point Calculator",
-    url: "/basis-point-calculators/basis-point-to-percentage/",
+    url: "/bps-calculators/basis-point-to-percentage/",
   },
   {
     name: "Mortgage Calculator",
@@ -65,20 +65,20 @@ const relatedCalculators = [
         <h4 class="font-medium text-red-700">Rate Increases (Hawkish)</h4>
         <p class="text-sm text-red-600 mt-2">Used to:</p>
         <ul class="text-sm text-red-600 mt-1 space-y-1">
-          <li>• Combat high inflation</li>
-          <li>• Cool an overheating economy</li>
-          <li>• Strengthen the currency</li>
-          <li>• Prevent asset bubbles</li>
+          <li>â€¢ Combat high inflation</li>
+          <li>â€¢ Cool an overheating economy</li>
+          <li>â€¢ Strengthen the currency</li>
+          <li>â€¢ Prevent asset bubbles</li>
         </ul>
       </div>
       <div class="bg-green-50 rounded-lg p-4">
         <h4 class="font-medium text-green-700">Rate Decreases (Dovish)</h4>
         <p class="text-sm text-green-600 mt-2">Used to:</p>
         <ul class="text-sm text-green-600 mt-1 space-y-1">
-          <li>• Stimulate economic growth</li>
-          <li>• Combat unemployment</li>
-          <li>• Encourage borrowing/spending</li>
-          <li>• Support during recessions</li>
+          <li>â€¢ Stimulate economic growth</li>
+          <li>â€¢ Combat unemployment</li>
+          <li>â€¢ Encourage borrowing/spending</li>
+          <li>â€¢ Support during recessions</li>
         </ul>
       </div>
     </div>
@@ -192,10 +192,10 @@ const relatedCalculators = [
 
     <div class="not-prose mt-8">
       <a
-        href={getLocalizedUrl("/basis-point-calculators/", locale)}
+        href={getLocalizedUrl("/bps-calculators/", locale)}
         class="inline-flex items-center gap-2 px-6 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
       >
-        Calculate Rate Change Impact →
+        Calculate Rate Change Impact â†’
       </a>
     </div>
   </article>

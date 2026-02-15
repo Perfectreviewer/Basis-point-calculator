@@ -13,7 +13,7 @@ const isEn = locale === "en";
 
 export const getStaticPaths = getStaticPathsIndex;
 
-const chartData = [];
+const chartData: any[] = [];
 
 const currentPath = "/";
 const seo = (seoConfig as Record<string, any>)[currentPath] || {};
@@ -62,7 +62,7 @@ const schema = JSON.stringify({
     {
       "@type": "FAQPage",
       "@id": "https://www.basispointcalculator.com/#faq",
-      "mainEntity": t.faqs.map(faq => ({
+      "mainEntity": t.faqs.map((faq: any) => ({
         "@type": "Question",
         "name": faq.question,
         "acceptedAnswer": {
@@ -88,145 +88,187 @@ const schema = JSON.stringify({
     .text-balance {
       text-wrap: balance;
     }
+    /* Reduce bottom spacing on home page */
+    body > main {
+      padding-bottom: 3rem !important;
+    }
+    @media (min-width: 768px) {
+      body > main {
+        padding-bottom: 4rem !important;
+      }
+    }
+    body > footer {
+      margin-top: 0 !important;
+    }
   </style>
 
   {isEn && <script type="application/ld+json" set:html={schema} slot="head" />}
 
-  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-12" id="calculator">
-    <section class="bg-white/80 backdrop-blur-xl rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] p-6 border border-white/20 ring-1 ring-slate-900/5">
-      <h1 class="text-2xl font-bold bg-gradient-to-r from-slate-900 to-slate-700 bg-clip-text text-transparent mb-2">{t["basis_point_calculator"]}</h1>
-      <p class="text-sm text-slate-500 mb-6">{t["calculator_desc"]}</p>
+  <div class="relative mb-8" id="calculator">
+    <!-- Background Decoration -->
+    <div class="absolute inset-0 bg-gradient-to-b from-sky-50/50 to-white dark:from-slate-900 dark:to-slate-950 -z-10 rounded-3xl transform -skew-y-1 scale-105 pointer-events-none"></div>
 
-      <div class="grid grid-cols-1 gap-4">
-        <div>
-          <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-1.5">{t["decimal_value"]}</label>
-          <div class="relative group">
-            <input id="dec" inputmode="decimal" class="w-full bg-slate-50 border border-slate-200 rounded-xl py-3 px-4 pr-16 focus:outline-none focus:ring-2 focus:ring-sky-500/20 focus:border-sky-500 transition-all font-mono text-slate-800 shadow-sm" placeholder="0.01" />
-            <span class="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 font-medium text-sm">{t["dec"]}</span>
-          </div>
-        </div>
-        <div>
-          <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-1.5">{t["percent"]}</label>
-          <div class="relative group">
-            <input id="pct" inputmode="decimal" class="w-full bg-slate-50 border border-slate-200 rounded-xl py-3 px-4 pr-10 focus:outline-none focus:ring-2 focus:ring-sky-500/20 focus:border-sky-500 transition-all font-mono text-slate-800 shadow-sm" placeholder="1" />
-            <span class="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 font-medium text-sm">%</span>
-          </div>
-        </div>
-        <div>
-          <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-1.5">{t["permille"]}</label>
-          <div class="relative group">
-            <input id="permille" inputmode="decimal" class="w-full bg-slate-50 border border-slate-200 rounded-xl py-3 px-4 pr-10 focus:outline-none focus:ring-2 focus:ring-sky-500/20 focus:border-sky-500 transition-all font-mono text-slate-800 shadow-sm" placeholder="10" />
-            <span class="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 font-medium text-sm">‰</span>
-          </div>
-        </div>
-        <div>
-          <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-1.5">{t["basis_points"]}</label>
-          <div class="relative group">
-            <input id="bps" inputmode="decimal" class="w-full bg-slate-50 border border-slate-200 rounded-xl py-3 px-4 pr-14 focus:outline-none focus:ring-2 focus:ring-sky-500/20 focus:border-sky-500 transition-all font-mono text-slate-800 shadow-sm" placeholder="100" />
-            <span class="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 font-medium text-sm">{t["bps"]}</span>
-          </div>
-        </div>
-      </div>
-    </section>
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+      <section class="bg-white dark:bg-slate-800 dark:border-slate-700 rounded-2xl shadow-[0_8px_40px_rgb(0,0,0,0.06)] p-6 md:p-8 border border-slate-100 ring-1 ring-slate-900/5 relative z-10 transition-transform hover:-translate-y-0.5 duration-300">
+         <div class="absolute top-0 right-0 p-4 opacity-50 pointer-events-none">
+            <svg class="w-24 h-24 text-slate-50" fill="currentColor" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+         </div>
+        <h1 class="text-3xl font-bold text-slate-900 dark:text-white mb-2 relative z-10">{t["basis_point_calculator"]}</h1>
+        <p class="text-slate-500 dark:text-slate-400 mb-8 max-w-md relative z-10">{t["calculator_desc"]}</p>
 
-    <section class="bg-white/80 backdrop-blur-xl rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] p-6 border border-white/20 ring-1 ring-slate-900/5 flex flex-col justify-center">
-      <h2 class="text-xl font-bold text-slate-800 mb-6">{t["what_is_x_bps_of_y"]}</h2>
+        <div class="grid grid-cols-1 gap-6 relative z-10">
+          <div>
+            <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2">{t["decimal_value"]}</label>
+            <div class="relative group">
+              <input id="dec" inputmode="decimal" class="w-full bg-slate-50 border border-slate-200 rounded-xl py-4 px-4 pr-16 focus:outline-none focus:ring-4 focus:ring-sky-500/10 focus:border-sky-500 transition-all font-mono text-lg text-slate-800 shadow-sm group-hover:bg-white" placeholder="0.01" />
+              <span class="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 font-medium text-sm bg-slate-100 px-2 py-0.5 rounded text-xs tracking-wide">{t["dec"]}</span>
+            </div>
+          </div>
+          <div>
+            <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">{t["percent"]}</label>
+            <div class="relative group">
+              <input id="pct" inputmode="decimal" class="w-full bg-slate-50 border border-slate-200 rounded-xl py-4 px-4 pr-12 focus:outline-none focus:ring-4 focus:ring-sky-500/10 focus:border-sky-500 transition-all font-mono text-lg text-slate-800 shadow-sm group-hover:bg-white" placeholder="1" />
+              <span class="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 font-medium text-lg">%</span>
+            </div>
+          </div>
+          <div>
+            <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">{t["permille"]}</label>
+            <div class="relative group">
+              <input id="permille" inputmode="decimal" class="w-full bg-slate-50 border border-slate-200 rounded-xl py-4 px-4 pr-12 focus:outline-none focus:ring-4 focus:ring-sky-500/10 focus:border-sky-500 transition-all font-mono text-lg text-slate-800 shadow-sm group-hover:bg-white" placeholder="10" />
+              <span class="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 font-medium text-lg">‰</span>
+            </div>
+          </div>
+          <div>
+            <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">{t["basis_points"]}</label>
+            <div class="relative group">
+              <input id="bps" inputmode="decimal" class="w-full bg-sky-50 border border-sky-200 rounded-xl py-4 px-4 pr-16 focus:outline-none focus:ring-4 focus:ring-sky-500/20 focus:border-sky-600 transition-all font-mono text-xl font-bold text-sky-900 shadow-sm" placeholder="100" />
+              <span class="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-sky-600 font-bold text-sm bg-sky-100 px-2 py-0.5 rounded">{t["bps"]}</span>
+            </div>
+          </div>
+        </div>
+      </section>
 
-      <div class="grid grid-cols-1 gap-4">
-        <div>
-          <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-1.5">{t["x_bps"]}</label>
-          <div class="flex gap-3">
-            <input id="xval" inputmode="decimal" class="w-full bg-slate-50 border border-slate-200 rounded-xl py-3 px-4 focus:outline-none focus:ring-2 focus:ring-sky-500/20 focus:border-sky-500 transition-all font-mono text-slate-800 shadow-sm" placeholder="1.5" />
-            <select id="xunit" class="min-w-[100px] bg-white border border-slate-200 rounded-xl py-3 px-3 text-sm font-medium text-slate-700 hover:bg-slate-50 cursor-pointer shadow-sm">
-              <option value="bps" selected>{t["bps"]}</option>
-              <option value="pct">%</option>
-              <option value="dec">{t["decimal"]}</option>
-            </select>
+      <section class="bg-white/90 dark:bg-slate-800/90 dark:border-slate-700 backdrop-blur-xl rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] p-6 md:p-8 border border-slate-100 ring-1 ring-slate-900/5 flex flex-col justify-center h-full relative z-10">
+        <h2 class="text-xl font-bold text-slate-800 dark:text-white mb-8 pb-4 border-b border-slate-100 dark:border-slate-700 flex items-center gap-2">
+          <span class="w-8 h-8 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center text-lg">🧮</span>
+          {t["what_is_x_bps_of_y"]}
+        </h2>
+
+        <div class="grid grid-cols-1 gap-6">
+          <div>
+            <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">{t["x_bps"]}</label>
+            <div class="flex gap-3">
+              <input id="xval" inputmode="decimal" class="w-full bg-slate-50 border border-slate-200 rounded-xl py-3 px-4 focus:outline-none focus:ring-4 focus:ring-sky-500/10 focus:border-sky-500 transition-all font-mono text-slate-800 shadow-sm group-hover:bg-white" placeholder="1.5" />
+              <select id="xunit" class="min-w-[100px] bg-white border border-slate-200 rounded-xl py-3 px-3 text-sm font-medium text-slate-700 hover:bg-slate-50 cursor-pointer shadow-sm focus:ring-4 focus:ring-sky-500/10 focus:border-sky-500 outline-none">
+                <option value="bps" selected>{t["bps"]}</option>
+                <option value="pct">%</option>
+                <option value="dec">{t["decimal"]}</option>
+              </select>
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">{t["of_ellipsis"]}</label>
+            <div class="relative">
+              <span class="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 font-bold text-xs bg-slate-100 px-1.5 py-0.5 rounded" id="cur-left">PKR</span>
+              <input id="amount" inputmode="decimal" class="w-full bg-slate-50 border border-slate-200 rounded-xl py-3 pl-16 pr-24 focus:outline-none focus:ring-4 focus:ring-sky-500/10 focus:border-sky-500 transition-all font-mono text-slate-800 shadow-sm group-hover:bg-white" placeholder="65,000.00" />
+              <div class="absolute right-2 top-1/2 -translate-y-1/2">
+                 <select id="currency" class="bg-white border border-slate-200 rounded-lg py-1.5 px-2 text-xs font-bold text-slate-600 hover:bg-slate-50 cursor-pointer shadow-sm focus:outline-none focus:border-sky-500 transition-colors">
+                  <option>PKR</option>
+                  <option>USD</option>
+                  <option>EUR</option>
+                  <option>GBP</option>
+                  <option>AED</option>
+                  <option>SAR</option>
+                  <option>INR</option>
+                  <option>CAD</option>
+                  <option>AUD</option>
+                  <option>JPY</option>
+                  <option>CNY</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">{t["equals_ellipsis"]}</label>
+            <div class="relative">
+              <span class="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 font-bold text-xs bg-white/50 px-1.5 py-0.5 rounded" id="cur-left-2">PKR</span>
+              <input id="equals" class="w-full bg-gradient-to-r from-slate-100 to-white border border-slate-200 rounded-xl py-3 pl-16 pr-4 text-slate-800 font-bold font-mono shadow-inner" readonly />
+            </div>
           </div>
         </div>
 
-        <div>
-          <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-1.5">{t["of_ellipsis"]}</label>
-          <div class="relative">
-            <span class="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 font-medium text-sm" id="cur-left">PKR</span>
-            <input id="amount" inputmode="decimal" class="w-full bg-slate-50 border border-slate-200 rounded-xl py-3 pl-14 pr-24 focus:outline-none focus:ring-2 focus:ring-sky-500/20 focus:border-sky-500 transition-all font-mono text-slate-800 shadow-sm" placeholder="65,000.00" />
-            <select id="currency" class="absolute right-2 top-1/2 -translate-y-1/2 bg-white border border-slate-200 rounded-lg py-1.5 px-2 text-xs font-medium text-slate-600 hover:bg-slate-50 cursor-pointer shadow-sm">
-              <option>PKR</option>
-              <option>USD</option>
-              <option>EUR</option>
-              <option>GBP</option>
-              <option>AED</option>
-              <option>SAR</option>
-              <option>INR</option>
-              <option>CAD</option>
-              <option>AUD</option>
-              <option>JPY</option>
-              <option>CNY</option>
-            </select>
+        <div class="mt-8 pt-6 border-t border-slate-100 text-sm text-slate-600 space-y-3 bg-slate-50/50 -mx-8 -mb-8 p-8 rounded-b-2xl border-t-2 border-dashed" id="explain">
+          <p><span id="line1" class="font-bold text-slate-800 text-lg"></span></p>
+          <div class="text-[10px] uppercase tracking-widest text-slate-400 font-bold flex items-center gap-2">
+             <span class="w-8 h-[1px] bg-slate-300"></span>
+             {t["example_label"]}
+             <span class="w-full h-[1px] bg-slate-300"></span>
           </div>
+          <p id="line2" class="leading-relaxed text-slate-700 font-medium"></p>
+          <p id="line3" class="text-slate-500 leading-relaxed"></p>
         </div>
-
-        <div>
-          <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-1.5">{t["equals_ellipsis"]}</label>
-          <div class="relative">
-            <span class="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 font-medium text-sm" id="cur-left-2">PKR</span>
-            <input id="equals" class="w-full bg-slate-100/50 border border-slate-200 rounded-xl py-3 pl-14 pr-4 text-slate-700 font-bold font-mono shadow-inner" readonly />
-          </div>
-        </div>
-      </div>
-
-      <div class="mt-8 pt-6 border-t border-slate-100 text-sm text-slate-600 space-y-3" id="explain">
-        <p><span id="line1" class="font-medium text-slate-800 text-base"></span></p>
-        <div class="text-[10px] uppercase tracking-widest text-slate-400 font-bold">{t["example_label"]}</div>
-        <p id="line2" class="leading-relaxed text-slate-600"></p>
-        <p id="line3" class="text-slate-500 leading-relaxed"></p>
-      </div>
-    </section>
+      </section>
+    </div>
   </div>
 
   {
     isEn ? (
       <div class="space-y-12">
         <!-- Intro Section -->
-        <div class="max-w-3xl mx-auto text-center px-4">
-          <h2 class="text-3xl font-extrabold text-slate-900 sm:text-4xl text-balance mb-4">Accurate & Easy Basis Points Calculation Tool</h2>
-          <p class="text-lg text-slate-600 leading-relaxed text-balance">
+        <div class="max-w-4xl mx-auto text-center px-4 mt-12">
+          <span class="inline-block px-4 py-1.5 rounded-full bg-sky-50 text-sky-700 text-xs font-bold uppercase tracking-wider mb-6 border border-sky-100">Professional Financial Tools</span>
+          <h2 class="text-4xl font-extrabold text-slate-900 dark:text-white sm:text-5xl text-balance mb-6 tracking-tight">Accurate & Easy Basis Points Calculation Tool</h2>
+          <p class="text-xl text-slate-600 dark:text-slate-300 leading-relaxed text-balance max-w-2xl mx-auto">
             Welcome to <strong>BasisPointCalculator.com</strong>, a professional platform for accurate financial analysis.
             Whether you are dealing with interest rates, loans, bonds, or investments, get instant results without confusion.
           </p>
         </div>
 
         <!-- What & Why Grid -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl mx-auto px-4">
-          <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 hover:shadow-md transition-all hover:-translate-y-0.5">
-            <div class="w-10 h-10 bg-sky-50 rounded-xl flex items-center justify-center mb-4 text-sky-600 ring-1 ring-sky-100">
-              <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto px-4">
+          <div class="bg-white dark:bg-slate-800 dark:border-slate-700 p-8 rounded-3xl shadow-lg shadow-slate-200/50 dark:shadow-none border border-slate-100 hover:shadow-xl transition-all duration-300 hover:-translate-y-1 relative overflow-hidden group">
+            <div class="absolute top-0 right-0 w-64 h-64 bg-sky-50/50 rounded-full blur-3xl -translate-y-32 translate-x-16 transition-transform group-hover:scale-110"></div>
+            
+            <div class="w-14 h-14 bg-sky-50 rounded-2xl flex items-center justify-center mb-6 text-sky-600 ring-1 ring-sky-100 group-hover:scale-110 transition-transform duration-300 shadow-sm relative z-10">
+              <svg class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
             </div>
-            <h3 class="text-lg font-bold text-slate-900 mb-3">What Are Basis Points?</h3>
-            <p class="text-slate-600 mb-4 text-sm leading-relaxed">
+            <h3 class="text-2xl font-bold text-slate-900 dark:text-white mb-4 relative z-10">What Are Basis Points?</h3>
+            <p class="text-slate-600 dark:text-slate-300 mb-6 leading-relaxed relative z-10">
               A basis point (bp) is a standard unit of measurement in finance used to describe small changes in percentages.
             </p>
-            <ul class="space-y-1.5 text-xs text-slate-600 font-mono bg-slate-50 p-3 rounded-lg border border-slate-100">
-              <li class="flex justify-between"><span>1 basis point</span> <span>0.01%</span></li>
-              <li class="flex justify-between"><span>10 basis points</span> <span>0.10%</span></li>
-              <li class="flex justify-between"><span>100 basis points</span> <span>1.00%</span></li>
-              <li class="flex justify-between"><span>1000 basis points</span> <span>10.00%</span></li>
+            <ul class="space-y-2 text-sm text-slate-600 font-mono bg-slate-50 p-5 rounded-xl border border-slate-100 relative z-10">
+              <li class="flex justify-between items-center border-b border-slate-100 pb-2 mb-2 last:mb-0 last:pb-0 last:border-0">
+                <span class="text-slate-500">1 basis point</span> <span class="font-bold text-slate-800 bg-white px-2 py-0.5 rounded shadow-sm">0.01%</span>
+              </li>
+              <li class="flex justify-between items-center border-b border-slate-100 pb-2 mb-2 last:mb-0 last:pb-0 last:border-0">
+                <span class="text-slate-500">10 basis points</span> <span class="font-bold text-slate-800 bg-white px-2 py-0.5 rounded shadow-sm">0.10%</span>
+              </li>
+              <li class="flex justify-between items-center border-b border-slate-100 pb-2 mb-2 last:mb-0 last:pb-0 last:border-0">
+                <span class="text-slate-500">100 basis points</span> <span class="font-bold text-slate-800 bg-white px-2 py-0.5 rounded shadow-sm">1.00%</span>
+              </li>
+              <li class="flex justify-between items-center">
+                <span class="text-slate-500">1000 basis points</span> <span class="font-bold text-slate-800 bg-white px-2 py-0.5 rounded shadow-sm">10.00%</span>
+              </li>
             </ul>
           </div>
 
-          <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 hover:shadow-md transition-all hover:-translate-y-0.5">
-            <div class="w-10 h-10 bg-emerald-50 rounded-xl flex items-center justify-center mb-4 text-emerald-600 ring-1 ring-emerald-100">
-              <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+          <div class="bg-white dark:bg-slate-800 dark:border-slate-700 p-8 rounded-3xl shadow-lg shadow-slate-200/50 dark:shadow-none border border-slate-100 hover:shadow-xl transition-all duration-300 hover:-translate-y-1 relative overflow-hidden group">
+            <div class="absolute top-0 right-0 w-64 h-64 bg-emerald-50/50 rounded-full blur-3xl -translate-y-32 translate-x-16 transition-transform group-hover:scale-110"></div>
+            
+            <div class="w-14 h-14 bg-emerald-50 rounded-2xl flex items-center justify-center mb-6 text-emerald-600 ring-1 ring-emerald-100 group-hover:scale-110 transition-transform duration-300 shadow-sm relative z-10">
+              <svg class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
             </div>
-            <h3 class="text-lg font-bold text-slate-900 mb-3">Why Basis Points Are Important</h3>
-            <p class="text-slate-600 mb-4 text-sm leading-relaxed">
+            <h3 class="text-2xl font-bold text-slate-900 dark:text-white mb-4 relative z-10">Why Basis Points Are Important</h3>
+            <p class="text-slate-600 dark:text-slate-300 mb-6 leading-relaxed relative z-10">
               Financial markets deal with tiny percentage movements. Using basis points avoids ambiguity—saying "25 basis points" is clearer than "0.25%".
             </p>
-            <div class="mt-4">
-              <h4 class="text-xs font-bold text-slate-900 uppercase tracking-wider mb-3">Used By Professionals</h4>
+            <div class="mt-auto relative z-10">
+              <h4 class="text-xs font-bold text-slate-900 uppercase tracking-wider mb-4">Used By Professionals</h4>
               <div class="flex flex-wrap gap-2">
                 {["Banks", "Investors", "Loan Providers", "Bond Traders", "Central Banks"].map((item) => (
-                  <span class="inline-flex items-center px-2.5 py-1 rounded-md text-[11px] font-medium bg-slate-50 text-slate-600 border border-slate-100">
+                  <span class="inline-flex items-center px-3 py-1.5 rounded-lg text-sm font-semibold bg-white text-slate-700 border border-slate-200 shadow-sm hover:border-emerald-200 hover:text-emerald-700 transition-colors cursor-default">
                     {item}
                   </span>
                 ))}
@@ -236,43 +278,56 @@ const schema = JSON.stringify({
         </div>
 
         <!-- How to Calculate Section -->
-        <div class="bg-slate-50/50 py-12 border-y border-slate-200/50">
-          <div class="max-w-4xl mx-auto px-4">
-            <h2 class="text-2xl font-bold text-slate-900 text-center mb-8">How to Calculate Basis Points</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
-              <div class="space-y-4">
-                <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200">
-                  <h4 class="font-semibold text-slate-900 mb-2 text-sm">The Formula</h4>
-                  <code class="block bg-slate-900 text-slate-50 p-2.5 rounded-lg text-center font-mono text-sm leading-relaxed">
+        <div class="bg-slate-900 py-12 relative overflow-hidden my-12">
+          <div class="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] bg-fixed"></div>
+           <div class="absolute top-0 right-0 w-[500px] h-[500px] bg-sky-500/20 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/3"></div>
+           <div class="absolute bottom-0 left-0 w-[500px] h-[500px] bg-indigo-500/20 rounded-full blur-[100px] translate-y-1/2 -translate-x-1/3"></div>
+
+          <div class="max-w-5xl mx-auto px-4 relative z-10">
+            <h2 class="text-3xl md:text-4xl font-extrabold text-white text-center mb-12">How to Calculate Basis Points</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
+              <div class="space-y-6">
+                <div class="bg-white/10 backdrop-blur-lg p-8 rounded-3xl border border-white/10 shadow-2xl">
+                  <h4 class="font-bold text-sky-300 mb-4 text-sm uppercase tracking-wider">The Formula</h4>
+                  <code class="block bg-black/30 text-white p-6 rounded-2xl text-center font-mono text-lg md:text-xl leading-relaxed border border-white/5 shadow-inner">
                     Basis Points = Percentage × 100
                   </code>
                 </div>
-                <div class="text-slate-600 text-sm">
-                  <p class="mb-2">It works both ways:</p>
-                  <ul class="space-y-1.5 list-disc list-inside marker:text-slate-400">
-                    <li>Multiply percentage by 100 to get bps.</li>
-                    <li>Divide bps by 100 to get percentage.</li>
+                <div class="text-slate-300 text-lg">
+                  <p class="mb-4 font-medium">It works both ways:</p>
+                  <ul class="space-y-3">
+                    <li class="flex items-center gap-3">
+                      <span class="w-6 h-6 rounded-full bg-sky-500/20 flex items-center justify-center text-sky-400 font-bold text-xs">×</span>
+                      Multiply percentage by 100 to get bps.
+                    </li>
+                    <li class="flex items-center gap-3">
+                      <span class="w-6 h-6 rounded-full bg-sky-500/20 flex items-center justify-center text-sky-400 font-bold text-xs">÷</span>
+                      Divide bps by 100 to get percentage.
+                    </li>
                   </ul>
                 </div>
               </div>
 
-              <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-200">
-                <h4 class="font-semibold text-slate-900 mb-3 text-sm">Real World Examples</h4>
-                 <div class="space-y-2">
-                    <div class="flex items-center justify-between p-2.5 bg-slate-50 rounded-lg border border-slate-100/50">
-                      <span class="font-mono text-slate-600 text-sm">2.00%</span>
-                      <svg class="w-3.5 h-3.5 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
-                      <span class="font-bold text-slate-800 text-sm">200 bps</span>
+              <div class="bg-white p-8 rounded-3xl shadow-xl border border-slate-100">
+                <h4 class="font-bold text-slate-900 mb-6 text-sm uppercase tracking-wider flex items-center gap-2">
+                   <svg class="w-5 h-5 text-sky-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
+                   Real World Examples
+                </h4>
+                 <div class="space-y-3">
+                    <div class="flex items-center justify-between p-4 bg-slate-50 rounded-xl border border-slate-100 transition-colors hover:border-sky-200">
+                      <span class="font-mono text-slate-600 font-bold text-lg">2.00%</span>
+                       <div class="flex-1 border-b-2 border-dashed border-slate-200 mx-4 relative top-0.5"></div>
+                      <span class="font-bold text-slate-800 text-lg">200 bps</span>
                     </div>
-                    <div class="flex items-center justify-between p-2.5 bg-slate-50 rounded-lg border border-slate-100/50">
-                      <span class="font-mono text-slate-600 text-sm">0.50%</span>
-                      <svg class="w-3.5 h-3.5 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
-                      <span class="font-bold text-slate-800 text-sm">50 bps</span>
+                    <div class="flex items-center justify-between p-4 bg-slate-50 rounded-xl border border-slate-100 transition-colors hover:border-sky-200">
+                      <span class="font-mono text-slate-600 font-bold text-lg">0.50%</span>
+                       <div class="flex-1 border-b-2 border-dashed border-slate-200 mx-4 relative top-0.5"></div>
+                      <span class="font-bold text-slate-800 text-lg">50 bps</span>
                     </div>
-                    <div class="flex items-center justify-between p-2.5 bg-slate-50 rounded-lg border border-slate-100/50">
-                      <span class="font-mono text-slate-600 text-sm">1.25%</span>
-                      <svg class="w-3.5 h-3.5 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
-                      <span class="font-bold text-slate-800 text-sm">125 bps</span>
+                    <div class="flex items-center justify-between p-4 bg-slate-50 rounded-xl border border-slate-100 transition-colors hover:border-sky-200">
+                      <span class="font-mono text-slate-600 font-bold text-lg">1.25%</span>
+                       <div class="flex-1 border-b-2 border-dashed border-slate-200 mx-4 relative top-0.5"></div>
+                      <span class="font-bold text-slate-800 text-lg">125 bps</span>
                     </div>
                  </div>
               </div>
@@ -281,32 +336,32 @@ const schema = JSON.stringify({
         </div>
 
         <!-- Comparison Table -->
-        <div class="max-w-3xl mx-auto px-4">
-          <h2 class="text-2xl font-bold text-slate-900 text-center mb-6">Percentage vs Basis Points</h2>
-          <div class="bg-white shadow-sm rounded-xl overflow-hidden border border-slate-200 ring-1 ring-slate-900/5">
+        <div class="max-w-4xl mx-auto px-4">
+          <h2 class="text-3xl font-bold text-slate-900 text-center mb-10">Percentage vs Basis Points</h2>
+          <div class="bg-white dark:bg-slate-800 dark:border-slate-700 shadow-xl shadow-slate-200/50 dark:shadow-none rounded-2xl overflow-hidden border border-slate-200">
             <table class="w-full text-left">
-              <thead class="bg-slate-50/80 border-b border-slate-200">
+              <thead class="bg-slate-50 dark:bg-slate-900/50 border-b border-slate-200 dark:border-slate-700">
                 <tr>
-                  <th class="p-4 font-semibold text-slate-700 text-sm uppercase tracking-wider">Percentage</th>
-                  <th class="p-4 font-semibold text-slate-700 text-sm uppercase tracking-wider">Basis Points</th>
-                  <th class="p-4 font-semibold text-slate-700 hidden sm:table-cell text-sm uppercase tracking-wider">Meaning</th>
+                  <th class="p-5 font-bold text-slate-700 text-sm uppercase tracking-wider">Percentage</th>
+                  <th class="p-5 font-bold text-slate-700 text-sm uppercase tracking-wider">Basis Points</th>
+                  <th class="p-5 font-bold text-slate-700 hidden sm:table-cell text-sm uppercase tracking-wider">Meaning</th>
                 </tr>
               </thead>
-              <tbody class="divide-y divide-slate-100 text-slate-600">
-                <tr class="hover:bg-slate-50/50 transition-colors">
-                  <td class="p-4 font-mono text-sm">1.00%</td>
-                  <td class="p-4 font-bold text-slate-800 text-sm">100 bps</td>
-                  <td class="p-4 hidden sm:table-cell text-sm">One percent</td>
+              <tbody class="divide-y divide-slate-100 dark:divide-slate-700 text-slate-600 dark:text-slate-300">
+                <tr class="hover:bg-sky-50/30 dark:hover:bg-slate-700/30 transition-colors">
+                  <td class="p-5 font-mono">1.00%</td>
+                  <td class="p-5 font-bold text-slate-900 dark:text-white">100 bps</td>
+                  <td class="p-5 hidden sm:table-cell">One percent</td>
                 </tr>
-                <tr class="hover:bg-slate-50/50 transition-colors">
-                  <td class="p-4 font-mono text-sm">0.10%</td>
-                  <td class="p-4 font-bold text-slate-800 text-sm">10 bps</td>
-                  <td class="p-4 hidden sm:table-cell text-sm">One tenth of a percent</td>
+                <tr class="hover:bg-sky-50/30 transition-colors">
+                  <td class="p-5 font-mono">0.10%</td>
+                  <td class="p-5 font-bold text-slate-900">10 bps</td>
+                  <td class="p-5 hidden sm:table-cell">One tenth of a percent</td>
                 </tr>
-                <tr class="hover:bg-slate-50/50 transition-colors">
-                  <td class="p-4 font-mono text-sm">0.01%</td>
-                  <td class="p-4 font-bold text-slate-800 text-sm">1 bp</td>
-                  <td class="p-4 hidden sm:table-cell text-sm">One hundredth of a percent</td>
+                <tr class="hover:bg-sky-50/30 transition-colors">
+                  <td class="p-5 font-mono">0.01%</td>
+                  <td class="p-5 font-bold text-slate-900">1 bp</td>
+                  <td class="p-5 hidden sm:table-cell">One hundredth of a percent</td>
                 </tr>
               </tbody>
             </table>
@@ -314,89 +369,92 @@ const schema = JSON.stringify({
         </div>
 
         <!-- Features Grid -->
-        <div class="max-w-5xl mx-auto px-4">
-          <h2 class="text-2xl font-bold text-slate-900 text-center mb-8">Advanced Capabilities</h2>
-          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            <div class="p-5 bg-white rounded-xl shadow-sm border border-slate-100 ring-1 ring-slate-900/5 hover:-translate-y-1 transition-transform duration-300">
-              <div class="w-10 h-10 bg-blue-50 text-blue-600 rounded-lg flex items-center justify-center mb-3">
-                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" /></svg>
+        <div class="max-w-6xl mx-auto px-4 py-10">
+          <h2 class="text-3xl font-bold text-slate-900 dark:text-white text-center mb-12">Advanced Capabilities</h2>
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div class="p-6 bg-white dark:bg-slate-800 dark:border-slate-700 rounded-2xl shadow-sm border border-slate-200 hover:shadow-xl hover:border-blue-200 hover:-translate-y-2 transition-all duration-300 group">
+              <div class="w-12 h-12 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" /></svg>
               </div>
-              <h3 class="font-semibold text-slate-900 mb-2 text-sm">BPS Difference</h3>
-              <p class="text-xs text-slate-500 leading-relaxed">Calculate the precise difference between two interest rates in basis points.</p>
+              <h3 class="font-bold text-slate-900 dark:text-white mb-3">BPS Difference</h3>
+              <p class="text-sm text-slate-500 dark:text-slate-400 leading-relaxed">Calculate the precise difference between two interest rates in basis points.</p>
             </div>
-            <div class="p-5 bg-white rounded-xl shadow-sm border border-slate-100 ring-1 ring-slate-900/5 hover:-translate-y-1 transition-transform duration-300">
-              <div class="w-10 h-10 bg-indigo-50 text-indigo-600 rounded-lg flex items-center justify-center mb-3">
-                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" /></svg>
+            <div class="p-6 bg-white dark:bg-slate-800 dark:border-slate-700 rounded-2xl shadow-sm border border-slate-200 hover:shadow-xl hover:border-indigo-200 hover:-translate-y-2 transition-all duration-300 group">
+              <div class="w-12 h-12 bg-indigo-50 text-indigo-600 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" /></svg>
               </div>
-              <h3 class="font-semibold text-slate-900 mb-2 text-sm">Rate Change</h3>
-              <p class="text-xs text-slate-500 leading-relaxed">Analyze financial movements using small rate changes instantly.</p>
+              <h3 class="font-bold text-slate-900 dark:text-white mb-3">Rate Change</h3>
+              <p class="text-sm text-slate-500 dark:text-slate-400 leading-relaxed">Analyze financial movements using small rate changes instantly.</p>
             </div>
-            <div class="p-5 bg-white rounded-xl shadow-sm border border-slate-100 ring-1 ring-slate-900/5 hover:-translate-y-1 transition-transform duration-300">
-              <div class="w-10 h-10 bg-purple-50 text-purple-600 rounded-lg flex items-center justify-center mb-3">
-                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" /></svg>
+            <div class="p-6 bg-white dark:bg-slate-800 dark:border-slate-700 rounded-2xl shadow-sm border border-slate-200 hover:shadow-xl hover:border-purple-200 hover:-translate-y-2 transition-all duration-300 group">
+              <div class="w-12 h-12 bg-purple-50 text-purple-600 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" /></svg>
               </div>
-              <h3 class="font-semibold text-slate-900 mb-2 text-sm">Unit Conversion</h3>
-              <p class="text-xs text-slate-500 leading-relaxed">Convert freely between Basis Points, Percentage, Permille, and Decimal.</p>
+              <h3 class="font-bold text-slate-900 dark:text-white mb-3">Unit Conversion</h3>
+              <p class="text-sm text-slate-500 dark:text-slate-400 leading-relaxed">Convert freely between Basis Points, Percentage, Permille, and Decimal.</p>
             </div>
-            <div class="p-5 bg-white rounded-xl shadow-sm border border-slate-100 ring-1 ring-slate-900/5 hover:-translate-y-1 transition-transform duration-300">
-              <div class="w-10 h-10 bg-rose-50 text-rose-600 rounded-lg flex items-center justify-center mb-3">
-                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" /></svg>
+            <div class="p-6 bg-white dark:bg-slate-800 dark:border-slate-700 rounded-2xl shadow-sm border border-slate-200 hover:shadow-xl hover:border-rose-200 hover:-translate-y-2 transition-all duration-300 group">
+              <div class="w-12 h-12 bg-rose-50 text-rose-600 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" /></svg>
               </div>
-              <h3 class="font-semibold text-slate-900 mb-2 text-sm">Educational</h3>
-              <p class="text-xs text-slate-500 leading-relaxed">Learn finance concepts with our comprehensive guides and examples.</p>
+              <h3 class="font-bold text-slate-900 dark:text-white mb-3">Educational</h3>
+              <p class="text-sm text-slate-500 dark:text-slate-400 leading-relaxed">Learn finance concepts with our comprehensive guides and examples.</p>
             </div>
           </div>
         </div>
 
         <!-- Tools Suite -->
-        <div class="bg-white border-y border-slate-100 py-12">
-          <div class="max-w-5xl mx-auto px-4">
-            <h2 class="text-2xl font-bold text-slate-900 text-center mb-3">Complete Suite of Financial Calculators</h2>
-            <p class="text-slate-500 text-center mb-8 max-w-2xl mx-auto text-sm">Beyond the homepage calculator, discover our full ecosystem of financial tools designed for professionals.</p>
+        <div class="bg-gradient-to-b from-white to-slate-50 dark:from-slate-900 dark:to-slate-950 border-y border-slate-100 dark:border-slate-800 py-10">
+          <div class="max-w-6xl mx-auto px-4">
+            <h2 class="text-3xl font-bold text-slate-900 dark:text-white text-center mb-4">Complete Suite of Financial Calculators</h2>
+            <p class="text-slate-500 dark:text-slate-400 text-center mb-12 max-w-2xl mx-auto">Beyond the homepage calculator, discover our full ecosystem of financial tools designed for professionals.</p>
             
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-              <div class="space-y-3">
-                <div class="flex items-center gap-3 mb-1">
-                  <div class="p-1.5 bg-sky-50 rounded-lg text-sky-600">
-                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" /></svg>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+              <div class="space-y-4">
+                <div class="flex items-center gap-3 mb-2 p-3 bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-100 dark:border-slate-700">
+                  <div class="p-2 bg-sky-50 rounded-lg text-sky-600">
+                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" /></svg>
                   </div>
-                  <h4 class="font-bold text-slate-900 text-sm"><a href="/basis-point-calculators/" class="hover:text-sky-600 transition-colors">Basis Point Tools</a></h4>
+                  <h4 class="font-bold text-slate-900 dark:text-white"><a href="/bps-calculators/" class="hover:text-sky-600 transition-colors">Basis Point Tools</a></h4>
+                  <svg class="w-4 h-4 text-slate-300 ml-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
                 </div>
                 <ul class="space-y-2">
-                  <li><a href="/basis-point-calculators/basis-point-to-percentage/" class="block p-2.5 rounded-lg bg-slate-50 hover:bg-slate-100 text-xs text-slate-700 hover:text-sky-700 transition-colors border border-slate-100">BPS to Percentage Calculator</a></li>
-                  <li><a href="/basis-point-calculators/percentage-to-basis-point/" class="block p-2.5 rounded-lg bg-slate-50 hover:bg-slate-100 text-xs text-slate-700 hover:text-sky-700 transition-colors border border-slate-100">Percentage to BPS Calculator</a></li>
-                  <li><a href="/basis-point-calculators/basis-point-change-calculator/" class="block p-2.5 rounded-lg bg-slate-50 hover:bg-slate-100 text-xs text-slate-700 hover:text-sky-700 transition-colors border border-slate-100">BPS Change Calculator</a></li>
-                  <li><a href="/basis-point-calculators/basis-point-difference-calculator/" class="block p-2.5 rounded-lg bg-slate-50 hover:bg-slate-100 text-xs text-slate-700 hover:text-sky-700 transition-colors border border-slate-100">BPS Difference Calculator</a></li>
+                  <li><a href="/bps-calculators/basis-point-to-percentage/" class="block p-3 rounded-lg bg-white dark:bg-slate-800 hover:bg-sky-50 dark:hover:bg-slate-700 text-sm text-slate-600 dark:text-slate-400 hover:text-sky-700 dark:hover:text-sky-300 transition-colors border border-transparent hover:border-sky-100">BPS to Percentage Calculator</a></li>
+                  <li><a href="/bps-calculators/percentage-to-basis-point/" class="block p-3 rounded-lg bg-white dark:bg-slate-800 hover:bg-sky-50 dark:hover:bg-slate-700 text-sm text-slate-600 dark:text-slate-400 hover:text-sky-700 dark:hover:text-sky-300 transition-colors border border-transparent hover:border-sky-100">Percentage to BPS Calculator</a></li>
+                  <li><a href="/bps-calculators/basis-point-change-calculator/" class="block p-3 rounded-lg bg-white dark:bg-slate-800 hover:bg-sky-50 dark:hover:bg-slate-700 text-sm text-slate-600 dark:text-slate-400 hover:text-sky-700 dark:hover:text-sky-300 transition-colors border border-transparent hover:border-sky-100">BPS Change Calculator</a></li>
+                  <li><a href="/bps-calculators/basis-point-difference-calculator/" class="block p-3 rounded-lg bg-white dark:bg-slate-800 hover:bg-sky-50 dark:hover:bg-slate-700 text-sm text-slate-600 dark:text-slate-400 hover:text-sky-700 dark:hover:text-sky-300 transition-colors border border-transparent hover:border-sky-100">BPS Difference Calculator</a></li>
                 </ul>
               </div>
 
-              <div class="space-y-3">
-                <div class="flex items-center gap-3 mb-1">
-                  <div class="p-1.5 bg-indigo-50 rounded-lg text-indigo-600">
-                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+              <div class="space-y-4">
+                <div class="flex items-center gap-3 mb-2 p-3 bg-white rounded-xl shadow-sm border border-slate-100">
+                  <div class="p-2 bg-indigo-50 rounded-lg text-indigo-600">
+                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                   </div>
-                  <h4 class="font-bold text-slate-900 text-sm"><a href="/interest-rate-calculators/" class="hover:text-indigo-600 transition-colors">Interest Rate Tools</a></h4>
+                  <h4 class="font-bold text-slate-900 dark:text-white"><a href="/interest-rate-calculators/" class="hover:text-indigo-600 transition-colors">Interest Rate Tools</a></h4>
+                  <svg class="w-4 h-4 text-slate-300 ml-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
                 </div>
                 <ul class="space-y-2">
-                  <li><a href="/interest-rate-calculators/simple-interest-calculator/" class="block p-2.5 rounded-lg bg-slate-50 hover:bg-slate-100 text-xs text-slate-700 hover:text-indigo-700 transition-colors border border-slate-100">Simple Interest Calculator</a></li>
-                  <li><a href="/interest-rate-calculators/compound-interest-calculator/" class="block p-2.5 rounded-lg bg-slate-50 hover:bg-slate-100 text-xs text-slate-700 hover:text-indigo-700 transition-colors border border-slate-100">Compound Interest Calculator</a></li>
-                  <li><a href="/interest-rate-calculators/apr-calculator/" class="block p-2.5 rounded-lg bg-slate-50 hover:bg-slate-100 text-xs text-slate-700 hover:text-indigo-700 transition-colors border border-slate-100">APR Calculator</a></li>
-                  <li><a href="/interest-rate-calculators/apy-calculator/" class="block p-2.5 rounded-lg bg-slate-50 hover:bg-slate-100 text-xs text-slate-700 hover:text-indigo-700 transition-colors border border-slate-100">Effective Interest Rate</a></li>
+                  <li><a href="/interest-rate-calculators/simple-interest-calculator/" class="block p-3 rounded-lg bg-white dark:bg-slate-800 hover:bg-indigo-50 dark:hover:bg-slate-700 text-sm text-slate-600 dark:text-slate-400 hover:text-indigo-700 dark:hover:text-indigo-300 transition-colors border border-transparent hover:border-indigo-100">Simple Interest Calculator</a></li>
+                  <li><a href="/interest-rate-calculators/compound-interest-calculator/" class="block p-3 rounded-lg bg-white dark:bg-slate-800 hover:bg-indigo-50 dark:hover:bg-slate-700 text-sm text-slate-600 dark:text-slate-400 hover:text-indigo-700 dark:hover:text-indigo-300 transition-colors border border-transparent hover:border-indigo-100">Compound Interest Calculator</a></li>
+                  <li><a href="/interest-rate-calculators/apr-calculator/" class="block p-3 rounded-lg bg-white dark:bg-slate-800 hover:bg-indigo-50 dark:hover:bg-slate-700 text-sm text-slate-600 dark:text-slate-400 hover:text-indigo-700 dark:hover:text-indigo-300 transition-colors border border-transparent hover:border-indigo-100">APR Calculator</a></li>
+                  <li><a href="/interest-rate-calculators/apy-calculator/" class="block p-3 rounded-lg bg-white dark:bg-slate-800 hover:bg-indigo-50 dark:hover:bg-slate-700 text-sm text-slate-600 dark:text-slate-400 hover:text-indigo-700 dark:hover:text-indigo-300 transition-colors border border-transparent hover:border-indigo-100">Effective Interest Rate</a></li>
                 </ul>
               </div>
 
-              <div class="space-y-3">
-                <div class="flex items-center gap-3 mb-1">
-                  <div class="p-1.5 bg-emerald-50 rounded-lg text-emerald-600">
-                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" /></svg>
+              <div class="space-y-4">
+                <div class="flex items-center gap-3 mb-2 p-3 bg-white rounded-xl shadow-sm border border-slate-100">
+                  <div class="p-2 bg-emerald-50 rounded-lg text-emerald-600">
+                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" /></svg>
                   </div>
-                  <h4 class="font-bold text-slate-900 text-sm"><a href="/loan-calculators/" class="hover:text-emerald-600 transition-colors">Loan & Investment</a></h4>
+                  <h4 class="font-bold text-slate-900 dark:text-white"><a href="/loan-calculators/" class="hover:text-emerald-600 transition-colors">Loan & Investment</a></h4>
+                  <svg class="w-4 h-4 text-slate-300 ml-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
                 </div>
                 <ul class="space-y-2">
-                  <li><a href="/loan-calculators/" class="block p-2.5 rounded-lg bg-slate-50 hover:bg-slate-100 text-xs text-slate-700 hover:text-emerald-700 transition-colors border border-slate-100">Loan & Mortgage Calculators</a></li>
-                  <li><a href="/bond-calculators/" class="block p-2.5 rounded-lg bg-slate-50 hover:bg-slate-100 text-xs text-slate-700 hover:text-emerald-700 transition-colors border border-slate-100">Bond Yield Calculators</a></li>
-                  <li><a href="/investment-calculators/" class="block p-2.5 rounded-lg bg-slate-50 hover:bg-slate-100 text-xs text-slate-700 hover:text-emerald-700 transition-colors border border-slate-100">ROI & Future Value</a></li>
-                  <li><a href="/investment-calculators/inflation-calculator/" class="block p-2.5 rounded-lg bg-slate-50 hover:bg-slate-100 text-xs text-slate-700 hover:text-emerald-700 transition-colors border border-slate-100">Inflation Impact Tool</a></li>
+                  <li><a href="/loan-calculators/" class="block p-3 rounded-lg bg-white dark:bg-slate-800 hover:bg-emerald-50 dark:hover:bg-slate-700 text-sm text-slate-600 dark:text-slate-400 hover:text-emerald-700 dark:hover:text-emerald-300 transition-colors border border-transparent hover:border-emerald-100">Loan & Mortgage Calculators</a></li>
+                  <li><a href="/bond-calculators/" class="block p-3 rounded-lg bg-white dark:bg-slate-800 hover:bg-emerald-50 dark:hover:bg-slate-700 text-sm text-slate-600 dark:text-slate-400 hover:text-emerald-700 dark:hover:text-emerald-300 transition-colors border border-transparent hover:border-emerald-100">Bond Yield Calculators</a></li>
+                  <li><a href="/investment-calculators/" class="block p-3 rounded-lg bg-white dark:bg-slate-800 hover:bg-emerald-50 dark:hover:bg-slate-700 text-sm text-slate-600 dark:text-slate-400 hover:text-emerald-700 dark:hover:text-emerald-300 transition-colors border border-transparent hover:border-emerald-100">ROI & Future Value</a></li>
+                  <li><a href="/investment-calculators/inflation-calculator/" class="block p-3 rounded-lg bg-white dark:bg-slate-800 hover:bg-emerald-50 dark:hover:bg-slate-700 text-sm text-slate-600 dark:text-slate-400 hover:text-emerald-700 dark:hover:text-emerald-300 transition-colors border border-transparent hover:border-emerald-100">Inflation Impact Tool</a></li>
                 </ul>
               </div>
             </div>
@@ -404,10 +462,10 @@ const schema = JSON.stringify({
         </div>
 
         <!-- Who Can Use / Why Choose -->
-         <div class="max-w-5xl mx-auto px-4 grid grid-cols-1 md:grid-cols-2 gap-8">
+         <div class="max-w-6xl mx-auto px-4 grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <h3 class="text-xl font-bold text-slate-900 mb-6">Who Can Use This Calculator?</h3>
-              <ul class="space-y-3">
+              <h3 class="text-2xl font-bold text-slate-900 dark:text-white mb-8">Who Can Use This Calculator?</h3>
+              <ul class="space-y-4">
                 {[
                   "Students learning finance and economics",
                   "Investors analyzing returns and yields",
@@ -415,20 +473,25 @@ const schema = JSON.stringify({
                   "Bankers & analysts monitoring interest rates",
                   "Business owners comparing financial costs"
                 ].map(text => (
-                  <li class="flex items-start gap-3">
-                    <div class="mt-0.5 w-5 h-5 text-sky-500 shrink-0">
-                      <svg fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+                  <li class="flex items-start gap-4 p-4 bg-white dark:bg-slate-800 dark:border-slate-700 rounded-xl shadow-sm border border-slate-100 hover:shadow-md transition-shadow">
+                    <div class="mt-0.5 w-6 h-6 bg-sky-100 text-sky-600 rounded-full flex items-center justify-center shrink-0">
+                      <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
                     </div>
-                    <span class="text-slate-600 text-sm">{text}</span>
+                    <span class="text-slate-700 dark:text-slate-300 font-medium">{text}</span>
                   </li>
                 ))}
               </ul>
             </div>
             
-            <div class="bg-gradient-to-br from-slate-900 to-slate-800 rounded-2xl p-6 text-white relative overflow-hidden shadow-lg">
-              <div class="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full blur-3xl -translate-y-12 translate-x-12"></div>
-              <h3 class="text-xl font-bold mb-4 relative z-10">Why Choose Us?</h3>
-              <ul class="space-y-3 relative z-10">
+            <div class="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 rounded-3xl p-8 text-white relative overflow-hidden shadow-2xl flex flex-col justify-center">
+              <div class="absolute top-0 right-0 w-48 h-48 bg-emerald-500/20 rounded-full blur-3xl -translate-y-12 translate-x-12"></div>
+              <div class="absolute bottom-0 left-0 w-48 h-48 bg-sky-500/20 rounded-full blur-3xl translate-y-12 -translate-x-12"></div>
+              
+              <h3 class="text-2xl font-bold mb-8 relative z-10 flex items-center gap-3">
+                 <span class="p-2 bg-white/10 rounded-lg backdrop-blur-sm">⚡</span>
+                 Why Choose Us?
+              </h3>
+              <ul class="space-y-5 relative z-10">
                 {[
                   "Accurate and reliable calculations",
                   "Simple, user-friendly design",
@@ -436,54 +499,80 @@ const schema = JSON.stringify({
                   "100% free financial tools",
                   "Trusted finance-focused content"
                 ].map(text => (
-                  <li class="flex items-center gap-3 text-slate-300 text-sm">
-                    <svg class="w-5 h-5 text-emerald-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-                    <span>{text}</span>
+                  <li class="flex items-center gap-4 text-slate-200">
+                    <span class="w-6 h-6 rounded-full bg-emerald-500/20 flex items-center justify-center text-emerald-400 shrink-0">
+                       <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                    </span>
+                    <span class="font-medium hover:text-white transition-colors">{text}</span>
                   </li>
                 ))}
               </ul>
+              
+              <div class="mt-8 pt-6 border-t border-white/10 relative z-10">
+                 <div class="text-sm text-slate-400 italic">"Trust is the currency of a new generation."</div>
+              </div>
             </div>
          </div>
 
         <!-- Educational Guides -->
-        <div class="max-w-4xl mx-auto px-4">
-          <div class="bg-indigo-50/50 rounded-2xl p-8 text-center border border-indigo-100">
-             <h2 class="text-2xl font-bold text-slate-900 mb-3">Educational Guides & Financial Learning</h2>
-             <p class="text-slate-600 mb-6 max-w-2xl mx-auto text-sm">We don’t just provide calculators — we help users understand finance. Explore our curated guides to master basis points.</p>
-             <div class="flex flex-wrap justify-center gap-3">
-                <a href="/guides/what-are-basis-points/" class="px-5 py-2.5 bg-white text-indigo-700 font-semibold rounded-lg shadow-sm hover:shadow-md hover:text-indigo-900 transition-all text-sm border border-indigo-100">What are Basis Points?</a>
-                <a href="/guides/central-bank-rate-changes/" class="px-5 py-2.5 bg-white text-indigo-700 font-semibold rounded-lg shadow-sm hover:shadow-md hover:text-indigo-900 transition-all text-sm border border-indigo-100">Central Bank Rates</a>
-                <a href="/guides/apr-vs-interest-rate/" class="px-5 py-2.5 bg-white text-indigo-700 font-semibold rounded-lg shadow-sm hover:shadow-md hover:text-indigo-900 transition-all text-sm border border-indigo-100">APR vs Interest Rate</a>
+        <div class="max-w-4xl mx-auto px-4 pt-8">
+          <div class="bg-indigo-50 dark:bg-slate-800/50 rounded-2xl p-10 text-center border border-indigo-100 dark:border-slate-700 ring-4 ring-indigo-50/50 dark:ring-white/5">
+             <span class="inline-block text-4xl mb-4">🎓</span>
+             <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-3">Educational Guides & Financial Learning</h2>
+             <p class="text-slate-600 dark:text-slate-400 mb-8 max-w-2xl mx-auto">We don’t just provide calculators — we help users understand finance. Explore our curated guides to master basis points.</p>
+             <div class="flex flex-wrap justify-center gap-4">
+                <a href="/guides/what-are-basis-points/" class="px-6 py-3 bg-white dark:bg-slate-700 text-indigo-700 dark:text-indigo-300 font-bold rounded-xl shadow-sm hover:shadow-lg hover:-translate-y-0.5 transition-all border border-indigo-100 dark:border-slate-600">What are Basis Points?</a>
+                <a href="/guides/central-bank-rate-changes/" class="px-6 py-3 bg-white dark:bg-slate-700 text-indigo-700 dark:text-indigo-300 font-bold rounded-xl shadow-sm hover:shadow-lg hover:-translate-y-0.5 transition-all border border-indigo-100 dark:border-slate-600">Central Bank Rates</a>
+                <a href="/guides/apr-vs-interest-rate/" class="px-6 py-3 bg-white dark:bg-slate-700 text-indigo-700 dark:text-indigo-300 font-bold rounded-xl shadow-sm hover:shadow-lg hover:-translate-y-0.5 transition-all border border-indigo-100 dark:border-slate-600">APR vs Interest Rate</a>
              </div>
           </div>
         </div>
 
         <!-- FAQs -->
-        <section class="max-w-3xl mx-auto px-5 pb-12">
+        <section class="max-w-3xl mx-auto px-5 pb-8">
           <div class="text-center mb-8">
-            <h2 class="text-2xl font-bold text-slate-900 mb-3">Frequently Asked Questions</h2>
-            <p class="text-slate-500 text-sm">Common questions regarding basis points.</p>
+            <h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-4">Frequently Asked Questions</h2>
+            <p class="text-slate-500 dark:text-slate-400">Common questions regarding basis points.</p>
           </div>
-          <div class="space-y-3">
-        {t.faqs.map((faq) => (
-             <details class="group bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden ring-1 ring-slate-900/5">
-               <summary class="flex justify-between items-center cursor-pointer p-4 font-medium text-slate-800 hover:bg-slate-50 transition-colors select-none text-sm">
+          <div class="space-y-4">
+        {t.faqs.map((faq: any) => (
+             <details class="group bg-white dark:bg-slate-800 dark:border-slate-700 rounded-2xl shadow-sm border border-slate-100 overflow-hidden hover:shadow-md transition-shadow">
+               <summary class="flex justify-between items-center cursor-pointer p-5 font-bold text-slate-800 dark:text-white hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors select-none">
                  {faq.question}
-                 <span class="transition-transform duration-300 group-open:rotate-180">
-                   <svg class="w-4 h-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                 <span class="transition-transform duration-300 group-open:rotate-180 bg-slate-100 p-1 rounded-full">
+                   <svg class="w-4 h-4 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
                  </span>
                </summary>
-               <div class="px-4 pb-4 pt-0 text-slate-600 leading-relaxed border-t border-slate-50 text-sm">
-                 <div class="mt-3">{faq.answer}</div>
+               <div class="px-5 pb-5 pt-0 text-slate-600 dark:text-slate-300 leading-relaxed text-sm">
+                 <div class="pt-3 border-t border-slate-50 dark:border-slate-700">{faq.answer}</div>
                </div>
              </details>
            ))}
           </div>
         </section>
 
-        <!-- CTA -->
-        <div class="fixed bottom-0 left-0 right-0 p-4 bg-white/80 backdrop-blur-md border-t border-slate-200 md:hidden z-50">
-          <a href="#calculator" class="block w-full text-center bg-sky-600 text-white font-bold py-3 rounded-xl shadow-lg hover:bg-sky-700">Calculate Now</a>
+        <!-- CTA Section -->
+        <section class="bg-gradient-to-r from-slate-900 to-slate-800 py-12 text-center text-white relative overflow-hidden">
+           <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-10"></div>
+           <div class="max-w-4xl mx-auto px-4 relative z-10">
+              <h2 class="text-3xl md:text-4xl font-extrabold mb-6 tracking-tight">Start Using the Basis Point Calculator Today</h2>
+              <p class="text-lg text-slate-300 mb-6 max-w-2xl mx-auto leading-relaxed">
+                Whether you want to calculate basis points, understand interest rate changes, or analyze financial data, BasisPointCalculator.com is your trusted solution.
+              </p>
+              <div class="flex flex-col sm:flex-row justify-center gap-4">
+                <a href="#calculator" class="inline-flex items-center justify-center px-8 py-4 text-base font-bold rounded-xl text-slate-900 bg-white hover:bg-sky-50 transition-colors shadow-lg hover:shadow-xl hover:-translate-y-0.5 transform duration-200">
+                  Calculators Now
+                </a>
+                <p class="text-slate-400 text-sm mt-4 sm:mt-0 sm:ml-4 flex items-center justify-center">
+                   Gain clarity in your financial decisions.
+                </p>
+              </div>
+           </div>
+        </section>
+
+        <!-- Mobile Sticky CTA -->
+        <div class="fixed bottom-0 left-0 right-0 p-4 bg-white/90 backdrop-blur-xl border-t border-slate-200 md:hidden z-50">
+          <a href="#calculator" class="block w-full text-center bg-sky-600 text-white font-bold py-3.5 rounded-xl shadow-lg hover:bg-sky-700 transition-colors">Calculate Now</a>
         </div>
       </div>
     ) : (
@@ -629,7 +718,7 @@ const schema = JSON.stringify({
       if (unit === "bps") ratio = x / 10000;
       else if (unit === "pct") ratio = x / 100;
       else ratio = x; // decimal
-
+      
       const delta = amount * ratio; // the absolute amount change
       const newAmt = amount + delta; // increased value (can be lower if delta negative)
 
