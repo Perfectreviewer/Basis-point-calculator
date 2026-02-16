@@ -34,8 +34,13 @@
     "increased": "increased",
     "decreased": "decreased",
     "result_line1": "{xLabel} of {code} {amount} equals {code} {delta}",
-    "result_line2": "A stock worth <strong>{code} {amount}</strong> has {verb} by <strong>{xLabel}</strong>.",
-    "result_line3": "This means its value has <strong>{verb}</strong> by <strong>{code} {delta}</strong>, and the stock is now worth <strong>{code} {newAmt}</strong>."
+    "result_line2": "{noun} worth <strong>{code} {amount}</strong> has {verb} by <strong>{xLabel}</strong>.",
+    "result_line3": "This means its value has <strong>{verb}</strong> by <strong>{code} {delta}</strong>, and the {noun} is now worth <strong>{code} {newAmt}</strong>.",
+    "asset_stock": "A stock",
+    "asset_bond": "A bond",
+    "asset_portfolio": "A portfolio",
+    "asset_property": "A property",
+    "asset_investment": "An investment"
   },
   "hi": {
     "site_title": "बेसिस पॉइंट कैलकुलेटर",
@@ -110,8 +115,13 @@
     "increased": "aumentado",
     "decreased": "disminuido",
     "result_line1": "{xLabel} de {code} {amount} es igual a {code} {delta}",
-    "result_line2": "Una acción que vale <strong>{code} {amount}</strong> ha {verb} en <strong>{xLabel}</strong>.",
-    "result_line3": "Esto significa que su valor ha <strong>{verb}</strong> en <strong>{code} {delta}</strong>, y la acción ahora vale <strong>{code} {newAmt}</strong>."
+    "result_line2": "{noun} que vale <strong>{code} {amount}</strong> ha {verb} en <strong>{xLabel}</strong>.",
+    "result_line3": "Esto significa que su valor ha <strong>{verb}</strong> en <strong>{code} {delta}</strong>, y {noun} ahora vale <strong>{code} {newAmt}</strong>.",
+    "asset_stock": "Una acción",
+    "asset_bond": "Un bono",
+    "asset_portfolio": "Una cartera",
+    "asset_property": "Una propiedad",
+    "asset_investment": "Una inversión"
   },
   "ru": {
     "site_title": "Калькулятор Базисных Пунктов",
@@ -148,8 +158,13 @@
     "increased": "увеличилась",
     "decreased": "уменьшилась",
     "result_line1": "{xLabel} от {code} {amount} равно {code} {delta}",
-    "result_line2": "Акция стоимостью <strong>{code} {amount}</strong> {verb} на <strong>{xLabel}</strong>.",
-    "result_line3": "Это означает, что ее стоимость <strong>{verb}</strong> на <strong>{code} {delta}</strong>, и теперь акция стоит <strong>{code} {newAmt}</strong>."
+    "result_line2": "{noun} стоимостью <strong>{code} {amount}</strong> {verb} на <strong>{xLabel}</strong>.",
+    "result_line3": "Это означает, что ее стоимость <strong>{verb}</strong> на <strong>{code} {delta}</strong>, и теперь {noun} стоит <strong>{code} {newAmt}</strong>.",
+    "asset_stock": "Акция",
+    "asset_bond": "Облигация",
+    "asset_portfolio": "Портфель",
+    "asset_property": "Недвижимость",
+    "asset_investment": "Инвестиция"
   },
   "fr": {
     "site_title": "Calculateur de Points de Base",

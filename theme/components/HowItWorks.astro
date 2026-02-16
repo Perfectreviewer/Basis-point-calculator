@@ -1,5 +1,5 @@
 ---
-import { getTranslations, getLocaleFromUrl } from '@theme/i18n/utils';
+import { getTranslations, getLocaleFromUrl } from "@theme/i18n/utils";
 
 const locale = getLocaleFromUrl(Astro.url);
 const t = getTranslations(locale);
@@ -7,11 +7,19 @@ const t = getTranslations(locale);
 const { class: className } = Astro.props;
 ---
 
-<section class={`bg-white shadow mt-8 p-6 rounded-xl ${className}`}>
-  <h2 class="font-semibold text-slate-900 text-xl">
-    {t['How the']}
+<section
+  class={`bg-white/80 dark:bg-slate-900/80 backdrop-blur-2xl rounded-3xl p-8 shadow-[0_8px_32px_rgba(0,0,0,0.04)] dark:shadow-none border border-white/60 dark:border-slate-800 transition-all ring-1 ring-white/50 mt-12 ${className}`}
+>
+  <h2
+    class="font-bold text-slate-900 dark:text-white text-2xl font-serif tracking-tight mb-6"
+  >
+    {t["How the"]}
     {t.site_title}
-    {t['Works']}
+    {t["Works"]}
   </h2>
-  <slot />
+  <div
+    class="prose prose-slate dark:prose-invert max-w-none text-slate-600 dark:text-slate-300 leading-relaxed"
+  >
+    <slot />
+  </div>
 </section>

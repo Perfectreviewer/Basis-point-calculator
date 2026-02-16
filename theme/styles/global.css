@@ -2,6 +2,54 @@
 
 @variant dark (&:where(.dark, .dark *));
 
+::selection {
+    background-color: theme('colors.sky.500');
+    color: white;
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: theme('colors.slate.100');
+}
+
+.dark ::-webkit-scrollbar-track {
+    background: theme('colors.slate.900');
+}
+
+::-webkit-scrollbar-thumb {
+    background: theme('colors.slate.300');
+    border-radius: 5px;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+    background: theme('colors.slate.700');
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: theme('colors.slate.400');
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+    background: theme('colors.slate.600');
+}
+
 @theme {
     --breakpoint-2xl: 1440px;
+    --animate-gradient: gradient 8s linear infinite;
+    --animate-pulse-slow: pulse 8s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+
+    @keyframes gradient {
+
+        0%,
+        100% {
+            background-position: 0% 50%;
+        }
+
+        50% {
+            background-position: 100% 50%;
+        }
+    }
 }

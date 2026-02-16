@@ -14,26 +14,26 @@ const t = getTranslations(locale);
 
 {
   data.length > 0 && (
-    <section class="bg-white dark:bg-slate-800 dark:border-slate-700 shadow mt-8 p-6 rounded-xl border border-transparent">
-      <h2 class="font-semibold text-slate-900 dark:text-white text-xl">
+    <section class="bg-white/80 dark:bg-slate-900/80 backdrop-blur-2xl rounded-3xl p-8 shadow-[0_8px_32px_rgba(0,0,0,0.04)] dark:shadow-none border border-white/60 dark:border-slate-800 transition-all ring-1 ring-white/50 mt-12">
+      <h2 class="font-bold text-slate-900 dark:text-white text-2xl font-serif tracking-tight mb-6">
         {title}
       </h2>
-      <div class="mt-4">
-        <table class="w-full">
+      <div class="mt-4 overflow-hidden rounded-2xl border border-slate-200 dark:border-slate-700/50">
+        <table class="w-full text-left border-collapse">
           <thead>
-            <tr>
+            <tr class="bg-slate-50/50 dark:bg-slate-800/50 border-b border-slate-200 dark:border-slate-700/50">
               {data.map((item) => (
-                <th class="py-2 text-slate-700 dark:text-slate-300 text-left">
-                  {t[item.name]}
+                <th class="py-4 px-6 text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-[0.2em] opacity-90 first:pl-6 last:pr-6 cursor-default">
+                  {t[item.name] || item.name}
                 </th>
               ))}
             </tr>
           </thead>
-          <tbody class="divide-y divide-slate-200 dark:divide-slate-700">
+          <tbody class="divide-y divide-slate-100 dark:divide-slate-800">
             {data[0].value?.map((_, index) => (
-              <tr>
+              <tr class="hover:bg-slate-50/80 dark:hover:bg-slate-800/50 transition-colors group">
                 {data.map((item) => (
-                  <td class="py-2 text-slate-900 dark:text-slate-100">
+                  <td class="py-4 px-6 text-sm font-medium text-slate-700 dark:text-slate-300 first:font-mono first:text-indigo-600 dark:first:text-indigo-400 group-hover:text-slate-900 dark:group-hover:text-white transition-colors">
                     {item.value[index]}
                   </td>
                 ))}
