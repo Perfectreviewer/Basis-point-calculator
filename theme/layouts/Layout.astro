@@ -90,16 +90,9 @@ const pageURL = Astro.url.href;
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <script is:inline>
-      // Check for saved theme or system preference and apply immediately
-      const theme = localStorage.getItem("theme");
-      if (
-        theme === "dark" ||
-        (!theme && window.matchMedia("(prefers-color-scheme: dark)").matches)
-      ) {
-        document.documentElement.classList.add("dark");
-      } else {
-        document.documentElement.classList.remove("dark");
-      }
+      // Dark mode disabled by user request - force light mode
+      document.documentElement.classList.remove("dark");
+      localStorage.setItem("theme", "light");
     </script>
 
     <title>{title}</title>
