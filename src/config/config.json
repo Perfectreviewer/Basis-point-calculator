@@ -1,26 +1,18 @@
 {
-    "site": {
-        "base_url": "https://www.basispointcalculator.com",
-        "google_verification": "hcS1B80segR023Bj_4E0IoE7Q4GFCblpZfCNr7hhbu8",
-        "bing_verification": "F18D0FE7C96C7E201B96C461DBA4AA9F",
-        "yandex_verification": "9332963b05ec7034"
+  "site": {
+    "base_url": "https://www.basispointcalculator.com",
+    "google_verification": "hcS1B80segR023Bj_4E0IoE7Q4GFCblpZfCNr7hhbu8",
+    "bing_verification": "F18D0FE7C96C7E201B96C461DBA4AA9F",
+    "yandex_verification": "9332963b05ec7034"
+  },
+  "social": [
+    {
+      "name": "Facebook",
+      "url": "https://web.facebook.com/basispointcalculator"
     },
-    "social": [
-        {
-            "name": "Twitter",
-            "url": "https://twitter.com/"
-        },
-        {
-            "name": "Facebook",
-            "url": "https://www.facebook.com/"
-        },
-        {
-            "name": "LinkedIn",
-            "url": "https://www.linkedin.com/company/"
-        },
-        {
-            "name": "Pinterest",
-            "url": "https://www.pinterest.com/"
-        }
-    ]
+    {
+      "name": "LinkedIn",
+      "url": "https://www.linkedin.com/company/basispointcalculator"
+    }
+  ]
 }

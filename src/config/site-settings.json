@@ -1,186 +1,186 @@
 {
-    "header": {
-        "siteTitle": "Basis Point Calculator"
-    },
-    "footer": {
-        "description": "Professional financial calculators and tools for accurate basis points calculation, interest rate analysis, and investment planning.",
-        "copyrightText": "Built with ❤️ by",
-        "brandName": "BigTechies",
-        "linkColumns": [
-            {
-                "title": "Basis Point Tools",
-                "links": [
-                    {
-                        "name": "BPS to Percentage",
-                        "url": "/bps-calculators/basis-point-to-percentage/"
-                    },
-                    {
-                        "name": "Percentage to BPS",
-                        "url": "/bps-calculators/percentage-to-basis-point/"
-                    },
-                    {
-                        "name": "BPS Change Calculator",
-                        "url": "/bps-calculators/basis-point-change-calculator/"
-                    },
-                    {
-                        "name": "BPS Examples",
-                        "url": "/bps-calculators/basis-point-examples/"
-                    }
-                ]
-            },
-            {
-                "title": "Interest & Loan Tools",
-                "links": [
-                    {
-                        "name": "Simple Interest",
-                        "url": "/interest-rate-calculators/simple-interest-calculator/"
-                    },
-                    {
-                        "name": "Compound Interest",
-                        "url": "/interest-rate-calculators/compound-interest-calculator/"
-                    },
-                    {
-                        "name": "APR Calculator",
-                        "url": "/interest-rate-calculators/apr-calculator/"
-                    },
-                    {
-                        "name": "Mortgage Calculator",
-                        "url": "/loan-calculators/mortgage-calculator/"
-                    }
-                ]
-            },
-            {
-                "title": "Bond & Investment",
-                "links": [
-                    {
-                        "name": "Bond Yield",
-                        "url": "/bond-calculators/bond-yield-calculator/"
-                    },
-                    {
-                        "name": "ROI Calculator",
-                        "url": "/investment-calculators/roi-calculator/"
-                    },
-                    {
-                        "name": "Future Value",
-                        "url": "/investment-calculators/future-value-calculator/"
-                    },
-                    {
-                        "name": "Inflation Calculator",
-                        "url": "/investment-calculators/inflation-calculator/"
-                    }
-                ]
-            }
-        ],
-        "linkSections": [
-            {
-                "title": "Support",
-                "links": [
-                    {
-                        "name": "About Us",
-                        "url": "/about/about-us/"
-                    },
-                    {
-                        "name": "Contact Us",
-                        "url": "/about/contact/"
-                    },
-                    {
-                        "name": "FAQ",
-                        "url": "/faq/"
-                    },
-                    {
-                        "name": "Guides",
-                        "url": "/guides/"
-                    }
-                ]
-            },
-            {
-                "title": "Legal",
-                "links": [
-                    {
-                        "name": "Terms & Conditions",
-                        "url": "/legal/terms-and-conditions/"
-                    },
-                    {
-                        "name": "Privacy Policy",
-                        "url": "/legal/privacy-policy/"
-                    },
-                    {
-                        "name": "Disclaimer",
-                        "url": "/legal/disclaimer/"
-                    },
-                    {
-                        "name": "Editorial Policy",
-                        "url": "/about/editorial-policy/"
-                    }
-                ]
-            }
-        ],
-        "newsletter": {
-            "title": "Stay Updated",
-            "text": "Get financial tips and calculator updates delivered to your inbox.",
-            "buttonText": "Subscribe →",
-            "placeholder": "you@email.com"
-        },
-        "statsSection": {
-            "title": "Why BasisPointCalculator.com",
-            "items": [
-                {
-                    "value": "25+",
-                    "label": "Free Tools",
-                    "color": "sky"
-                },
-                {
-                    "value": "0",
-                    "label": "Data Stored",
-                    "color": "green"
-                },
-                {
-                    "value": "5",
-                    "label": "Languages",
-                    "color": "purple"
-                },
-                {
-                    "value": "∞",
-                    "label": "Free Forever",
-                    "color": "amber"
-                }
-            ]
-        }
-    },
-    "contactPage": {
-        "pageTitle": "Contact Us",
-        "pageSubtitle": "We read every message. Fill the form and we will get back to you as soon as possible.",
-        "seoTitle": "Contact Us | Basis Point Calculator",
-        "seoDescription": "Contact the Basis Point Calculator team for questions, feedback, or general inquiries — we're here to hear from you.",
-        "formAccessKey": "919fae56-32cd-4db4-a166-cb45159ae574",
-        "directEmail": "aleemiqbalbhatti@hotmail.com",
-        "directEmailText": "Or email us directly",
-        "submitButtonText": "Send",
-        "successMessage": "Form submitted successfully.",
-        "errorMessage": "Error submitting form. Please try again.",
-        "fields": [
-            {
-                "name": "name",
-                "label": "Your name",
-                "type": "text",
-                "placeholder": "Jane Doe",
-                "required": true
-            },
-            {
-                "name": "email",
-                "label": "Email",
-                "type": "email",
-                "placeholder": "you@example.com",
-                "required": true
-            },
-            {
-                "name": "message",
-                "label": "Message",
-                "type": "textarea",
-                "placeholder": "How can we help?",
-                "rows": 6,
-                "required": true
-            }
+  "header": {
+    "siteTitle": "Basis Point Calculator"
+  },
+  "footer": {
+    "description": "Professional financial calculators and tools for accurate basis points calculation, interest rate analysis, and investment planning.",
+    "copyrightText": "Built with ❤️ by",
+    "brandName": "BigTechies",
+    "linkColumns": [
+      {
+        "title": "Basis Point Tools",
+        "links": [
+          {
+            "name": "BPS to Percentage",
+            "url": "/bps-calculators/basis-point-to-percentage/"
+          },
+          {
+            "name": "Percentage to BPS",
+            "url": "/bps-calculators/percentage-to-basis-point/"
+          },
+          {
+            "name": "BPS Change Calculator",
+            "url": "/bps-calculators/basis-point-change-calculator/"
+          },
+          {
+            "name": "BPS Examples",
+            "url": "/bps-calculators/basis-point-examples/"
+          }
         ]
+      },
+      {
+        "title": "Interest & Loan Tools",
+        "links": [
+          {
+            "name": "Simple Interest",
+            "url": "/interest-rate-calculators/simple-interest-calculator/"
+          },
+          {
+            "name": "Compound Interest",
+            "url": "/interest-rate-calculators/compound-interest-calculator/"
+          },
+          {
+            "name": "APR Calculator",
+            "url": "/interest-rate-calculators/apr-calculator/"
+          },
+          {
+            "name": "Mortgage Calculator",
+            "url": "/loan-calculators/mortgage-calculator/"
+          }
+        ]
+      },
+      {
+        "title": "Bond & Investment",
+        "links": [
+          {
+            "name": "Bond Yield",
+            "url": "/bond-calculators/bond-yield-calculator/"
+          },
+          {
+            "name": "ROI Calculator",
+            "url": "/investment-calculators/roi-calculator/"
+          },
+          {
+            "name": "Future Value",
+            "url": "/investment-calculators/future-value-calculator/"
+          },
+          {
+            "name": "Inflation Calculator",
+            "url": "/investment-calculators/inflation-calculator/"
+          }
+        ]
+      }
+    ],
+    "linkSections": [
+      {
+        "title": "Support",
+        "links": [
+          {
+            "name": "About Us",
+            "url": "/about/about-us/"
+          },
+          {
+            "name": "Contact Us",
+            "url": "/about/contact/"
+          },
+          {
+            "name": "FAQ",
+            "url": "/faq/"
+          },
+          {
+            "name": "Guides",
+            "url": "/guides/"
+          }
+        ]
+      },
+      {
+        "title": "Legal",
+        "links": [
+          {
+            "name": "Terms & Conditions",
+            "url": "/legal/terms-and-conditions/"
+          },
+          {
+            "name": "Privacy Policy",
+            "url": "/legal/privacy-policy/"
+          },
+          {
+            "name": "Disclaimer",
+            "url": "/legal/disclaimer/"
+          },
+          {
+            "name": "Editorial Policy",
+            "url": "/about/editorial-policy/"
+          }
+        ]
+      }
+    ],
+    "newsletter": {
+      "title": "Stay Updated",
+      "text": "Get financial tips and calculator updates delivered to your inbox.",
+      "buttonText": "Subscribe →",
+      "placeholder": "you@email.com"
+    },
+    "statsSection": {
+      "title": "Why BasisPointCalculator.com",
+      "items": [
+        {
+          "value": "25+",
+          "label": "Free Tools",
+          "color": "sky"
+        },
+        {
+          "value": "0",
+          "label": "Data Stored",
+          "color": "green"
+        },
+        {
+          "value": "5",
+          "label": "Languages",
+          "color": "purple"
+        },
+        {
+          "value": "∞",
+          "label": "Free Forever",
+          "color": "amber"
+        }
+      ]
     }
+  },
+  "contactPage": {
+    "pageTitle": "Contact Us",
+    "pageSubtitle": "We read every message. Fill the form and we will get back to you as soon as possible.",
+    "seoTitle": "Contact Us | Basis Point Calculator",
+    "seoDescription": "Contact the Basis Point Calculator team for questions, feedback, or general inquiries — we're here to hear from you.",
+    "formAccessKey": "919fae56-32cd-4db4-a166-cb45159ae574",
+    "directEmail": "aleemiqbalbhatti@hotmail.com",
+    "directEmailText": "Or email us directly",
+    "submitButtonText": "Send",
+    "successMessage": "Form submitted successfully.",
+    "errorMessage": "Error submitting form. Please try again.",
+    "fields": [
+      {
+        "name": "name",
+        "label": "Your name",
+        "type": "text",
+        "placeholder": "Jane Doe",
+        "required": true
+      },
+      {
+        "name": "email",
+        "label": "Email",
+        "type": "email",
+        "placeholder": "you@example.com",
+        "required": true
+      },
+      {
+        "name": "message",
+        "label": "Message",
+        "type": "textarea",
+        "placeholder": "How can we help?",
+        "rows": 6,
+        "required": true
+      }
+    ]
+  }
 }

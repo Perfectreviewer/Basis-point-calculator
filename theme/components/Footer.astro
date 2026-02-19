@@ -27,6 +27,21 @@ const socialLogos: Record<string, any> = {
 const getSocialLogoMarkup = (name: string) =>
   socialLogos[name.toLowerCase()] ?? null;
 
+// Color mappings for stats section
+const statsColorMap: Record<string, string> = {
+  sky: "text-sky-400",
+  green: "text-emerald-400",
+  purple: "text-purple-400",
+  amber: "text-amber-400",
+};
+
+const statsBorderMap: Record<string, string> = {
+  sky: "hover:border-sky-500/30",
+  green: "hover:border-emerald-500/30",
+  purple: "hover:border-purple-500/30",
+  amber: "hover:border-amber-500/30",
+};
+
 // All footer data from config — fully dynamic
 const linkColumns = siteSettings.footer?.linkColumns || [];
 const linkSections = siteSettings.footer?.linkSections || [];
@@ -195,18 +210,22 @@ const brandName = siteSettings.footer?.brandName || "";
                     {statsSection.title}
                   </h3>
                   <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
-                    {statsSection.items.map((stat) => (
-                      <div
-                        class={`bg-slate-800/30 rounded-xl p-5 border border-slate-700/25 text-center hover:border-${stat.color}-800/40 transition-colors`}
-                      >
-                        <p
-                          class={`text-2xl font-bold text-${stat.color}-400 mb-1`}
+                    {statsSection.items.map((stat) => {
+                      const textColor =
+                        statsColorMap[stat.color] || "text-sky-400";
+                      const borderColor =
+                        statsBorderMap[stat.color] || "hover:border-slate-600";
+                      return (
+                        <div
+                          class={`bg-slate-800/30 rounded-xl p-5 border border-slate-700/25 text-center transition-colors ${borderColor}`}
                         >
-                          {stat.value}
-                        </p>
-                        <p class="text-xs text-slate-500">{stat.label}</p>
-                      </div>
-                    ))}
+                          <p class={`text-2xl font-bold mb-1 ${textColor}`}>
+                            {stat.value}
+                          </p>
+                          <p class="text-xs text-slate-500">{stat.label}</p>
+                        </div>
+                      );
+                    })}
                   </div>
                 </div>
               )

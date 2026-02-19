@@ -57,6 +57,12 @@ const navItems = [
     id: "seo-settings",
   },
   {
+    name: "Ad Management",
+    href: "/admin/ads-settings/",
+    icon: "ads",
+    id: "ads-settings",
+  },
+  {
     name: "Contact Page",
     href: "/admin/contact-settings/",
     icon: "contact",
@@ -947,6 +953,17 @@ const navItems = [
                       stroke-width="2"
                     >
                       <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" />
+                    </svg>
+                  )}
+                  {item.icon === "ads" && (
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                    >
+                      <rect x="2" y="7" width="20" height="15" rx="2" ry="2" />
+                      <polyline points="17 2 12 7 7 2" />
                     </svg>
                   )}
                   {item.icon === "users" && (

@@ -1,0 +1,98 @@
+{
+    "publisherId": "",
+    "autoAds": false,
+    "customScript": "",
+    "slots": {
+        "header_banner": {
+            "enabled": false,
+            "slotId": "",
+            "format": "horizontal",
+            "label": "Header Banner",
+            "description": "Below the site header on all pages"
+        },
+        "footer_banner": {
+            "enabled": false,
+            "slotId": "",
+            "format": "horizontal",
+            "label": "Footer Banner",
+            "description": "Above the site footer on all pages"
+        },
+        "homepage_mid": {
+            "enabled": false,
+            "slotId": "",
+            "format": "horizontal",
+            "label": "Homepage Mid-Section",
+            "description": "Between calculator sections on the home page"
+        },
+        "homepage_bottom": {
+            "enabled": false,
+            "slotId": "",
+            "format": "horizontal",
+            "label": "Homepage Bottom",
+            "description": "After FAQs section, before the footer CTA"
+        },
+        "blog_listing_top": {
+            "enabled": false,
+            "slotId": "",
+            "format": "horizontal",
+            "label": "Blog Listing Top",
+            "description": "Above the blog posts grid on blog listing page"
+        },
+        "blog_listing_between": {
+            "enabled": false,
+            "slotId": "",
+            "format": "fluid",
+            "label": "Blog Listing Between Posts",
+            "description": "Between blog post cards on the listing page"
+        },
+        "blog_sidebar": {
+            "enabled": false,
+            "slotId": "",
+            "format": "rectangle",
+            "label": "Blog Sidebar",
+            "description": "Right sidebar on blog posts"
+        },
+        "blog_in_article": {
+            "enabled": false,
+            "slotId": "",
+            "format": "fluid",
+            "label": "Blog In-Article",
+            "description": "Between paragraphs in blog content"
+        },
+        "blog_after_post": {
+            "enabled": false,
+            "slotId": "",
+            "format": "horizontal",
+            "label": "Blog After Post",
+            "description": "After blog article, before related posts"
+        },
+        "calculator_after": {
+            "enabled": false,
+            "slotId": "",
+            "format": "horizontal",
+            "label": "Calculator After Results",
+            "description": "Below calculator results on calculator pages"
+        },
+        "calculator_sidebar": {
+            "enabled": false,
+            "slotId": "",
+            "format": "rectangle",
+            "label": "Calculator Sidebar",
+            "description": "Sidebar on calculator/tool pages"
+        },
+        "guide_top": {
+            "enabled": false,
+            "slotId": "",
+            "format": "horizontal",
+            "label": "Guide Page Top",
+            "description": "Top of educational guide pages"
+        },
+        "guide_bottom": {
+            "enabled": false,
+            "slotId": "",
+            "format": "horizontal",
+            "label": "Guide Page Bottom",
+            "description": "Bottom of educational guide pages"
+        }
+    }
+}

@@ -1,6 +1,7 @@
 ---
 import Header from "@theme/components/Header.astro";
 import Footer from "@theme/components/Footer.astro";
+import AdSlot from "@theme/components/AdSlot.astro";
 
 import {
   getTranslations,
@@ -14,6 +15,8 @@ import navigation from "~/config/navigation.json";
 
 // @ts-ignore
 import seoSettings from "~/config/seo-settings.json";
+// @ts-ignore
+import adsSettings from "~/config/ads-settings.json";
 
 import "@theme/styles/global.css";
 
@@ -309,14 +312,34 @@ const pageURL = Astro.url.href;
     }
 
     <slot name="head" />
+
+    {/* Google AdSense script - only load if publisher ID is configured */}
+    {
+      (adsSettings as any)?.publisherId && (
+        <script
+          async
+          src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-${(adsSettings as any).publisherId}`}
+          crossorigin="anonymous"
+        />
+      )
+    }
+
+    {/* Custom ad script from admin panel */}
+    {
+      (adsSettings as any)?.customScript && (
+        <Fragment set:html={(adsSettings as any).customScript} />
+      )
+    }
   </head>
   <body
     class="flex flex-col justify-between bg-sky-50 dark:bg-slate-950 dark:text-slate-100 min-h-screen"
   >
     <Header />
+    <AdSlot slot="header_banner" />
     <main class="mx-auto px-3 md:px-6 py-5 md:py-10 w-full max-w-6xl">
       <slot />
     </main>
+    <AdSlot slot="footer_banner" />
     <Footer />
   </body>
 </html>

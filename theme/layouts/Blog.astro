@@ -35,6 +35,28 @@ const firstUrl = page.url.first ?? "/blog/";
 const makeHref = (n: number) => (n === 1 ? firstUrl : `${firstUrl}${n}/`);
 
 const siteURL = Astro.url.origin;
+
+// Format date utility
+function formatDate(dateVal: Date | string) {
+  const d = dateVal instanceof Date ? dateVal : new Date(dateVal);
+  return d.toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+  });
+}
+function toISODate(dateVal: Date | string) {
+  const d = dateVal instanceof Date ? dateVal : new Date(dateVal);
+  return d.toISOString().split("T")[0];
+}
+
+// Estimate read time
+function readTime(content: string | undefined) {
+  if (!content) return "3 min read";
+  const words = content.split(/\s+/).length;
+  const minutes = Math.max(1, Math.round(words / 200));
+  return `${minutes} min read`;
+}
 ---
 
 <Layout
@@ -74,51 +96,132 @@ const siteURL = Astro.url.origin;
     })}
   />
 
-  <h1 class="font-semibold text-slate-800 text-3xl">Blog</h1>
-  <p class="mt-3 text-slate-600">
-    Latest guides and updates from {indexTranslations.en.site_title}.
-  </p>
-
-  <!-- Results meta -->
-  <p class="mt-6 text-slate-500 text-sm">
-    Showing {page.start + 1}&ndash;{page.end + 1} of {page.total} articles
-  </p>
+  <!-- Hero Header -->
+  <div class="blog-hero">
+    <div class="blog-hero-content">
+      <div class="blog-hero-badge">
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          width="14"
+          height="14"
+        >
+          <path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"></path>
+          <path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"></path>
+        </svg>
+        Blog
+      </div>
+      <h1 class="blog-hero-title">Latest Articles</h1>
+      <p class="blog-hero-desc">
+        Stay up to date with the latest tips and updates from {
+          indexTranslations.en.site_title
+        }.
+      </p>
+    </div>
+    <div class="blog-hero-meta">
+      <span class="blog-count-pill">
+        {page.total} article{page.total !== 1 ? "s" : ""} published
+      </span>
+      <span class="blog-showing-pill">
+        Showing {page.start + 1}&ndash;{page.end + 1}
+      </span>
+    </div>
+  </div>
 
   <!-- Cards -->
-  <div class="gap-6 grid md:grid-cols-2 lg:grid-cols-3 mt-4">
+  <div class="blog-grid">
     {
-      page.data.map((post) => (
-        <article class="bg-white shadow-sm hover:shadow-md border border-slate-200 rounded-2xl overflow-hidden transition">
-          <a href={`/blog/${post.id}/`} class="block">
-            <div class="relative bg-slate-100 w-full aspect-[16/9]">
-              <img
-                src={post.data.image}
-                alt={post.data.title}
-                class="absolute inset-0 w-full h-full object-cover"
-                loading="lazy"
-                decoding="async"
-              />
-            </div>
-            <div class="p-5">
-              <h2 class="font-semibold text-slate-900 text-xl">
-                {post.data.title}
-              </h2>
-              <p class="mt-2 text-slate-600">{post.data.description}</p>
-              <span class="inline-flex items-center mt-4 font-medium text-indigo-600 hover:text-indigo-700 text-sm">
-                Read article
+      page.data.map((post, index) => (
+        <article class="blog-card" style={`animation-delay: ${index * 0.06}s`}>
+          <a href={`/blog/${post.id}/`} class="blog-card-link">
+            <div class="blog-card-image">
+              {post.data.image ? (
+                <img
+                  src={post.data.image}
+                  alt={post.data.title}
+                  loading="lazy"
+                  decoding="async"
+                  onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"
+                />
+              ) : null}
+              <div
+                class="blog-card-placeholder"
+                style={post.data.image ? "display:none" : ""}
+              >
                 <svg
-                  class="ml-1 w-4 h-4"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                  aria-hidden="true"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.2"
+                  width="40"
+                  height="40"
                 >
-                  <path
-                    fill-rule="evenodd"
-                    d="M10.293 3.293a1 1 0 011.414 0l5 5a1 1 0 01-.027 1.415l-5 5a1 1 0 11-1.414-1.414L13.586 10H4a1 1 0 110-2h9.586l-3.293-3.293a1 1 0 010-1.414z"
-                    clip-rule="evenodd"
-                  />
+                  <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+                  <circle cx="8.5" cy="8.5" r="1.5" />
+                  <polyline points="21 15 16 10 5 21" />
                 </svg>
-              </span>
+              </div>
+              <div class="blog-card-image-overlay" />
+              {post.data.category && (
+                <span class="blog-card-category">{post.data.category}</span>
+              )}
+            </div>
+            <div class="blog-card-body">
+              <div class="blog-card-meta">
+                <time datetime={toISODate(post.data.date)}>
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    width="12"
+                    height="12"
+                  >
+                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+                    <line x1="16" y1="2" x2="16" y2="6" />
+                    <line x1="8" y1="2" x2="8" y2="6" />
+                    <line x1="3" y1="10" x2="21" y2="10" />
+                  </svg>
+                  {formatDate(post.data.date)}
+                </time>
+                <span class="blog-meta-dot">·</span>
+                <span class="blog-read-time">
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    width="12"
+                    height="12"
+                  >
+                    <circle cx="12" cy="12" r="10" />
+                    <polyline points="12 6 12 12 16 14" />
+                  </svg>
+                  {readTime(post.data.description)}
+                </span>
+              </div>
+              <h2 class="blog-card-title">{post.data.title}</h2>
+              {post.data.description && (
+                <p class="blog-card-excerpt">{post.data.description}</p>
+              )}
+              <div class="blog-card-footer">
+                <span class="blog-card-cta">
+                  Read article
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2.5"
+                    width="14"
+                    height="14"
+                  >
+                    <line x1="5" y1="12" x2="19" y2="12" />
+                    <polyline points="12 5 19 12 12 19" />
+                  </svg>
+                </span>
+              </div>
             </div>
           </a>
         </article>
@@ -127,63 +230,424 @@ const siteURL = Astro.url.origin;
   </div>
 
   <!-- Pagination -->
-  <nav class="flex justify-between items-center mt-10" aria-label="Pagination">
-    <!-- Prev/Next -->
-    <div class="flex gap-2">
-      {
-        page.url.prev ? (
-          <a
-            href={page.url.prev}
-            class="hover:bg-slate-50 px-3 py-2 border border-slate-200 rounded-lg text-slate-700"
-          >
-            Previous
-          </a>
-        ) : (
-          <span class="px-3 py-2 border border-slate-100 rounded-lg text-slate-300 cursor-not-allowed">
-            Previous
-          </span>
-        )
-      }
-      {
-        page.url.next ? (
-          <a
-            href={page.url.next}
-            class="hover:bg-slate-50 px-3 py-2 border border-slate-200 rounded-lg text-slate-700"
-          >
-            Next
-          </a>
-        ) : (
-          <span class="px-3 py-2 border border-slate-100 rounded-lg text-slate-300 cursor-not-allowed">
-            Next
-          </span>
-        )
-      }
-    </div>
+  {
+    page.lastPage > 1 && (
+      <nav class="blog-pagination" aria-label="Pagination">
+        <div class="blog-pagination-inner">
+          {page.url.prev ? (
+            <a href={page.url.prev} class="blog-page-btn blog-page-prev">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                width="16"
+                height="16"
+              >
+                <polyline points="15 18 9 12 15 6" />
+              </svg>
+              Previous
+            </a>
+          ) : (
+            <span class="blog-page-btn blog-page-disabled">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                width="16"
+                height="16"
+              >
+                <polyline points="15 18 9 12 15 6" />
+              </svg>
+              Previous
+            </span>
+          )}
 
-    <!-- Numbered pages -->
-    <ul class="flex items-center gap-1" role="list">
-      {
-        Array.from({ length: page.lastPage }, (_, i) => i + 1).map((n) => (
-          <li>
-            {n === page.currentPage ? (
-              <span
-                aria-current="page"
-                class="bg-indigo-600 px-3 py-2 rounded-lg font-medium text-white"
+          <ul class="blog-page-numbers" role="list">
+            {Array.from({ length: page.lastPage }, (_, i) => i + 1).map((n) => (
+              <li>
+                {n === page.currentPage ? (
+                  <span aria-current="page" class="blog-page-num active">
+                    {n}
+                  </span>
+                ) : (
+                  <a
+                    href={makeHref(n)}
+                    class="blog-page-num"
+                    aria-label={`Go to page ${n}`}
+                  >
+                    {n}
+                  </a>
+                )}
+              </li>
+            ))}
+          </ul>
+
+          {page.url.next ? (
+            <a href={page.url.next} class="blog-page-btn blog-page-next">
+              Next
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                width="16"
+                height="16"
               >
-                {n}
-              </span>
-            ) : (
-              <a
-                href={makeHref(n)}
-                class="hover:bg-slate-50 px-3 py-2 border border-slate-200 rounded-lg text-slate-700"
-                aria-label={`Go to page ${n}`}
+                <polyline points="9 18 15 12 9 6" />
+              </svg>
+            </a>
+          ) : (
+            <span class="blog-page-btn blog-page-disabled">
+              Next
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                width="16"
+                height="16"
               >
-                {n}
-              </a>
-            )}
-          </li>
-        ))
-      }
-    </ul>
-  </nav>
+                <polyline points="9 18 15 12 9 6" />
+              </svg>
+            </span>
+          )}
+        </div>
+      </nav>
+    )
+  }
 </Layout>
+
+<style>
+  /* ─── Hero ─── */
+  .blog-hero {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 24px;
+    margin-bottom: 36px;
+    padding-bottom: 28px;
+    border-bottom: 1px solid #e2e8f0;
+  }
+  .blog-hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 14px;
+    background: linear-gradient(135deg, #eef2ff, #e0e7ff);
+    border: 1px solid #c7d2fe;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #4f46e5;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 14px;
+  }
+  .blog-hero-title {
+    font-size: 32px;
+    font-weight: 800;
+    color: #0f172a;
+    letter-spacing: -0.5px;
+    line-height: 1.2;
+    margin-bottom: 8px;
+  }
+  .blog-hero-desc {
+    color: #64748b;
+    font-size: 15px;
+    line-height: 1.6;
+    max-width: 480px;
+  }
+  .blog-hero-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex-shrink: 0;
+  }
+  .blog-count-pill,
+  .blog-showing-pill {
+    display: inline-flex;
+    align-items: center;
+    padding: 6px 14px;
+    border-radius: 8px;
+    font-size: 12.5px;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  .blog-count-pill {
+    background: linear-gradient(135deg, #4f46e5, #6366f1);
+    color: white;
+    box-shadow: 0 2px 8px rgba(79, 70, 229, 0.25);
+  }
+  .blog-showing-pill {
+    background: #f1f5f9;
+    color: #475569;
+    border: 1px solid #e2e8f0;
+  }
+
+  /* ─── Grid ─── */
+  .blog-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    margin-bottom: 48px;
+  }
+
+  /* ─── Card ─── */
+  .blog-card {
+    border-radius: 16px;
+    background: white;
+    border: 1px solid #e2e8f0;
+    overflow: hidden;
+    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow:
+      0 1px 3px rgba(0, 0, 0, 0.04),
+      0 1px 2px rgba(0, 0, 0, 0.03);
+    animation: cardFadeIn 0.5s ease-out both;
+  }
+  .blog-card:hover {
+    transform: translateY(-6px);
+    box-shadow:
+      0 20px 40px rgba(0, 0, 0, 0.08),
+      0 8px 16px rgba(79, 70, 229, 0.06);
+    border-color: #c7d2fe;
+  }
+
+  @keyframes cardFadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(16px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .blog-card-link {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  /* Image */
+  .blog-card-image {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+  }
+  .blog-card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .blog-card:hover .blog-card-image img {
+    transform: scale(1.06);
+  }
+  .blog-card-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, #eef2ff 0%, #e0e7ff 50%, #c7d2fe 100%);
+    color: #a5b4fc;
+  }
+  .blog-card-image-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      180deg,
+      transparent 50%,
+      rgba(15, 23, 42, 0.08) 100%
+    );
+    pointer-events: none;
+  }
+  .blog-card-category {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    padding: 4px 12px;
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(8px);
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+    color: #4f46e5;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  }
+
+  /* Body */
+  .blog-card-body {
+    padding: 20px 22px 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .blog-card-meta {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: #94a3b8;
+    font-weight: 500;
+  }
+  .blog-card-meta time,
+  .blog-read-time {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .blog-meta-dot {
+    color: #cbd5e1;
+  }
+  .blog-card-title {
+    font-size: 17px;
+    font-weight: 700;
+    color: #0f172a;
+    line-height: 1.4;
+    letter-spacing: -0.2px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    transition: color 0.2s;
+  }
+  .blog-card:hover .blog-card-title {
+    color: #4f46e5;
+  }
+  .blog-card-excerpt {
+    font-size: 13.5px;
+    color: #64748b;
+    line-height: 1.6;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  /* Footer / CTA */
+  .blog-card-footer {
+    margin-top: 4px;
+    padding-top: 14px;
+    border-top: 1px solid #f1f5f9;
+  }
+  .blog-card-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #4f46e5;
+    transition: all 0.2s;
+  }
+  .blog-card-cta svg {
+    transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .blog-card:hover .blog-card-cta svg {
+    transform: translateX(4px);
+  }
+  .blog-card:hover .blog-card-cta {
+    color: #4338ca;
+  }
+
+  /* ─── Pagination ─── */
+  .blog-pagination {
+    margin-bottom: 16px;
+  }
+  .blog-pagination-inner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+  }
+  .blog-page-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 18px;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.2s;
+    border: 1px solid #e2e8f0;
+    color: #475569;
+    background: white;
+  }
+  .blog-page-btn:hover:not(.blog-page-disabled) {
+    background: #f8fafc;
+    border-color: #c7d2fe;
+    color: #4f46e5;
+    box-shadow: 0 2px 8px rgba(79, 70, 229, 0.08);
+  }
+  .blog-page-disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+  .blog-page-numbers {
+    display: flex;
+    gap: 4px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .blog-page-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.2s;
+    border: 1px solid transparent;
+    color: #64748b;
+  }
+  .blog-page-num:hover:not(.active) {
+    background: #f1f5f9;
+    color: #4f46e5;
+  }
+  .blog-page-num.active {
+    background: linear-gradient(135deg, #4f46e5, #6366f1);
+    color: white;
+    box-shadow: 0 2px 8px rgba(79, 70, 229, 0.3);
+  }
+
+  /* ─── Responsive ─── */
+  @media (max-width: 1024px) {
+    .blog-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (max-width: 640px) {
+    .blog-hero {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    .blog-hero-meta {
+      flex-direction: row;
+    }
+    .blog-hero-title {
+      font-size: 26px;
+    }
+    .blog-grid {
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    .blog-pagination-inner {
+      flex-wrap: wrap;
+    }
+  }
+</style>

@@ -6,6 +6,7 @@ import FAQs from "@theme/components/FAQs.astro";
 import Chart from "@theme/components/Chart.astro";
 import { getTranslations, type Locale } from "@theme/i18n/utils";
 import HowItWorks from "@theme/components/HowItWorks.astro";
+import AdSlot from "@theme/components/AdSlot.astro";
 
 import seoConfig from "~/config/page-seo.json";
 
@@ -93,9 +94,20 @@ const schema = JSON.stringify({
     .text-balance {
       text-wrap: balance;
     }
+    /* Prevent horizontal overflow on mobile from decorative blobs */
+    html,
+    body {
+      overflow-x: hidden;
+    }
     /* Reduce bottom spacing on home page */
     body > main {
       padding-bottom: 3rem !important;
+    }
+    @media (max-width: 767px) {
+      /* Extra bottom padding so sticky CTA doesn't cover content */
+      body > main {
+        padding-bottom: 5rem !important;
+      }
     }
     @media (min-width: 768px) {
       body > main {
@@ -1385,6 +1397,9 @@ const schema = JSON.stringify({
       </div>
     </div>
 
+    <!-- Homepage Mid Ad -->
+    <AdSlot slot="homepage_mid" />
+
     <!-- FAQs -->
     <section class="max-w-3xl mx-auto px-5 pb-8">
       <div class="text-center mb-8">
@@ -1459,9 +1474,10 @@ const schema = JSON.stringify({
       </div>
     </section>
 
-    <!-- Mobile Sticky CTA -->
+    <!-- Mobile Sticky CTA (auto-hides when calculator is in view) -->
     <div
-      class="fixed bottom-0 left-0 right-0 p-4 bg-white/90 backdrop-blur-xl border-t border-slate-200 md:hidden z-50"
+      id="mobile-sticky-cta"
+      class="fixed bottom-0 left-0 right-0 p-4 bg-white/90 backdrop-blur-xl border-t border-slate-200 md:hidden z-50 transition-transform duration-300"
     >
       <a
         href="#calculator"
@@ -1469,6 +1485,27 @@ const schema = JSON.stringify({
         >{t["home_mobile_cta"]}</a
       >
     </div>
+    <script is:inline>
+      // Hide mobile sticky CTA when calculator section is visible
+      (function () {
+        const cta = document.getElementById("mobile-sticky-cta");
+        const calc = document.getElementById("calculator");
+        if (!cta || !calc) return;
+        const obs = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((e) => {
+              if (e.isIntersecting) {
+                cta.style.transform = "translateY(100%)";
+              } else {
+                cta.style.transform = "translateY(0)";
+              }
+            });
+          },
+          { threshold: 0.3 },
+        );
+        obs.observe(calc);
+      })();
+    </script>
   </div>
 </IndexLayout>
 
