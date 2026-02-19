@@ -12,6 +12,9 @@ import {
 import config from "~/config/config.json";
 import navigation from "~/config/navigation.json";
 
+// @ts-ignore
+import seoSettings from "~/config/seo-settings.json";
+
 import "@theme/styles/global.css";
 
 // SEO overrides from admin panel
@@ -78,6 +81,28 @@ const slugify = (str: string) =>
 
 const slug = Astro.url.pathname.replaceAll("/", "");
 
+// Search console verification codes (from seo-settings or fallback to config)
+const sc = (seoSettings as any)?.searchConsole || {};
+const googleVerification = sc.google || config.site.google_verification || "";
+const bingVerification = sc.bing || config.site.bing_verification || "";
+const yandexVerification = sc.yandex || config.site.yandex_verification || "";
+const pinterestVerification = sc.pinterest || "";
+const baiduVerification = sc.baidu || "";
+const nortonVerification = sc.norton || "";
+
+// Meta robots from seo-settings
+const seoMeta = (seoSettings as any)?.metaRobots || {};
+const globalRobotsDefault = seoMeta.globalDefault || "index, follow";
+const noindexPatterns: string[] = seoMeta.noindexPatterns || [];
+const currentPath = Astro.url.pathname;
+const isNoindex = noindexPatterns.some((pattern: string) => {
+  const regex = new RegExp(
+    "^" + pattern.replace(/\*/g, ".*").replace(/\?/g, ".") + "$",
+  );
+  return regex.test(currentPath);
+});
+const robotsContent = isNoindex ? "noindex, nofollow" : globalRobotsDefault;
+
 const siteURL = Astro.url.origin;
 const pageURL = Astro.url.href;
 ---
@@ -102,34 +127,44 @@ const pageURL = Astro.url.href;
 
     <!-- verification -->
     {
-      config.site.google_verification && (
-        <meta
-          name="google-site-verification"
-          content={config.site.google_verification}
-        />
+      googleVerification && (
+        <meta name="google-site-verification" content={googleVerification} />
       )
     }
-
     {
-      config.site.bing_verification && (
-        <meta name="msvalidate.01" content={config.site.bing_verification} />
+      bingVerification && (
+        <meta name="msvalidate.01" content={bingVerification} />
       )
     }
-
     {
-      config.site.yandex_verification && (
+      yandexVerification && (
+        <meta name="yandex-verification" content={yandexVerification} />
+      )
+    }
+    {
+      pinterestVerification && (
+        <meta name="p:domain_verify" content={pinterestVerification} />
+      )
+    }
+    {
+      baiduVerification && (
+        <meta name="baidu-site-verification" content={baiduVerification} />
+      )
+    }
+    {
+      nortonVerification && (
         <meta
-          name="yandex-verification"
-          content={config.site.yandex_verification}
+          name="norton-safeweb-site-verification"
+          content={nortonVerification}
         />
       )
     }
 
     <!-- robots -->
-    <meta name="robots" content="index, follow" />
+    <meta name="robots" content={robotsContent} />
     <meta
       name="googlebot"
-      content="index, follow, max-video-preview:-1, max-image-preview:large, max-snippet:-1"
+      content={`${robotsContent}, max-video-preview:-1, max-image-preview:large, max-snippet:-1`}
     />
 
     <!-- canonical url -->

@@ -1,46 +1,79 @@
 ---
-import { getCollection } from 'astro:content';
-import Layout from '@theme/layouts/Layout.astro';
-import { getLocalizedUrl, getLocaleFromUrl, getTranslations } from '@theme/i18n/utils';
+import { getCollection } from "astro:content";
+import Layout from "@theme/layouts/Layout.astro";
+import {
+  getLocalizedUrl,
+  getLocaleFromUrl,
+  getTranslations,
+} from "@theme/i18n/utils";
 
-import indexTranslations from '~/i18n/index.json';
+import indexTranslations from "~/i18n/index.json";
+
+// @ts-ignore
+import seoSettings from "~/config/seo-settings.json";
 
 const siteURL = Astro.url.origin;
 
+// Load exclude patterns from SEO settings
+const excludePatterns = (seoSettings?.sitemap?.excludePatterns ||
+  []) as string[];
+
+function matchesExcludePattern(route: string) {
+  return excludePatterns.some((pattern) => {
+    // Convert glob pattern to regex: * → .*, ? → .
+    const regex = new RegExp(
+      "^" + pattern.replace(/\*/g, ".*").replace(/\?/g, ".") + "$",
+    );
+    return regex.test(route);
+  });
+}
+
 // 1️⃣ Get Static Pages (.astro files)
-const pages = import.meta.glob('/src/pages/**/*.astro', { eager: true });
+const pages = import.meta.glob("/src/pages/**/*.astro", { eager: true });
 
 const pageLinks = Object.keys(pages)
   .map((filePath) => {
     // Convert file path to route
     let route = filePath
-      .replace('/src/pages', '')
-      .replace(/index\.astro$/, '') // remove index
-      .replace(/\.astro$/, ''); // remove ext
+      .replace("/src/pages", "")
+      .replace(/index\.astro$/, "") // remove index
+      .replace(/\.astro$/, ""); // remove ext
 
-    if (route.includes('[') || route.includes('404')) return null; // ignore dynamic routes
-    if (route === '') route = '/'; // homepage
+    if (route.includes("[") || route.includes("404")) return null; // ignore dynamic routes
+    if (matchesExcludePattern(route)) return null; // filter by SEO exclude patterns
+    if (route === "") route = "/"; // homepage
 
     const label =
-      route === '/'
-        ? 'Home'
+      route === "/"
+        ? "Home"
         : route
-            .split('/')
+            .split("/")
             .filter(Boolean)
-            .map((segment) => segment.replace(/-/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase()))
-            .join(' / ');
+            .map((segment) =>
+              segment
+                .replace(/-/g, " ")
+                .replace(/\b\w/g, (c) => c.toUpperCase()),
+            )
+            .join(" / ");
 
-    return { href: route.endsWith('/') ? siteURL + route : siteURL + route + '/', label };
+    return {
+      href: route.endsWith("/") ? siteURL + route : siteURL + route + "/",
+      label,
+    };
   })
   .filter(Boolean);
 
 // Get all available locales from index.json in translations
 const availableLocalesPages = Object.keys(indexTranslations).map((locale) => {
-  return { href: getLocalizedUrl('/', locale as any), label: indexTranslations[locale as keyof typeof indexTranslations].site_title };
+  return {
+    href: getLocalizedUrl("/", locale as any),
+    label:
+      indexTranslations[locale as keyof typeof indexTranslations].site_title,
+  };
 });
 
 // 2️⃣ Get Blog Posts
-const posts = await getCollection('blog');
+const posts = await getCollection("blog");
 
 const postLinks = posts.map((post) => ({
   href: `${siteURL}/blog/${post.id}/`,
@@ -58,10 +91,15 @@ const paginationLinks = Array.from({ length: totalPages }, (_, i) => ({
 }));
 ---
 
-<Layout title={`Sitemap | ${indexTranslations.en.site_title}`} description="A list of all pages, blog posts, and pagination links.">
+<Layout
+  title={`Sitemap | ${indexTranslations.en.site_title}`}
+  description="A list of all pages, blog posts, and pagination links."
+>
   <div class="mx-auto px-6 py-10 max-w-3xl">
     <h1 class="font-semibold text-slate-800 text-3xl">Sitemap</h1>
-    <p class="mt-2 text-slate-600 text-sm">A list of all pages, blog posts, and pagination links.</p>
+    <p class="mt-2 text-slate-600 text-sm">
+      A list of all pages, blog posts, and pagination links.
+    </p>
 
     <!-- Pages -->
     <section class="mt-8">
@@ -76,7 +114,7 @@ const paginationLinks = Array.from({ length: totalPages }, (_, i) => ({
                     {page.label}
                   </a>
                 </li>
-              )
+              ),
           )
         }
         {
@@ -88,7 +126,7 @@ const paginationLinks = Array.from({ length: totalPages }, (_, i) => ({
                     {page.label}
                   </a>
                 </li>
-              )
+              ),
           )
         }
       </ul>

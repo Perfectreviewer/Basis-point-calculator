@@ -1,0 +1,44 @@
+{
+    "searchConsole": {
+        "google": "hcS1B80segR023Bj_4E0IoE7Q4GFCblpZfCNr7hhbu8",
+        "bing": "F18D0FE7C96C7E201B96C461DBA4AA9F",
+        "yandex": "9332963b05ec7034",
+        "pinterest": "",
+        "baidu": "",
+        "norton": ""
+    },
+    "robots": {
+        "userAgents": [
+            {
+                "name": "*",
+                "allow": [
+                    "/"
+                ],
+                "disallow": [
+                    "/admin/",
+                    "/api/"
+                ],
+                "crawlDelay": ""
+            }
+        ],
+        "customDirectives": "",
+        "sitemapUrl": "/sitemap-index.xml"
+    },
+    "sitemap": {
+        "excludePatterns": [
+            "/admin/*",
+            "/api/*",
+            "/404"
+        ],
+        "changefreq": "weekly",
+        "priority": "0.7",
+        "pageOverrides": {}
+    },
+    "metaRobots": {
+        "globalDefault": "index, follow",
+        "noindexPatterns": [
+            "/admin/*",
+            "/api/*"
+        ]
+    }
+}
