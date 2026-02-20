@@ -731,23 +731,23 @@ const schema = JSON.stringify({
         {t["home_table_title"]}
       </h2>
       <div
-        class="bg-white dark:bg-slate-800 dark:border-slate-700 shadow-xl shadow-slate-200/50 dark:shadow-none rounded-2xl overflow-hidden border border-slate-200"
+        class="bg-white dark:bg-slate-800 dark:border-slate-700 shadow-2xl shadow-indigo-200/40 dark:shadow-none rounded-2xl overflow-hidden border border-slate-200/60"
       >
         <table class="w-full text-left">
           <thead
-            class="bg-slate-50 dark:bg-slate-900/50 border-b border-slate-200 dark:border-slate-700"
+            class="bg-gradient-to-r from-slate-50 to-white dark:from-slate-900/50 dark:to-slate-900/50 border-b border-slate-100 dark:border-slate-700"
           >
             <tr>
               <th
-                class="pb-4 font-bold text-slate-900 dark:text-white text-sm uppercase tracking-wider"
+                class="p-5 font-bold text-slate-500 dark:text-slate-400 text-xs uppercase tracking-wider"
                 >{t["home_table_percentage"]}</th
               >
               <th
-                class="pb-4 font-bold text-slate-900 dark:text-white text-sm uppercase tracking-wider"
+                class="p-5 font-bold text-slate-500 dark:text-slate-400 text-xs uppercase tracking-wider"
                 >{t["home_table_bps"]}</th
               >
               <th
-                class="pb-4 font-bold text-slate-900 dark:text-white hidden sm:table-cell text-sm uppercase tracking-wider"
+                class="p-5 font-bold text-slate-500 dark:text-slate-400 hidden sm:table-cell text-xs uppercase tracking-wider"
                 >{t["home_table_meaning"]}</th
               >
             </tr>
@@ -756,21 +756,30 @@ const schema = JSON.stringify({
             class="divide-y divide-slate-100 dark:divide-slate-700 text-slate-600 dark:text-slate-300"
           >
             <tr
-              class="hover:bg-sky-50/30 dark:hover:bg-slate-700/30 transition-colors"
+              class="hover:bg-indigo-50/50 dark:hover:bg-slate-700/30 transition-colors group"
             >
-              <td class="p-5 font-mono">1.00%</td>
+              <td
+                class="p-5 font-mono font-medium text-indigo-600 dark:text-indigo-400"
+                >1.00%</td
+              >
               <td class="p-5 font-bold text-slate-900 dark:text-white"
                 >100 bps</td
               >
               <td class="p-5 hidden sm:table-cell">{t["home_table_m1"]}</td>
             </tr>
-            <tr class="hover:bg-sky-50/30 transition-colors">
-              <td class="p-5 font-mono">0.10%</td>
+            <tr class="hover:bg-indigo-50/50 transition-colors group">
+              <td
+                class="p-5 font-mono font-medium text-indigo-600 dark:text-indigo-400"
+                >0.10%</td
+              >
               <td class="p-5 font-bold text-slate-900">10 bps</td>
               <td class="p-5 hidden sm:table-cell">{t["home_table_m2"]}</td>
             </tr>
-            <tr class="hover:bg-sky-50/30 transition-colors">
-              <td class="p-5 font-mono">0.01%</td>
+            <tr class="hover:bg-indigo-50/50 transition-colors group">
+              <td
+                class="p-5 font-mono font-medium text-indigo-600 dark:text-indigo-400"
+                >0.01%</td
+              >
               <td class="p-5 font-bold text-slate-900">1 bp</td>
               <td class="p-5 hidden sm:table-cell">{t["home_table_m3"]}</td>
             </tr>
@@ -1474,16 +1483,30 @@ const schema = JSON.stringify({
       </div>
     </section>
 
-    <!-- Mobile Sticky CTA (auto-hides when calculator is in view) -->
+    <!-- Mobile Sticky CTA (Floating Pill) -->
     <div
       id="mobile-sticky-cta"
-      class="fixed bottom-0 left-0 right-0 p-4 bg-white/90 backdrop-blur-xl border-t border-slate-200 md:hidden z-50 transition-transform duration-300"
+      class="fixed bottom-6 left-0 right-0 flex justify-center pointer-events-none md:hidden z-50 transition-transform duration-300"
     >
       <a
         href="#calculator"
-        class="block w-full text-center bg-sky-600 text-white font-bold py-3.5 rounded-xl shadow-lg hover:bg-sky-700 transition-colors"
-        >{t["home_mobile_cta"]}</a
+        class="pointer-events-auto flex items-center gap-2 px-8 py-3.5 bg-gradient-to-r from-sky-600 to-indigo-600 text-white font-bold rounded-full shadow-xl shadow-sky-900/20 hover:shadow-sky-900/30 hover:-translate-y-0.5 transition-all active:scale-95"
       >
+        <svg
+          class="w-5 h-5"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"
+          ></path>
+        </svg>
+        {t["home_mobile_cta"]}
+      </a>
     </div>
     <script is:inline>
       // Hide mobile sticky CTA when calculator section is visible
@@ -1506,6 +1529,14 @@ const schema = JSON.stringify({
         obs.observe(calc);
       })();
     </script>
+
+    <style>
+      @media (min-width: 768px) {
+        #mobile-sticky-cta {
+          display: none !important;
+        }
+      }
+    </style>
   </div>
 </IndexLayout>
 
