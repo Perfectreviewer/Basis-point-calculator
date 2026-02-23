@@ -16,7 +16,16 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 export default defineConfig({
   site: config.site.base_url,
   trailingSlash: 'ignore',
-  integrations: [sitemap(), mdx()],
+  integrations: [
+    sitemap({
+      filter: (page) =>
+        !page.includes('/admin') &&
+        !page.includes('/api/') &&
+        !page.includes('/design_preview') &&
+        !new URL(page).pathname.startsWith('/en/'),
+    }),
+    mdx(),
+  ],
 
   vite: {
     plugins: [tailwindcss()],

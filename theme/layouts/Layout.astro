@@ -7,6 +7,7 @@ import {
   getTranslations,
   getLocaleFromUrl,
   getLocalizedUrl,
+  locales,
   type Locale,
 } from "@theme/i18n/utils";
 
@@ -108,6 +109,13 @@ const robotsContent = isNoindex ? "noindex, nofollow" : globalRobotsDefault;
 
 const siteURL = Astro.url.origin;
 const pageURL = Astro.url.href;
+
+// Compute locale-stripped page path for hreflang
+const localePattern = locales.filter((l) => l !== "en").join("|");
+const hreflangBasePath = Astro.url.pathname.replace(
+  new RegExp(`^/(${localePattern})(/|$)`),
+  "/",
+);
 ---
 
 <!doctype html>
@@ -172,6 +180,22 @@ const pageURL = Astro.url.href;
 
     <!-- canonical url -->
     <link rel="canonical" href={pageURL} item-prop="url" />
+
+    <!-- hreflang for all locales -->
+    {
+      locales.map((loc) => (
+        <link
+          rel="alternate"
+          hreflang={loc}
+          href={`${siteURL}${getLocalizedUrl(hreflangBasePath, loc)}`}
+        />
+      ))
+    }
+    <link
+      rel="alternate"
+      hreflang="x-default"
+      href={`${siteURL}${hreflangBasePath}`}
+    />
 
     <!-- meta-description -->
     <meta name="description" content={description} />

@@ -47,7 +47,9 @@ const GET: APIRoute = ({ site }) => {
         output += '\n' + custom.trim() + '\n';
     }
 
-    return new Response(output);
+    return new Response(output, {
+        headers: { 'Content-Type': 'text/plain; charset=utf-8' },
+    });
 };
 
 export default GET;
