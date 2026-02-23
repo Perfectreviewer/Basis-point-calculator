@@ -46,7 +46,7 @@ const statsBorderMap: Record<string, string> = {
 const linkColumns = siteSettings.footer?.linkColumns || [];
 const linkSections = siteSettings.footer?.linkSections || [];
 const footerDescription =
-  siteSettings.footer?.description || t.footer_description;
+  t.footer_desc || siteSettings.footer?.description || t.footer_description;
 const newsletter = siteSettings.footer?.newsletter || {
   title: "Stay Updated",
   text: "",
@@ -57,7 +57,10 @@ const statsSection = siteSettings.footer?.statsSection || {
   title: "",
   items: [],
 };
-const copyrightText = siteSettings.footer?.copyrightText || "Built with ❤️ by";
+const copyrightText =
+  t["Built with ❤️ by"] ||
+  siteSettings.footer?.copyrightText ||
+  "Built with ❤️ by";
 const brandName = siteSettings.footer?.brandName || "";
 ---
 
@@ -128,7 +131,7 @@ const brandName = siteSettings.footer?.brandName || "";
             linkColumns.map((col) => (
               <div class="lg:col-span-3">
                 <h3 class="text-sm font-semibold text-white mb-5 pb-3 border-b border-slate-800">
-                  {col.title}
+                  {t[col.title] || col.title}
                 </h3>
                 <ul class="space-y-3.5">
                   {col.links.map((link) => (
@@ -138,7 +141,7 @@ const brandName = siteSettings.footer?.brandName || "";
                         class="text-slate-400 hover:text-white text-sm transition-colors duration-200 inline-flex items-center gap-2 group"
                       >
                         <span class="w-1 h-1 rounded-full bg-sky-500/60 group-hover:bg-sky-400 transition-colors" />
-                        {link.name}
+                        {t[link.name] || link.name}
                       </a>
                     </li>
                   ))}
@@ -158,7 +161,7 @@ const brandName = siteSettings.footer?.brandName || "";
               linkSections.map((section) => (
                 <div class="lg:col-span-2">
                   <h3 class="text-sm font-semibold text-white mb-5 pb-3 border-b border-slate-800">
-                    {section.title}
+                    {t[section.title] || section.title}
                   </h3>
                   <ul class="space-y-3.5">
                     {section.links.map((link) => (
@@ -168,7 +171,7 @@ const brandName = siteSettings.footer?.brandName || "";
                           class="text-slate-400 hover:text-white text-sm transition-colors duration-200 inline-flex items-center gap-2 group"
                         >
                           <span class="w-1 h-1 rounded-full bg-sky-500/60 group-hover:bg-sky-400 transition-colors" />
-                          {link.name}
+                          {t[link.name] || link.name}
                         </a>
                       </li>
                     ))}
@@ -182,10 +185,10 @@ const brandName = siteSettings.footer?.brandName || "";
               <h3
                 class="text-sm font-semibold text-white mb-5 pb-3 border-b border-slate-800"
               >
-                {newsletter.title}
+                {t[newsletter.title] || newsletter.title}
               </h3>
               <p class="text-slate-400 text-sm mb-5 leading-relaxed">
-                {newsletter.text}
+                {t.footer_newsletter_text || newsletter.text}
               </p>
               <form class="space-y-3" onsubmit="return false;">
                 <input
@@ -197,7 +200,7 @@ const brandName = siteSettings.footer?.brandName || "";
                   type="submit"
                   class="w-full bg-gradient-to-r from-sky-600 to-blue-600 hover:from-sky-500 hover:to-blue-500 text-white font-medium py-3 rounded-lg text-sm transition-all duration-300 shadow-lg shadow-sky-900/25 hover:shadow-sky-800/40"
                 >
-                  {newsletter.buttonText}
+                  {t[newsletter.buttonText] || newsletter.buttonText}
                 </button>
               </form>
             </div>
@@ -207,7 +210,7 @@ const brandName = siteSettings.footer?.brandName || "";
               statsSection.items && statsSection.items.length > 0 && (
                 <div class="lg:col-span-5">
                   <h3 class="text-sm font-semibold text-white mb-5 pb-3 border-b border-slate-800">
-                    {statsSection.title}
+                    {t[statsSection.title] || statsSection.title}
                   </h3>
                   <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
                     {statsSection.items.map((stat) => {
@@ -222,7 +225,9 @@ const brandName = siteSettings.footer?.brandName || "";
                           <p class={`text-2xl font-bold mb-1 ${textColor}`}>
                             {stat.value}
                           </p>
-                          <p class="text-xs text-slate-500">{stat.label}</p>
+                          <p class="text-xs text-slate-500">
+                            {t[stat.label] || stat.label}
+                          </p>
                         </div>
                       );
                     })}
