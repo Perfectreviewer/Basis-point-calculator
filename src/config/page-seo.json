@@ -1,7 +1,262 @@
 {
-    "/": {
-        "title": "Basis Point Calculator – Accurate Basis Points Calculation Online",
-        "description": "Use our free basis point calculator to perform accurate basis points calculation. Easily calculate basis points, convert percentages, and understand interest rate changes online.",
-        "keywords": "basis points, calculator, finance, interest rates"
-    }
+  "/": {
+    "title": "Basis Point Calculator – Accurate Basis Points Calculation Online",
+    "description": "Use our free basis point calculator to perform accurate basis points calculation. Easily calculate basis points, convert percentages, and understand interest rate changes online.",
+    "keywords": "basis points, calculator, finance, interest rates"
+  },
+  "/about-us/": {
+    "title": "About Us | BasisPoint Calculator",
+    "description": "Free about us tool. Calculate with precision at BasisPoint Calculator.",
+    "keywords": ""
+  },
+  "/bond-calculators/": {
+    "title": "Bond Calculators | BasisPoint Calculator",
+    "description": "Free bond calculators tool. Calculate with precision at BasisPoint Calculator.",
+    "keywords": ""
+  },
+  "/bond-calculators/bond-duration-calculator/": {
+    "title": "Bond Duration Calculator | BasisPoint Calculator",
+    "description": "Free bond duration calculator tool. Part of our bond calculators suite. Calculate with precision at BasisPoint Calculator.",
+    "keywords": ""
+  },
+  "/bond-calculators/bond-price-calculator/": {
+    "title": "Bond Price Calculator | BasisPoint Calculator",
+    "description": "Free bond price calculator tool. Part of our bond calculators suite. Calculate with precision at BasisPoint Calculator.",
+    "keywords": ""
+  },
+  "/bond-calculators/bond-yield-calculator/": {
+    "title": "Bond Yield Calculator | BasisPoint Calculator",
+    "description": "Free bond yield calculator tool. Part of our bond calculators suite. Calculate with precision at BasisPoint Calculator.",
+    "keywords": ""
+  },
+  "/bond-calculators/yield-to-maturity-calculator/": {
+    "title": "Yield To Maturity Calculator | BasisPoint Calculator",
+    "description": "Free yield to maturity calculator tool. Part of our bond calculators suite. Calculate with precision at BasisPoint Calculator.",
+    "keywords": ""
+  },
+  "/bps-calculators/": {
+    "title": "Bps Calculators | BasisPoint Calculator",
+    "description": "Free bps calculators tool. Calculate with precision at BasisPoint Calculator.",
+    "keywords": ""
+  },
+  "/bps-calculators/basis-point-change-calculator/": {
+    "title": "Basis Point Change Calculator | BasisPoint Calculator",
+    "description": "Free basis point change calculator tool. Part of our bps calculators suite. Calculate with precision at BasisPoint Calculator.",
+    "keywords": ""
+  },
+  "/bps-calculators/basis-point-difference-calculator/": {
+    "title": "Basis Point Difference Calculator | BasisPoint Calculator",
+    "description": "Free basis point difference calculator tool. Part of our bps calculators suite. Calculate with precision at BasisPoint Calculator.",
+    "keywords": ""
+  },
+  "/bps-calculators/basis-point-examples/": {
+    "title": "Basis Point Examples | BasisPoint Calculator",
+    "description": "Free basis point examples tool. Part of our bps calculators suite. Calculate with precision at BasisPoint Calculator.",
+    "keywords": ""
+  },
+  "/bps-calculators/basis-point-guide/": {
+    "title": "Basis Point Guide | BasisPoint Calculator",
+    "description": "Free basis point guide tool. Part of our bps calculators suite. Calculate with precision at BasisPoint Calculator.",
+    "keywords": ""
+  },
+  "/bps-calculators/basis-point-to-percentage/": {
+    "title": "Basis Point To Percentage | BasisPoint Calculator",
+    "description": "Free basis point to percentage tool. Part of our bps calculators suite. Calculate with precision at BasisPoint Calculator.",
+    "keywords": ""
+  },
+  "/bps-calculators/basis-point-vs-percentage/": {
+    "title": "Basis Point Vs Percentage | BasisPoint Calculator",
+    "description": "Free basis point vs percentage tool. Part of our bps calculators suite. Calculate with precision at BasisPoint Calculator.",
+    "keywords": ""
+  },
+  "/bps-calculators/percentage-to-basis-point/": {
+    "title": "Percentage To Basis Point | BasisPoint Calculator",
+    "description": "Free percentage to basis point tool. Part of our bps calculators suite. Calculate with precision at BasisPoint Calculator.",
+    "keywords": ""
+  },
+  "/calculators/": {
+    "title": "Calculators | BasisPoint Calculator",
+    "description": "Free calculators tool. Calculate with precision at BasisPoint Calculator.",
+    "keywords": ""
+  },
+  "/contact-us/": {
+    "title": "Contact Us | BasisPoint Calculator",
+    "description": "Free contact us tool. Calculate with precision at BasisPoint Calculator.",
+    "keywords": ""
+  },
+  "/faq/": {
+    "title": "Faq | BasisPoint Calculator",
+    "description": "Free faq tool. Calculate with precision at BasisPoint Calculator.",
+    "keywords": ""
+  },
+  "/faq/basis-point-faq/": {
+    "title": "Basis Point Faq | BasisPoint Calculator",
+    "description": "Free basis point faq tool. Part of our faq suite. Calculate with precision at BasisPoint Calculator.",
+    "keywords": ""
+  },
+  "/faq/calculator-usage-faq/": {
+    "title": "Calculator Usage Faq | BasisPoint Calculator",
+    "description": "Free calculator usage faq tool. Part of our faq suite. Calculate with precision at BasisPoint Calculator.",
+    "keywords": ""
+  },
+  "/faq/financial-disclaimer/": {
+    "title": "Financial Disclaimer | BasisPoint Calculator",
+    "description": "Free financial disclaimer tool. Part of our faq suite. Calculate with precision at BasisPoint Calculator.",
+    "keywords": ""
+  },
+  "/guides/": {
+    "title": "Guides | BasisPoint Calculator",
+    "description": "Free guides tool. Calculate with precision at BasisPoint Calculator.",
+    "keywords": ""
+  },
+  "/guides/apr-vs-interest-rate/": {
+    "title": "Apr Vs Interest Rate | BasisPoint Calculator",
+    "description": "Free apr vs interest rate tool. Part of our guides suite. Calculate with precision at BasisPoint Calculator.",
+    "keywords": ""
+  },
+  "/guides/basis-points-impact-on-loans/": {
+    "title": "Basis Points Impact On Loans | BasisPoint Calculator",
+    "description": "Free basis points impact on loans tool. Part of our guides suite. Calculate with precision at BasisPoint Calculator.",
+    "keywords": ""
+  },
+  "/guides/central-bank-rate-changes/": {
+    "title": "Central Bank Rate Changes | BasisPoint Calculator",
+    "description": "Free central bank rate changes tool. Part of our guides suite. Calculate with precision at BasisPoint Calculator.",
+    "keywords": ""
+  },
+  "/guides/how-interest-rates-work/": {
+    "title": "How Interest Rates Work | BasisPoint Calculator",
+    "description": "Free how interest rates work tool. Part of our guides suite. Calculate with precision at BasisPoint Calculator.",
+    "keywords": ""
+  },
+  "/guides/what-are-basis-points/": {
+    "title": "What Are Basis Points | BasisPoint Calculator",
+    "description": "Free what are basis points tool. Part of our guides suite. Calculate with precision at BasisPoint Calculator.",
+    "keywords": ""
+  },
+  "/index/": {
+    "title": "Index | BasisPoint Calculator",
+    "description": "Free index tool. Calculate with precision at BasisPoint Calculator.",
+    "keywords": ""
+  },
+  "/interest-rate-calculators/": {
+    "title": "Interest Rate Calculators | BasisPoint Calculator",
+    "description": "Free interest rate calculators tool. Calculate with precision at BasisPoint Calculator.",
+    "keywords": ""
+  },
+  "/interest-rate-calculators/apr-calculator/": {
+    "title": "Apr Calculator | BasisPoint Calculator",
+    "description": "Free apr calculator tool. Part of our interest rate calculators suite. Calculate with precision at BasisPoint Calculator.",
+    "keywords": ""
+  },
+  "/interest-rate-calculators/apy-calculator/": {
+    "title": "Apy Calculator | BasisPoint Calculator",
+    "description": "Free apy calculator tool. Part of our interest rate calculators suite. Calculate with precision at BasisPoint Calculator.",
+    "keywords": ""
+  },
+  "/interest-rate-calculators/compound-interest-calculator/": {
+    "title": "Compound Interest Calculator | BasisPoint Calculator",
+    "description": "Free compound interest calculator tool. Part of our interest rate calculators suite. Calculate with precision at BasisPoint Calculator.",
+    "keywords": ""
+  },
+  "/interest-rate-calculators/interest-rate-comparison/": {
+    "title": "Interest Rate Comparison | BasisPoint Calculator",
+    "description": "Free interest rate comparison tool. Part of our interest rate calculators suite. Calculate with precision at BasisPoint Calculator.",
+    "keywords": ""
+  },
+  "/interest-rate-calculators/simple-interest-calculator/": {
+    "title": "Simple Interest Calculator | BasisPoint Calculator",
+    "description": "Free simple interest calculator tool. Part of our interest rate calculators suite. Calculate with precision at BasisPoint Calculator.",
+    "keywords": ""
+  },
+  "/investment-calculators/": {
+    "title": "Investment Calculators | BasisPoint Calculator",
+    "description": "Free investment calculators tool. Calculate with precision at BasisPoint Calculator.",
+    "keywords": ""
+  },
+  "/investment-calculators/future-value-calculator/": {
+    "title": "Future Value Calculator | BasisPoint Calculator",
+    "description": "Free future value calculator tool. Part of our investment calculators suite. Calculate with precision at BasisPoint Calculator.",
+    "keywords": ""
+  },
+  "/investment-calculators/inflation-calculator/": {
+    "title": "Inflation Calculator | BasisPoint Calculator",
+    "description": "Free inflation calculator tool. Part of our investment calculators suite. Calculate with precision at BasisPoint Calculator.",
+    "keywords": ""
+  },
+  "/investment-calculators/present-value-calculator/": {
+    "title": "Present Value Calculator | BasisPoint Calculator",
+    "description": "Free present value calculator tool. Part of our investment calculators suite. Calculate with precision at BasisPoint Calculator.",
+    "keywords": ""
+  },
+  "/investment-calculators/roi-calculator/": {
+    "title": "Roi Calculator | BasisPoint Calculator",
+    "description": "Free roi calculator tool. Part of our investment calculators suite. Calculate with precision at BasisPoint Calculator.",
+    "keywords": ""
+  },
+  "/legal/": {
+    "title": "Legal | BasisPoint Calculator",
+    "description": "Free legal tool. Calculate with precision at BasisPoint Calculator.",
+    "keywords": ""
+  },
+  "/legal/disclaimer/": {
+    "title": "Disclaimer | BasisPoint Calculator",
+    "description": "Free disclaimer tool. Part of our legal suite. Calculate with precision at BasisPoint Calculator.",
+    "keywords": ""
+  },
+  "/legal/privacy-policy/": {
+    "title": "Privacy Policy | BasisPoint Calculator",
+    "description": "Free privacy policy tool. Part of our legal suite. Calculate with precision at BasisPoint Calculator.",
+    "keywords": ""
+  },
+  "/legal/terms-and-conditions/": {
+    "title": "Terms And Conditions | BasisPoint Calculator",
+    "description": "Free terms and conditions tool. Part of our legal suite. Calculate with precision at BasisPoint Calculator.",
+    "keywords": ""
+  },
+  "/loan-calculators/": {
+    "title": "Loan Calculators | BasisPoint Calculator",
+    "description": "Free loan calculators tool. Calculate with precision at BasisPoint Calculator.",
+    "keywords": ""
+  },
+  "/loan-calculators/auto-loan-calculator/": {
+    "title": "Auto Loan Calculator | BasisPoint Calculator",
+    "description": "Free auto loan calculator tool. Part of our loan calculators suite. Calculate with precision at BasisPoint Calculator.",
+    "keywords": ""
+  },
+  "/loan-calculators/loan-amortization-calculator/": {
+    "title": "Loan Amortization Calculator | BasisPoint Calculator",
+    "description": "Free loan amortization calculator tool. Part of our loan calculators suite. Calculate with precision at BasisPoint Calculator.",
+    "keywords": ""
+  },
+  "/loan-calculators/loan-payment-calculator/": {
+    "title": "Loan Payment Calculator | BasisPoint Calculator",
+    "description": "Free loan payment calculator tool. Part of our loan calculators suite. Calculate with precision at BasisPoint Calculator.",
+    "keywords": ""
+  },
+  "/loan-calculators/mortgage-calculator/": {
+    "title": "Mortgage Calculator | BasisPoint Calculator",
+    "description": "Free mortgage calculator tool. Part of our loan calculators suite. Calculate with precision at BasisPoint Calculator.",
+    "keywords": ""
+  },
+  "/loan-calculators/personal-loan-calculator/": {
+    "title": "Personal Loan Calculator | BasisPoint Calculator",
+    "description": "Free personal loan calculator tool. Part of our loan calculators suite. Calculate with precision at BasisPoint Calculator.",
+    "keywords": ""
+  },
+  "/privacy/": {
+    "title": "Privacy | BasisPoint Calculator",
+    "description": "Free privacy tool. Calculate with precision at BasisPoint Calculator.",
+    "keywords": ""
+  },
+  "/sitemap/": {
+    "title": "Sitemap | BasisPoint Calculator",
+    "description": "Free sitemap tool. Calculate with precision at BasisPoint Calculator.",
+    "keywords": ""
+  },
+  "/terms/": {
+    "title": "Terms | BasisPoint Calculator",
+    "description": "Free terms tool. Calculate with precision at BasisPoint Calculator.",
+    "keywords": ""
+  }
 }
