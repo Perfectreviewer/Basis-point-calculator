@@ -143,10 +143,6 @@
       "url": "/guides/",
       "children": [
         {
-          "name": "What are Basis Points?",
-          "url": "/guides/what-are-basis-points/"
-        },
-        {
           "name": "How Interest Rates Work",
           "url": "/guides/how-interest-rates-work/"
         },
