@@ -1,1 +1,2 @@
-export { POST, GET, DELETE, prerender } from '@admin/api/upload';
+export { POST, GET, DELETE } from '@admin/api/upload';
+export const prerender = false;

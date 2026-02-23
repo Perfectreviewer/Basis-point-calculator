@@ -1,1 +1,2 @@
-export { POST, GET, prerender } from '@admin/api/admin/ads-settings';
+export { POST, GET } from '@admin/api/admin/ads-settings';
+export const prerender = false;

@@ -1,1 +1,2 @@
-export { GET, prerender } from '@admin/api/blog/list';
+export { GET } from '@admin/api/blog/list';
+export const prerender = false;

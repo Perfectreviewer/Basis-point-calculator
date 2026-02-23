@@ -1,1 +1,2 @@
-export { POST, prerender } from '@admin/api/auth/login';
+export { POST } from '@admin/api/auth/login';
+export const prerender = false;

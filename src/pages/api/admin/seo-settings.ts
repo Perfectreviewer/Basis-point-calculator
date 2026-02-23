@@ -1,1 +1,2 @@
-export { POST, GET, prerender } from '@admin/api/admin/seo-settings';
+export { POST, GET } from '@admin/api/admin/seo-settings';
+export const prerender = false;

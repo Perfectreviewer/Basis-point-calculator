@@ -1,1 +1,2 @@
-export { POST, prerender } from '@admin/api/users/delete';
+export { POST } from '@admin/api/users/delete';
+export const prerender = false;

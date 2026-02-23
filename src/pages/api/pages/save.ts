@@ -1,1 +1,2 @@
-export { POST, prerender } from '@admin/api/pages/save';
+export { POST } from '@admin/api/pages/save';
+export const prerender = false;
