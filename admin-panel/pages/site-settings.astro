@@ -1,0 +1,1015 @@
+---
+import AdminLayout from "@admin/components/AdminLayout.astro";
+
+export const prerender = false;
+---
+
+<AdminLayout title="Site Settings" activeNav="site-settings">
+  <div class="page-header">
+    <h1>Site Settings</h1>
+    <p class="text-muted">
+      Manage your site header, footer content, social links, and more. Fully
+      customizable for any site.
+    </p>
+  </div>
+
+  <div id="settings-loading" class="loading-state">
+    <div class="spinner"></div>
+    <p>Loading settings...</p>
+  </div>
+
+  <div id="settings-container" style="display: none;">
+    <!-- Save bar -->
+    <div class="save-bar">
+      <div class="save-bar-info">
+        <span id="save-status" class="save-status">No unsaved changes</span>
+      </div>
+      <button id="save-all-btn" class="btn-primary success" disabled>
+        <span class="btn-text">Save All Settings</span>
+      </button>
+    </div>
+
+    <!-- ═══ Header Settings ═══ -->
+    <div class="settings-section card">
+      <div class="section-header">
+        <div class="section-icon header-icon">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            ><rect x="3" y="3" width="18" height="18" rx="2"></rect><path
+              d="M3 9h18"></path></svg
+          >
+        </div>
+        <div>
+          <h3>Header Settings</h3>
+          <p class="section-desc">
+            Site title displayed in the header and browser tab
+          </p>
+        </div>
+      </div>
+      <div class="section-body">
+        <div class="form-group">
+          <label for="site-title">Site Title</label>
+          <input
+            type="text"
+            id="site-title"
+            class="form-input setting-input"
+            placeholder="My Awesome Site"
+          />
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ Footer Description & Branding ═══ -->
+    <div class="settings-section card">
+      <div class="section-header">
+        <div class="section-icon footer-icon">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            ><rect x="3" y="3" width="18" height="18" rx="2"></rect><path
+              d="M3 15h18"></path></svg
+          >
+        </div>
+        <div>
+          <h3>Footer Branding</h3>
+          <p class="section-desc">
+            Description and copyright shown in the footer
+          </p>
+        </div>
+      </div>
+      <div class="section-body">
+        <div class="form-group">
+          <label for="footer-desc">Footer Description</label>
+          <textarea
+            id="footer-desc"
+            class="form-input form-textarea setting-input"
+            rows="3"
+            placeholder="A short description of your site..."></textarea>
+        </div>
+        <div class="form-row-2col">
+          <div class="form-group">
+            <label for="copyright-text">Copyright Text</label>
+            <input
+              type="text"
+              id="copyright-text"
+              class="form-input setting-input"
+              placeholder="Built with ❤️ by"
+            />
+          </div>
+          <div class="form-group">
+            <label for="brand-name">Brand Name</label>
+            <input
+              type="text"
+              id="brand-name"
+              class="form-input setting-input"
+              placeholder="Your Company"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ Social Links ═══ -->
+    <div class="settings-section card">
+      <div class="section-header">
+        <div class="section-icon social-icon">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            ><path
+              d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"
+            ></path></svg
+          >
+        </div>
+        <div>
+          <h3>Social Links</h3>
+          <p class="section-desc">
+            Social media URLs shown in the footer — add or remove any platform
+          </p>
+        </div>
+      </div>
+      <div class="section-body">
+        <div id="social-links-list" class="editable-links"></div>
+        <button type="button" class="btn-add" id="add-social-btn"
+          >+ Add Social Link</button
+        >
+      </div>
+    </div>
+
+    <!-- ═══ Footer Link Columns ═══ -->
+    <div class="settings-section card">
+      <div class="section-header">
+        <div class="section-icon columns-icon">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            ><rect x="3" y="3" width="7" height="7"></rect><rect
+              x="14"
+              y="3"
+              width="7"
+              height="7"></rect><rect x="3" y="14" width="7" height="7"
+            ></rect><rect x="14" y="14" width="7" height="7"></rect></svg
+          >
+        </div>
+        <div>
+          <h3>Footer Link Columns</h3>
+          <p class="section-desc">
+            Main link columns in the footer — add, remove, or reorder columns
+            and links
+          </p>
+        </div>
+      </div>
+      <div class="section-body">
+        <div id="link-columns" class="columns-editor"></div>
+        <button type="button" class="btn-add" id="add-column-btn"
+          >+ Add Column</button
+        >
+      </div>
+    </div>
+
+    <!-- ═══ Footer Link Sections ═══ -->
+    <div class="settings-section card">
+      <div class="section-header">
+        <div class="section-icon support-icon">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            ><circle cx="12" cy="12" r="10"></circle><path
+              d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"></path><line
+              x1="12"
+              y1="17"
+              x2="12.01"
+              y2="17"></line></svg
+          >
+        </div>
+        <div>
+          <h3>Footer Link Sections</h3>
+          <p class="section-desc">
+            Additional named link groups (e.g. Support, Legal, Company) — add as
+            many as needed
+          </p>
+        </div>
+      </div>
+      <div class="section-body">
+        <div id="link-sections" class="columns-editor"></div>
+        <button type="button" class="btn-add" id="add-section-btn"
+          >+ Add Section</button
+        >
+      </div>
+    </div>
+
+    <!-- ═══ Newsletter Settings ═══ -->
+    <div class="settings-section card">
+      <div class="section-header">
+        <div class="section-icon newsletter-icon">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            ><path
+              d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"
+            ></path><polyline points="22,6 12,13 2,6"></polyline></svg
+          >
+        </div>
+        <div>
+          <h3>Newsletter Section</h3>
+          <p class="section-desc">Email subscription section in the footer</p>
+        </div>
+      </div>
+      <div class="section-body">
+        <div class="form-row-2col">
+          <div class="form-group">
+            <label for="newsletter-title">Section Title</label>
+            <input
+              type="text"
+              id="newsletter-title"
+              class="form-input setting-input"
+              placeholder="Stay Updated"
+            />
+          </div>
+          <div class="form-group">
+            <label for="newsletter-btn">Button Text</label>
+            <input
+              type="text"
+              id="newsletter-btn"
+              class="form-input setting-input"
+              placeholder="Subscribe →"
+            />
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="newsletter-text">Description</label>
+          <textarea
+            id="newsletter-text"
+            class="form-input form-textarea setting-input"
+            rows="2"
+            placeholder="Get updates delivered to your inbox."></textarea>
+        </div>
+        <div class="form-group">
+          <label for="newsletter-placeholder">Input Placeholder</label>
+          <input
+            type="text"
+            id="newsletter-placeholder"
+            class="form-input setting-input"
+            placeholder="you@email.com"
+          />
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ Stats Section ═══ -->
+    <div class="settings-section card">
+      <div class="section-header">
+        <div class="section-icon stats-icon">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            ><line x1="18" y1="20" x2="18" y2="10"></line><line
+              x1="12"
+              y1="20"
+              x2="12"
+              y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg
+          >
+        </div>
+        <div>
+          <h3>Stats Section</h3>
+          <p class="section-desc">
+            Statistics boxes in the footer — add or remove stat items
+          </p>
+        </div>
+      </div>
+      <div class="section-body">
+        <div class="form-group">
+          <label for="stats-title">Section Title</label>
+          <input
+            type="text"
+            id="stats-title"
+            class="form-input setting-input"
+            placeholder="Why Choose Us"
+          />
+        </div>
+        <div id="stats-list" class="stats-editor"></div>
+        <button type="button" class="btn-add" id="add-stat-btn"
+          >+ Add Stat</button
+        >
+      </div>
+    </div>
+  </div>
+</AdminLayout>
+
+<style is:global>
+  .page-header {
+    margin-bottom: 24px;
+    animation: fadeIn 0.4s ease-out;
+  }
+  .page-header h1 {
+    font-size: 26px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    background: linear-gradient(135deg, #fff 0%, #a5b4fc 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .loading-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 80px 0;
+    color: var(--text-muted);
+    gap: 16px;
+  }
+  .spinner {
+    width: 32px;
+    height: 32px;
+    border: 3px solid var(--border-subtle);
+    border-top-color: var(--accent-blue);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  .save-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 24px;
+    background: var(--bg-elevated);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    margin-bottom: 24px;
+    position: sticky;
+    top: 65px;
+    z-index: 30;
+    backdrop-filter: blur(12px);
+  }
+  .save-status {
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+  .save-status.unsaved {
+    color: var(--accent-amber, #f59e0b);
+    font-weight: 600;
+  }
+  .save-status.saved {
+    color: var(--accent-green);
+    font-weight: 600;
+  }
+
+  .settings-section {
+    margin-bottom: 24px;
+  }
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border-subtle);
+  }
+  .section-header h3 {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 2px;
+  }
+  .section-desc {
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+  .section-icon {
+    width: 42px;
+    height: 42px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .section-icon svg {
+    width: 20px;
+    height: 20px;
+  }
+  .header-icon {
+    background: rgba(56, 152, 236, 0.12);
+    color: var(--accent-blue);
+  }
+  .footer-icon {
+    background: rgba(124, 91, 240, 0.12);
+    color: var(--accent-violet);
+  }
+  .social-icon {
+    background: rgba(236, 72, 153, 0.12);
+    color: #ec4899;
+  }
+  .columns-icon {
+    background: rgba(52, 211, 153, 0.12);
+    color: var(--accent-green);
+  }
+  .support-icon {
+    background: rgba(251, 191, 36, 0.12);
+    color: #fbbf24;
+  }
+  .newsletter-icon {
+    background: rgba(56, 189, 248, 0.12);
+    color: #38bdf8;
+  }
+  .stats-icon {
+    background: rgba(168, 85, 247, 0.12);
+    color: #a855f7;
+  }
+
+  .section-body {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .form-group label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .form-textarea {
+    resize: vertical;
+    min-height: 70px;
+    font-family: inherit;
+  }
+  .form-row-2col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  /* Editable link rows */
+  .editable-links {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .link-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 36px;
+    gap: 10px;
+    align-items: center;
+  }
+  .link-row.social-row {
+    grid-template-columns: 140px 1fr 36px;
+  }
+  .link-row .form-input {
+    margin: 0;
+  }
+  .remove-row-btn {
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: 1px solid var(--border-subtle);
+    border-radius: 6px;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all 0.15s;
+    font-size: 16px;
+  }
+  .remove-row-btn:hover {
+    color: var(--accent-red, #ef4444);
+    border-color: var(--accent-red, #ef4444);
+    background: rgba(239, 68, 68, 0.08);
+  }
+
+  .btn-add {
+    align-self: flex-start;
+    padding: 8px 16px;
+    background: transparent;
+    border: 1px dashed var(--border-medium);
+    border-radius: 6px;
+    color: var(--text-muted);
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .btn-add:hover {
+    color: var(--accent-blue);
+    border-color: var(--accent-blue);
+    background: rgba(56, 152, 236, 0.05);
+  }
+
+  /* Column/section blocks */
+  .columns-editor {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  .column-block {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-sm);
+    padding: 20px;
+    position: relative;
+  }
+  .column-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+  .column-header label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+  }
+  .column-header .form-input {
+    flex: 1;
+  }
+  .remove-block-btn {
+    padding: 6px 12px;
+    background: transparent;
+    border: 1px solid rgba(239, 68, 68, 0.2);
+    border-radius: 6px;
+    color: var(--accent-red, #ef4444);
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.15s;
+    white-space: nowrap;
+  }
+  .remove-block-btn:hover {
+    background: rgba(239, 68, 68, 0.08);
+    border-color: rgba(239, 68, 68, 0.4);
+  }
+  .column-links {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  /* Stats editor */
+  .stats-editor {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 16px;
+  }
+  .stat-block {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-sm);
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    position: relative;
+  }
+  .stat-block .form-group {
+    gap: 4px;
+  }
+  .stat-block label {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .stat-remove {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    font-size: 14px;
+    border-radius: 4px;
+    transition: all 0.15s;
+  }
+  .stat-remove:hover {
+    color: var(--accent-red);
+    background: rgba(239, 68, 68, 0.08);
+  }
+
+  @media (max-width: 768px) {
+    .link-row,
+    .link-row.social-row {
+      grid-template-columns: 1fr 36px;
+    }
+    .link-row.social-row input:first-child {
+      grid-column: 1 / -1;
+    }
+    .form-row-2col {
+      grid-template-columns: 1fr;
+    }
+    .stats-editor {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+
+<script>
+  let data: any = { siteSettings: {}, social: [] };
+  let hasChanges = false;
+
+  const saveBtn = document.getElementById("save-all-btn") as HTMLButtonElement;
+  const saveStatus = document.getElementById("save-status")!;
+  const loadingEl = document.getElementById("settings-loading")!;
+  const containerEl = document.getElementById("settings-container")!;
+
+  function markDirty() {
+    hasChanges = true;
+    saveBtn.disabled = false;
+    saveStatus.textContent = "● Unsaved changes";
+    saveStatus.className = "save-status unsaved";
+  }
+
+  function esc(str: string) {
+    const d = document.createElement("div");
+    d.textContent = str;
+    return d.innerHTML;
+  }
+
+  /* ─── INIT ─── */
+  async function init() {
+    try {
+      const res = await fetch("/api/admin/site-settings/");
+      if (res.ok) {
+        data = await res.json();
+      } else {
+        alert("Failed to load settings");
+        return;
+      }
+    } catch (e) {
+      alert("Network error loading settings");
+      return;
+    }
+
+    loadingEl.style.display = "none";
+    containerEl.style.display = "block";
+
+    const s = data.siteSettings;
+
+    // Header
+    (document.getElementById("site-title") as HTMLInputElement).value =
+      s.header?.siteTitle || "";
+
+    // Footer branding
+    (document.getElementById("footer-desc") as HTMLTextAreaElement).value =
+      s.footer?.description || "";
+    (document.getElementById("copyright-text") as HTMLInputElement).value =
+      s.footer?.copyrightText || "";
+    (document.getElementById("brand-name") as HTMLInputElement).value =
+      s.footer?.brandName || "";
+
+    // Social links
+    renderSocialLinks(data.social || []);
+
+    // Link columns
+    renderLinkBlocks("link-columns", s.footer?.linkColumns || []);
+
+    // Link sections
+    renderLinkBlocks("link-sections", s.footer?.linkSections || []);
+
+    // Newsletter
+    const nl = s.footer?.newsletter || {};
+    (document.getElementById("newsletter-title") as HTMLInputElement).value =
+      nl.title || "";
+    (document.getElementById("newsletter-text") as HTMLTextAreaElement).value =
+      nl.text || "";
+    (document.getElementById("newsletter-btn") as HTMLInputElement).value =
+      nl.buttonText || "";
+    (
+      document.getElementById("newsletter-placeholder") as HTMLInputElement
+    ).value = nl.placeholder || "";
+
+    // Stats
+    (document.getElementById("stats-title") as HTMLInputElement).value =
+      s.footer?.statsSection?.title || "";
+    renderStats(s.footer?.statsSection?.items || []);
+
+    // Attach change listener globally
+    containerEl.addEventListener("input", markDirty);
+    containerEl.addEventListener("change", markDirty);
+
+    // Save button
+    saveBtn.addEventListener("click", saveAll);
+
+    // Add social link
+    document.getElementById("add-social-btn")!.addEventListener("click", () => {
+      addSocialRow("", "");
+      markDirty();
+    });
+
+    // Add column
+    document.getElementById("add-column-btn")!.addEventListener("click", () => {
+      addLinkBlock("link-columns", "", []);
+      markDirty();
+    });
+
+    // Add section
+    document
+      .getElementById("add-section-btn")!
+      .addEventListener("click", () => {
+        addLinkBlock("link-sections", "", []);
+        markDirty();
+      });
+
+    // Add stat
+    document.getElementById("add-stat-btn")!.addEventListener("click", () => {
+      addStatBlock("", "", "sky");
+      markDirty();
+    });
+  }
+
+  /* ─── SOCIAL LINKS (dynamic) ─── */
+  function renderSocialLinks(social: any[]) {
+    const container = document.getElementById("social-links-list")!;
+    container.innerHTML = "";
+    social.forEach((item) => addSocialRow(item.name, item.url));
+  }
+
+  function addSocialRow(name: string, url: string) {
+    const container = document.getElementById("social-links-list")!;
+    const row = document.createElement("div");
+    row.className = "link-row social-row";
+    row.innerHTML = `
+      <input type="text" class="form-input social-name" value="${esc(name)}" placeholder="Platform name">
+      <input type="text" class="form-input social-url" value="${esc(url)}" placeholder="https://...">
+      <button type="button" class="remove-row-btn" title="Remove">×</button>
+    `;
+    row.querySelector(".remove-row-btn")!.addEventListener("click", () => {
+      row.remove();
+      markDirty();
+    });
+    container.appendChild(row);
+  }
+
+  /* ─── LINK BLOCKS (columns & sections) ─── */
+  function renderLinkBlocks(containerId: string, blocks: any[]) {
+    const container = document.getElementById(containerId)!;
+    container.innerHTML = "";
+    blocks.forEach((block) =>
+      addLinkBlock(containerId, block.title, block.links),
+    );
+  }
+
+  function addLinkBlock(containerId: string, title: string, links: any[]) {
+    const container = document.getElementById(containerId)!;
+    const block = document.createElement("div");
+    block.className = "column-block";
+    block.innerHTML = `
+      <div class="column-header">
+        <label>Title</label>
+        <input type="text" class="form-input block-title" value="${esc(title)}" placeholder="Section Title">
+        <button type="button" class="remove-block-btn">Remove</button>
+      </div>
+      <div class="column-links"></div>
+      <button type="button" class="btn-add block-add-link" style="margin-top: 12px;">+ Add Link</button>
+    `;
+
+    // Remove block
+    block.querySelector(".remove-block-btn")!.addEventListener("click", () => {
+      block.remove();
+      markDirty();
+    });
+
+    // Add link within block
+    block.querySelector(".block-add-link")!.addEventListener("click", () => {
+      addLinkRow(block.querySelector(".column-links")!, "", "");
+      markDirty();
+    });
+
+    // Render existing links
+    const linksContainer = block.querySelector(".column-links")!;
+    links.forEach((link: any) =>
+      addLinkRow(linksContainer, link.name, link.url),
+    );
+
+    container.appendChild(block);
+  }
+
+  function addLinkRow(container: Element, name: string, url: string) {
+    const row = document.createElement("div");
+    row.className = "link-row";
+    row.innerHTML = `
+      <input type="text" class="form-input link-name" value="${esc(name)}" placeholder="Link Name">
+      <input type="text" class="form-input link-url" value="${esc(url)}" placeholder="/path/">
+      <button type="button" class="remove-row-btn" title="Remove">×</button>
+    `;
+    row.querySelector(".remove-row-btn")!.addEventListener("click", () => {
+      row.remove();
+      markDirty();
+    });
+    container.appendChild(row);
+  }
+
+  /* ─── STATS (dynamic) ─── */
+  function renderStats(items: any[]) {
+    const container = document.getElementById("stats-list")!;
+    container.innerHTML = "";
+    items.forEach((stat) => addStatBlock(stat.value, stat.label, stat.color));
+  }
+
+  function addStatBlock(value: string, label: string, color: string) {
+    const container = document.getElementById("stats-list")!;
+    const block = document.createElement("div");
+    block.className = "stat-block";
+    block.innerHTML = `
+      <button type="button" class="stat-remove" title="Remove">×</button>
+      <div class="form-group">
+        <label>Value</label>
+        <input type="text" class="form-input stat-value" value="${esc(value)}" placeholder="25+">
+      </div>
+      <div class="form-group">
+        <label>Label</label>
+        <input type="text" class="form-input stat-label" value="${esc(label)}" placeholder="Free Tools">
+      </div>
+      <div class="form-group">
+        <label>Color</label>
+        <select class="form-input stat-color">
+          <option value="sky" ${color === "sky" ? "selected" : ""}>Sky Blue</option>
+          <option value="green" ${color === "green" ? "selected" : ""}>Green</option>
+          <option value="purple" ${color === "purple" ? "selected" : ""}>Purple</option>
+          <option value="amber" ${color === "amber" ? "selected" : ""}>Amber</option>
+          <option value="red" ${color === "red" ? "selected" : ""}>Red</option>
+          <option value="indigo" ${color === "indigo" ? "selected" : ""}>Indigo</option>
+          <option value="pink" ${color === "pink" ? "selected" : ""}>Pink</option>
+          <option value="teal" ${color === "teal" ? "selected" : ""}>Teal</option>
+        </select>
+      </div>
+    `;
+    block.querySelector(".stat-remove")!.addEventListener("click", () => {
+      block.remove();
+      markDirty();
+    });
+    container.appendChild(block);
+  }
+
+  /* ─── COLLECT DATA ─── */
+  function collectData() {
+    const siteSettings: any = {
+      header: {
+        siteTitle: (
+          document.getElementById("site-title") as HTMLInputElement
+        ).value.trim(),
+      },
+      footer: {
+        description: (
+          document.getElementById("footer-desc") as HTMLTextAreaElement
+        ).value.trim(),
+        copyrightText: (
+          document.getElementById("copyright-text") as HTMLInputElement
+        ).value.trim(),
+        brandName: (
+          document.getElementById("brand-name") as HTMLInputElement
+        ).value.trim(),
+        linkColumns: collectBlocks("link-columns"),
+        linkSections: collectBlocks("link-sections"),
+        newsletter: {
+          title: (
+            document.getElementById("newsletter-title") as HTMLInputElement
+          ).value.trim(),
+          text: (
+            document.getElementById("newsletter-text") as HTMLTextAreaElement
+          ).value.trim(),
+          buttonText: (
+            document.getElementById("newsletter-btn") as HTMLInputElement
+          ).value.trim(),
+          placeholder: (
+            document.getElementById(
+              "newsletter-placeholder",
+            ) as HTMLInputElement
+          ).value.trim(),
+        },
+        statsSection: {
+          title: (
+            document.getElementById("stats-title") as HTMLInputElement
+          ).value.trim(),
+          items: collectStats(),
+        },
+      },
+      // Preserve contactPage managed by its own admin page
+      contactPage: data.siteSettings?.contactPage || {},
+    };
+
+    // Social links (fully dynamic)
+    const social: any[] = [];
+    document
+      .querySelectorAll("#social-links-list .social-row")
+      .forEach((row) => {
+        const name = (
+          row.querySelector(".social-name") as HTMLInputElement
+        ).value.trim();
+        const url = (
+          row.querySelector(".social-url") as HTMLInputElement
+        ).value.trim();
+        if (name) social.push({ name, url });
+      });
+
+    return { siteSettings, social };
+  }
+
+  function collectBlocks(containerId: string) {
+    const blocks: any[] = [];
+    document
+      .querySelectorAll(`#${containerId} .column-block`)
+      .forEach((block) => {
+        const title = (
+          block.querySelector(".block-title") as HTMLInputElement
+        ).value.trim();
+        const links: any[] = [];
+        block.querySelectorAll(".link-row").forEach((row) => {
+          const name = (
+            row.querySelector(".link-name") as HTMLInputElement
+          ).value.trim();
+          const url = (
+            row.querySelector(".link-url") as HTMLInputElement
+          ).value.trim();
+          if (name || url) links.push({ name, url });
+        });
+        blocks.push({ title, links });
+      });
+    return blocks;
+  }
+
+  function collectStats() {
+    const items: any[] = [];
+    document.querySelectorAll("#stats-list .stat-block").forEach((block) => {
+      const value = (
+        block.querySelector(".stat-value") as HTMLInputElement
+      ).value.trim();
+      const label = (
+        block.querySelector(".stat-label") as HTMLInputElement
+      ).value.trim();
+      const color = (block.querySelector(".stat-color") as HTMLSelectElement)
+        .value;
+      if (value || label) items.push({ value, label, color });
+    });
+    return items;
+  }
+
+  /* ─── SAVE ─── */
+  async function saveAll() {
+    saveBtn.disabled = true;
+    const btnText = saveBtn.querySelector(".btn-text")!;
+    btnText.textContent = "Saving...";
+
+    const payload = collectData();
+
+    try {
+      const res = await fetch("/api/admin/site-settings/", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      if (res.ok) {
+        hasChanges = false;
+        saveStatus.textContent = "✓ Settings saved successfully";
+        saveStatus.className = "save-status saved";
+        setTimeout(() => {
+          saveStatus.textContent = "No unsaved changes";
+          saveStatus.className = "save-status";
+        }, 3000);
+      } else {
+        alert("Failed to save settings");
+        saveBtn.disabled = false;
+      }
+    } catch (e) {
+      alert("Network error saving settings");
+      saveBtn.disabled = false;
+    } finally {
+      btnText.textContent = "Save All Settings";
+    }
+  }
+
+  init();
+</script>

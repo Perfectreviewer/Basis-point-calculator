@@ -1,0 +1,1152 @@
+---
+import AdminLayout from "@admin/components/AdminLayout.astro";
+
+export const prerender = false;
+---
+
+<AdminLayout title="Ad Management" activeNav="ads-settings">
+  <div class="page-header">
+    <h1>Ad Management</h1>
+    <p class="text-muted">
+      Configure Google AdSense ad placements across your site. Manage ad slots,
+      publisher settings, and placement visibility.
+    </p>
+  </div>
+
+  <div id="settings-loading" class="loading-state">
+    <div class="spinner"></div>
+    <p>Loading ad settings...</p>
+  </div>
+
+  <div id="settings-container" style="display: none;">
+    <!-- Save bar -->
+    <div class="save-bar">
+      <div class="save-bar-info">
+        <span id="save-status" class="save-status">No unsaved changes</span>
+      </div>
+      <button id="save-all-btn" class="btn-primary success" disabled>
+        <span class="btn-text">Save All Settings</span>
+      </button>
+    </div>
+
+    <!-- ═══ Publisher Settings ═══ -->
+    <div class="settings-section card">
+      <div class="section-header">
+        <div class="section-icon publisher-icon">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+          </svg>
+        </div>
+        <div>
+          <h3>Publisher Settings</h3>
+          <p class="section-desc">
+            Your Google AdSense publisher ID and global settings
+          </p>
+        </div>
+      </div>
+      <div class="section-body">
+        <div class="form-row-2col">
+          <div class="form-group">
+            <label for="publisher-id">Publisher ID</label>
+            <div class="ads-input-prefix-wrap">
+              <span class="ads-input-prefix">ca-pub-</span>
+              <input
+                type="text"
+                id="publisher-id"
+                class="form-input setting-input ads-prefixed-input"
+                placeholder="1234567890123456"
+              />
+            </div>
+            <p class="ads-form-help">
+              Your AdSense Publisher ID (numeric only). Find it in your AdSense
+              dashboard.
+            </p>
+          </div>
+          <div class="form-group">
+            <label for="auto-ads">Auto Ads</label>
+            <div class="ads-toggle-row">
+              <label class="ads-toggle">
+                <input type="checkbox" id="auto-ads" class="setting-input" />
+                <span class="ads-toggle-track">
+                  <span class="ads-toggle-thumb"></span>
+                </span>
+              </label>
+              <span class="ads-toggle-label">Enable Google Auto Ads</span>
+            </div>
+            <p class="ads-form-help">
+              Let Google automatically place ads in optimal locations. Works
+              alongside manual placements below.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ Custom Ad Script ═══ -->
+    <div class="settings-section card">
+      <div class="section-header">
+        <div class="section-icon script-icon">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <polyline points="16 18 22 12 16 6"></polyline>
+            <polyline points="8 6 2 12 8 18"></polyline>
+          </svg>
+        </div>
+        <div>
+          <h3>Custom Ad Script</h3>
+          <p class="section-desc">
+            Paste any raw ad script code (Media.net, Ezoic, custom AdSense
+            units, etc.)
+          </p>
+        </div>
+      </div>
+      <div class="section-body">
+        <div class="form-group">
+          <label for="custom-script">Script Code</label>
+          <div class="ads-code-editor-wrap">
+            <div class="ads-code-editor-header">
+              <span class="ads-code-dot red"></span>
+              <span class="ads-code-dot yellow"></span>
+              <span class="ads-code-dot green"></span>
+              <span class="ads-code-editor-label">HTML / JavaScript</span>
+            </div>
+            <textarea
+              id="custom-script"
+              class="form-input ads-code-textarea setting-input"
+              rows="6"
+              placeholder="<script async src='https://...'></script>
+
+Paste ad network scripts, verification codes, or custom ad units here."
+              spellcheck="false"></textarea>
+          </div>
+          <p class="ads-form-help">
+            <svg viewBox="0 0 16 16" fill="currentColor" class="ads-info-icon"
+              ><path
+                d="M8 1.5a6.5 6.5 0 100 13 6.5 6.5 0 000-13zM0 8a8 8 0 1116 0A8 8 0 010 8zm6.5-.25A.75.75 0 017.25 7h1a.75.75 0 01.75.75v2.75h.25a.75.75 0 010 1.5h-2a.75.75 0 010-1.5h.25v-2h-.25a.75.75 0 01-.75-.75zM8 6a1 1 0 100-2 1 1 0 000 2z"
+              ></path></svg
+            >
+            Injected into the <code>&lt;head&gt;</code> of every page. Supports any
+            HTML/JS from ad networks like Media.net, Ezoic, PropellerAds, or custom
+            AdSense units.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ Ad Slots ═══ -->
+    <div class="settings-section card">
+      <div class="section-header">
+        <div class="section-icon slots-icon">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <rect x="2" y="3" width="20" height="18" rx="2" ry="2"></rect>
+            <line x1="2" y1="9" x2="22" y2="9"></line>
+            <line x1="2" y1="15" x2="22" y2="15"></line>
+          </svg>
+        </div>
+        <div>
+          <h3>Ad Placement Slots</h3>
+          <p class="section-desc">
+            Configure individual ad placements across your site
+          </p>
+        </div>
+        <div class="ads-slot-counter">
+          <span id="active-slot-count">0</span> / <span id="total-slot-count"
+            >0</span
+          > active
+        </div>
+      </div>
+      <div class="section-body">
+        <div id="ad-slots-list" class="ads-slots-grid"></div>
+      </div>
+    </div>
+
+    <!-- ═══ Placement Preview ═══ -->
+    <div class="settings-section card">
+      <div class="section-header">
+        <div class="section-icon preview-icon">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+            <circle cx="12" cy="12" r="3"></circle>
+          </svg>
+        </div>
+        <div>
+          <h3>Placement Preview</h3>
+          <p class="section-desc">
+            Visual guide showing where each ad appears on your site
+          </p>
+        </div>
+      </div>
+      <div class="section-body">
+        <div class="ads-preview-grid">
+          <!-- Homepage -->
+          <div class="ads-preview-card">
+            <div class="ads-preview-title">
+              <svg
+                viewBox="0 0 16 16"
+                fill="currentColor"
+                width="14"
+                height="14"
+                ><path
+                  d="M8.354 1.146a.5.5 0 00-.708 0l-6 6A.5.5 0 002 8h1v5a1 1 0 001 1h3a.5.5 0 00.5-.5V10h1v3.5a.5.5 0 00.5.5h3a1 1 0 001-1V8h1a.5.5 0 00.354-.854l-6-6z"
+                ></path></svg
+              >
+              Homepage
+            </div>
+            <div class="ads-preview-body">
+              <div class="ads-preview-bar top">Header</div>
+              <div class="ads-preview-slot" data-slot="header_banner">
+                Header Banner
+              </div>
+              <div class="ads-preview-block hero">Hero / Calculator</div>
+              <div class="ads-preview-slot" data-slot="homepage_mid">
+                Homepage Mid
+              </div>
+              <div class="ads-preview-block">FAQs & Content</div>
+              <div class="ads-preview-slot" data-slot="homepage_bottom">
+                Homepage Bottom
+              </div>
+              <div class="ads-preview-slot" data-slot="footer_banner">
+                Footer Banner
+              </div>
+              <div class="ads-preview-bar bottom">Footer</div>
+            </div>
+          </div>
+
+          <!-- Blog Post -->
+          <div class="ads-preview-card">
+            <div class="ads-preview-title">
+              <svg
+                viewBox="0 0 16 16"
+                fill="currentColor"
+                width="14"
+                height="14"
+                ><path
+                  d="M14 1a1 1 0 011 1v12a1 1 0 01-1 1H2a1 1 0 01-1-1V2a1 1 0 011-1h12zm-1 2H3v10h10V3zM4 4h8v2H4V4z"
+                ></path></svg
+              >
+              Blog Post
+            </div>
+            <div class="ads-preview-body">
+              <div class="ads-preview-bar top">Header</div>
+              <div class="ads-preview-two-col">
+                <div class="ads-preview-main">
+                  <div class="ads-preview-block">Article Content</div>
+                  <div class="ads-preview-slot" data-slot="blog_in_article">
+                    In-Article
+                  </div>
+                  <div class="ads-preview-block">More Content</div>
+                </div>
+                <div class="ads-preview-side">
+                  <div
+                    class="ads-preview-slot slot-sidebar"
+                    data-slot="blog_sidebar"
+                  >
+                    Sidebar
+                  </div>
+                  <div class="ads-preview-block small">TOC</div>
+                </div>
+              </div>
+              <div class="ads-preview-slot" data-slot="blog_after_post">
+                After Post
+              </div>
+              <div class="ads-preview-bar bottom">Footer</div>
+            </div>
+          </div>
+
+          <!-- Blog Listing -->
+          <div class="ads-preview-card">
+            <div class="ads-preview-title">
+              <svg
+                viewBox="0 0 16 16"
+                fill="currentColor"
+                width="14"
+                height="14"
+                ><path
+                  d="M0 1.5A.5.5 0 01.5 1H2a.5.5 0 01.485.379L2.89 3H14.5a.5.5 0 01.491.592l-1.5 8A.5.5 0 0113 12H4a.5.5 0 01-.491-.408L1.01 2H.5A.5.5 0 010 1.5zM3.102 4l1.313 7h8.17l1.313-7H3.102z"
+                ></path></svg
+              >
+              Blog Listing
+            </div>
+            <div class="ads-preview-body">
+              <div class="ads-preview-bar top">Header</div>
+              <div class="ads-preview-slot" data-slot="blog_listing_top">
+                Listing Top
+              </div>
+              <div class="ads-preview-block small">Post Card</div>
+              <div class="ads-preview-block small">Post Card</div>
+              <div class="ads-preview-slot" data-slot="blog_listing_between">
+                Between Posts
+              </div>
+              <div class="ads-preview-block small">Post Card</div>
+              <div class="ads-preview-bar bottom">Footer</div>
+            </div>
+          </div>
+
+          <!-- Calculator / Guide -->
+          <div class="ads-preview-card">
+            <div class="ads-preview-title">
+              <svg
+                viewBox="0 0 16 16"
+                fill="currentColor"
+                width="14"
+                height="14"
+                ><path
+                  d="M2 2a2 2 0 012-2h8a2 2 0 012 2v12a2 2 0 01-2 2H4a2 2 0 01-2-2V2zm2-1a1 1 0 00-1 1v12a1 1 0 001 1h8a1 1 0 001-1V2a1 1 0 00-1-1H4zm1 2a.5.5 0 000 1h6a.5.5 0 000-1H5zm0 3a.5.5 0 000 1h6a.5.5 0 000-1H5zm0 3a.5.5 0 000 1h3a.5.5 0 000-1H5z"
+                ></path></svg
+              >
+              Calculator / Guide
+            </div>
+            <div class="ads-preview-body">
+              <div class="ads-preview-bar top">Header</div>
+              <div class="ads-preview-slot" data-slot="guide_top">
+                Guide Top
+              </div>
+              <div class="ads-preview-block">Calculator / Guide Content</div>
+              <div class="ads-preview-slot" data-slot="calculator_after">
+                After Results
+              </div>
+              <div class="ads-preview-block small">Additional Info</div>
+              <div class="ads-preview-slot" data-slot="guide_bottom">
+                Guide Bottom
+              </div>
+              <div class="ads-preview-bar bottom">Footer</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <style is:global>
+    /* ═══ Page Header ═══ */
+    .page-header {
+      margin-bottom: 28px;
+      animation: fadeIn 0.4s ease-out;
+    }
+    .page-header h1 {
+      font-size: 26px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      background: linear-gradient(135deg, #fff 0%, #a5b4fc 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    /* ═══ Loading State ═══ */
+    .loading-state {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 80px 0;
+      color: var(--text-muted);
+      gap: 16px;
+    }
+    .spinner {
+      width: 32px;
+      height: 32px;
+      border: 3px solid var(--border-subtle);
+      border-top-color: var(--accent-blue);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(8px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* ═══ Save Bar ═══ */
+    .save-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 24px;
+      background: var(--bg-elevated);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      margin-bottom: 28px;
+      position: sticky;
+      top: 65px;
+      z-index: 30;
+      backdrop-filter: blur(12px);
+    }
+    .save-status {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    /* ═══ Settings Section ═══ */
+    .settings-section.card {
+      margin-bottom: 28px;
+    }
+
+    /* ═══ Section Header ═══ */
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 28px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    .section-header h3 {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 4px;
+    }
+    .section-desc {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    /* ═══ Section Icons ═══ */
+    .section-icon {
+      width: 46px;
+      height: 46px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .section-icon svg {
+      width: 22px;
+      height: 22px;
+    }
+
+    /* ═══ Section Body ═══ */
+    .section-body {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    /* ═══ Form Groups ═══ */
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .form-group label {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .publisher-icon {
+      background: linear-gradient(
+        135deg,
+        rgba(56, 152, 236, 0.15),
+        rgba(56, 152, 236, 0.05)
+      );
+      color: #3898ec;
+      border: 1px solid rgba(56, 152, 236, 0.15);
+    }
+    .slots-icon {
+      background: linear-gradient(
+        135deg,
+        rgba(124, 91, 240, 0.15),
+        rgba(124, 91, 240, 0.05)
+      );
+      color: #7c5bf0;
+      border: 1px solid rgba(124, 91, 240, 0.15);
+    }
+    .preview-icon {
+      background: linear-gradient(
+        135deg,
+        rgba(52, 211, 153, 0.15),
+        rgba(52, 211, 153, 0.05)
+      );
+      color: #34d399;
+      border: 1px solid rgba(52, 211, 153, 0.15);
+    }
+    .script-icon {
+      background: linear-gradient(
+        135deg,
+        rgba(251, 191, 36, 0.15),
+        rgba(251, 191, 36, 0.05)
+      );
+      color: #fbbf24;
+      border: 1px solid rgba(251, 191, 36, 0.15);
+    }
+
+    /* ═══ Publisher Input ═══ */
+    .ads-input-prefix-wrap {
+      display: flex;
+      align-items: stretch;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid var(--border-subtle);
+      background: var(--bg-deep);
+      transition: all 0.2s ease;
+    }
+    .ads-input-prefix-wrap:focus-within {
+      border-color: var(--accent-blue);
+      box-shadow:
+        0 0 0 3px rgba(56, 152, 236, 0.08),
+        0 1px 2px rgba(0, 0, 0, 0.15);
+    }
+    .ads-input-prefix {
+      display: flex;
+      align-items: center;
+      padding: 0 14px;
+      background: rgba(99, 130, 190, 0.06);
+      color: var(--text-muted);
+      font-size: 13px;
+      font-weight: 600;
+      font-family: "Consolas", "Monaco", monospace;
+      border-right: 1px solid var(--border-subtle);
+      white-space: nowrap;
+      user-select: none;
+    }
+    .ads-prefixed-input {
+      border: none !important;
+      box-shadow: none !important;
+      border-radius: 0 !important;
+    }
+
+    .ads-form-help {
+      display: flex;
+      align-items: flex-start;
+      gap: 6px;
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-top: 8px;
+      line-height: 1.5;
+    }
+    .ads-form-help code {
+      background: rgba(99, 130, 190, 0.12);
+      padding: 1px 5px;
+      border-radius: 3px;
+      font-size: 11px;
+      font-weight: 600;
+    }
+    .ads-info-icon {
+      width: 14px;
+      height: 14px;
+      flex-shrink: 0;
+      margin-top: 1px;
+      opacity: 0.5;
+    }
+
+    /* ═══ Toggle Switch ═══ */
+    .ads-toggle-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-top: 4px;
+    }
+    .ads-toggle {
+      position: relative;
+      display: inline-block;
+      width: 46px;
+      height: 26px;
+      flex-shrink: 0;
+      cursor: pointer;
+    }
+    .ads-toggle input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+      position: absolute;
+    }
+    .ads-toggle-track {
+      position: absolute;
+      inset: 0;
+      background: rgba(99, 130, 190, 0.18);
+      border-radius: 13px;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      border: 1px solid rgba(99, 130, 190, 0.1);
+    }
+    .ads-toggle-thumb {
+      position: absolute;
+      height: 20px;
+      width: 20px;
+      left: 3px;
+      bottom: 2px;
+      background: white;
+      border-radius: 50%;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
+    }
+    .ads-toggle input:checked + .ads-toggle-track {
+      background: linear-gradient(135deg, #3898ec, #60a5fa);
+      border-color: rgba(56, 152, 236, 0.3);
+    }
+    .ads-toggle input:checked + .ads-toggle-track .ads-toggle-thumb {
+      transform: translateX(20px);
+    }
+    .ads-toggle-label {
+      font-size: 13px;
+      color: var(--text-secondary);
+    }
+
+    /* ═══ Code Editor ═══ */
+    .ads-code-editor-wrap {
+      border: 1px solid var(--border-subtle);
+      border-radius: 10px;
+      overflow: hidden;
+      background: var(--bg-deep);
+      transition: all 0.2s ease;
+    }
+    .ads-code-editor-wrap:focus-within {
+      border-color: #fbbf24;
+      box-shadow: 0 0 0 3px rgba(251, 191, 36, 0.06);
+    }
+    .ads-code-editor-header {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 10px 14px;
+      background: rgba(99, 130, 190, 0.04);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    .ads-code-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+    .ads-code-dot.red {
+      background: #ff5f57;
+    }
+    .ads-code-dot.yellow {
+      background: #febc2e;
+    }
+    .ads-code-dot.green {
+      background: #28c840;
+    }
+    .ads-code-editor-label {
+      margin-left: 8px;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .ads-code-textarea {
+      border: none !important;
+      border-radius: 0 !important;
+      box-shadow: none !important;
+      font-family: "Consolas", "Monaco", "Courier New", monospace;
+      font-size: 13px;
+      line-height: 1.7;
+      resize: vertical;
+      min-height: 130px;
+      padding: 14px 16px;
+      background: transparent;
+      color: #e2e8f0;
+      white-space: pre;
+      overflow-x: auto;
+    }
+    .ads-code-textarea::placeholder {
+      color: rgba(148, 163, 184, 0.35);
+    }
+
+    /* ═══ Slot Counter ═══ */
+    .ads-slot-counter {
+      margin-left: auto;
+      padding: 6px 14px;
+      background: rgba(52, 211, 153, 0.08);
+      border: 1px solid rgba(52, 211, 153, 0.15);
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--accent-green, #34d399);
+      letter-spacing: 0.3px;
+      white-space: nowrap;
+    }
+
+    /* ═══ Ad Slots Grid ═══ */
+    .ads-slots-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .ads-slot-card {
+      display: grid;
+      grid-template-columns: 1fr 1.2fr auto;
+      gap: 24px;
+      align-items: center;
+      padding: 20px 24px;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      transition: all 0.2s ease;
+    }
+    .ads-slot-card:hover {
+      border-color: var(--border-medium, rgba(99, 130, 190, 0.25));
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+    }
+    .ads-slot-card.slot-enabled {
+      border-left: 3px solid var(--accent-green, #34d399);
+    }
+    .ads-slot-card.slot-enabled:hover {
+      border-color: var(--accent-green, #34d399);
+      border-left: 3px solid var(--accent-green, #34d399);
+    }
+
+    .ads-slot-meta {
+      min-width: 0;
+    }
+    .ads-slot-name {
+      font-size: 14px;
+      font-weight: 650;
+      color: var(--text-primary);
+      margin-bottom: 3px;
+    }
+    .ads-slot-desc {
+      font-size: 12px;
+      color: var(--text-muted);
+      line-height: 1.4;
+      margin-bottom: 6px;
+    }
+    .ads-slot-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+    }
+    .ads-slot-badge.horizontal {
+      background: rgba(56, 152, 236, 0.1);
+      color: #60a5fa;
+    }
+    .ads-slot-badge.rectangle {
+      background: rgba(124, 91, 240, 0.1);
+      color: #a78bfa;
+    }
+    .ads-slot-badge.fluid {
+      background: rgba(52, 211, 153, 0.1);
+      color: #6ee7b7;
+    }
+
+    .ads-slot-input-group {
+      min-width: 0;
+    }
+    .ads-slot-input-group label {
+      display: block;
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .ads-slot-input-group input {
+      width: 100%;
+      padding: 8px 12px;
+      background: var(--bg-deep);
+      border: 1px solid var(--border-subtle);
+      border-radius: 7px;
+      color: var(--text-primary);
+      font-size: 13px;
+      font-family: "Consolas", "Monaco", monospace;
+      outline: none;
+      transition: all 0.2s ease;
+    }
+    .ads-slot-input-group input:focus {
+      border-color: var(--accent-blue);
+      box-shadow: 0 0 0 3px rgba(56, 152, 236, 0.08);
+    }
+
+    .ads-slot-toggle {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      min-width: 60px;
+    }
+    .ads-slot-toggle-label {
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+    .ads-slot-status {
+      font-size: 10px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+    }
+    .ads-slot-status.active {
+      color: var(--accent-green, #34d399);
+    }
+    .ads-slot-status.inactive {
+      color: var(--text-muted);
+    }
+
+    @media (max-width: 768px) {
+      .ads-slot-card {
+        grid-template-columns: 1fr;
+        gap: 12px;
+      }
+    }
+
+    /* ═══ Preview ═══ */
+    .ads-preview-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+    @media (max-width: 900px) {
+      .ads-preview-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    .ads-preview-card {
+      border: 1px solid var(--border-subtle);
+      border-radius: 10px;
+      overflow: hidden;
+      background: var(--bg-deep);
+      transition: all 0.2s ease;
+    }
+    .ads-preview-card:hover {
+      border-color: var(--border-medium, rgba(99, 130, 190, 0.25));
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+    }
+    .ads-preview-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 14px;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      background: rgba(99, 130, 190, 0.04);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    .ads-preview-title svg {
+      opacity: 0.5;
+    }
+    .ads-preview-body {
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+    .ads-preview-bar {
+      padding: 6px 10px;
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      text-align: center;
+      border-radius: 5px;
+    }
+    .ads-preview-bar.top {
+      background: rgba(56, 152, 236, 0.06);
+      color: rgba(96, 165, 250, 0.7);
+    }
+    .ads-preview-bar.bottom {
+      background: rgba(99, 130, 190, 0.04);
+      color: var(--text-muted);
+    }
+    .ads-preview-slot {
+      padding: 8px 10px;
+      background: rgba(251, 191, 36, 0.04);
+      border: 1px dashed rgba(251, 191, 36, 0.2);
+      border-radius: 5px;
+      text-align: center;
+      font-size: 10px;
+      font-weight: 700;
+      color: rgba(251, 191, 36, 0.6);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      transition: all 0.3s ease;
+    }
+    .ads-preview-slot.preview-active {
+      background: rgba(251, 191, 36, 0.1);
+      border-color: rgba(251, 191, 36, 0.4);
+      color: #fbbf24;
+      box-shadow: 0 0 8px rgba(251, 191, 36, 0.06);
+    }
+    .ads-preview-slot.preview-inactive {
+      opacity: 0.35;
+    }
+    .ads-preview-block {
+      padding: 14px 10px;
+      background: var(--bg-surface);
+      border-radius: 5px;
+      font-size: 10px;
+      color: var(--text-muted);
+      text-align: center;
+      font-weight: 500;
+    }
+    .ads-preview-block.hero {
+      padding: 20px 10px;
+      background: linear-gradient(
+        135deg,
+        rgba(56, 152, 236, 0.06),
+        rgba(124, 91, 240, 0.06)
+      );
+    }
+    .ads-preview-block.small {
+      padding: 10px;
+    }
+
+    .ads-preview-two-col {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 4px;
+    }
+    .ads-preview-main {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .ads-preview-side {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .ads-preview-slot.slot-sidebar {
+      margin: 0;
+    }
+
+    /* ═══ Form Layout ═══ */
+    .form-row-2col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+    @media (max-width: 768px) {
+      .form-row-2col {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+
+  <script is:inline>
+    const API_URL = "/api/admin/ads-settings";
+    let currentConfig = {};
+    let isDirty = false;
+
+    // DOM
+    const container = document.getElementById("settings-container");
+    const loading = document.getElementById("settings-loading");
+    const saveBtn = document.getElementById("save-all-btn");
+    const saveStatus = document.getElementById("save-status");
+    const slotsGrid = document.getElementById("ad-slots-list");
+
+    function markDirty() {
+      isDirty = true;
+      saveBtn.disabled = false;
+      saveStatus.textContent = "Unsaved changes";
+      saveStatus.style.color = "#fbbf24";
+    }
+
+    function markClean() {
+      isDirty = false;
+      saveBtn.disabled = true;
+      saveStatus.textContent = "All changes saved";
+      saveStatus.style.color = "#34d399";
+      setTimeout(() => {
+        if (!isDirty) {
+          saveStatus.textContent = "No unsaved changes";
+          saveStatus.style.color = "";
+        }
+      }, 3000);
+    }
+
+    function updateSlotCounter() {
+      const slots = currentConfig.slots || {};
+      const total = Object.keys(slots).length;
+      const active = Object.values(slots).filter((s) => s.enabled).length;
+      const totalEl = document.getElementById("total-slot-count");
+      const activeEl = document.getElementById("active-slot-count");
+      if (totalEl) totalEl.textContent = total;
+      if (activeEl) activeEl.textContent = active;
+    }
+
+    function renderSlots(slots) {
+      if (!slotsGrid) return;
+      slotsGrid.innerHTML = "";
+
+      for (const [key, slot] of Object.entries(slots)) {
+        const card = document.createElement("div");
+        card.className = `ads-slot-card ${slot.enabled ? "slot-enabled" : ""}`;
+        card.innerHTML = `
+          <div class="ads-slot-meta">
+            <div class="ads-slot-name">${slot.label}</div>
+            <div class="ads-slot-desc">${slot.description}</div>
+            <span class="ads-slot-badge ${slot.format}">${slot.format}</span>
+          </div>
+          <div class="ads-slot-input-group">
+            <label>Ad Slot ID</label>
+            <input type="text" data-key="${key}" value="${slot.slotId || ""}" placeholder="e.g. 1234567890" class="slot-id-input" />
+          </div>
+          <div class="ads-slot-toggle">
+            <span class="ads-slot-toggle-label">Active</span>
+            <label class="ads-toggle">
+              <input type="checkbox" data-key="${key}" ${slot.enabled ? "checked" : ""} class="slot-enabled-input" />
+              <span class="ads-toggle-track">
+                <span class="ads-toggle-thumb"></span>
+              </span>
+            </label>
+            <span class="ads-slot-status ${slot.enabled ? "active" : "inactive"}">${slot.enabled ? "ON" : "OFF"}</span>
+          </div>
+        `;
+        slotsGrid.appendChild(card);
+      }
+
+      // Events
+      document.querySelectorAll(".slot-id-input").forEach((input) => {
+        input.addEventListener("input", () => {
+          const key = input.dataset.key;
+          currentConfig.slots[key].slotId = input.value;
+          markDirty();
+        });
+      });
+
+      document.querySelectorAll(".slot-enabled-input").forEach((input) => {
+        input.addEventListener("change", () => {
+          const key = input.dataset.key;
+          currentConfig.slots[key].enabled = input.checked;
+          const card = input.closest(".ads-slot-card");
+          const status = card.querySelector(".ads-slot-status");
+          card.classList.toggle("slot-enabled", input.checked);
+          status.className = `ads-slot-status ${input.checked ? "active" : "inactive"}`;
+          status.textContent = input.checked ? "ON" : "OFF";
+          updatePreview();
+          updateSlotCounter();
+          markDirty();
+        });
+      });
+    }
+
+    function updatePreview() {
+      document.querySelectorAll(".ads-preview-slot").forEach((el) => {
+        const slot = el.dataset.slot;
+        if (currentConfig.slots && currentConfig.slots[slot]) {
+          const isEnabled = currentConfig.slots[slot].enabled;
+          el.classList.toggle("preview-active", isEnabled);
+          el.classList.toggle("preview-inactive", !isEnabled);
+        }
+      });
+    }
+
+    async function loadSettings() {
+      try {
+        const res = await fetch(API_URL);
+        if (!res.ok) throw new Error("Failed to load");
+        currentConfig = await res.json();
+
+        // Populate
+        document.getElementById("publisher-id").value =
+          currentConfig.publisherId || "";
+        document.getElementById("auto-ads").checked =
+          currentConfig.autoAds || false;
+        document.getElementById("custom-script").value =
+          currentConfig.customScript || "";
+
+        // Render slots
+        if (currentConfig.slots) {
+          renderSlots(currentConfig.slots);
+        }
+
+        updatePreview();
+        updateSlotCounter();
+
+        loading.style.display = "none";
+        container.style.display = "";
+      } catch (err) {
+        loading.innerHTML = `<p style="color:var(--accent-red)">Failed to load settings: ${err.message}</p>`;
+      }
+    }
+
+    async function saveSettings() {
+      try {
+        saveBtn.disabled = true;
+        saveBtn.querySelector(".btn-text").textContent = "Saving...";
+
+        currentConfig.publisherId = document
+          .getElementById("publisher-id")
+          .value.trim();
+        currentConfig.autoAds = document.getElementById("auto-ads").checked;
+        currentConfig.customScript =
+          document.getElementById("custom-script").value;
+
+        const res = await fetch(API_URL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(currentConfig),
+        });
+
+        if (!res.ok) {
+          const err = await res.json();
+          throw new Error(err.error || "Save failed");
+        }
+
+        markClean();
+      } catch (err) {
+        alert("Error saving: " + err.message);
+        saveBtn.disabled = false;
+      } finally {
+        saveBtn.querySelector(".btn-text").textContent = "Save All Settings";
+      }
+    }
+
+    // Events
+    saveBtn.addEventListener("click", saveSettings);
+
+    document.getElementById("publisher-id").addEventListener("input", () => {
+      currentConfig.publisherId = document
+        .getElementById("publisher-id")
+        .value.trim();
+      markDirty();
+    });
+
+    document.getElementById("auto-ads").addEventListener("change", () => {
+      currentConfig.autoAds = document.getElementById("auto-ads").checked;
+      markDirty();
+    });
+
+    document.getElementById("custom-script").addEventListener("input", () => {
+      currentConfig.customScript =
+        document.getElementById("custom-script").value;
+      markDirty();
+    });
+
+    // Init
+    loadSettings();
+  </script>
+</AdminLayout>

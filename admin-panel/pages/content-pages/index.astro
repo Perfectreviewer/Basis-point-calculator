@@ -1,0 +1,1054 @@
+---
+// Content Pages Manager — Text Content Editor for ALL site pages
+import AdminLayout from "@admin/components/AdminLayout.astro";
+import {
+  ensureDataDir,
+  listPageFiles,
+  readPageFile,
+  listSitePages,
+  readSitePageContent,
+  readI18nFile,
+} from "@admin/utils/storage";
+import { extractTextContent } from "@admin/utils/text-extractor";
+import { getSessionFromCookies, validateSessionToken } from "@admin/utils/auth";
+import { hasPermission } from "@admin/utils/roles";
+import type { Role } from "@admin/utils/roles";
+
+export const prerender = false;
+
+const session = getSessionFromCookies(Astro.request.headers.get("cookie"));
+let user = null;
+if (session) user = await validateSessionToken(session);
+if (!user) return Astro.redirect("/admin/login/");
+
+const canWrite = hasPermission(user.role as Role, "pages:write");
+ensureDataDir();
+
+// ─── Determine view mode ───
+const editMode = Astro.url.searchParams.get("edit"); // 'translations' | 'faqs' | 'site:path'
+const showEditor = !!editMode;
+
+// Pre-load data for the editor
+let i18nData: any = null;
+let faqsData: any = null;
+let siteEditContent = '';
+let siteEditPath = '';
+let extractedContent: any = null;
+
+if (editMode === 'translations') {
+  i18nData = readI18nFile('index.json');
+} else if (editMode === 'faqs') {
+  faqsData = readI18nFile('faqs.json');
+} else if (editMode?.startsWith('site:')) {
+  siteEditPath = editMode.replace('site:', '');
+  siteEditContent = readSitePageContent(siteEditPath);
+  if (siteEditContent) {
+    extractedContent = extractTextContent(siteEditContent);
+  }
+}
+
+// Available languages
+const sampleI18n = readI18nFile('index.json');
+const availableLanguages = sampleI18n ? Object.keys(sampleI18n) : ['en'];
+const langNames: Record<string, string> = {
+  en: '🇬🇧 English', hi: '🇮🇳 Hindi', es: '🇪🇸 Spanish', ru: '🇷🇺 Russian',
+  fr: '🇫🇷 French', de: '🇩🇪 German', it: '🇮🇹 Italian', pt: '🇵🇹 Portuguese',
+  bn: '🇧🇩 Bengali', ja: '🇯🇵 Japanese', ko: '🇰🇷 Korean', ms: '🇲🇾 Malay',
+  pl: '🇵🇱 Polish', id: '🇮🇩 Indonesian', ar: '🇸🇦 Arabic', bg: '🇧🇬 Bulgarian',
+  tr: '🇹🇷 Turkish', sv: '🇸🇪 Swedish',
+};
+
+// ─── Get all site pages for the list view ───
+const sitePages = listSitePages();
+const categoryMap: Record<string, { relativePath: string; name: string; isIndex: boolean }[]> = {};
+
+for (const page of sitePages) {
+  const parts = page.relativePath.split('/');
+  let category = 'Root';
+  let name = page.relativePath;
+  let isIndex = false;
+  if (parts.length === 1) {
+    name = parts[0].replace('.astro', '');
+    if (name === 'index') { category = 'Root'; isIndex = true; name = 'Homepage'; }
+  } else {
+    category = parts[0];
+    name = parts[parts.length - 1].replace('.astro', '');
+    isIndex = name === 'index';
+    if (isIndex) name = parts.slice(0, -1).join('/') + ' (index)';
+  }
+  if (!categoryMap[category]) categoryMap[category] = [];
+  categoryMap[category].push({ relativePath: page.relativePath, name, isIndex });
+}
+
+const sortedCategories = Object.keys(categoryMap).sort((a, b) => {
+  if (a === 'Root') return -1;
+  if (b === 'Root') return 1;
+  return a.localeCompare(b);
+});
+
+const categoryLabels: Record<string, string> = {
+  'Root': '🏠 Root Pages', 'about': '📋 About',
+  'bps-calculators': '📊 Basis Point Calculators',
+  'blog': '✍️ Blog', 'bond-calculators': '📈 Bond Calculators',
+  'calculators': '🧮 Calculators Hub', 'faq': '❓ FAQ',
+  'guides': '📖 Guides', 'interest-rate-calculators': '💰 Interest Rate Calculators',
+  'investment-calculators': '📉 Investment Calculators',
+  'legal': '⚖️ Legal', 'loan-calculators': '🏦 Loan Calculators',
+};
+
+// Determine what content types exist in the extracted content
+const hasTitle = !!extractedContent?.pageTitle;
+const hasDesc = !!extractedContent?.pageDescription;
+const hasFaqs = extractedContent?.faqs?.length > 0;
+const hasLinks = extractedContent?.links?.length > 0;
+const hasTrustSignals = extractedContent?.trustSignals?.length > 0;
+const hasCategories = extractedContent?.categories?.length > 0;
+const hasRelated = extractedContent?.relatedCalculators?.length > 0;
+const hasHtmlSections = extractedContent?.htmlSections?.length > 0;
+const hasAnyContent = hasTitle || hasDesc || hasFaqs || hasLinks || hasTrustSignals || hasCategories || hasRelated;
+
+// Translation field labels
+const translationGroups = [
+  { title: '🏷️ Site & Page Metadata', keys: ['site_title', 'footer_description', 'index_title', 'index_description'] },
+  { title: '📊 Calculator Labels', keys: ['basis_point_calculator', 'calculator_desc', 'decimal_value', 'dec', 'percent', 'permille', 'basis_points', 'bps'] },
+  { title: '🔢 Input Labels', keys: ['what_is_x_bps_of_y', 'x_bps', 'decimal', 'of_ellipsis', 'equals_ellipsis', 'example_label'] },
+  { title: '📝 Content Sections', keys: ['how_it_works_title', 'how_it_works_p1', 'why_use_bps_title', 'why_use_bps_p', 'quick_relations_title'] },
+  { title: '📚 Educational Sections', keys: ['what_is_bps_title', 'what_is_bps_p', 'why_have_bps_title', 'why_have_bps_p', 'how_convert_title', 'how_convert_p', 'where_used_title', 'where_used_p'] },
+  { title: '🔄 Result Templates', keys: ['increased', 'decreased', 'result_line1', 'result_line2', 'result_line3'] },
+];
+const translationLabels: Record<string, string> = {
+  site_title: 'Site Title', footer_description: 'Footer Description',
+  index_title: 'Homepage Title', index_description: 'Homepage Meta Description',
+  basis_point_calculator: 'Calculator Heading', calculator_desc: 'Calculator Subtitle',
+  decimal_value: 'Label: Decimal Value', dec: 'Label: Dec',
+  percent: 'Label: Percent', permille: 'Label: Permille',
+  basis_points: 'Label: Basis Points', bps: 'Label: BPS',
+  what_is_x_bps_of_y: 'Label: What is x bps of y?', x_bps: 'Label: x bps',
+  decimal: 'Label: Decimal', of_ellipsis: 'Label: of…', equals_ellipsis: 'Label: equals…',
+  example_label: 'Label: Example',
+  how_it_works_title: 'How It Works Title', how_it_works_p1: 'How It Works Body',
+  why_use_bps_title: 'Why Use BPS Title', why_use_bps_p: 'Why Use BPS Body',
+  quick_relations_title: 'Quick Relations Title',
+  what_is_bps_title: 'What Is BPS Title', what_is_bps_p: 'What Is BPS Body',
+  why_have_bps_title: 'Why Have BPS Title', why_have_bps_p: 'Why Have BPS Body',
+  how_convert_title: 'How To Convert Title', how_convert_p: 'How To Convert Body',
+  where_used_title: 'Where Used Title', where_used_p: 'Where Used Body',
+  increased: 'Word: Increased', decreased: 'Word: Decreased',
+  result_line1: 'Result Line 1', result_line2: 'Result Line 2', result_line3: 'Result Line 3',
+};
+
+// Make page name pretty
+const pagePrettyName = siteEditPath ? siteEditPath.replace(/\.astro$/, '').replace(/\//g, ' / ').replace(/(^|\s)\w/g, c => c.toUpperCase()) : '';
+---
+
+<AdminLayout title={showEditor ? (editMode === 'translations' ? 'Edit Translations' : editMode === 'faqs' ? 'Edit FAQs' : `Edit: ${pagePrettyName}`) : 'Pages'} activeNav="content-pages">
+
+  {editMode?.startsWith('site:') && extractedContent ? (
+    <!-- ─── TEXT CONTENT EDITOR FOR ANY SITE PAGE ─── -->
+    <div class="editor-wrap">
+      <div class="editor-topbar">
+        <a href="/admin/content-pages/" class="back-link">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+          All Pages
+        </a>
+        <div class="topbar-actions">
+          <span class="file-badge site">{siteEditPath}</span>
+          <span id="saveStatus" class="save-status"></span>
+          <button id="saveBtn" class="btn-primary" onclick="saveTextContent()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+            Save Changes
+          </button>
+        </div>
+      </div>
+
+      <!-- PAGE TITLE & DESCRIPTION -->
+      {(hasTitle || hasDesc) && (
+        <div class="t-section">
+          <h3 class="t-section-title">🏷️ Page Title & Description</h3>
+          <div class="t-fields">
+            {hasTitle && (
+              <div class="t-field">
+                <label class="t-label">Page Title</label>
+                <input type="text" class="t-input" id="field-pageTitle" value={extractedContent.pageTitle} />
+              </div>
+            )}
+            {hasDesc && (
+              <div class="t-field">
+                <label class="t-label">Page Description (SEO)</label>
+                <textarea class="t-input t-textarea" id="field-pageDescription" rows="3">{extractedContent.pageDescription}</textarea>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
+      <!-- FAQ ITEMS -->
+      {hasFaqs && (
+        <div class="t-section">
+          <h3 class="t-section-title">❓ FAQ Questions & Answers <span class="section-count">{extractedContent.faqs.length} items</span></h3>
+          <div id="faqContainer" class="faq-editor-inner">
+            {extractedContent.faqs.map((faq: any, i: number) => (
+              <div class="faq-item" data-index={i}>
+                <div class="faq-item-header">
+                  <span class="faq-number">{i + 1}</span>
+                  <button class="faq-remove-btn" onclick={`removeFaq(${i})`} title="Remove">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+                  </button>
+                </div>
+                <div class="faq-fields">
+                  <div class="faq-field">
+                    <label class="t-label">Question</label>
+                    <input type="text" class="t-input faq-q" value={faq.question} />
+                  </div>
+                  <div class="faq-field">
+                    <label class="t-label">Answer</label>
+                    <textarea class="t-input t-textarea faq-a" rows="3">{faq.answer}</textarea>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+          <button class="add-faq-btn" onclick="addFaq()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+            Add Question
+          </button>
+        </div>
+      )}
+
+      <!-- LINKS (hub pages) -->
+      {hasLinks && (
+        <div class="t-section">
+          <h3 class="t-section-title">🔗 Page Links <span class="section-count">{extractedContent.links.length} items</span></h3>
+          <div class="t-fields">
+            {extractedContent.links.map((link: any, i: number) => (
+              <div class="link-item" data-index={i}>
+                <div class="link-item-inner">
+                  <div class="faq-field">
+                    <label class="t-label">Title</label>
+                    <input type="text" class="t-input link-title" value={link.title} />
+                  </div>
+                  <div class="faq-field">
+                    <label class="t-label">Description</label>
+                    <textarea class="t-input t-textarea link-desc" rows="2">{link.description}</textarea>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      <!-- TRUST SIGNALS -->
+      {hasTrustSignals && (
+        <div class="t-section">
+          <h3 class="t-section-title">✅ Trust Signals <span class="section-count">{extractedContent.trustSignals.length} items</span></h3>
+          <div class="t-fields">
+            {extractedContent.trustSignals.map((ts: any, i: number) => (
+              <div class="link-item" data-index={i}>
+                <div class="link-item-inner">
+                  <div class="faq-field">
+                    <label class="t-label">Title</label>
+                    <input type="text" class="t-input ts-title" value={ts.title} />
+                  </div>
+                  <div class="faq-field">
+                    <label class="t-label">Description</label>
+                    <textarea class="t-input t-textarea ts-desc" rows="2">{ts.description}</textarea>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      <!-- CATEGORIES (calculators hub) -->
+      {hasCategories && (
+        <div class="t-section">
+          <h3 class="t-section-title">📁 Categories <span class="section-count">{extractedContent.categories.length} items</span></h3>
+          <div class="t-fields">
+            {extractedContent.categories.map((cat: any, i: number) => (
+              <div class="link-item" data-index={i}>
+                <div class="link-item-inner">
+                  <div class="faq-field">
+                    <label class="t-label">Name</label>
+                    <input type="text" class="t-input cat-name" value={cat.name} />
+                  </div>
+                  <div class="faq-field">
+                    <label class="t-label">Description</label>
+                    <textarea class="t-input t-textarea cat-desc" rows="2">{cat.description}</textarea>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      <!-- RELATED CALCULATORS -->
+      {hasRelated && (
+        <div class="t-section">
+          <h3 class="t-section-title">🔗 Related Calculators <span class="section-count">{extractedContent.relatedCalculators.length} items</span></h3>
+          <div class="t-fields">
+            {extractedContent.relatedCalculators.map((rc: any, i: number) => (
+              <div class="t-field">
+                <label class="t-label">Calculator {i + 1}</label>
+                <input type="text" class="t-input rc-name" value={rc.name} />
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      <!-- HTML TEXT SECTIONS -->
+      {hasHtmlSections && (
+        <div class="t-section">
+          <h3 class="t-section-title">📄 Page Content Text <span class="section-count">{extractedContent.htmlSections.length} items</span></h3>
+          <div class="t-fields">
+            {extractedContent.htmlSections.map((sec: any, i: number) => (
+              <div class="t-field" data-line={sec.line}>
+                <label class="t-label">
+                  {sec.tag === 'h1' ? '🔤 Heading 1' : sec.tag === 'h2' ? '🔤 Heading 2' : sec.tag === 'h3' ? '🔤 Heading 3' : '📝 Paragraph'}
+                  <span class="t-key-badge">Line {sec.line}</span>
+                </label>
+                {sec.tag.startsWith('h') ? (
+                  <input type="text" class="t-input html-text" data-original={sec.text} data-line={sec.line} value={sec.text} />
+                ) : (
+                  <textarea class="t-input t-textarea html-text" data-original={sec.text} data-line={sec.line} rows="3">{sec.text}</textarea>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {!hasAnyContent && (
+        <div class="empty-state">
+          <div class="empty-icon">📄</div>
+          <h3>No editable text content found</h3>
+          <p>This page doesn't have extractable text fields in its frontmatter. It may use a different content structure.</p>
+        </div>
+      )}
+    </div>
+
+  ) : editMode === 'translations' ? (
+    <!-- ─── TRANSLATIONS EDITOR ─── -->
+    <div class="editor-wrap">
+      <div class="editor-topbar">
+        <a href="/admin/content-pages/" class="back-link">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+          All Pages
+        </a>
+        <div class="topbar-actions">
+          <span class="file-badge translations">🌐 Translations</span>
+          <span id="saveStatus" class="save-status"></span>
+          <button id="saveBtn" class="btn-primary" onclick="saveTranslations()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+            Save Changes
+          </button>
+        </div>
+      </div>
+      <div class="lang-selector-wrap">
+        <label class="lang-label">Language:</label>
+        <select id="langSelect" class="lang-select" onchange="switchLang(this.value)">
+          {availableLanguages.map(lang => (
+            <option value={lang} selected={lang === 'en'}>{langNames[lang] || lang}</option>
+          ))}
+        </select>
+        <span class="lang-hint">Edit text content for each language. Changes are saved per language.</span>
+      </div>
+      <div id="translationFields" class="translation-sections">
+        {translationGroups.map(group => (
+          <div class="t-section">
+            <h3 class="t-section-title">{group.title}</h3>
+            <div class="t-fields">
+              {group.keys.map(key => (
+                <div class="t-field" data-key={key}>
+                  <label class="t-label">{translationLabels[key] || key}</label>
+                  <div class="t-key-badge">{key}</div>
+                  {(key.includes('_p') || key.includes('line') || key === 'footer_description' || key === 'index_description') ? (
+                    <textarea class="t-input t-textarea" data-key={key} rows="3" placeholder={`Enter ${translationLabels[key] || key}...`}></textarea>
+                  ) : (
+                    <input type="text" class="t-input" data-key={key} placeholder={`Enter ${translationLabels[key] || key}...`} />
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+
+  ) : editMode === 'faqs' ? (
+    <!-- ─── I18N FAQ EDITOR ─── -->
+    <div class="editor-wrap">
+      <div class="editor-topbar">
+        <a href="/admin/content-pages/" class="back-link">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+          All Pages
+        </a>
+        <div class="topbar-actions">
+          <span class="file-badge faqs">❓ Homepage FAQs</span>
+          <span id="saveStatus" class="save-status"></span>
+          <button id="saveBtn" class="btn-primary" onclick="saveFaqs()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+            Save Changes
+          </button>
+        </div>
+      </div>
+      <div class="lang-selector-wrap">
+        <label class="lang-label">Language:</label>
+        <select id="langSelect" class="lang-select" onchange="switchFaqLang(this.value)">
+          {availableLanguages.map(lang => (
+            <option value={lang} selected={lang === 'en'}>{langNames[lang] || lang}</option>
+          ))}
+        </select>
+        <span class="lang-hint">Edit FAQ questions &amp; answers for each language.</span>
+      </div>
+      <div id="faqContainer" class="faq-editor-inner">
+        <!-- Rendered by JS -->
+      </div>
+      <button class="add-faq-btn" onclick="addFaq()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+        Add Question
+      </button>
+    </div>
+
+  ) : (
+    <!-- ─── PAGES LIST ─── -->
+    <div class="pages-list-wrap">
+      <!-- Hero Header -->
+      <div class="pages-hero">
+        <div class="pages-hero-left">
+          <h1 class="pages-hero-title">Pages</h1>
+          <p class="pages-hero-sub">Manage text content, translations, and FAQs across your site</p>
+        </div>
+        <div class="pages-hero-stats">
+          <div class="hero-stat">
+            <span class="hero-stat-num">{sitePages.length}</span>
+            <span class="hero-stat-label">Site Pages</span>
+          </div>
+          <div class="hero-stat">
+            <span class="hero-stat-num">{sortedCategories.length}</span>
+            <span class="hero-stat-label">Categories</span>
+          </div>
+          <div class="hero-stat">
+            <span class="hero-stat-num">{availableLanguages.length}</span>
+            <span class="hero-stat-label">Languages</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Search Bar -->
+      <div class="pages-search-bar">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+        <input type="text" class="pages-search" id="pageSearch" placeholder="Search pages, categories..." oninput="filterPages(this.value)" />
+      </div>
+
+      <!-- Global Content Cards -->
+      <div class="global-content-grid">
+        <a href="/admin/content-pages/?edit=translations" class="global-card gc-translations" data-search="translations i18n text content labels">
+          <div class="gc-icon">🌐</div>
+          <div class="gc-info">
+            <span class="gc-title">Site Translations</span>
+            <span class="gc-desc">Calculator labels, section titles, UI strings</span>
+          </div>
+          <div class="gc-meta">
+            <span class="gc-badge gc-badge-green">{availableLanguages.length} langs</span>
+            <svg class="gc-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </div>
+        </a>
+        <a href="/admin/content-pages/?edit=faqs" class="global-card gc-faqs" data-search="faqs questions answers frequently asked">
+          <div class="gc-icon">❓</div>
+          <div class="gc-info">
+            <span class="gc-title">Homepage FAQs</span>
+            <span class="gc-desc">FAQ question & answer pairs</span>
+          </div>
+          <div class="gc-meta">
+            <span class="gc-badge gc-badge-amber">{availableLanguages.length} langs</span>
+            <svg class="gc-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </div>
+        </a>
+      </div>
+
+      <!-- Site Pages by Category -->
+      {sortedCategories.map(cat => (
+        <div class="category-section" data-category={cat}>
+          <div class="category-header">
+            <div class="cat-header-left">
+              <h3 class="category-title">{categoryLabels[cat] || `📁 ${cat}`}</h3>
+              <span class="category-count">{categoryMap[cat].length} page{categoryMap[cat].length !== 1 ? 's' : ''}</span>
+            </div>
+          </div>
+          <div class="category-pages">
+            {categoryMap[cat].map(page => (
+              <a href={`/admin/content-pages/?edit=site:${encodeURIComponent(page.relativePath)}`}
+                 class="page-row" data-search={`${page.name} ${page.relativePath} ${cat}`}>
+                <div class={`page-row-icon ${page.isIndex ? 'pri' : ''}`}>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    {page.isIndex ? (
+                      <><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></>
+                    ) : (
+                      <><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></>
+                    )}
+                  </svg>
+                </div>
+                <div class="page-row-info">
+                  <span class="page-row-name">{page.name}</span>
+                  <span class="page-row-path">{page.relativePath}</span>
+                </div>
+                <span class="page-row-action">Edit Text</span>
+                <svg class="page-row-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+              </a>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  )}
+
+  <script is:inline define:vars={{
+    editMode: editMode || '',
+    i18nDataStr: JSON.stringify(i18nData),
+    faqsDataStr: JSON.stringify(faqsData),
+    siteEditPath,
+    extractedStr: JSON.stringify(extractedContent),
+  }}>
+    const i18nData = JSON.parse(i18nDataStr || 'null');
+    const faqsData = JSON.parse(faqsDataStr || 'null');
+    const extracted = JSON.parse(extractedStr || 'null');
+    let currentLang = 'en';
+
+    function showStatus(msg, type) {
+      const el = document.getElementById('saveStatus');
+      if (!el) return;
+      el.textContent = msg;
+      el.className = 'save-status ' + type;
+      if (type === 'saved') setTimeout(() => { el.textContent = ''; el.className = 'save-status'; }, 3000);
+    }
+
+    function escapeHtml(str) {
+      const div = document.createElement('div');
+      div.textContent = str || '';
+      return div.innerHTML;
+    }
+
+    // ─── Site page text content save ───
+    async function saveTextContent() {
+      showStatus('Saving...', 'saving');
+      
+      const updates = {};
+      
+      // Collect pageTitle
+      const titleEl = document.getElementById('field-pageTitle');
+      if (titleEl) updates.pageTitle = titleEl.value;
+      
+      // Collect pageDescription
+      const descEl = document.getElementById('field-pageDescription');
+      if (descEl) updates.pageDescription = descEl.value;
+      
+      // Collect FAQs
+      const faqItems = document.querySelectorAll('#faqContainer .faq-item, .faq-editor-inner .faq-item');
+      if (faqItems.length > 0) {
+        updates.faqs = [];
+        faqItems.forEach(item => {
+          const q = item.querySelector('.faq-q')?.value?.trim();
+          const a = item.querySelector('.faq-a')?.value?.trim();
+          if (q || a) updates.faqs.push({ question: q || '', answer: a || '' });
+        });
+      }
+      
+      // Collect links
+      const linkItems = document.querySelectorAll('.link-title');
+      if (linkItems.length > 0) {
+        updates.links = [];
+        document.querySelectorAll('.link-item').forEach(item => {
+          const title = item.querySelector('.link-title')?.value?.trim();
+          const desc = item.querySelector('.link-desc')?.value?.trim();
+          if (title) updates.links.push({ title, description: desc || '' });
+        });
+      }
+      
+      // Collect trust signals
+      const tsItems = document.querySelectorAll('.ts-title');
+      if (tsItems.length > 0) {
+        updates.trustSignals = [];
+        document.querySelectorAll('.link-item').forEach(item => {
+          const title = item.querySelector('.ts-title')?.value?.trim();
+          const desc = item.querySelector('.ts-desc')?.value?.trim();
+          if (title) updates.trustSignals.push({ title, description: desc || '' });
+        });
+      }
+      
+      // Collect HTML sections
+      const htmlTextEls = document.querySelectorAll('.html-text');
+      if (htmlTextEls.length > 0) {
+        updates.htmlSections = [];
+        htmlTextEls.forEach(el => {
+          updates.htmlSections.push({
+            text: el.value,
+            originalText: el.dataset.original,
+            line: parseInt(el.dataset.line),
+          });
+        });
+      }
+      
+      try {
+        const res = await fetch('/api/content-pages/save-text-content', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ relativePath: siteEditPath, updates }),
+        });
+        const result = await res.json();
+        if (result.success) {
+          showStatus('✓ Saved', 'saved');
+        } else {
+          showStatus('Error: ' + result.error, 'error');
+        }
+      } catch (err) {
+        showStatus('Failed to save', 'error');
+      }
+    }
+
+    // ─── FAQ management for site pages ───
+    function addFaq() {
+      const container = document.getElementById('faqContainer') || document.querySelector('.faq-editor-inner');
+      if (!container) return;
+      const count = container.querySelectorAll('.faq-item').length;
+      container.insertAdjacentHTML('beforeend', `
+        <div class="faq-item" data-index="${count}">
+          <div class="faq-item-header">
+            <span class="faq-number">${count + 1}</span>
+            <button class="faq-remove-btn" onclick="removeFaq(${count})" title="Remove">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+            </button>
+          </div>
+          <div class="faq-fields">
+            <div class="faq-field"><label class="t-label">Question</label><input type="text" class="t-input faq-q" value="" placeholder="Enter question..." /></div>
+            <div class="faq-field"><label class="t-label">Answer</label><textarea class="t-input t-textarea faq-a" rows="3" placeholder="Enter answer..."></textarea></div>
+          </div>
+        </div>
+      `);
+    }
+
+    function removeFaq(index) {
+      const items = document.querySelectorAll('.faq-item');
+      if (items[index]) items[index].remove();
+      document.querySelectorAll('.faq-item').forEach((el, i) => {
+        const num = el.querySelector('.faq-number');
+        if (num) num.textContent = i + 1;
+      });
+    }
+
+    // ─── Translations editor ───
+    if (editMode === 'translations' && i18nData) {
+      loadTranslations('en');
+    }
+
+    function loadTranslations(lang) {
+      currentLang = lang;
+      const data = i18nData[lang] || {};
+      document.querySelectorAll('.t-input[data-key]').forEach(el => {
+        const key = el.dataset.key;
+        if (key && data[key] !== undefined) el.value = data[key];
+        else el.value = '';
+      });
+    }
+
+    function switchLang(lang) { loadTranslations(lang); }
+
+    async function saveTranslations() {
+      showStatus('Saving...', 'saving');
+      const data = {};
+      document.querySelectorAll('.t-input[data-key]').forEach(el => {
+        const key = el.dataset.key;
+        if (key && el.value.trim()) data[key] = el.value;
+      });
+      try {
+        const res = await fetch('/api/content-pages/save-i18n', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ file: 'index.json', locale: currentLang, data }),
+        });
+        const result = await res.json();
+        if (result.success) {
+          if (!i18nData[currentLang]) i18nData[currentLang] = {};
+          Object.assign(i18nData[currentLang], data);
+          showStatus('✓ Saved', 'saved');
+        } else showStatus('Error: ' + result.error, 'error');
+      } catch (err) { showStatus('Failed to save', 'error'); }
+    }
+
+    // ─── i18n FAQs editor ───
+    if (editMode === 'faqs' && faqsData) {
+      loadFaqs('en');
+    }
+
+    function loadFaqs(lang) {
+      currentLang = lang;
+      const faqs = faqsData[lang]?.faqs || [];
+      renderFaqs(faqs);
+    }
+
+    function switchFaqLang(lang) { loadFaqs(lang); }
+
+    function renderFaqs(faqs) {
+      const container = document.getElementById('faqContainer');
+      if (!container) return;
+      container.innerHTML = faqs.map((faq, i) => `
+        <div class="faq-item" data-index="${i}">
+          <div class="faq-item-header">
+            <span class="faq-number">${i + 1}</span>
+            <button class="faq-remove-btn" onclick="removeFaq(${i})" title="Remove">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+            </button>
+          </div>
+          <div class="faq-fields">
+            <div class="faq-field"><label class="t-label">Question</label><input type="text" class="t-input faq-q" value="${escapeHtml(faq.question)}" /></div>
+            <div class="faq-field"><label class="t-label">Answer</label><textarea class="t-input t-textarea faq-a" rows="3">${escapeHtml(faq.answer)}</textarea></div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    async function saveFaqs() {
+      showStatus('Saving...', 'saving');
+      const faqs = [];
+      document.querySelectorAll('.faq-item').forEach(item => {
+        const q = item.querySelector('.faq-q')?.value?.trim();
+        const a = item.querySelector('.faq-a')?.value?.trim();
+        if (q || a) faqs.push({ question: q || '', answer: a || '' });
+      });
+      try {
+        const res = await fetch('/api/content-pages/save-i18n', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ file: 'faqs.json', locale: currentLang, data: faqs }),
+        });
+        const result = await res.json();
+        if (result.success) {
+          if (!faqsData[currentLang]) faqsData[currentLang] = { faqs: [] };
+          faqsData[currentLang].faqs = faqs;
+          showStatus('✓ Saved', 'saved');
+        } else showStatus('Error: ' + result.error, 'error');
+      } catch (err) { showStatus('Failed to save', 'error'); }
+    }
+
+    // ─── Search ───
+    function filterPages(query) {
+      const q = query.toLowerCase().trim();
+      document.querySelectorAll('.page-row').forEach(row => {
+        const search = (row.dataset.search || '').toLowerCase();
+        row.style.display = !q || search.includes(q) ? '' : 'none';
+      });
+      document.querySelectorAll('.category-section').forEach(sec => {
+        const visible = sec.querySelectorAll('.page-row:not([style*="display: none"])').length;
+        sec.style.display = visible > 0 ? '' : 'none';
+      });
+    }
+
+    // Ctrl+S shortcut
+    document.addEventListener('keydown', (e) => {
+      if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+        e.preventDefault();
+        if (editMode === 'translations') saveTranslations();
+        else if (editMode === 'faqs') saveFaqs();
+        else if (editMode.startsWith('site:')) saveTextContent();
+      }
+    });
+  </script>
+
+  <style is:global>
+    .editor-wrap { max-width: 1000px; }
+    .editor-topbar {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 16px; flex-wrap: wrap; gap: 12px;
+    }
+    .back-link {
+      display: flex; align-items: center; gap: 8px;
+      color: var(--text-secondary); font-size: 14px; font-weight: 500;
+      text-decoration: none; transition: color var(--transition);
+    }
+    .back-link:hover { color: var(--accent-blue); }
+    .topbar-actions { display: flex; align-items: center; gap: 10px; }
+    .save-status {
+      font-size: 13px; font-weight: 500;
+      padding: 6px 14px; border-radius: var(--radius-sm);
+      transition: all 0.2s;
+    }
+    .save-status.saving { color: var(--accent-amber); background: rgba(251,191,36,0.1); }
+    .save-status.saved { color: var(--accent-green); background: rgba(52,211,153,0.1); }
+    .save-status.error { color: var(--accent-red); background: rgba(248,113,113,0.1); }
+
+    .file-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 6px 14px; border-radius: 20px;
+      font-size: 12px; font-weight: 600;
+    }
+    .file-badge.site { background: rgba(56,152,236,0.1); color: var(--accent-blue); font-family: 'JetBrains Mono', monospace; font-size: 11px; }
+    .file-badge.translations { background: rgba(52,211,153,0.1); color: var(--accent-green); }
+    .file-badge.faqs { background: rgba(251,191,36,0.1); color: var(--accent-amber); }
+
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: 7px;
+      padding: 10px 18px; border-radius: var(--radius-md);
+      font-size: 13px; font-weight: 600; cursor: pointer;
+      font-family: inherit; border: none;
+      background: var(--gradient-primary); color: white;
+      box-shadow: 0 2px 8px rgba(56,152,236,0.2);
+      transition: all var(--transition); white-space: nowrap;
+    }
+    .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 4px 16px rgba(56,152,236,0.3); }
+
+    /* Language Selector */
+    .lang-selector-wrap {
+      display: flex; align-items: center; gap: 14px;
+      padding: 14px 18px; margin-bottom: 20px;
+      background: var(--bg-surface); border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg); flex-wrap: wrap;
+    }
+    .lang-label { font-size: 13px; font-weight: 600; color: var(--text-secondary); }
+    .lang-select {
+      padding: 8px 32px 8px 12px; background: var(--bg-deep);
+      border: 1px solid var(--border-subtle); border-radius: var(--radius-sm);
+      color: var(--text-primary); font-size: 14px; font-family: inherit;
+      outline: none; cursor: pointer; appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%235a6e8f' fill='none' stroke-width='1.5'/%3E%3C/svg%3E");
+      background-repeat: no-repeat; background-position: right 10px center;
+    }
+    .lang-select:focus { border-color: var(--accent-blue); }
+    .lang-hint { font-size: 12px; color: var(--text-muted); flex: 1; min-width: 200px; }
+
+    /* Text Fields & Sections */
+    .translation-sections, .t-section + .t-section { margin-top: 16px; }
+    .t-section {
+      background: var(--bg-surface); border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg); overflow: hidden; margin-bottom: 16px;
+    }
+    .t-section-title {
+      padding: 14px 18px; font-size: 14px; font-weight: 700;
+      color: var(--text-primary); border-bottom: 1px solid var(--border-subtle);
+      background: rgba(255,255,255,0.02);
+      display: flex; align-items: center; gap: 10px;
+    }
+    .section-count {
+      font-size: 11px; font-weight: 600; padding: 2px 10px; border-radius: 10px;
+      background: rgba(56,152,236,0.1); color: var(--accent-blue);
+    }
+    .t-fields { padding: 4px 18px 18px; }
+    .t-field {
+      padding: 14px 0; border-bottom: 1px solid rgba(255,255,255,0.04);
+    }
+    .t-field:last-child { border-bottom: none; }
+    .t-label {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 13px; font-weight: 600; color: var(--text-primary); margin-bottom: 6px;
+    }
+    .t-key-badge {
+      display: inline-block; font-size: 10px; font-weight: 600;
+      color: var(--text-muted); font-family: 'JetBrains Mono', monospace;
+      padding: 2px 8px; background: rgba(255,255,255,0.04); border-radius: 4px;
+    }
+    .t-input {
+      width: 100%; padding: 10px 14px; background: var(--bg-deep);
+      border: 1px solid var(--border-subtle); border-radius: var(--radius-sm);
+      color: var(--text-primary); font-size: 14px; font-family: inherit;
+      outline: none; transition: border-color 0.15s; box-sizing: border-box;
+    }
+    .t-input:focus { border-color: var(--accent-blue); }
+    .t-input::placeholder { color: var(--text-muted); }
+    .t-textarea { resize: vertical; min-height: 70px; font-size: 13px; line-height: 1.6; }
+
+    /* FAQ Editor */
+    .faq-editor-inner { display: flex; flex-direction: column; gap: 12px; padding: 16px 18px; }
+    .faq-item {
+      background: var(--bg-deep); border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md); overflow: hidden;
+    }
+    .faq-item-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 10px 16px; background: rgba(255,255,255,0.02);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    .faq-number {
+      display: flex; align-items: center; justify-content: center;
+      width: 24px; height: 24px; border-radius: 8px;
+      background: rgba(56,152,236,0.1); color: var(--accent-blue);
+      font-size: 12px; font-weight: 700;
+    }
+    .faq-remove-btn {
+      display: flex; align-items: center; justify-content: center;
+      width: 28px; height: 28px; border-radius: 6px;
+      background: transparent; border: none; color: var(--text-muted);
+      cursor: pointer; transition: all 0.15s;
+    }
+    .faq-remove-btn:hover { background: rgba(248,113,113,0.1); color: var(--accent-red); }
+    .faq-fields { padding: 14px 16px; display: flex; flex-direction: column; gap: 12px; }
+    .faq-field { display: flex; flex-direction: column; gap: 4px; }
+    .add-faq-btn {
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      padding: 14px; margin: 8px 18px 18px;
+      background: var(--bg-surface); border: 2px dashed var(--border-subtle);
+      border-radius: var(--radius-lg); color: var(--text-secondary);
+      font-size: 13px; font-weight: 600; cursor: pointer; font-family: inherit;
+      transition: all 0.15s;
+    }
+    .add-faq-btn:hover { border-color: var(--accent-blue); color: var(--accent-blue); background: rgba(56,152,236,0.04); }
+
+    /* Link Items (hub pages) */
+    .link-item {
+      padding: 14px 0; border-bottom: 1px solid rgba(255,255,255,0.04);
+    }
+    .link-item:last-child { border-bottom: none; }
+    .link-item-inner { display: flex; flex-direction: column; gap: 10px; }
+
+    /* Empty State */
+    .empty-state {
+      text-align: center; padding: 60px 20px;
+      background: var(--bg-surface); border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+    }
+    .empty-icon { font-size: 48px; margin-bottom: 16px; }
+    .empty-state h3 { font-size: 16px; color: var(--text-primary); margin-bottom: 8px; }
+    .empty-state p { font-size: 13px; color: var(--text-muted); }
+
+    /* ─── Pages List ─── */
+    .pages-list-wrap { max-width: 1000px; }
+
+    /* Hero Header */
+    .pages-hero {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 24px 28px; margin-bottom: 20px;
+      background: linear-gradient(135deg, rgba(56,152,236,0.08) 0%, rgba(139,92,246,0.06) 100%);
+      border: 1px solid rgba(56,152,236,0.12);
+      border-radius: var(--radius-lg); flex-wrap: wrap; gap: 20px;
+    }
+    .pages-hero-title {
+      font-size: 22px; font-weight: 800; color: var(--text-primary);
+      letter-spacing: -0.3px; margin: 0;
+    }
+    .pages-hero-sub {
+      font-size: 13px; color: var(--text-muted); margin: 4px 0 0;
+    }
+    .pages-hero-stats { display: flex; gap: 24px; }
+    .hero-stat { text-align: center; }
+    .hero-stat-num {
+      display: block; font-size: 22px; font-weight: 800;
+      background: linear-gradient(135deg, var(--accent-blue), #8b5cf6);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .hero-stat-label {
+      display: block; font-size: 10px; font-weight: 600;
+      color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-top: 2px;
+    }
+
+    /* Search */
+    .pages-search-bar {
+      display: flex; align-items: center; gap: 12px;
+      padding: 0 16px; margin-bottom: 20px;
+      background: var(--bg-surface); border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      transition: border-color 0.2s;
+    }
+    .pages-search-bar:focus-within { border-color: var(--accent-blue); }
+    .pages-search-bar svg { color: var(--text-muted); flex-shrink: 0; }
+    .pages-search {
+      flex: 1; padding: 13px 0; background: transparent; border: none;
+      color: var(--text-primary); font-size: 14px; font-family: inherit; outline: none;
+    }
+    .pages-search::placeholder { color: var(--text-muted); }
+
+    /* Global Content Grid */
+    .global-content-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 28px;
+    }
+    .global-card {
+      display: flex; align-items: center; gap: 14px;
+      padding: 18px 20px; border-radius: var(--radius-lg);
+      text-decoration: none; color: inherit;
+      border: 1px solid var(--border-subtle);
+      transition: all 0.2s ease;
+    }
+    .global-card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.2); }
+    .gc-translations { background: linear-gradient(135deg, rgba(52,211,153,0.06) 0%, rgba(52,211,153,0.02) 100%); }
+    .gc-translations:hover { border-color: rgba(52,211,153,0.3); }
+    .gc-faqs { background: linear-gradient(135deg, rgba(251,191,36,0.06) 0%, rgba(251,191,36,0.02) 100%); }
+    .gc-faqs:hover { border-color: rgba(251,191,36,0.3); }
+    .gc-icon { font-size: 28px; flex-shrink: 0; }
+    .gc-info { flex: 1; min-width: 0; }
+    .gc-title { display: block; font-size: 14px; font-weight: 700; color: var(--text-primary); }
+    .gc-desc { display: block; font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+    .gc-meta { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+    .gc-badge {
+      font-size: 10px; font-weight: 700; padding: 4px 10px; border-radius: 10px;
+      text-transform: uppercase; letter-spacing: 0.3px;
+    }
+    .gc-badge-green { background: rgba(52,211,153,0.12); color: var(--accent-green); }
+    .gc-badge-amber { background: rgba(251,191,36,0.12); color: var(--accent-amber); }
+    .gc-arrow { color: var(--text-muted); opacity: 0; transition: all 0.2s; }
+    .global-card:hover .gc-arrow { opacity: 1; transform: translateX(3px); }
+
+    /* Category Sections */
+    .category-section {
+      margin-bottom: 8px;
+      background: var(--bg-surface); border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg); overflow: hidden;
+    }
+    .category-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 20px;
+      background: rgba(255,255,255,0.02); border-bottom: 1px solid var(--border-subtle);
+    }
+    .cat-header-left { display: flex; align-items: center; gap: 10px; }
+    .category-title { font-size: 14px; font-weight: 700; color: var(--text-primary); margin: 0; }
+    .category-count {
+      font-size: 11px; font-weight: 600; padding: 2px 10px; border-radius: 10px;
+      background: rgba(56,152,236,0.08); color: var(--accent-blue);
+    }
+    .category-pages { display: flex; flex-direction: column; }
+    .page-row {
+      display: flex; align-items: center; gap: 14px;
+      padding: 12px 20px;
+      text-decoration: none; color: inherit;
+      transition: all 0.15s ease;
+      border-bottom: 1px solid rgba(255,255,255,0.03);
+    }
+    .page-row:last-child { border-bottom: none; }
+    .page-row:hover { background: rgba(56,152,236,0.04); }
+    .page-row-icon {
+      width: 36px; height: 36px; border-radius: 10px;
+      background: rgba(56,152,236,0.06);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; color: var(--accent-blue);
+      transition: all 0.2s;
+    }
+    .page-row-icon.pri { background: rgba(139,92,246,0.08); color: #8b5cf6; }
+    .page-row:hover .page-row-icon { background: rgba(56,152,236,0.12); }
+    .page-row:hover .page-row-icon.pri { background: rgba(139,92,246,0.15); }
+    .page-row-info { flex: 1; min-width: 0; }
+    .page-row-name {
+      display: block; font-size: 13px; font-weight: 600; color: var(--text-primary);
+      text-transform: capitalize;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .page-row-path {
+      display: block; font-size: 11px; color: var(--text-muted);
+      font-family: 'JetBrains Mono', monospace;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .page-row-action {
+      font-size: 11px; font-weight: 600; padding: 4px 12px; border-radius: 6px;
+      background: rgba(56,152,236,0.08); color: var(--accent-blue);
+      flex-shrink: 0; opacity: 0; transition: opacity 0.2s;
+    }
+    .page-row:hover .page-row-action { opacity: 1; }
+    .page-row-arrow { color: var(--text-muted); flex-shrink: 0; opacity: 0; transition: all 0.2s; }
+    .page-row:hover .page-row-arrow { opacity: 1; transform: translateX(2px); }
+
+    @media (max-width: 700px) {
+      .lang-selector-wrap { flex-direction: column; align-items: flex-start; }
+      .pages-hero { flex-direction: column; text-align: center; }
+      .pages-hero-stats { justify-content: center; }
+      .global-content-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</AdminLayout>

@@ -1,0 +1,554 @@
+---
+// Admin Dashboard
+import AdminLayout from "@admin/components/AdminLayout.astro";
+import {
+  listBlogFiles,
+  readJSON,
+  getDataDir,
+  ensureDataDir,
+} from "@admin/utils/storage";
+import { getSessionFromCookies, validateSessionToken } from "@admin/utils/auth";
+import { join } from "node:path";
+
+export const prerender = false;
+
+// Auth check
+const session = getSessionFromCookies(Astro.request.headers.get("cookie"));
+let user: any = null;
+if (session) user = await validateSessionToken(session);
+if (!user) return Astro.redirect("/admin/login/");
+
+ensureDataDir();
+const blogFiles = listBlogFiles();
+const usersFile = join(getDataDir(), "users.json");
+const seoFile = join(getDataDir(), "page-seo.json");
+const users = readJSON<any[]>(usersFile);
+const seoData = readJSON<Record<string, any>>(seoFile);
+
+// Get time of day for greeting
+const hour = new Date().getHours();
+const greeting =
+  hour < 12 ? "Good morning" : hour < 17 ? "Good afternoon" : "Good evening";
+
+const stats = [
+  { label: "Blog Posts", value: blogFiles.length, color: "blue", icon: "blog" },
+  {
+    label: "SEO Overrides",
+    value: Object.keys(seoData).length,
+    color: "violet",
+    icon: "seo",
+  },
+  { label: "Users", value: users.length, color: "green", icon: "users" },
+];
+
+function parseFrontmatter(content: string) {
+  const match = content.match(/^---\n([\s\S]*?)\n---\n([\s\S]*)$/);
+  if (!match) return {};
+  const fm: Record<string, string> = {};
+  for (const line of match[1].split("\n")) {
+    const i = line.indexOf(":");
+    if (i > 0) {
+      const key = line.substring(0, i).trim();
+      let val = line.substring(i + 1).trim();
+      if (
+        (val.startsWith('"') && val.endsWith('"')) ||
+        (val.startsWith("'") && val.endsWith("'"))
+      )
+        val = val.slice(1, -1);
+      fm[key] = val;
+    }
+  }
+  return fm;
+}
+
+import { readBlogFile } from "@admin/utils/storage";
+const recentPosts = blogFiles.slice(0, 6).map((f) => {
+  const content = readBlogFile(f);
+  const fm = parseFrontmatter(content);
+  return { filename: f, ...fm };
+});
+---
+
+<AdminLayout title="Dashboard" activeNav="dashboard">
+  <!-- Welcome Banner -->
+  <div class="welcome-banner mb-32">
+    <div class="welcome-content">
+      <h2 class="welcome-title">{greeting}, {user.username} 👋</h2>
+      <p class="welcome-sub">Here's what's happening with your site today.</p>
+    </div>
+    <div class="welcome-date">
+      <span class="date-text"
+        >{
+          new Date().toLocaleDateString("en-US", {
+            weekday: "long",
+            month: "long",
+            day: "numeric",
+            year: "numeric",
+          })
+        }</span
+      >
+    </div>
+  </div>
+
+  <!-- Stats Grid -->
+  <div class="grid-auto mb-32">
+    {
+      stats.map((stat) => (
+        <div class={`stat-card stat-${stat.color}`}>
+          <div class={`stat-icon stat-icon-${stat.color}`}>
+            {stat.icon === "blog" && (
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path d="M12 20h9" />
+                <path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z" />
+              </svg>
+            )}
+            {stat.icon === "seo" && (
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <circle cx="11" cy="11" r="8" />
+                <path d="m21 21-4.35-4.35" />
+              </svg>
+            )}
+            {stat.icon === "users" && (
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" />
+                <circle cx="9" cy="7" r="4" />
+                <path d="M23 21v-2a4 4 0 00-3-3.87" />
+                <path d="M16 3.13a4 4 0 010 7.75" />
+              </svg>
+            )}
+          </div>
+          <div>
+            <div class="stat-value">{stat.value}</div>
+            <div class="stat-label">{stat.label}</div>
+          </div>
+        </div>
+      ))
+    }
+  </div>
+
+  <!-- Quick Actions -->
+  <div class="card mb-32">
+    <div class="card-header">
+      <h3 class="card-title">
+        <svg
+          width="18"
+          height="18"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          ><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"
+          ></polygon></svg
+        >
+        Quick Actions
+      </h3>
+    </div>
+    <div class="quick-actions-grid">
+      <a href="/admin/blog/?new=1" class="action-card action-blue">
+        <div class="action-icon">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"><path d="M12 5v14M5 12h14"></path></svg
+          >
+        </div>
+        <div class="action-text">
+          <span class="action-label">New Blog Post</span>
+          <span class="action-desc">Create and publish content</span>
+        </div>
+      </a>
+      <a href="/admin/pages/" class="action-card action-violet">
+        <div class="action-icon">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            ><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.35-4.35"
+            ></path></svg
+          >
+        </div>
+        <div class="action-text">
+          <span class="action-label">Edit Page SEO</span>
+          <span class="action-desc">Meta titles, descriptions, schema</span>
+        </div>
+      </a>
+      {
+        user.role === "admin" && (
+          <a href="/admin/users/" class="action-card action-green">
+            <div class="action-icon">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <>
+                  <path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2" />
+                  <circle cx="9" cy="7" r="4" />
+                  <line x1="19" y1="8" x2="19" y2="14" />
+                  <line x1="22" y1="11" x2="16" y2="11" />
+                </>
+              </svg>
+            </div>
+            <div class="action-text">
+              <span class="action-label">Add User</span>
+              <span class="action-desc">Manage team access & roles</span>
+            </div>
+          </a>
+        )
+      }
+    </div>
+  </div>
+
+  <!-- Recent Blog Posts -->
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-title">
+        <svg
+          width="18"
+          height="18"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          ><path d="M12 20h9"></path><path
+            d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"
+          ></path></svg
+        >
+        Recent Blog Posts
+      </h3>
+      {
+        blogFiles.length > 0 && (
+          <a href="/admin/blog/" class="btn-secondary">
+            View all
+          </a>
+        )
+      }
+    </div>
+
+    {
+      blogFiles.length === 0 ? (
+        <div class="empty-state">
+          <div class="empty-icon-wrap">
+            <svg
+              width="48"
+              height="48"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.5"
+              style="opacity:0.3"
+            >
+              <>
+                <path d="M12 20h9" />
+                <path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z" />
+              </>
+            </svg>
+          </div>
+          <p style="margin-bottom: 16px;">
+            No blog posts yet. Start creating content for your site.
+          </p>
+          <a href="/admin/blog/?new=1" class="btn-primary">
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path d="M12 5v14M5 12h14" />
+            </svg>
+            Create First Post
+          </a>
+        </div>
+      ) : (
+        <div class="posts-grid">
+          {recentPosts.map((post: any) => (
+            <a
+              href={`/admin/blog/?edit=${encodeURIComponent(post.filename)}`}
+              class="post-card"
+            >
+              <div
+                class="post-thumb"
+                style={post.image ? `background-image: url(${post.image})` : ""}
+              >
+                {!post.image && (
+                  <svg
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    style="opacity:0.3"
+                  >
+                    <rect x="3" y="3" width="18" height="18" rx="2" />
+                    <circle cx="8.5" cy="8.5" r="1.5" />
+                    <path d="m21 15-5-5L5 21" />
+                  </svg>
+                )}
+              </div>
+              <div class="post-info">
+                <div class="post-title-text">
+                  {post.title ||
+                    post.filename.replace(/\.(md|mdx)$/, "").replace(/-/g, " ")}
+                </div>
+                <div class="post-meta">
+                  {post.category && (
+                    <span class="post-cat">{post.category}</span>
+                  )}
+                  <span class="post-date">{post.date || "—"}</span>
+                </div>
+              </div>
+            </a>
+          ))}
+        </div>
+      )
+    }
+  </div>
+</AdminLayout>
+
+<style>
+  /* Welcome Banner */
+  .welcome-banner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 28px 32px;
+    background: linear-gradient(
+      135deg,
+      rgba(56, 152, 236, 0.08) 0%,
+      rgba(124, 91, 240, 0.06) 100%
+    );
+    border: 1px solid rgba(56, 152, 236, 0.12);
+    border-radius: var(--radius-lg);
+    position: relative;
+    overflow: hidden;
+  }
+  .welcome-banner::before {
+    content: "";
+    position: absolute;
+    right: -40px;
+    top: -40px;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background: radial-gradient(
+      circle,
+      rgba(56, 152, 236, 0.08) 0%,
+      transparent 70%
+    );
+  }
+  .welcome-title {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--text-primary);
+    letter-spacing: -0.5px;
+    margin-bottom: 4px;
+  }
+  .welcome-sub {
+    font-size: 14px;
+    color: var(--text-secondary);
+  }
+  .date-text {
+    font-size: 13px;
+    color: var(--text-muted);
+    background: var(--bg-surface);
+    padding: 8px 16px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border-subtle);
+  }
+
+  /* Stat Colors */
+  .stat-icon-blue {
+    background: rgba(56, 152, 236, 0.12);
+    color: var(--accent-blue);
+  }
+  .stat-icon-violet {
+    background: rgba(124, 91, 240, 0.12);
+    color: var(--accent-violet);
+  }
+  .stat-icon-green {
+    background: rgba(52, 211, 153, 0.12);
+    color: var(--accent-green);
+  }
+  .stat-blue::after {
+    background: var(--accent-blue);
+  }
+  .stat-violet::after {
+    background: var(--accent-violet);
+  }
+  .stat-green::after {
+    background: var(--accent-green);
+  }
+
+  /* Quick Actions Grid */
+  .quick-actions-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+  }
+  .action-card {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px 18px;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border-subtle);
+    background: var(--bg-elevated);
+    text-decoration: none;
+    transition: all var(--transition);
+    cursor: pointer;
+  }
+  .action-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+  }
+  .action-blue:hover {
+    border-color: rgba(56, 152, 236, 0.3);
+  }
+  .action-violet:hover {
+    border-color: rgba(124, 91, 240, 0.3);
+  }
+  .action-green:hover {
+    border-color: rgba(52, 211, 153, 0.3);
+  }
+  .action-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .action-icon svg {
+    width: 20px;
+    height: 20px;
+  }
+  .action-blue .action-icon {
+    background: rgba(56, 152, 236, 0.12);
+    color: var(--accent-blue);
+  }
+  .action-violet .action-icon {
+    background: rgba(124, 91, 240, 0.12);
+    color: var(--accent-violet);
+  }
+  .action-green .action-icon {
+    background: rgba(52, 211, 153, 0.12);
+    color: var(--accent-green);
+  }
+  .action-label {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+  .action-desc {
+    display: block;
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: 2px;
+  }
+
+  /* Posts Grid */
+  .posts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 16px;
+  }
+  .post-card {
+    display: flex;
+    flex-direction: column;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border-subtle);
+    background: var(--bg-elevated);
+    overflow: hidden;
+    text-decoration: none;
+    transition: all var(--transition);
+  }
+  .post-card:hover {
+    border-color: var(--border-accent);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+  }
+  .post-thumb {
+    height: 120px;
+    background: var(--bg-deep);
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-muted);
+  }
+  .post-info {
+    padding: 14px 16px;
+  }
+  .post-title-text {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-primary);
+    line-height: 1.4;
+    text-transform: capitalize;
+    margin-bottom: 8px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+  }
+  .post-meta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+  }
+  .post-cat {
+    background: rgba(56, 152, 236, 0.12);
+    color: var(--accent-blue);
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-weight: 600;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .post-date {
+    color: var(--text-muted);
+  }
+
+  .empty-icon-wrap {
+    margin-bottom: 12px;
+    color: var(--text-muted);
+  }
+
+  @media (max-width: 768px) {
+    .welcome-banner {
+      flex-direction: column;
+      gap: 16px;
+      text-align: center;
+    }
+    .welcome-title {
+      font-size: 18px;
+    }
+  }
+</style>
