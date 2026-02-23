@@ -46,10 +46,19 @@ export async function saveConfigFile(
     const { token, repo, branch } = getGitHubConfig();
 
     if (!token || !repo) {
-        console.error('GITHUB_TOKEN and GITHUB_REPO env vars are required for saving on Vercel');
+        const debugInfo = {
+            isVercel: IS_VERCEL,
+            vercelEnv: process.env.VERCEL_ENV || 'not set',
+            hasToken: !!process.env.GITHUB_TOKEN,
+            tokenLength: (process.env.GITHUB_TOKEN || '').length,
+            hasRepo: !!process.env.GITHUB_REPO,
+            repoValue: process.env.GITHUB_REPO || 'not set',
+            envKeys: Object.keys(process.env).filter(k => k.startsWith('GITHUB')).join(', ') || 'none',
+        };
+        console.error('Missing env vars. Debug:', JSON.stringify(debugInfo));
         return {
             success: false,
-            error: 'Server configuration missing: GITHUB_TOKEN and GITHUB_REPO environment variables must be set in Vercel dashboard.',
+            error: `Server configuration missing. Debug: ${JSON.stringify(debugInfo)}`,
         };
     }
 
