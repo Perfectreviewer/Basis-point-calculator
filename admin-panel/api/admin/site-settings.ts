@@ -1,5 +1,5 @@
 import type { APIRoute } from 'astro';
-import { writeJSON } from '@admin/utils/storage';
+import { saveConfigFile } from '@admin/utils/github-commit';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -45,12 +45,24 @@ export const POST: APIRoute = async ({ request }) => {
         }
 
         // Write site-settings.json
-        writeJSON(SITE_SETTINGS_PATH, body.siteSettings);
+        const result1 = await saveConfigFile(SITE_SETTINGS_PATH, body.siteSettings, 'chore(admin): update site settings');
+        if (!result1.success) {
+            return new Response(JSON.stringify({ error: result1.error || 'Failed to save site settings' }), {
+                status: 500,
+                headers: { 'Content-Type': 'application/json' },
+            });
+        }
 
         // Write social links to config.json if provided
         if (body.social && Array.isArray(body.social)) {
             const updatedConfig = { ...configData, social: body.social };
-            writeJSON(CONFIG_PATH, updatedConfig);
+            const result2 = await saveConfigFile(CONFIG_PATH, updatedConfig, 'chore(admin): update social links');
+            if (!result2.success) {
+                return new Response(JSON.stringify({ error: result2.error || 'Failed to save config' }), {
+                    status: 500,
+                    headers: { 'Content-Type': 'application/json' },
+                });
+            }
         }
 
         return new Response(JSON.stringify({ success: true }), {

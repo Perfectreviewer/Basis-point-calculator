@@ -1,5 +1,5 @@
 import type { APIRoute } from 'astro';
-import { writeJSON } from '@admin/utils/storage';
+import { saveConfigFile } from '@admin/utils/github-commit';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -44,7 +44,13 @@ export const POST: APIRoute = async ({ request }) => {
         // Write directly to the config file (best effort for local dev)
         // On Vercel, this will likely write to ephemeral storage or fail silently if permissions deny
         // But for this current architecture, it is the intended behavior.
-        writeJSON(NAV_CONFIG_PATH, body);
+        const result = await saveConfigFile(NAV_CONFIG_PATH, body, 'chore(admin): update navigation menu');
+        if (!result.success) {
+            return new Response(JSON.stringify({ error: result.error || 'Failed to save' }), {
+                status: 500,
+                headers: { 'Content-Type': 'application/json' },
+            });
+        }
 
         return new Response(JSON.stringify({ success: true }), {
             status: 200,

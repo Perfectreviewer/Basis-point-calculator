@@ -1,5 +1,5 @@
 import type { APIRoute } from 'astro';
-import { writeJSON } from '@admin/utils/storage';
+import { saveConfigFile } from '@admin/utils/github-commit';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { existsSync, readFileSync } from 'node:fs';
@@ -62,7 +62,13 @@ export const POST: APIRoute = async ({ request }) => {
         const existing = readSeoSettings();
         const merged = { ...existing, ...body };
 
-        writeJSON(SEO_SETTINGS_PATH, merged);
+        const result = await saveConfigFile(SEO_SETTINGS_PATH, merged, 'chore(admin): update SEO settings');
+        if (!result.success) {
+            return new Response(JSON.stringify({ error: result.error || 'Failed to save SEO settings' }), {
+                status: 500,
+                headers: { 'Content-Type': 'application/json' },
+            });
+        }
 
         return new Response(JSON.stringify({ success: true }), {
             status: 200,
