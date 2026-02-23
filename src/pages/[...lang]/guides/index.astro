@@ -4,25 +4,26 @@ import {
   getTranslations,
   type Locale,
   getLocalizedUrl,
+  locales,
 } from "@theme/i18n/utils";
+import { getCollection } from "astro:content";
 
-export function getStaticPaths() {
-  return [
-    { params: { lang: undefined } },
-    { params: { lang: "en" } },
-    { params: { lang: "es" } },
-    { params: { lang: "fr" } },
-    { params: { lang: "de" } },
-  ];
+export async function getStaticPaths() {
+  return locales.map((lang) => ({
+    params: { lang: lang === "en" ? undefined : lang },
+  }));
 }
 
 const locale = (Astro.params.lang || "en") as Locale;
 const t = getTranslations(locale);
 
-const pageTitle = "Financial Guides — Learn About Basis Points, Rates & More";
+const siteURL = Astro.url.origin;
+
+const pageTitle = `${t["Guides"]} | ${t.site_title}`;
 const pageDescription =
   "In-depth guides on basis points, interest rates, central bank decisions, loans, and APR. Build your financial literacy with clear, practical explanations.";
 
+/* ── Static guides ── */
 const guides = [
   {
     title: "What are Basis Points?",
@@ -30,8 +31,9 @@ const guides = [
       "A complete primer on basis points (bps) — what they are, why finance uses them instead of percentages, and how to convert between the two.",
     url: "/guides/what-are-basis-points/",
     icon: "📐",
-    color: "sky",
+    category: "Fundamentals",
     readTime: "5 min read",
+    date: "2024-08-01",
   },
   {
     title: "How Interest Rates Work",
@@ -39,8 +41,9 @@ const guides = [
       "Understand simple vs. compound interest, how banks set rates, and the real cost of borrowing over time.",
     url: "/guides/how-interest-rates-work/",
     icon: "📈",
-    color: "green",
+    category: "Interest Rates",
     readTime: "7 min read",
+    date: "2024-08-05",
   },
   {
     title: "Central Bank Rate Changes",
@@ -48,8 +51,9 @@ const guides = [
       "How Federal Reserve and central bank decisions ripple through the economy — from mortgage rates to savings accounts.",
     url: "/guides/central-bank-rate-changes/",
     icon: "🏛️",
-    color: "purple",
+    category: "Central Banks",
     readTime: "6 min read",
+    date: "2024-08-10",
   },
   {
     title: "Basis Points Impact on Loans",
@@ -57,8 +61,9 @@ const guides = [
       "See the real dollar impact of a 25 or 50 basis point change on your mortgage, auto loan, and student debt payments.",
     url: "/guides/basis-points-impact-on-loans/",
     icon: "💵",
-    color: "orange",
+    category: "Loans",
     readTime: "5 min read",
+    date: "2024-08-15",
   },
   {
     title: "APR vs Interest Rate",
@@ -66,224 +71,635 @@ const guides = [
       "Learn the critical difference between APR and nominal interest rate, and why APR is the number that really matters when comparing loans.",
     url: "/guides/apr-vs-interest-rate/",
     icon: "⚖️",
-    color: "indigo",
+    category: "Comparison",
     readTime: "4 min read",
+    date: "2024-08-20",
   },
 ];
 
-const colorClasses: Record<string, { card: string; badge: string }> = {
-  sky: {
-    card: "bg-sky-50 border-sky-200 hover:border-sky-400 hover:shadow-sky-100",
-    badge: "bg-sky-100 text-sky-700",
-  },
-  green: {
-    card: "bg-green-50 border-green-200 hover:border-green-400 hover:shadow-green-100",
-    badge: "bg-green-100 text-green-700",
-  },
-  purple: {
-    card: "bg-purple-50 border-purple-200 hover:border-purple-400 hover:shadow-purple-100",
-    badge: "bg-purple-100 text-purple-700",
-  },
-  orange: {
-    card: "bg-orange-50 border-orange-200 hover:border-orange-400 hover:shadow-orange-100",
-    badge: "bg-orange-100 text-orange-700",
-  },
-  indigo: {
-    card: "bg-indigo-50 border-indigo-200 hover:border-indigo-400 hover:shadow-indigo-100",
-    badge: "bg-indigo-100 text-indigo-700",
-  },
+/* ── Blog posts from content collection ── */
+const blogPosts = await getCollection("blog");
+const sortedBlogPosts = blogPosts.sort(
+  (a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime(),
+);
+
+/* ── Merge all items into a unified list ── */
+type GuideItem = {
+  title: string;
+  description: string;
+  url: string;
+  image?: string;
+  category?: string;
+  readTime: string;
+  date: string;
+  icon?: string;
+  type: "guide" | "blog";
 };
 
-const faqs = [
-  {
-    question: "What is a basis point in simple terms?",
-    answer:
-      "A basis point is one hundredth of one percent (0.01%). If an interest rate goes from 3.00% to 3.25%, that's a 25 basis point increase. Finance professionals use basis points to avoid ambiguity when discussing small rate changes.",
-  },
-  {
-    question: "Why do I need to understand interest rates?",
-    answer:
-      "Interest rates directly affect the cost of every loan you take (mortgages, car loans, credit cards) and the return on every investment. Even a small rate change — measured in basis points — can mean thousands of dollars over the life of a loan.",
-  },
-  {
-    question: "How often does the Federal Reserve change rates?",
-    answer:
-      "The Federal Open Market Committee (FOMC) meets 8 times per year and may adjust the federal funds rate at any meeting. Changes are typically 25 basis points, though larger moves of 50 or 75 bps happen during periods of economic stress.",
-  },
+const allItems: GuideItem[] = [
+  ...guides.map((g) => ({ ...g, type: "guide" as const })),
+  ...sortedBlogPosts.map((p) => ({
+    title: p.data.title,
+    description: p.data.description || "",
+    url: `/blog/${p.id}/`,
+    image: p.data.image,
+    category: p.data.category || "Article",
+    readTime: `${Math.max(1, Math.round((p.data.description || "").split(/\s+/).length / 200))} min read`,
+    date:
+      p.data.date instanceof Date
+        ? p.data.date.toISOString().split("T")[0]
+        : String(p.data.date).split("T")[0],
+    type: "blog" as const,
+  })),
 ];
+
+function formatDate(dateStr: string) {
+  return new Date(dateStr).toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+  });
+}
 ---
 
 <Layout title={pageTitle} description={pageDescription}>
-  <!-- FAQPage Schema -->
+  <!-- Schema -->
   <script
     is:inline
-    slot="head"
     type="application/ld+json"
+    slot="head"
     set:html={JSON.stringify({
       "@context": "https://schema.org",
-      "@type": "FAQPage",
-      mainEntity: faqs.map((faq) => ({
-        "@type": "Question",
-        name: faq.question,
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: faq.answer,
-        },
-      })),
+      "@type": "CollectionPage",
+      name: pageTitle,
+      url: `${siteURL}${getLocalizedUrl("/guides/", locale)}`,
+      description: pageDescription,
     })}
   />
 
-  <!-- Hero -->
-  <section class="text-center mb-12">
-    <nav class="text-sm text-slate-500 mb-6" aria-label="Breadcrumb">
-      <a href={getLocalizedUrl("/", locale)} class="hover:text-sky-600">Home</a>
-      <span class="mx-2">›</span>
-      <span class="text-slate-700">Guides</span>
-    </nav>
-    <h1 class="text-4xl font-bold text-slate-800 mb-4">Financial Guides</h1>
-    <p class="text-lg text-slate-600 max-w-3xl mx-auto">
-      Build your financial knowledge with clear, practical explanations of the
-      concepts that affect your money — from basis points to APR to central bank
-      decisions.
-    </p>
-  </section>
-
-  <!-- Intro -->
-  <section class="bg-white rounded-2xl shadow-lg p-8 mb-8">
-    <h2 class="text-xl font-semibold text-slate-800 mb-4">
-      Why Financial Literacy Matters
-    </h2>
-    <div class="text-slate-600 space-y-3 text-sm leading-relaxed">
-      <p>
-        Financial literacy is the foundation of sound money decisions. When you
-        understand how interest rates work, what basis points mean in a rate
-        announcement, or how APR differs from a nominal rate, you can negotiate
-        better loan terms, choose smarter investments, and avoid costly
-        misunderstandings.
-      </p>
-      <p>
-        Our guides break down complex financial concepts into plain language
-        with real-world examples. Each guide is written to be read in under 10
-        minutes, so you can build knowledge even on a busy schedule.
+  <!-- Hero Header -->
+  <div class="guides-hero">
+    <div class="guides-hero-content">
+      <div class="guides-hero-badge">
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          width="14"
+          height="14"
+        >
+          <path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"></path>
+          <path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"></path>
+        </svg>
+        {t["Guides"]}
+      </div>
+      <h1 class="guides-hero-title">Financial Guides & Articles</h1>
+      <p class="guides-hero-desc">
+        Build your financial knowledge with clear, practical explanations of
+        basis points, interest rates, and modern finance concepts.
       </p>
     </div>
-  </section>
+    <div class="guides-hero-meta">
+      <span class="guides-count-pill">
+        {allItems.length} article{allItems.length !== 1 ? "s" : ""} published
+      </span>
+    </div>
+  </div>
 
-  <!-- Guides Grid -->
-  <section class="mb-10">
-    <h2 class="text-2xl font-bold text-slate-800 mb-6">Our Guides</h2>
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-      {
-        guides.map((guide) => (
+  <!-- Cards Grid -->
+  <div class="guides-grid">
+    {
+      allItems.map((item, index) => (
+        <article
+          class="guides-card"
+          style={`animation-delay: ${index * 0.06}s`}
+        >
           <a
-            href={getLocalizedUrl(guide.url, locale)}
-            class={`block p-6 rounded-xl border-2 transition-all duration-200 hover:shadow-lg hover:-translate-y-1 ${colorClasses[guide.color].card}`}
+            href={
+              item.type === "guide"
+                ? getLocalizedUrl(item.url, locale)
+                : item.url
+            }
+            class="guides-card-link"
           >
-            <div class="flex items-start gap-4">
-              <span class="text-4xl">{guide.icon}</span>
-              <div class="flex-1">
-                <div class="flex items-center gap-2 mb-1">
-                  <h3 class="text-lg font-semibold text-slate-800">
-                    {guide.title}
-                  </h3>
-                </div>
-                <p class="text-sm text-slate-600 mb-3">{guide.description}</p>
-                <span
-                  class={`text-xs font-medium px-2 py-0.5 rounded-full ${colorClasses[guide.color].badge}`}
-                >
-                  {guide.readTime}
+            <div class="guides-card-image">
+              {item.image ? (
+                <img
+                  src={item.image}
+                  alt={item.title}
+                  loading="lazy"
+                  decoding="async"
+                  onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"
+                />
+              ) : null}
+              <div
+                class="guides-card-placeholder"
+                style={item.image ? "display:none" : ""}
+              >
+                {item.icon ? (
+                  <span class="guides-card-emoji">{item.icon}</span>
+                ) : (
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.2"
+                    width="40"
+                    height="40"
+                  >
+                    <path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z" />
+                    <path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z" />
+                  </svg>
+                )}
+              </div>
+              <div class="guides-card-image-overlay" />
+              {item.category && (
+                <span class="guides-card-category">{item.category}</span>
+              )}
+            </div>
+            <div class="guides-card-body">
+              <div class="guides-card-meta">
+                <time datetime={item.date}>
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    width="12"
+                    height="12"
+                  >
+                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+                    <line x1="16" y1="2" x2="16" y2="6" />
+                    <line x1="8" y1="2" x2="8" y2="6" />
+                    <line x1="3" y1="10" x2="21" y2="10" />
+                  </svg>
+                  {formatDate(item.date)}
+                </time>
+                <span class="guides-meta-dot">·</span>
+                <span class="guides-read-time">
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    width="12"
+                    height="12"
+                  >
+                    <circle cx="12" cy="12" r="10" />
+                    <polyline points="12 6 12 12 16 14" />
+                  </svg>
+                  {item.readTime}
+                </span>
+              </div>
+              <h2 class="guides-card-title">{item.title}</h2>
+              {item.description && (
+                <p class="guides-card-excerpt">{item.description}</p>
+              )}
+              <div class="guides-card-footer">
+                <span class="guides-card-cta">
+                  Read article
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2.5"
+                    width="14"
+                    height="14"
+                  >
+                    <line x1="5" y1="12" x2="19" y2="12" />
+                    <polyline points="12 5 19 12 12 19" />
+                  </svg>
                 </span>
               </div>
             </div>
           </a>
-        ))
-      }
-    </div>
-  </section>
+        </article>
+      ))
+    }
+  </div>
 
   <!-- Quick Reference -->
-  <section class="bg-white rounded-2xl shadow-lg p-8 mb-8">
-    <h2 class="text-xl font-semibold text-slate-800 mb-4">Quick Reference</h2>
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-      <div class="bg-slate-50 rounded-lg p-4">
-        <h3 class="font-medium text-slate-700 mb-2">1 Basis Point</h3>
-        <code class="text-sky-600 text-lg">= 0.01%</code>
+  <section class="guides-reference">
+    <h2 class="guides-reference-title">Quick Reference</h2>
+    <div class="guides-reference-grid">
+      <div class="guides-reference-card">
+        <span class="guides-ref-label">1 Basis Point</span>
+        <code class="guides-ref-value">= 0.01%</code>
       </div>
-      <div class="bg-slate-50 rounded-lg p-4">
-        <h3 class="font-medium text-slate-700 mb-2">100 Basis Points</h3>
-        <code class="text-sky-600 text-lg">= 1.00%</code>
+      <div class="guides-reference-card">
+        <span class="guides-ref-label">100 Basis Points</span>
+        <code class="guides-ref-value">= 1.00%</code>
       </div>
-      <div class="bg-slate-50 rounded-lg p-4">
-        <h3 class="font-medium text-slate-700 mb-2">Typical Fed Move</h3>
-        <code class="text-sky-600 text-lg">25 bps (0.25%)</code>
+      <div class="guides-reference-card">
+        <span class="guides-ref-label">Typical Fed Move</span>
+        <code class="guides-ref-value">25 bps (0.25%)</code>
       </div>
     </div>
   </section>
 
-  <!-- FAQ -->
-  <section class="bg-white rounded-2xl shadow-lg p-8 mb-8">
-    <h2 class="text-xl font-semibold text-slate-800 mb-6">
-      Frequently Asked Questions
-    </h2>
-    <div class="divide-y divide-slate-100">
-      {
-        faqs.map((faq) => (
-          <details class="group py-4 first:pt-0 last:pb-0">
-            <summary class="flex items-center justify-between cursor-pointer font-medium text-slate-800 hover:text-sky-600 transition-colors">
-              {faq.question}
-              <svg
-                class="w-5 h-5 text-slate-400 group-open:rotate-180 transition-transform"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M19 9l-7 7-7-7"
-                />
-              </svg>
-            </summary>
-            <p class="mt-3 text-sm text-slate-600 leading-relaxed">
-              {faq.answer}
-            </p>
-          </details>
-        ))
-      }
-    </div>
-  </section>
-
-  <!-- Cross-links -->
-  <section
-    class="bg-gradient-to-r from-slate-50 to-sky-50 rounded-2xl p-8 border border-slate-200"
-  >
-    <h2 class="text-lg font-semibold text-slate-800 mb-4">
-      Put Knowledge Into Practice
-    </h2>
-    <p class="text-sm text-slate-600 mb-5">
-      Ready to crunch some numbers? Try our free calculators or read the latest
-      articles.
-    </p>
-    <div class="flex flex-wrap gap-3">
-      <a
-        href={getLocalizedUrl("/calculators/", locale)}
-        class="inline-flex items-center gap-2 px-4 py-2 bg-sky-600 text-white rounded-lg hover:bg-sky-700 transition-colors text-sm"
-      >
-        🧮 Open Calculators
-      </a>
-      <a
-        href={getLocalizedUrl("/blog/", locale)}
-        class="inline-flex items-center gap-2 px-4 py-2 bg-white rounded-lg border border-slate-200 hover:border-sky-400 transition-colors text-sm"
-      >
-        📝 Blog Articles
-      </a>
-      <a
-        href={getLocalizedUrl("/faq/", locale)}
-        class="inline-flex items-center gap-2 px-4 py-2 bg-white rounded-lg border border-slate-200 hover:border-sky-400 transition-colors text-sm"
-      >
-        ❓ FAQ
-      </a>
+  <!-- CTA -->
+  <section class="guides-cta">
+    <div class="guides-cta-inner">
+      <h2 class="guides-cta-title">Put Knowledge Into Practice</h2>
+      <p class="guides-cta-desc">
+        Ready to crunch some numbers? Try our free calculators.
+      </p>
+      <div class="guides-cta-buttons">
+        <a
+          href={getLocalizedUrl("/calculators/", locale)}
+          class="guides-cta-primary"
+        >
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            width="16"
+            height="16"
+          >
+            <rect x="4" y="2" width="16" height="20" rx="2"></rect>
+            <line x1="8" y1="6" x2="16" y2="6"></line>
+            <line x1="8" y1="10" x2="12" y2="10"></line>
+            <line x1="8" y1="14" x2="12" y2="14"></line>
+            <line x1="8" y1="18" x2="12" y2="18"></line>
+            <line x1="16" y1="10" x2="16" y2="10"></line>
+            <line x1="16" y1="14" x2="16" y2="14"></line>
+          </svg>
+          Open Calculators
+        </a>
+        <a href={getLocalizedUrl("/faq/", locale)} class="guides-cta-secondary">
+          FAQ
+        </a>
+      </div>
     </div>
   </section>
 </Layout>
+
+<style>
+  /* ─── Hero ─── */
+  .guides-hero {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 24px;
+    margin-bottom: 36px;
+    padding-bottom: 28px;
+    border-bottom: 1px solid #e2e8f0;
+  }
+  .guides-hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 14px;
+    background: linear-gradient(135deg, #eef2ff, #e0e7ff);
+    border: 1px solid #c7d2fe;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #4f46e5;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 14px;
+  }
+  .guides-hero-title {
+    font-size: 32px;
+    font-weight: 800;
+    color: #0f172a;
+    letter-spacing: -0.5px;
+    line-height: 1.2;
+    margin-bottom: 8px;
+  }
+  .guides-hero-desc {
+    color: #64748b;
+    font-size: 15px;
+    line-height: 1.6;
+    max-width: 480px;
+  }
+  .guides-hero-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex-shrink: 0;
+  }
+  .guides-count-pill {
+    display: inline-flex;
+    align-items: center;
+    padding: 6px 14px;
+    border-radius: 8px;
+    font-size: 12.5px;
+    font-weight: 600;
+    white-space: nowrap;
+    background: linear-gradient(135deg, #4f46e5, #6366f1);
+    color: white;
+    box-shadow: 0 2px 8px rgba(79, 70, 229, 0.25);
+  }
+
+  /* ─── Grid ─── */
+  .guides-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    margin-bottom: 48px;
+  }
+
+  /* ─── Card ─── */
+  .guides-card {
+    border-radius: 16px;
+    background: white;
+    border: 1px solid #e2e8f0;
+    overflow: hidden;
+    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow:
+      0 1px 3px rgba(0, 0, 0, 0.04),
+      0 1px 2px rgba(0, 0, 0, 0.03);
+    animation: guideFadeIn 0.5s ease-out both;
+  }
+  .guides-card:hover {
+    transform: translateY(-6px);
+    box-shadow:
+      0 20px 40px rgba(0, 0, 0, 0.08),
+      0 8px 16px rgba(79, 70, 229, 0.06);
+    border-color: #c7d2fe;
+  }
+  @keyframes guideFadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(16px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  .guides-card-link {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  /* Image / Placeholder */
+  .guides-card-image {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+  }
+  .guides-card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .guides-card:hover .guides-card-image img {
+    transform: scale(1.06);
+  }
+  .guides-card-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, #eef2ff 0%, #e0e7ff 50%, #c7d2fe 100%);
+    color: #a5b4fc;
+  }
+  .guides-card-emoji {
+    font-size: 48px;
+    line-height: 1;
+  }
+  .guides-card-image-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      180deg,
+      transparent 50%,
+      rgba(15, 23, 42, 0.08) 100%
+    );
+    pointer-events: none;
+  }
+  .guides-card-category {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    padding: 4px 12px;
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(8px);
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+    color: #4f46e5;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  }
+
+  /* Body */
+  .guides-card-body {
+    padding: 20px 22px 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .guides-card-meta {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: #94a3b8;
+    font-weight: 500;
+  }
+  .guides-card-meta time,
+  .guides-read-time {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .guides-meta-dot {
+    color: #cbd5e1;
+  }
+  .guides-card-title {
+    font-size: 17px;
+    font-weight: 700;
+    color: #0f172a;
+    line-height: 1.4;
+    letter-spacing: -0.2px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    transition: color 0.2s;
+  }
+  .guides-card:hover .guides-card-title {
+    color: #4f46e5;
+  }
+  .guides-card-excerpt {
+    font-size: 13.5px;
+    color: #64748b;
+    line-height: 1.6;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  /* Footer / CTA */
+  .guides-card-footer {
+    margin-top: 4px;
+    padding-top: 14px;
+    border-top: 1px solid #f1f5f9;
+  }
+  .guides-card-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #4f46e5;
+    transition: all 0.2s;
+  }
+  .guides-card-cta svg {
+    transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .guides-card:hover .guides-card-cta svg {
+    transform: translateX(4px);
+  }
+  .guides-card:hover .guides-card-cta {
+    color: #4338ca;
+  }
+
+  /* ─── Quick Reference ─── */
+  .guides-reference {
+    background: white;
+    border-radius: 16px;
+    padding: 32px;
+    margin-bottom: 24px;
+    border: 1px solid #e2e8f0;
+    box-shadow:
+      0 1px 3px rgba(0, 0, 0, 0.04),
+      0 1px 2px rgba(0, 0, 0, 0.03);
+  }
+  .guides-reference-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: #0f172a;
+    margin-bottom: 16px;
+  }
+  .guides-reference-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+  }
+  .guides-reference-card {
+    background: #f8fafc;
+    border-radius: 12px;
+    padding: 16px;
+    border: 1px solid #f1f5f9;
+    text-align: center;
+  }
+  .guides-ref-label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: #475569;
+    margin-bottom: 6px;
+  }
+  .guides-ref-value {
+    font-size: 18px;
+    font-weight: 700;
+    color: #4f46e5;
+  }
+
+  /* ─── CTA Section ─── */
+  .guides-cta {
+    margin-bottom: 16px;
+  }
+  .guides-cta-inner {
+    background: linear-gradient(135deg, #f8fafc, #eef2ff);
+    border-radius: 16px;
+    padding: 32px;
+    border: 1px solid #e2e8f0;
+    text-align: center;
+  }
+  .guides-cta-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: #0f172a;
+    margin-bottom: 8px;
+  }
+  .guides-cta-desc {
+    font-size: 14px;
+    color: #64748b;
+    margin-bottom: 20px;
+  }
+  .guides-cta-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+  }
+  .guides-cta-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 24px;
+    background: linear-gradient(135deg, #4f46e5, #6366f1);
+    color: white;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.25s;
+    box-shadow: 0 2px 8px rgba(79, 70, 229, 0.25);
+  }
+  .guides-cta-primary:hover {
+    box-shadow: 0 4px 16px rgba(79, 70, 229, 0.35);
+    transform: translateY(-1px);
+  }
+  .guides-cta-secondary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 24px;
+    background: white;
+    color: #475569;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.25s;
+  }
+  .guides-cta-secondary:hover {
+    border-color: #c7d2fe;
+    color: #4f46e5;
+  }
+
+  /* ─── Responsive ─── */
+  @media (max-width: 1024px) {
+    .guides-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (max-width: 640px) {
+    .guides-hero {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    .guides-hero-title {
+      font-size: 26px;
+    }
+    .guides-grid {
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    .guides-reference-grid {
+      grid-template-columns: 1fr;
+    }
+    .guides-cta-buttons {
+      flex-direction: column;
+      align-items: center;
+    }
+  }
+</style>

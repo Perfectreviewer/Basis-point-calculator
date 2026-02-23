@@ -165,10 +165,6 @@
       ]
     },
     {
-      "name": "Blog",
-      "url": "/blog/"
-    },
-    {
       "name": "FAQ",
       "url": "/faq/",
       "children": [
@@ -210,7 +206,7 @@
     },
     {
       "name": "Blog",
-      "url": "/blog/"
+      "url": "/guides/"
     },
     {
       "name": "FAQ",
