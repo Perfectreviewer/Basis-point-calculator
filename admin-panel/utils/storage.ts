@@ -6,7 +6,7 @@ import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const IS_VERCEL = !!process.env.VERCEL;
+const IS_VERCEL = !!process.env.VERCEL && process.env.VERCEL_ENV !== 'development';
 
 // On Vercel, only /tmp is writable. Use it for all mutable data.
 const BUNDLED_DATA_DIR = join(process.cwd(), 'admin-panel', 'data');
