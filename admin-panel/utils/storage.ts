@@ -63,6 +63,22 @@ export function ensureDataDir() {
             writeJSON(seoFile, {});
         }
     }
+
+    // On Vercel, copy bundled blog posts to the ephemeral /tmp dir so they show up
+    if (IS_VERCEL) {
+        const bundledBlogDir = join(process.cwd(), 'src', 'blog');
+        if (existsSync(bundledBlogDir)) {
+            const bundledFiles = readdirSync(bundledBlogDir);
+            for (const file of bundledFiles) {
+                if (file.endsWith('.md') || file.endsWith('.mdx')) {
+                    const targetPath = join(BLOG_DIR, file);
+                    if (!existsSync(targetPath)) {
+                        copyFileSync(join(bundledBlogDir, file), targetPath);
+                    }
+                }
+            }
+        }
+    }
 }
 
 export function readJSON<T = any>(filename: string): T {
