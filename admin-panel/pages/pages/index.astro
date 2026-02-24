@@ -748,7 +748,7 @@ const configuredCount = allPages.filter((p) => seoData[p]).length;
         tab.classList.add("active");
         const panel = document.getElementById("panel-" + tab.dataset.tab);
         if (panel) {
-          panel.style.display = "block";
+          panel.style.display = "flex";
           panel.classList.add("active");
         }
       });
@@ -764,7 +764,7 @@ const configuredCount = allPages.filter((p) => seoData[p]).length;
 
     function loadPageSeo(path) {
       document.getElementById("editorEmpty").style.display = "none";
-      document.getElementById("editorForm").style.display = "block";
+      document.getElementById("editorForm").style.display = "flex";
       document.getElementById("editorPath").textContent = path;
 
       const seo = data[path] || {};
