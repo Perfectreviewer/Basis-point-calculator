@@ -47,8 +47,14 @@ const pagePath = Astro.url.pathname.replace(
   "/",
 );
 const seoOverride = pageSeoOverrides[pagePath] || null;
-const title = seoOverride?.title || propTitle;
-const description = seoOverride?.description || propDescription;
+const title =
+  (typeof seoOverride?.title === "object"
+    ? seoOverride.title[locale] || seoOverride.title.en
+    : seoOverride?.title) || propTitle;
+const description =
+  (typeof seoOverride?.description === "object"
+    ? seoOverride.description[locale] || seoOverride.description.en
+    : seoOverride?.description) || propDescription;
 const keywords = seoOverride?.keywords || "";
 const customSchema = seoOverride?.schema || null;
 

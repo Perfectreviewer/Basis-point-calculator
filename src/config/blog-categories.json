@@ -1,0 +1,26 @@
+[
+    {
+        "id": "general",
+        "name": "General",
+        "slug": "general",
+        "description": "General blog posts"
+    },
+    {
+        "id": "finance",
+        "name": "Finance",
+        "slug": "finance",
+        "description": "Financial tips and insights"
+    },
+    {
+        "id": "guides",
+        "name": "Guides",
+        "slug": "guides",
+        "description": "How-to guides and tutorials"
+    },
+    {
+        "id": "news",
+        "name": "News",
+        "slug": "news",
+        "description": "Latest industry news"
+    }
+]

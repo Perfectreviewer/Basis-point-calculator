@@ -101,7 +101,7 @@ const allItems: GuideItem[] = [
   ...sortedBlogPosts.map((p) => ({
     title: p.data.title,
     description: p.data.description || "",
-    url: `/blog/${p.id}/`,
+    url: `/guides/${p.id}/`,
     image: p.data.image,
     category: p.data.category || "Article",
     readTime: `${Math.max(1, Math.round((p.data.description || "").split(/\s+/).length / 200))} min read`,

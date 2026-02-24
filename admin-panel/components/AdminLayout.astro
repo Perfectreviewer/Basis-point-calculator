@@ -35,7 +35,14 @@ const canManageUsers = hasPermission(user.role as Role, "users:write");
 
 const navItems = [
   { name: "Dashboard", href: "/admin/", icon: "dashboard", id: "dashboard" },
-  { name: "Blog Posts", href: "/admin/blog/", icon: "blog", id: "blog" },
+  { name: "Posts", href: "/admin/blog/", icon: "blog", id: "blog" },
+  {
+    name: "Categories",
+    href: "/admin/blog-categories/",
+    icon: "tag",
+    id: "blog-categories",
+    parent: "blog",
+  },
   {
     name: "Pages",
     href: "/admin/content-pages/",
@@ -261,6 +268,24 @@ const navItems = [
       .nav-item.active .nav-icon-wrap {
         background: rgba(56, 152, 236, 0.15);
         color: var(--accent-blue);
+      }
+
+      /* Sub-menu items */
+      .nav-sub-item {
+        padding-left: 34px;
+        font-size: 12.5px;
+        display: none;
+      }
+      .nav-sub-item.show {
+        display: flex;
+      }
+      .nav-sub-item .nav-icon-wrap {
+        width: 26px;
+        height: 26px;
+      }
+      .nav-sub-item .nav-icon-wrap svg {
+        width: 14px;
+        height: 14px;
       }
 
       .nav-icon-wrap {
@@ -871,7 +896,7 @@ const navItems = [
             navItems.map((item) => (
               <a
                 href={item.href}
-                class={`nav-item ${activeNav === item.id ? "active" : ""}`}
+                class={`nav-item ${activeNav === item.id ? "active" : ""}${(item as any).parent ? ` nav-sub-item${activeNav === item.id || activeNav === (item as any).parent ? " show" : ""}` : ""}`}
               >
                 <span class="nav-icon-wrap">
                   {item.icon === "dashboard" && (
@@ -964,6 +989,17 @@ const navItems = [
                     >
                       <rect x="2" y="7" width="20" height="15" rx="2" ry="2" />
                       <polyline points="17 2 12 7 7 2" />
+                    </svg>
+                  )}
+                  {item.icon === "tag" && (
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                    >
+                      <path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z" />
+                      <line x1="7" y1="7" x2="7.01" y2="7" />
                     </svg>
                   )}
                   {item.icon === "users" && (

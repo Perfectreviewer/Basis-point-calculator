@@ -76,7 +76,7 @@ const availableLocalesPages = Object.keys(indexTranslations).map((locale) => {
 const posts = await getCollection("blog");
 
 const postLinks = posts.map((post) => ({
-  href: `${siteURL}/blog/${post.id}/`,
+  href: `${siteURL}/guides/${post.id}/`,
   label: post.data.title,
 }));
 
@@ -86,7 +86,7 @@ const perPage = 12; // adjust if your site uses a different value
 const totalPages = Math.ceil(totalPosts / perPage);
 
 const paginationLinks = Array.from({ length: totalPages }, (_, i) => ({
-  href: i === 0 ? `${siteURL}/blog/` : `${siteURL}/blog/${i + 1}/`,
+  href: i === 0 ? `${siteURL}/guides/` : `${siteURL}/guides/${i + 1}/`,
   label: `Blog - Page ${i + 1}`,
 }));
 ---

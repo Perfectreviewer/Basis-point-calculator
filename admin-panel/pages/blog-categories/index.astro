@@ -1,0 +1,473 @@
+---
+// Blog Categories Management
+import AdminLayout from "@admin/components/AdminLayout.astro";
+import { getSessionFromCookies, validateSessionToken } from "@admin/utils/auth";
+import { hasPermission } from "@admin/utils/roles";
+import type { Role } from "@admin/utils/roles";
+import fs from "node:fs";
+import path from "node:path";
+
+export const prerender = false;
+
+const session = getSessionFromCookies(Astro.request.headers.get("cookie"));
+let user: any = null;
+if (session) user = await validateSessionToken(session);
+if (!user) return Astro.redirect("/admin/login/");
+
+const canWrite = hasPermission(user.role as Role, "blog:write");
+
+let categories: any[] = [];
+try {
+  const configPath = path.join(process.cwd(), "src", "config", "blog-categories.json");
+  categories = JSON.parse(fs.readFileSync(configPath, "utf-8"));
+} catch { /* empty */ }
+
+let postCounts: Record<string, number> = {};
+try {
+  const blogDir = path.join(process.cwd(), "src", "blog");
+  if (fs.existsSync(blogDir)) {
+    const files = fs.readdirSync(blogDir).filter((f) => f.endsWith(".md") || f.endsWith(".mdx"));
+    for (const f of files) {
+      const content = fs.readFileSync(path.join(blogDir, f), "utf-8");
+      const catMatch = content.match(/category:\s*"?([^"\n]+)"?/);
+      if (catMatch) {
+        const cat = catMatch[1].trim();
+        postCounts[cat] = (postCounts[cat] || 0) + 1;
+      }
+    }
+  }
+} catch { /* empty */ }
+
+const totalPosts = Object.values(postCounts).reduce((a, b) => a + b, 0);
+
+// Color palette for categories
+const colors = [
+  { bg: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)', light: 'rgba(102,126,234,0.12)', text: '#667eea' },
+  { bg: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)', light: 'rgba(240,147,251,0.12)', text: '#f093fb' },
+  { bg: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)', light: 'rgba(79,172,254,0.12)', text: '#4facfe' },
+  { bg: 'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)', light: 'rgba(67,233,123,0.12)', text: '#43e97b' },
+  { bg: 'linear-gradient(135deg, #fa709a 0%, #fee140 100%)', light: 'rgba(250,112,154,0.12)', text: '#fa709a' },
+  { bg: 'linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%)', light: 'rgba(161,140,209,0.12)', text: '#a18cd1' },
+  { bg: 'linear-gradient(135deg, #fccb90 0%, #d57eeb 100%)', light: 'rgba(252,203,144,0.12)', text: '#fccb90' },
+  { bg: 'linear-gradient(135deg, #89f7fe 0%, #66a6ff 100%)', light: 'rgba(137,247,254,0.12)', text: '#66a6ff' },
+];
+---
+
+<AdminLayout title="Categories" activeNav="blog-categories">
+
+  <!-- Stats Bar -->
+  <div class="cc-stats">
+    <div class="cc-stat-item">
+      <span class="cc-stat-num">{categories.length}</span>
+      <span class="cc-stat-label">{categories.length !== 1 ? 'Categories' : 'Category'}</span>
+    </div>
+    <div class="cc-stat-divider"></div>
+    <div class="cc-stat-item">
+      <span class="cc-stat-num">{totalPosts}</span>
+      <span class="cc-stat-label">Total Posts</span>
+    </div>
+    {canWrite && (
+      <button class="cc-add-btn" id="addCategoryBtn">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+        Add Category
+      </button>
+    )}
+  </div>
+
+  {categories.length === 0 ? (
+    <!-- Empty State -->
+    <div class="cc-empty">
+      <div class="cc-empty-icon">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/>
+          <line x1="7" y1="7" x2="7.01" y2="7"/>
+        </svg>
+      </div>
+      <h3>No categories yet</h3>
+      <p>Create your first category to organize and structure your content.</p>
+      {canWrite && (
+        <button class="cc-add-btn" id="addCategoryBtnEmpty" style="margin-top: 8px;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+          Create Category
+        </button>
+      )}
+    </div>
+  ) : (
+    <!-- Category Grid -->
+    <div class="cc-grid">
+      {categories.map((cat: any, idx: number) => {
+        const color = colors[idx % colors.length];
+        const count = postCounts[cat.name] || 0;
+        return (
+          <div class="cc-card" data-id={cat.id}>
+            <div class="cc-card-accent" style={`background: ${color.bg};`}></div>
+            <div class="cc-card-body">
+              <div class="cc-card-top">
+                <div class="cc-card-icon" style={`background: ${color.light};`}>
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={color.text} stroke-width="2">
+                    <path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/>
+                    <line x1="7" y1="7" x2="7.01" y2="7"/>
+                  </svg>
+                </div>
+                {canWrite && (
+                  <div class="cc-card-menu">
+                    <button class="cc-menu-btn edit-cat-btn" title="Edit" data-id={cat.id} data-name={cat.name} data-slug={cat.slug} data-desc={cat.description || ''}>
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+                    </button>
+                    <button class="cc-menu-btn cc-menu-del delete-cat-btn" title="Delete" data-id={cat.id} data-name={cat.name}>
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3,6 5,6 21,6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg>
+                    </button>
+                  </div>
+                )}
+              </div>
+              <h3 class="cc-card-title">{cat.name}</h3>
+              <p class="cc-card-desc">{cat.description || 'No description'}</p>
+              <div class="cc-card-footer">
+                <code class="cc-card-slug">/{cat.slug}</code>
+                <span class="cc-card-count" style={`background: ${color.light}; color: ${color.text};`}>
+                  {count} {count !== 1 ? 'posts' : 'post'}
+                </span>
+              </div>
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  )}
+
+  <!-- Category Modal -->
+  <div class="cc-modal-overlay" id="catModal">
+    <div class="cc-modal">
+      <div class="cc-modal-head">
+        <div class="cc-modal-head-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/>
+            <line x1="7" y1="7" x2="7.01" y2="7"/>
+          </svg>
+        </div>
+        <h3 id="catModalTitle">New Category</h3>
+        <button class="cc-modal-close" id="closeCatModal">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
+      <div class="cc-modal-body">
+        <input type="hidden" id="catEditId" value="" />
+        <div class="cc-field">
+          <label>Category Name</label>
+          <input type="text" id="catName" placeholder="e.g. Finance Tips" required />
+        </div>
+        <div class="cc-field">
+          <label>URL Slug</label>
+          <div class="cc-slug-wrap">
+            <span class="cc-slug-prefix">/</span>
+            <input type="text" id="catSlug" placeholder="auto-generated" />
+          </div>
+          <span class="cc-hint">Leave blank to auto-generate from name</span>
+        </div>
+        <div class="cc-field">
+          <label>Description <span class="cc-optional">optional</span></label>
+          <textarea id="catDesc" placeholder="Brief description of this category..." rows="3"></textarea>
+        </div>
+      </div>
+      <div class="cc-modal-foot">
+        <button class="cc-btn-ghost" id="cancelCatModal">Cancel</button>
+        <button class="cc-btn-save" id="saveCatBtn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+          Save
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script is:inline>
+    const modal = document.getElementById('catModal');
+
+    function openModal(title = 'New Category', data = {}) {
+      document.getElementById('catModalTitle').textContent = title;
+      document.getElementById('catEditId').value = data.id || '';
+      document.getElementById('catName').value = data.name || '';
+      document.getElementById('catSlug').value = data.slug || '';
+      document.getElementById('catDesc').value = data.desc || '';
+      modal?.classList.add('show');
+      setTimeout(() => document.getElementById('catName').focus(), 100);
+    }
+
+    function closeModal() { modal?.classList.remove('show'); }
+
+    document.getElementById('addCategoryBtn')?.addEventListener('click', () => openModal());
+    document.getElementById('addCategoryBtnEmpty')?.addEventListener('click', () => openModal());
+    document.getElementById('closeCatModal')?.addEventListener('click', closeModal);
+    document.getElementById('cancelCatModal')?.addEventListener('click', closeModal);
+    modal?.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
+
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
+
+    document.getElementById('catName')?.addEventListener('input', () => {
+      const slugField = document.getElementById('catSlug');
+      const editId = document.getElementById('catEditId').value;
+      if (!editId && slugField) {
+        slugField.value = document.getElementById('catName').value
+          .toLowerCase().replace(/[^a-z0-9\s-]/g, '').replace(/\s+/g, '-').replace(/-+/g, '-');
+      }
+    });
+
+    document.querySelectorAll('.edit-cat-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        openModal('Edit Category', { id: btn.dataset.id, name: btn.dataset.name, slug: btn.dataset.slug, desc: btn.dataset.desc });
+      });
+    });
+
+    document.getElementById('saveCatBtn')?.addEventListener('click', async () => {
+      const name = document.getElementById('catName').value.trim();
+      if (!name) { document.getElementById('catName').style.borderColor = '#f5576c'; return; }
+
+      const btn = document.getElementById('saveCatBtn');
+      btn.disabled = true;
+      btn.innerHTML = '<span class="cc-spinner"></span> Saving...';
+
+      try {
+        const res = await fetch('/api/blog/categories/', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            id: document.getElementById('catEditId').value || undefined,
+            name,
+            slug: document.getElementById('catSlug').value.trim(),
+            description: document.getElementById('catDesc').value.trim(),
+          }),
+        });
+        if (res.ok) window.location.reload();
+        else { const data = await res.json(); alert(data.error || 'Failed to save'); }
+      } catch { alert('Network error'); }
+      btn.disabled = false;
+      btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> Save';
+    });
+
+    document.querySelectorAll('.delete-cat-btn').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        if (!confirm(`Delete "${btn.dataset.name}"? This won't delete any posts.`)) return;
+        btn.disabled = true;
+        try {
+          const res = await fetch('/api/blog/categories/', { method: 'DELETE', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id: btn.dataset.id }) });
+          if (res.ok) window.location.reload();
+          else alert('Failed to delete');
+        } catch { alert('Network error'); }
+      });
+    });
+
+    // Reset border on focus
+    document.getElementById('catName')?.addEventListener('focus', function() { this.style.borderColor = ''; });
+  </script>
+</AdminLayout>
+
+<style is:global>
+  /* ── Stats Bar ── */
+  .cc-stats {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 28px;
+    padding: 16px 24px;
+    background: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: 14px;
+  }
+  .cc-stat-item { display: flex; flex-direction: column; }
+  .cc-stat-num { font-size: 26px; font-weight: 800; color: var(--text-primary); line-height: 1; }
+  .cc-stat-label { font-size: 11px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.6px; margin-top: 2px; }
+  .cc-stat-divider { width: 1px; height: 36px; background: var(--border-subtle); }
+  .cc-add-btn {
+    margin-left: auto;
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 10px 20px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: #fff; border: none; border-radius: 10px;
+    font-size: 13px; font-weight: 600; cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 15px rgba(102,126,234,0.3);
+  }
+  .cc-add-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(102,126,234,0.45);
+  }
+
+  /* ── Empty State ── */
+  .cc-empty {
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    padding: 64px 24px;
+    background: var(--bg-surface);
+    border: 2px dashed var(--border-subtle);
+    border-radius: 16px;
+    text-align: center;
+  }
+  .cc-empty-icon {
+    width: 80px; height: 80px; border-radius: 50%;
+    background: linear-gradient(135deg, rgba(102,126,234,0.1), rgba(118,75,162,0.1));
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 20px;
+  }
+  .cc-empty-icon svg { color: var(--text-muted); }
+  .cc-empty h3 { font-size: 18px; font-weight: 700; color: var(--text-primary); margin: 0 0 8px; }
+  .cc-empty p { font-size: 13px; color: var(--text-muted); margin: 0; max-width: 300px; }
+
+  /* ── Card Grid ── */
+  .cc-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 18px;
+  }
+  .cc-card {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: 14px;
+    overflow: hidden;
+    transition: all 0.25s ease;
+    position: relative;
+  }
+  .cc-card:hover {
+    border-color: var(--border-medium);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+  }
+  .cc-card-accent {
+    height: 4px;
+    width: 100%;
+  }
+  .cc-card-body { padding: 20px; }
+  .cc-card-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 14px;
+  }
+  .cc-card-icon {
+    width: 42px; height: 42px; border-radius: 11px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .cc-card-menu { display: flex; gap: 4px; opacity: 0; transition: opacity 0.2s; }
+  .cc-card:hover .cc-card-menu { opacity: 1; }
+  .cc-menu-btn {
+    width: 30px; height: 30px; border-radius: 8px;
+    border: 1px solid var(--border-subtle);
+    background: var(--bg-base);
+    color: var(--text-muted); cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.15s ease;
+  }
+  .cc-menu-btn:hover { background: var(--bg-hover); color: var(--text-primary); border-color: var(--border-medium); }
+  .cc-menu-del:hover { color: #f5576c; border-color: rgba(245,87,108,0.3); background: rgba(245,87,108,0.06); }
+  .cc-card-title { font-size: 16px; font-weight: 700; color: var(--text-primary); margin: 0 0 6px; }
+  .cc-card-desc { font-size: 12.5px; color: var(--text-muted); margin: 0 0 16px; line-height: 1.5; }
+  .cc-card-footer { display: flex; align-items: center; justify-content: space-between; }
+  .cc-card-slug {
+    font-size: 11.5px; font-family: 'JetBrains Mono', 'Fira Code', monospace;
+    color: var(--text-muted); background: var(--bg-base);
+    padding: 3px 8px; border-radius: 6px; border: 1px solid var(--border-subtle);
+  }
+  .cc-card-count {
+    font-size: 11.5px; font-weight: 700;
+    padding: 4px 10px; border-radius: 20px;
+  }
+
+  /* ── Modal ── */
+  .cc-modal-overlay {
+    display: none; position: fixed; inset: 0;
+    background: rgba(0,0,0,0.6); backdrop-filter: blur(8px);
+    z-index: 100; align-items: center; justify-content: center;
+  }
+  .cc-modal-overlay.show { display: flex; }
+  .cc-modal {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-medium);
+    border-radius: 18px;
+    width: min(460px, 92vw);
+    box-shadow: 0 25px 60px rgba(0,0,0,0.3);
+    animation: ccSlideUp 0.25s ease-out;
+  }
+  @keyframes ccSlideUp {
+    from { opacity: 0; transform: translateY(16px) scale(0.97); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+  }
+  .cc-modal-head {
+    display: flex; align-items: center; gap: 12px;
+    padding: 20px 24px; border-bottom: 1px solid var(--border-subtle);
+  }
+  .cc-modal-head-icon {
+    width: 36px; height: 36px; border-radius: 10px;
+    background: linear-gradient(135deg, rgba(102,126,234,0.15), rgba(118,75,162,0.15));
+    display: flex; align-items: center; justify-content: center;
+    color: #667eea;
+  }
+  .cc-modal-head h3 { flex: 1; font-size: 16px; font-weight: 700; color: var(--text-primary); margin: 0; }
+  .cc-modal-close {
+    background: transparent; border: none; color: var(--text-muted); cursor: pointer;
+    padding: 6px; border-radius: 8px; transition: all 0.15s;
+  }
+  .cc-modal-close:hover { background: var(--bg-hover); color: var(--text-primary); }
+  .cc-modal-body { padding: 24px; display: flex; flex-direction: column; gap: 18px; }
+  .cc-field label {
+    display: block; font-size: 12px; font-weight: 600; color: var(--text-secondary);
+    text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px;
+  }
+  .cc-field input, .cc-field textarea {
+    width: 100%; padding: 10px 14px;
+    background: var(--bg-base); border: 1px solid var(--border-subtle);
+    border-radius: 10px; color: var(--text-primary); font-size: 14px;
+    transition: all 0.2s; outline: none; font-family: inherit;
+    box-sizing: border-box;
+  }
+  .cc-field input:focus, .cc-field textarea:focus {
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102,126,234,0.12);
+  }
+  .cc-field textarea { resize: vertical; min-height: 70px; }
+  .cc-slug-wrap {
+    display: flex; align-items: center;
+    background: var(--bg-base); border: 1px solid var(--border-subtle);
+    border-radius: 10px; overflow: hidden; transition: all 0.2s;
+  }
+  .cc-slug-wrap:focus-within { border-color: #667eea; box-shadow: 0 0 0 3px rgba(102,126,234,0.12); }
+  .cc-slug-prefix {
+    padding: 10px 0 10px 14px; color: var(--text-muted); font-size: 14px;
+    font-family: 'JetBrains Mono', 'Fira Code', monospace; user-select: none;
+  }
+  .cc-slug-wrap input {
+    border: none !important; background: transparent !important;
+    box-shadow: none !important; padding-left: 2px;
+    font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  }
+  .cc-hint { display: block; font-size: 11px; color: var(--text-muted); margin-top: 4px; }
+  .cc-optional { font-weight: 400; color: var(--text-muted); font-size: 10px; text-transform: none; }
+  .cc-modal-foot {
+    display: flex; align-items: center; justify-content: flex-end; gap: 10px;
+    padding: 16px 24px; border-top: 1px solid var(--border-subtle);
+  }
+  .cc-btn-ghost {
+    padding: 9px 18px; background: transparent; border: 1px solid var(--border-subtle);
+    border-radius: 10px; color: var(--text-secondary); font-size: 13px; font-weight: 600;
+    cursor: pointer; transition: all 0.15s;
+  }
+  .cc-btn-ghost:hover { background: var(--bg-hover); border-color: var(--border-medium); }
+  .cc-btn-save {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 9px 22px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: #fff; border: none; border-radius: 10px;
+    font-size: 13px; font-weight: 600; cursor: pointer;
+    transition: all 0.2s; box-shadow: 0 4px 12px rgba(102,126,234,0.25);
+  }
+  .cc-btn-save:hover { box-shadow: 0 6px 20px rgba(102,126,234,0.4); transform: translateY(-1px); }
+  .cc-btn-save:disabled { opacity: 0.6; pointer-events: none; }
+  .cc-spinner {
+    display: inline-block; width: 14px; height: 14px;
+    border: 2px solid rgba(255,255,255,0.3); border-top-color: #fff;
+    border-radius: 50%; animation: ccSpin 0.6s linear infinite;
+  }
+  @keyframes ccSpin { to { transform: rotate(360deg); } }
+
+  @media (max-width: 640px) {
+    .cc-grid { grid-template-columns: 1fr; }
+    .cc-stats { flex-wrap: wrap; gap: 12px; }
+    .cc-card-menu { opacity: 1; }
+  }
+</style>

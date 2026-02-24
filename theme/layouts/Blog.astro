@@ -31,7 +31,7 @@ export async function getStaticPaths({
 const { page } = Astro.props;
 
 // Convenience for building numbered links
-const firstUrl = page.url.first ?? "/blog/";
+const firstUrl = page.url.first ?? "/guides/";
 const makeHref = (n: number) => (n === 1 ? firstUrl : `${firstUrl}${n}/`);
 
 const siteURL = Astro.url.origin;
@@ -71,7 +71,7 @@ function readTime(content: string | undefined) {
       "@context": "https://schema.org",
       "@type": "Blog",
       name: indexTranslations.en.site_title,
-      url: `${siteURL}/blog/`,
+      url: `${siteURL}/guides/`,
     })}
   />
   <script
@@ -87,10 +87,10 @@ function readTime(content: string | undefined) {
         item: {
           "@type": "BlogPosting",
           headline: p.data.title,
-          url: `${siteURL}/blog/${p.id}/`,
+          url: `${siteURL}/guides/${p.id}/`,
           image: p.data.image,
           description: p.data.description,
-          mainEntityOfPage: `${siteURL}/blog/${p.id}/`,
+          mainEntityOfPage: `${siteURL}/guides/${p.id}/`,
         },
       })),
     })}
@@ -135,7 +135,7 @@ function readTime(content: string | undefined) {
     {
       page.data.map((post, index) => (
         <article class="blog-card" style={`animation-delay: ${index * 0.06}s`}>
-          <a href={`/blog/${post.id}/`} class="blog-card-link">
+          <a href={`/guides/${post.id}/`} class="blog-card-link">
             <div class="blog-card-image">
               {post.data.image ? (
                 <img

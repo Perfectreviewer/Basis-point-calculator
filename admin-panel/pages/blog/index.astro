@@ -5,6 +5,8 @@ import { listBlogFiles, readBlogFile, ensureDataDir } from '@admin/utils/storage
 import { getSessionFromCookies, validateSessionToken } from '@admin/utils/auth';
 import { hasPermission } from '@admin/utils/roles';
 import type { Role } from '@admin/utils/roles';
+import fs from 'node:fs';
+import path from 'node:path';
 
 export const prerender = false;
 
@@ -19,8 +21,16 @@ const canDelete = hasPermission(user.role as Role, 'blog:delete');
 ensureDataDir();
 const files = listBlogFiles();
 
+// Read managed categories
+let blogCategories: { id: string; name: string; slug: string }[] = [];
+try {
+  const catPath = path.join(process.cwd(), 'src', 'config', 'blog-categories.json');
+  blogCategories = JSON.parse(fs.readFileSync(catPath, 'utf-8'));
+} catch { /* empty */ }
+
 function parseFrontmatter(content: string) {
-  const match = content.match(/^---\n([\s\S]*?)\n---\n([\s\S]*)$/);
+  const normalized = content.replace(/\r\n/g, '\n');
+  const match = normalized.match(/^---\n([\s\S]*?)\n---\n([\s\S]*)$/);
   if (!match) return {};
   const fm: Record<string, string> = {};
   for (const line of match[1].split('\n')) {
@@ -158,7 +168,12 @@ if (editFile) {
             <div class="panel-body" id="panel-taxonomy">
               <div class="setting-row">
                 <label class="setting-label">Category</label>
-                <input type="text" class="form-input setting-input" id="postCategory" value={editFrontmatter.category || ''} placeholder="e.g. Finance" />
+                <select class="form-input setting-input" id="postCategory">
+                  <option value="">— Select Category —</option>
+                  {blogCategories.map((cat) => (
+                    <option value={cat.name} selected={editFrontmatter.category === cat.name}>{cat.name}</option>
+                  ))}
+                </select>
               </div>
               <div class="setting-row">
                 <label class="setting-label">Tags</label>

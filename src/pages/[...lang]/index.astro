@@ -21,11 +21,13 @@ const currentPath = "/";
 const seo = (seoConfig as Record<string, any>)[currentPath] || {};
 
 const pageTitle =
-  seo.title ||
-  "Basis Point Calculator – Accurate Basis Points Calculation Online";
+  (typeof seo.title === "object"
+    ? seo.title[locale] || seo.title.en
+    : seo.title) || t.index_title;
 const pageDescription =
-  seo.description ||
-  "Use our free basis point calculator to perform accurate basis points calculation. Easily calculate basis points, convert percentages, and understand interest rate changes online.";
+  (typeof seo.description === "object"
+    ? seo.description[locale] || seo.description.en
+    : seo.description) || t.index_description;
 
 const schema = JSON.stringify({
   "@context": "https://schema.org",

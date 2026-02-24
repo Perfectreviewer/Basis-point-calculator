@@ -38,7 +38,7 @@ const wordCount = entry.body ? entry.body.split(/\s+/g).length : 0;
 const readTime = Math.ceil(wordCount / 200);
 
 const siteURL = Astro.url.origin;
-const canonical = `${siteURL}/blog/${entry.id}/`;
+const canonical = `${siteURL}/guides/${entry.id}/`;
 const imageUrl = `${siteURL}${entry.data.image}`;
 
 const dateFormat = new Intl.DateTimeFormat("en-US", {
@@ -92,7 +92,7 @@ const dateFormat = new Intl.DateTimeFormat("en-US", {
       <div class="sp-hero-inner">
         <!-- Breadcrumb -->
         <nav class="sp-breadcrumb" aria-label="Breadcrumb">
-          <a href="/blog/">Blog</a>
+          <a href="/guides/">Guides</a>
           <svg
             viewBox="0 0 24 24"
             fill="none"
@@ -103,7 +103,7 @@ const dateFormat = new Intl.DateTimeFormat("en-US", {
           >
           {
             entry.data.category && (
-              <a href={`/blog/category/${entry.data.category.toLowerCase()}`}>
+              <a href={`/guides/category/${entry.data.category.toLowerCase()}`}>
                 {entry.data.category}
               </a>
             )
@@ -415,7 +415,7 @@ const dateFormat = new Intl.DateTimeFormat("en-US", {
         <section class="sp-related">
           <div class="sp-related-header">
             <h2>Related Articles</h2>
-            <a href="/blog/" class="sp-related-link">
+            <a href="/guides/" class="sp-related-link">
               View all articles
               <svg
                 viewBox="0 0 24 24"
@@ -432,7 +432,7 @@ const dateFormat = new Intl.DateTimeFormat("en-US", {
           </div>
           <div class="sp-related-grid">
             {relatedPosts.map((post) => (
-              <a href={`/blog/${post.id}/`} class="sp-related-card">
+              <a href={`/guides/${post.id}/`} class="sp-related-card">
                 <div class="sp-related-img">
                   {post.data.image ? (
                     <img
