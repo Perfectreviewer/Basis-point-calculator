@@ -1,0 +1,28 @@
+---
+import Layout from "@theme/layouts/Layout.astro";
+import ContactForm from "@theme/components/ContactForm.astro";
+import { getTranslations, type Locale } from "@theme/i18n/utils";
+import indexTranslations from "~/i18n/index.json";
+import siteSettings from "~/config/site-settings.json";
+
+export function getStaticPaths() {
+  return Object.keys(indexTranslations).map((locale) => ({
+    params: { lang: locale === "en" ? undefined : locale },
+  }));
+}
+
+const locale = (Astro.params.lang || "en") as Locale;
+const t = getTranslations(locale);
+
+const cp = (siteSettings as any).contactPage || {};
+const pageTitle = cp.pageTitle || t["Contact"] || "Contact Us";
+const pageSubtitle = cp.pageSubtitle || "";
+const seoTitle = cp.seoTitle || `${pageTitle} | ${t.site_title}`;
+const seoDescription = cp.seoDescription || "";
+---
+
+<Layout title={seoTitle} description={seoDescription}>
+  <h1 class="font-semibold text-slate-800 text-3xl">{pageTitle}</h1>
+  {pageSubtitle && <p class="mt-2 text-slate-600">{pageSubtitle}</p>}
+  <ContactForm />
+</Layout>
