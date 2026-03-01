@@ -16,6 +16,11 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 export default defineConfig({
   site: config.site.base_url,
   trailingSlash: 'ignore',
+
+  redirects: {
+    '/guides/what-are-basis-points/': '/bps-calculators/basis-point-guide/',
+  },
+
   integrations: [
     sitemap({
       filter: (page) =>
