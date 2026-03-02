@@ -66,6 +66,29 @@ const pageURL = Astro.url.href;
     })}
   />
 
+  <!-- FAQ Schema -->
+  {
+    faqs.length > 0 && (
+      <script
+        is:inline
+        slot="head"
+        type="application/ld+json"
+        set:html={JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          mainEntity: faqs.map((faq) => ({
+            "@type": "Question",
+            name: faq.question,
+            acceptedAnswer: {
+              "@type": "Answer",
+              text: faq.answer,
+            },
+          })),
+        })}
+      />
+    )
+  }
+
   <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
     <!-- Main Calculator Area -->
     <div class="lg:col-span-2 space-y-6">

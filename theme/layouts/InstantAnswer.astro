@@ -1,0 +1,473 @@
+---
+import Layout from "@theme/layouts/Layout.astro";
+import FAQs from "@theme/components/FAQs.astro";
+import {
+  getTranslations,
+  type Locale,
+  getLocalizedUrl,
+} from "@theme/i18n/utils.ts";
+import indexTranslations from "~/i18n/index.json";
+
+interface Props {
+  bps: number;
+}
+
+export async function getStaticPaths() {
+  return Object.keys(indexTranslations).map((locale) => ({
+    params: { lang: locale === "en" ? undefined : locale },
+  }));
+}
+
+const { bps } = Astro.props;
+const locale = (Astro.params.lang || "en") as Locale;
+const t = getTranslations(locale);
+
+const siteURL = Astro.url.origin;
+const pageURL = Astro.url.href;
+
+// Compute conversions
+const pct = bps / 100;
+const decimal = bps / 10000;
+const permille = bps / 10;
+const perHundredK = (bps / 10000) * 100000;
+const perMillion = (bps / 10000) * 1000000;
+
+const pctStr = pct.toFixed(2).replace(/\.?0+$/, "");
+const decStr = decimal.toFixed(6).replace(/\.?0+$/, "");
+const permilleStr = permille.toFixed(3).replace(/\.?0+$/, "");
+const perHundredKStr = perHundredK.toLocaleString("en-US", {
+  maximumFractionDigits: 2,
+});
+const perMillionStr = perMillion.toLocaleString("en-US", {
+  maximumFractionDigits: 2,
+});
+
+const pageTitle = `${bps} Basis Points = ${pctStr}% | BPS to Percentage`;
+const pageDescription = `${bps} basis points (bps) equals ${pctStr}% in percentage, ${decStr} in decimal. Convert ${bps} bps instantly with our free calculator.`;
+
+// Real-world impact examples
+const mortgageAmount = 400000;
+const mortgageImpact = (mortgageAmount * decimal).toLocaleString("en-US", {
+  maximumFractionDigits: 2,
+});
+
+const loanAmount = 250000;
+const loanImpact = (loanAmount * decimal).toLocaleString("en-US", {
+  maximumFractionDigits: 2,
+});
+
+const portfolioAmount = 1000000;
+const portfolioImpact = (portfolioAmount * decimal).toLocaleString("en-US", {
+  maximumFractionDigits: 2,
+});
+
+// Nearby values for related conversions
+const nearbyValues = [
+  { bps: Math.max(1, bps - 15), label: "" },
+  { bps: Math.max(1, bps - 10), label: "" },
+  { bps: Math.max(1, bps - 5), label: "" },
+  { bps: bps + 5, label: "" },
+  { bps: bps + 10, label: "" },
+  { bps: bps + 15, label: "" },
+].filter((v) => v.bps !== bps && v.bps > 0);
+
+// FAQs
+const faqs = [
+  {
+    question: `What is ${bps} basis points in percentage?`,
+    answer: `${bps} basis points equals ${pctStr}%. To convert, divide basis points by 100: ${bps} ÷ 100 = ${pctStr}%.`,
+  },
+  {
+    question: `What is ${bps} bps in decimal?`,
+    answer: `${bps} basis points equals ${decStr} in decimal form. To convert, divide basis points by 10,000: ${bps} ÷ 10,000 = ${decStr}.`,
+  },
+  {
+    question: `How much is ${bps} basis points on a $${mortgageAmount.toLocaleString()} mortgage?`,
+    answer: `A ${bps} basis point change on a $${mortgageAmount.toLocaleString()} mortgage equals $${mortgageImpact} per year in additional interest.`,
+  },
+  {
+    question: `How do you calculate ${bps} basis points?`,
+    answer: `To calculate ${bps} basis points: divide by 100 to get percentage (${pctStr}%), or divide by 10,000 to get the decimal (${decStr}). Multiply the decimal by any amount to find the dollar impact.`,
+  },
+  {
+    question: `Is ${bps} basis points a lot?`,
+    answer:
+      bps <= 10
+        ? `${bps} basis points (${pctStr}%) is a small change, but can be significant on large amounts. On $1 million, ${bps} bps equals $${perMillionStr}.`
+        : bps <= 50
+          ? `${bps} basis points (${pctStr}%) is a moderate change. The Federal Reserve often moves rates by 25 bps. On a $1M portfolio, ${bps} bps equals $${perMillionStr} per year.`
+          : `${bps} basis points (${pctStr}%) is a significant change. On a $1 million portfolio, this equals $${perMillionStr} per year.`,
+  },
+];
+
+// Related calculators
+const relatedCalculators = [
+  {
+    name: t.bp_to_pct_title || "BPS to Percentage Calculator",
+    url: "/bps-calculators/basis-point-to-percentage/",
+  },
+  {
+    name: t.pct_to_bp_title || "Percentage to BPS Calculator",
+    url: "/bps-calculators/percentage-to-basis-point/",
+  },
+  {
+    name: t.bp_examples_title || "Basis Point Examples",
+    url: "/bps-calculators/basis-point-examples/",
+  },
+];
+---
+
+<Layout title={`${pageTitle} | ${t.site_title}`} description={pageDescription}>
+  <!-- Instant Answer Schema -->
+  <script
+    is:inline
+    slot="head"
+    type="application/ld+json"
+    set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      name: pageTitle,
+      url: pageURL,
+      applicationCategory: "FinanceApplication",
+      operatingSystem: "All",
+      offers: {
+        "@type": "Offer",
+        price: "0",
+        priceCurrency: "USD",
+      },
+      description: pageDescription,
+      publisher: {
+        "@type": "Organization",
+        name: t.site_title,
+        url: siteURL,
+      },
+    })}
+  />
+
+  <!-- FAQ Schema -->
+  <script
+    is:inline
+    slot="head"
+    type="application/ld+json"
+    set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      mainEntity: faqs.map((faq) => ({
+        "@type": "Question",
+        name: faq.question,
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: faq.answer,
+        },
+      })),
+    })}
+  />
+
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+    <!-- Main Content -->
+    <div class="lg:col-span-2 space-y-6">
+      <!-- Hero Answer Box -->
+      <section class="bg-white rounded-2xl shadow-lg overflow-hidden">
+        <div class="bg-gradient-to-r from-sky-600 to-indigo-600 px-6 py-4">
+          <p class="text-sky-100 text-sm font-medium">Instant Answer</p>
+        </div>
+        <div class="p-6">
+          <h1
+            class="text-3xl md:text-4xl font-bold text-slate-800 tracking-tight"
+          >
+            {bps} Basis Points = {pctStr}%
+          </h1>
+          <p class="text-slate-500 mt-2">
+            {bps} bps = {pctStr}% = {decStr} (decimal) = {permilleStr}‰
+            (permille)
+          </p>
+          <div class="mt-4 p-4 bg-sky-50 rounded-xl border border-sky-100">
+            <p class="text-slate-700 text-sm">
+              <strong>Formula:</strong>
+              {bps} basis points ÷ 100 = {pctStr}%
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Conversion Table -->
+      <section class="bg-white rounded-2xl shadow-lg p-6">
+        <h2 class="text-xl font-semibold text-slate-800">
+          {bps} Basis Points — All Conversions
+        </h2>
+        <div class="mt-4 overflow-x-auto">
+          <table class="w-full text-sm">
+            <tbody class="text-slate-700">
+              <tr class="border-b border-slate-100">
+                <td class="py-3 px-3 font-medium text-slate-500">Percentage</td>
+                <td class="py-3 px-3 font-bold text-slate-800 text-lg"
+                  >{pctStr}%</td
+                >
+              </tr>
+              <tr class="border-b border-slate-100">
+                <td class="py-3 px-3 font-medium text-slate-500">Decimal</td>
+                <td class="py-3 px-3 font-bold text-slate-800 text-lg"
+                  >{decStr}</td
+                >
+              </tr>
+              <tr class="border-b border-slate-100">
+                <td class="py-3 px-3 font-medium text-slate-500"
+                  >Permille (‰)</td
+                >
+                <td class="py-3 px-3 font-bold text-slate-800 text-lg"
+                  >{permilleStr}‰</td
+                >
+              </tr>
+              <tr class="border-b border-slate-100">
+                <td class="py-3 px-3 font-medium text-slate-500"
+                  >Per $100,000</td
+                >
+                <td class="py-3 px-3 font-bold text-slate-800 text-lg"
+                  >${perHundredKStr}</td
+                >
+              </tr>
+              <tr>
+                <td class="py-3 px-3 font-medium text-slate-500"
+                  >Per $1,000,000</td
+                >
+                <td class="py-3 px-3 font-bold text-slate-800 text-lg"
+                  >${perMillionStr}</td
+                >
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Interactive Calculator -->
+      <section class="bg-white rounded-2xl shadow-lg p-6">
+        <h2 class="text-xl font-semibold text-slate-800">
+          Try It — Convert Any BPS Value
+        </h2>
+        <div class="mt-4 space-y-4">
+          <div>
+            <label for="ia-bps" class="block text-sm mb-2 text-slate-600">
+              Enter Basis Points
+            </label>
+            <div class="relative">
+              <input
+                id="ia-bps"
+                type="number"
+                inputmode="decimal"
+                class="w-full bg-white border border-slate-200 rounded-lg py-3 px-4 pr-14 focus:outline-none focus:ring-2 focus:ring-sky-200"
+                placeholder="100"
+              />
+              <span
+                class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-slate-400"
+                >bps</span
+              >
+            </div>
+          </div>
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label class="block text-sm mb-2 text-slate-600">Percentage</label
+              >
+              <div class="relative">
+                <input
+                  id="ia-pct"
+                  type="text"
+                  class="w-full bg-slate-50 border border-slate-200 rounded-lg py-3 px-4 pr-10 text-slate-700 font-medium"
+                  readonly
+                />
+                <span
+                  class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-slate-400"
+                  >%</span
+                >
+              </div>
+            </div>
+            <div>
+              <label class="block text-sm mb-2 text-slate-600">Decimal</label>
+              <input
+                id="ia-dec"
+                type="text"
+                class="w-full bg-slate-50 border border-slate-200 rounded-lg py-3 px-4 text-slate-700 font-medium"
+                readonly
+              />
+            </div>
+          </div>
+          <div
+            id="ia-result"
+            class="hidden p-4 bg-sky-50 rounded-lg border border-sky-100"
+          >
+            <p class="text-slate-700 text-sm" id="ia-result-text"></p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Real-World Impact -->
+      <section class="bg-white rounded-2xl shadow-lg p-6">
+        <h2 class="text-xl font-semibold text-slate-800">
+          Real-World Impact of {bps} Basis Points
+        </h2>
+        <div class="mt-4 space-y-4">
+          <div class="p-4 bg-slate-50 rounded-lg">
+            <h3 class="font-medium text-slate-800">🏠 Mortgage</h3>
+            <p class="text-sm text-slate-600 mt-1">
+              On a ${mortgageAmount.toLocaleString()} mortgage, {bps} bps ({
+                pctStr
+              }%) equals
+              <strong>${mortgageImpact}</strong> per year in interest.
+            </p>
+          </div>
+          <div class="p-4 bg-slate-50 rounded-lg">
+            <h3 class="font-medium text-slate-800">🚗 Auto Loan</h3>
+            <p class="text-sm text-slate-600 mt-1">
+              On a ${loanAmount.toLocaleString()} auto loan, {bps} bps ({
+                pctStr
+              }%) equals
+              <strong>${loanImpact}</strong> per year in additional cost.
+            </p>
+          </div>
+          <div class="p-4 bg-slate-50 rounded-lg">
+            <h3 class="font-medium text-slate-800">📈 Investment Portfolio</h3>
+            <p class="text-sm text-slate-600 mt-1">
+              On a ${portfolioAmount.toLocaleString()} portfolio, a {bps} bps fee
+              equals
+              <strong>${portfolioImpact}</strong> annually.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Nearby Conversions -->
+      <section class="bg-white rounded-2xl shadow-lg p-6">
+        <h2 class="text-xl font-semibold text-slate-800">
+          Related BPS Conversions
+        </h2>
+        <div class="mt-4 overflow-x-auto">
+          <table class="w-full text-sm">
+            <thead>
+              <tr class="border-b border-slate-200 bg-slate-50">
+                <th class="text-left py-2 px-3 font-medium text-slate-600"
+                  >Basis Points</th
+                >
+                <th class="text-left py-2 px-3 font-medium text-slate-600"
+                  >Percentage</th
+                >
+                <th class="text-left py-2 px-3 font-medium text-slate-600"
+                  >Decimal</th
+                >
+              </tr>
+            </thead>
+            <tbody class="text-slate-700">
+              {
+                nearbyValues.map((v) => (
+                  <tr
+                    class={`border-b border-slate-100 ${v.bps === bps ? "bg-sky-50 font-bold" : ""}`}
+                  >
+                    <td class="py-2 px-3">{v.bps} bps</td>
+                    <td class="py-2 px-3">
+                      {(v.bps / 100).toFixed(2).replace(/\.?0+$/, "")}%
+                    </td>
+                    <td class="py-2 px-3">
+                      {(v.bps / 10000).toFixed(6).replace(/\.?0+$/, "")}
+                    </td>
+                  </tr>
+                ))
+              }
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- FAQs -->
+      <FAQs faqs={faqs} />
+    </div>
+
+    <!-- Sidebar -->
+    <aside class="space-y-6">
+      <div class="bg-white rounded-2xl shadow-lg p-6">
+        <h3 class="font-semibold text-lg mb-4">
+          {t.related_calculators || "Related Calculators"}
+        </h3>
+        <ul class="space-y-2">
+          {
+            relatedCalculators.map((calc) => (
+              <li>
+                <a
+                  href={getLocalizedUrl(calc.url, locale)}
+                  class="text-sky-600 hover:text-sky-800 hover:underline flex items-center gap-2"
+                >
+                  <svg
+                    class="w-4 h-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M9 5l7 7-7 7"
+                    />
+                  </svg>
+                  {calc.name}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+
+      <!-- Quick Info -->
+      <div class="bg-white rounded-2xl shadow p-6">
+        <h3 class="font-semibold">
+          {t.quick_relations_title || "Quick Relations"}
+        </h3>
+        <ul class="list-disc pl-6 mt-2 text-sm text-slate-700 space-y-1">
+          <li>1 bps = 0.01% = 0.1‰ = 0.0001</li>
+          <li>10 bps = 0.10% = 1‰ = 0.001</li>
+          <li>100 bps = 1.00% = 10‰ = 0.01</li>
+          <li>250 bps = 2.50% = 25‰ = 0.025</li>
+        </ul>
+      </div>
+
+      <!-- Quick Answer Card -->
+      <div
+        class="bg-gradient-to-br from-sky-500 to-indigo-600 rounded-2xl shadow-lg p-6 text-white"
+      >
+        <h3 class="font-bold text-lg mb-3">Quick Answer</h3>
+        <div class="space-y-2 text-sm">
+          <p><strong>{bps} bps</strong> = <strong>{pctStr}%</strong></p>
+          <p>Divide by 100 → percentage</p>
+          <p>Divide by 10,000 → decimal</p>
+        </div>
+      </div>
+    </aside>
+  </div>
+
+  <script define:vars={{ bps }}>
+    const $bps = document.getElementById("ia-bps");
+    const $pct = document.getElementById("ia-pct");
+    const $dec = document.getElementById("ia-dec");
+    const $result = document.getElementById("ia-result");
+    const $resultText = document.getElementById("ia-result-text");
+
+    function calc() {
+      const v = parseFloat($bps.value);
+      if (isNaN(v)) {
+        $pct.value = "";
+        $dec.value = "";
+        $result?.classList.add("hidden");
+        return;
+      }
+      const p = v / 100;
+      const d = v / 10000;
+      $pct.value = p.toFixed(4).replace(/\.?0+$/, "");
+      $dec.value = d.toFixed(6).replace(/\.?0+$/, "");
+      if ($result && $resultText) {
+        $result.classList.remove("hidden");
+        $resultText.innerHTML = `<strong>${v} basis points</strong> = <strong>${$pct.value}%</strong> = <strong>${$dec.value}</strong> (decimal)`;
+      }
+    }
+
+    $bps.addEventListener("input", calc);
+    $bps.value = String(bps);
+    calc();
+  </script>
+</Layout>
