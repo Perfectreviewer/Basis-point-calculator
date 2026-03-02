@@ -23,67 +23,13 @@ const pageTitle = `${t["Guides"]} | ${t.site_title}`;
 const pageDescription =
   "In-depth guides on basis points, interest rates, central bank decisions, loans, and APR. Build your financial literacy with clear, practical explanations.";
 
-/* ── Static guides ── */
-const guides = [
-  {
-    title: "What are Basis Points?",
-    description:
-      "A complete primer on basis points (bps) — what they are, why finance uses them instead of percentages, and how to convert between the two.",
-    url: "/bps-calculators/basis-point-guide/",
-    icon: "📐",
-    category: "Fundamentals",
-    readTime: "5 min read",
-    date: "2024-08-01",
-  },
-  {
-    title: "How Interest Rates Work",
-    description:
-      "Understand simple vs. compound interest, how banks set rates, and the real cost of borrowing over time.",
-    url: "/guides/how-interest-rates-work/",
-    icon: "📈",
-    category: "Interest Rates",
-    readTime: "7 min read",
-    date: "2024-08-05",
-  },
-  {
-    title: "Central Bank Rate Changes",
-    description:
-      "How Federal Reserve and central bank decisions ripple through the economy — from mortgage rates to savings accounts.",
-    url: "/guides/central-bank-rate-changes/",
-    icon: "🏛️",
-    category: "Central Banks",
-    readTime: "6 min read",
-    date: "2024-08-10",
-  },
-  {
-    title: "Basis Points Impact on Loans",
-    description:
-      "See the real dollar impact of a 25 or 50 basis point change on your mortgage, auto loan, and student debt payments.",
-    url: "/guides/basis-points-impact-on-loans/",
-    icon: "💵",
-    category: "Loans",
-    readTime: "5 min read",
-    date: "2024-08-15",
-  },
-  {
-    title: "APR vs Interest Rate",
-    description:
-      "Learn the critical difference between APR and nominal interest rate, and why APR is the number that really matters when comparing loans.",
-    url: "/guides/apr-vs-interest-rate/",
-    icon: "⚖️",
-    category: "Comparison",
-    readTime: "4 min read",
-    date: "2024-08-20",
-  },
-];
-
 /* ── Blog posts from content collection ── */
 const blogPosts = await getCollection("blog");
 const sortedBlogPosts = blogPosts.sort(
   (a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime(),
 );
 
-/* ── Merge all items into a unified list ── */
+/* ── Build unified list from blog posts ── */
 type GuideItem = {
   title: string;
   description: string;
@@ -97,7 +43,6 @@ type GuideItem = {
 };
 
 const allItems: GuideItem[] = [
-  ...guides.map((g) => ({ ...g, type: "guide" as const })),
   ...sortedBlogPosts.map((p) => ({
     title: p.data.title,
     description: p.data.description || "",
