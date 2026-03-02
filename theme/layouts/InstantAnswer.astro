@@ -163,183 +163,313 @@ const relatedCalculators = [
     })}
   />
 
+  <!-- Dynamic UI Styles -->
+  <style>
+    @keyframes valueGlow {
+      0% {
+        color: inherit;
+      }
+      30% {
+        color: #0284c7;
+        transform: scale(1.05);
+      }
+      100% {
+        color: inherit;
+        transform: scale(1);
+      }
+    }
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(4px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    .val-animate {
+      transition: all 0.3s ease;
+      display: inline-block;
+    }
+    .val-animate.flash {
+      animation: valueGlow 0.5s ease-out;
+    }
+    .ia-input-wrapper {
+      position: relative;
+      transition:
+        box-shadow 0.3s ease,
+        border-color 0.3s ease;
+    }
+    .ia-input-wrapper:focus-within {
+      box-shadow:
+        0 0 0 3px rgba(56, 189, 248, 0.3),
+        0 8px 25px rgba(56, 189, 248, 0.12);
+      border-color: #38bdf8;
+    }
+    .ia-input {
+      font-size: 1.5rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      transition: all 0.2s ease;
+    }
+    .impact-card {
+      transition: all 0.3s ease;
+    }
+    .impact-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+    }
+    .impact-val {
+      font-size: 1.25rem;
+      font-weight: 700;
+      transition: all 0.3s ease;
+      display: inline-block;
+    }
+    .impact-val.flash {
+      animation: valueGlow 0.5s ease-out;
+    }
+    .nearby-row {
+      transition: all 0.3s ease;
+    }
+    .nearby-row:hover {
+      background: #f0f9ff;
+    }
+    .nearby-row.is-current {
+      background: linear-gradient(to right, #e0f2fe, #ede9fe);
+      font-weight: 700;
+    }
+    .conv-value {
+      font-size: 1.125rem;
+      font-weight: 700;
+      transition: all 0.3s ease;
+      display: inline-block;
+    }
+    .conv-value.flash {
+      animation: valueGlow 0.5s ease-out;
+    }
+    .hero-answer {
+      transition: all 0.3s ease;
+    }
+    .quick-answer-val {
+      transition: all 0.3s ease;
+    }
+    .slider-track {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 100%;
+      height: 6px;
+      background: linear-gradient(to right, #bae6fd, #818cf8);
+      border-radius: 99px;
+      outline: none;
+    }
+    .slider-track::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #0ea5e9, #6366f1);
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(99, 102, 241, 0.4);
+      transition: transform 0.15s ease;
+    }
+    .slider-track::-webkit-slider-thumb:hover {
+      transform: scale(1.2);
+    }
+    .slider-track::-moz-range-thumb {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #0ea5e9, #6366f1);
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(99, 102, 241, 0.4);
+      border: none;
+    }
+  </style>
+
   <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
     <!-- Main Content -->
     <div class="lg:col-span-2 space-y-6">
-      <!-- Hero Answer Box -->
+      <!-- Hero Answer Box with Integrated Input -->
       <section class="bg-white rounded-2xl shadow-lg overflow-hidden">
-        <div class="bg-gradient-to-r from-sky-600 to-indigo-600 px-6 py-4">
+        <div
+          class="bg-gradient-to-r from-sky-600 to-indigo-600 px-6 py-4 flex items-center justify-between"
+        >
           <p class="text-sky-100 text-sm font-medium">Instant Answer</p>
+          <span class="text-xs text-sky-200 bg-white/10 px-3 py-1 rounded-full"
+            >Live Calculator</span
+          >
         </div>
         <div class="p-6">
-          <h1
-            class="text-3xl md:text-4xl font-bold text-slate-800 tracking-tight"
+          <div
+            class="flex flex-col sm:flex-row items-start sm:items-center gap-3"
           >
-            {bps} Basis Points = {pctStr}%
-          </h1>
-          <p class="text-slate-500 mt-2">
-            {bps} bps = {pctStr}% = {decStr} (decimal) = {permilleStr}‰
-            (permille)
-          </p>
-          <div class="mt-4 p-4 bg-sky-50 rounded-xl border border-sky-100">
-            <p class="text-slate-700 text-sm">
-              <strong>Formula:</strong>
-              {bps} basis points ÷ 100 = {pctStr}%
-            </p>
-          </div>
-        </div>
-      </section>
-
-      <!-- Conversion Table -->
-      <section class="bg-white rounded-2xl shadow-lg p-6">
-        <h2 class="text-xl font-semibold text-slate-800">
-          {bps} Basis Points — All Conversions
-        </h2>
-        <div class="mt-4 overflow-x-auto">
-          <table class="w-full text-sm">
-            <tbody class="text-slate-700">
-              <tr class="border-b border-slate-100">
-                <td class="py-3 px-3 font-medium text-slate-500">Percentage</td>
-                <td class="py-3 px-3 font-bold text-slate-800 text-lg"
-                  >{pctStr}%</td
-                >
-              </tr>
-              <tr class="border-b border-slate-100">
-                <td class="py-3 px-3 font-medium text-slate-500">Decimal</td>
-                <td class="py-3 px-3 font-bold text-slate-800 text-lg"
-                  >{decStr}</td
-                >
-              </tr>
-              <tr class="border-b border-slate-100">
-                <td class="py-3 px-3 font-medium text-slate-500"
-                  >Permille (‰)</td
-                >
-                <td class="py-3 px-3 font-bold text-slate-800 text-lg"
-                  >{permilleStr}‰</td
-                >
-              </tr>
-              <tr class="border-b border-slate-100">
-                <td class="py-3 px-3 font-medium text-slate-500"
-                  >Per $100,000</td
-                >
-                <td class="py-3 px-3 font-bold text-slate-800 text-lg"
-                  >${perHundredKStr}</td
-                >
-              </tr>
-              <tr>
-                <td class="py-3 px-3 font-medium text-slate-500"
-                  >Per $1,000,000</td
-                >
-                <td class="py-3 px-3 font-bold text-slate-800 text-lg"
-                  >${perMillionStr}</td
-                >
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
-
-      <!-- Interactive Calculator -->
-      <section class="bg-white rounded-2xl shadow-lg p-6">
-        <h2 class="text-xl font-semibold text-slate-800">
-          Try It — Convert Any BPS Value
-        </h2>
-        <div class="mt-4 space-y-4">
-          <div>
-            <label for="ia-bps" class="block text-sm mb-2 text-slate-600">
-              Enter Basis Points
-            </label>
-            <div class="relative">
+            <div
+              class="ia-input-wrapper flex items-center border-2 border-slate-200 rounded-xl px-4 py-2 bg-slate-50 w-full sm:w-auto"
+            >
               <input
                 id="ia-bps"
                 type="number"
                 inputmode="decimal"
-                class="w-full bg-white border border-slate-200 rounded-lg py-3 px-4 pr-14 focus:outline-none focus:ring-2 focus:ring-sky-200"
-                placeholder="100"
+                class="ia-input w-24 bg-transparent border-none outline-none text-slate-800"
+                placeholder="40"
               />
-              <span
-                class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-slate-400"
-                >bps</span
+              <span class="text-slate-400 font-medium ml-1">bps</span>
+            </div>
+            <span class="text-2xl text-slate-300 hidden sm:block">=</span>
+            <h1
+              class="hero-answer text-3xl md:text-4xl font-bold text-slate-800 tracking-tight"
+            >
+              <span id="hero-pct" class="val-animate text-sky-700"
+                >{pctStr}%</span
               >
+            </h1>
+          </div>
+          <p class="text-slate-500 mt-3" id="hero-subtitle">
+            <span id="hero-bps-label" class="val-animate">{bps}</span> bps =
+            <span id="hero-pct2" class="val-animate">{pctStr}%</span> =
+            <span id="hero-dec" class="val-animate">{decStr}</span> (decimal) =
+            <span id="hero-pml" class="val-animate">{permilleStr}‰</span> (permille)
+          </p>
+
+          <!-- Slider -->
+          <div class="mt-4">
+            <input
+              id="ia-slider"
+              type="range"
+              min="1"
+              max="500"
+              class="slider-track"
+            />
+            <div class="flex justify-between text-xs text-slate-400 mt-1">
+              <span>1 bps</span>
+              <span>250 bps</span>
+              <span>500 bps</span>
             </div>
           </div>
-          <div class="grid grid-cols-2 gap-4">
-            <div>
-              <label class="block text-sm mb-2 text-slate-600">Percentage</label
+
+          <div class="mt-4 p-4 bg-sky-50 rounded-xl border border-sky-100">
+            <p class="text-slate-700 text-sm">
+              <strong>Formula:</strong>
+              <span id="hero-formula" class="val-animate"
+                >{bps} basis points ÷ 100 = {pctStr}%</span
               >
-              <div class="relative">
-                <input
-                  id="ia-pct"
-                  type="text"
-                  class="w-full bg-slate-50 border border-slate-200 rounded-lg py-3 px-4 pr-10 text-slate-700 font-medium"
-                  readonly
-                />
-                <span
-                  class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-slate-400"
-                  >%</span
-                >
-              </div>
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Live Conversion Table -->
+      <section class="bg-white rounded-2xl shadow-lg p-6">
+        <h2 class="text-xl font-semibold text-slate-800">
+          <span id="conv-title" class="val-animate">{bps}</span> Basis Points — All
+          Conversions
+        </h2>
+        <div class="mt-4">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div
+              class="flex items-center justify-between p-4 bg-sky-50/50 rounded-xl border border-sky-100/50"
+            >
+              <span class="text-slate-500 font-medium text-sm">Percentage</span>
+              <span id="conv-pct" class="conv-value text-sky-700"
+                >{pctStr}%</span
+              >
             </div>
-            <div>
-              <label class="block text-sm mb-2 text-slate-600">Decimal</label>
-              <input
-                id="ia-dec"
-                type="text"
-                class="w-full bg-slate-50 border border-slate-200 rounded-lg py-3 px-4 text-slate-700 font-medium"
-                readonly
-              />
+            <div
+              class="flex items-center justify-between p-4 bg-indigo-50/50 rounded-xl border border-indigo-100/50"
+            >
+              <span class="text-slate-500 font-medium text-sm">Decimal</span>
+              <span id="conv-dec" class="conv-value text-indigo-700"
+                >{decStr}</span
+              >
+            </div>
+            <div
+              class="flex items-center justify-between p-4 bg-violet-50/50 rounded-xl border border-violet-100/50"
+            >
+              <span class="text-slate-500 font-medium text-sm"
+                >Permille (‰)</span
+              >
+              <span id="conv-pml" class="conv-value text-violet-700"
+                >{permilleStr}‰</span
+              >
+            </div>
+            <div
+              class="flex items-center justify-between p-4 bg-emerald-50/50 rounded-xl border border-emerald-100/50"
+            >
+              <span class="text-slate-500 font-medium text-sm"
+                >Per $100,000</span
+              >
+              <span id="conv-100k" class="conv-value text-emerald-700"
+                >${perHundredKStr}</span
+              >
             </div>
           </div>
           <div
-            id="ia-result"
-            class="hidden p-4 bg-sky-50 rounded-lg border border-sky-100"
+            class="mt-3 flex items-center justify-between p-5 bg-gradient-to-r from-sky-50 to-indigo-50 rounded-xl border border-sky-100"
           >
-            <p class="text-slate-700 text-sm" id="ia-result-text"></p>
+            <span class="text-slate-600 font-semibold">Per $1,000,000</span>
+            <span id="conv-1m" class="text-2xl font-bold text-sky-700"
+              >${perMillionStr}</span
+            >
           </div>
         </div>
       </section>
 
-      <!-- Real-World Impact -->
+      <!-- Real-World Impact (Dynamic) -->
       <section class="bg-white rounded-2xl shadow-lg p-6">
         <h2 class="text-xl font-semibold text-slate-800">
-          Real-World Impact of {bps} Basis Points
+          Real-World Impact of <span
+            id="impact-title"
+            class="val-animate text-sky-700">{bps}</span
+          > Basis Points
         </h2>
-        <div class="mt-4 space-y-4">
-          <div class="p-4 bg-slate-50 rounded-lg">
-            <h3 class="font-medium text-slate-800">🏠 Mortgage</h3>
-            <p class="text-sm text-slate-600 mt-1">
-              On a ${mortgageAmount.toLocaleString()} mortgage, {bps} bps ({
-                pctStr
-              }%) equals
-              <strong>${mortgageImpact}</strong> per year in interest.
+        <div class="mt-4 grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div
+            class="impact-card p-5 bg-gradient-to-br from-blue-50 to-sky-50 rounded-xl border border-sky-100"
+          >
+            <div class="flex items-center gap-2 mb-3">
+              <span class="text-2xl">🏠</span>
+              <h3 class="font-semibold text-slate-800">Mortgage</h3>
+            </div>
+            <p class="impact-val text-sky-700" id="impact-mortgage">
+              ${mortgageImpact}
             </p>
+            <p class="text-xs text-slate-500 mt-1">per year on $400K</p>
           </div>
-          <div class="p-4 bg-slate-50 rounded-lg">
-            <h3 class="font-medium text-slate-800">🚗 Auto Loan</h3>
-            <p class="text-sm text-slate-600 mt-1">
-              On a ${loanAmount.toLocaleString()} auto loan, {bps} bps ({
-                pctStr
-              }%) equals
-              <strong>${loanImpact}</strong> per year in additional cost.
+          <div
+            class="impact-card p-5 bg-gradient-to-br from-indigo-50 to-violet-50 rounded-xl border border-indigo-100"
+          >
+            <div class="flex items-center gap-2 mb-3">
+              <span class="text-2xl">🚗</span>
+              <h3 class="font-semibold text-slate-800">Auto Loan</h3>
+            </div>
+            <p class="impact-val text-indigo-700" id="impact-loan">
+              ${loanImpact}
             </p>
+            <p class="text-xs text-slate-500 mt-1">per year on $250K</p>
           </div>
-          <div class="p-4 bg-slate-50 rounded-lg">
-            <h3 class="font-medium text-slate-800">📈 Investment Portfolio</h3>
-            <p class="text-sm text-slate-600 mt-1">
-              On a ${portfolioAmount.toLocaleString()} portfolio, a {bps} bps fee
-              equals
-              <strong>${portfolioImpact}</strong> annually.
+          <div
+            class="impact-card p-5 bg-gradient-to-br from-emerald-50 to-teal-50 rounded-xl border border-emerald-100"
+          >
+            <div class="flex items-center gap-2 mb-3">
+              <span class="text-2xl">📈</span>
+              <h3 class="font-semibold text-slate-800">Portfolio</h3>
+            </div>
+            <p class="impact-val text-emerald-700" id="impact-portfolio">
+              ${portfolioImpact}
             </p>
+            <p class="text-xs text-slate-500 mt-1">per year on $1M</p>
           </div>
         </div>
       </section>
 
-      <!-- Nearby Conversions -->
+      <!-- Nearby Conversions (Dynamic) -->
       <section class="bg-white rounded-2xl shadow-lg p-6">
         <h2 class="text-xl font-semibold text-slate-800">
           Related BPS Conversions
         </h2>
-        <div class="mt-4 overflow-x-auto">
+        <div class="mt-4 overflow-x-auto" id="nearby-table-wrap">
           <table class="w-full text-sm">
             <thead>
               <tr class="border-b border-slate-200 bg-slate-50">
@@ -352,25 +482,13 @@ const relatedCalculators = [
                 <th class="text-left py-2 px-3 font-medium text-slate-600"
                   >Decimal</th
                 >
+                <th
+                  class="text-left py-2 px-3 font-medium text-slate-600 hidden sm:table-cell"
+                  >Per $1M</th
+                >
               </tr>
             </thead>
-            <tbody class="text-slate-700">
-              {
-                nearbyValues.map((v) => (
-                  <tr
-                    class={`border-b border-slate-100 ${v.bps === bps ? "bg-sky-50 font-bold" : ""}`}
-                  >
-                    <td class="py-2 px-3">{v.bps} bps</td>
-                    <td class="py-2 px-3">
-                      {(v.bps / 100).toFixed(2).replace(/\.?0+$/, "")}%
-                    </td>
-                    <td class="py-2 px-3">
-                      {(v.bps / 10000).toFixed(6).replace(/\.?0+$/, "")}
-                    </td>
-                  </tr>
-                ))
-              }
-            </tbody>
+            <tbody id="nearby-tbody" class="text-slate-700"> </tbody>
           </table>
         </div>
       </section>
@@ -427,13 +545,16 @@ const relatedCalculators = [
         </ul>
       </div>
 
-      <!-- Quick Answer Card -->
+      <!-- Quick Answer Card (Dynamic) -->
       <div
         class="bg-gradient-to-br from-sky-500 to-indigo-600 rounded-2xl shadow-lg p-6 text-white"
       >
         <h3 class="font-bold text-lg mb-3">Quick Answer</h3>
         <div class="space-y-2 text-sm">
-          <p><strong>{bps} bps</strong> = <strong>{pctStr}%</strong></p>
+          <p class="text-lg">
+            <strong id="qa-bps">{bps} bps</strong> = <strong id="qa-pct"
+              >{pctStr}%</strong>
+          </p>
           <p>Divide by 100 → percentage</p>
           <p>Divide by 10,000 → decimal</p>
         </div>
@@ -442,32 +563,104 @@ const relatedCalculators = [
   </div>
 
   <script define:vars={{ bps }}>
-    const $bps = document.getElementById("ia-bps");
-    const $pct = document.getElementById("ia-pct");
-    const $dec = document.getElementById("ia-dec");
-    const $result = document.getElementById("ia-result");
-    const $resultText = document.getElementById("ia-result-text");
+    // Helpers
+    const fmt = (n, d) => n.toFixed(d).replace(/\.?0+$/, "");
+    const fmtUSD = (n) =>
+      n.toLocaleString("en-US", { maximumFractionDigits: 2 });
 
-    function calc() {
-      const v = parseFloat($bps.value);
-      if (isNaN(v)) {
-        $pct.value = "";
-        $dec.value = "";
-        $result?.classList.add("hidden");
-        return;
-      }
-      const p = v / 100;
-      const d = v / 10000;
-      $pct.value = p.toFixed(4).replace(/\.?0+$/, "");
-      $dec.value = d.toFixed(6).replace(/\.?0+$/, "");
-      if ($result && $resultText) {
-        $result.classList.remove("hidden");
-        $resultText.innerHTML = `<strong>${v} basis points</strong> = <strong>${$pct.value}%</strong> = <strong>${$dec.value}</strong> (decimal)`;
+    function flash(el) {
+      if (!el) return;
+      el.classList.remove("flash");
+      void el.offsetWidth; // trigger reflow
+      el.classList.add("flash");
+    }
+
+    function setVal(id, val) {
+      const el = document.getElementById(id);
+      if (el && el.textContent !== val) {
+        el.textContent = val;
+        flash(el);
       }
     }
 
-    $bps.addEventListener("input", calc);
-    $bps.value = String(bps);
-    calc();
+    // DOM refs
+    const $input = document.getElementById("ia-bps");
+    const $slider = document.getElementById("ia-slider");
+    const $tbody = document.getElementById("nearby-tbody");
+
+    function buildNearby(v) {
+      const offsets = [-15, -10, -5, 0, 5, 10, 15];
+      const rows = offsets.map((o) => v + o).filter((b) => b > 0);
+
+      $tbody.innerHTML = rows
+        .map((b) => {
+          const isCurrent = b === v;
+          const p = fmt(b / 100, 2);
+          const d = fmt(b / 10000, 6);
+          const m = fmtUSD((b / 10000) * 1000000);
+          return `<tr class="nearby-row border-b border-slate-100 ${isCurrent ? "is-current" : ""}">
+            <td class="py-2 px-3 ${isCurrent ? "font-bold" : ""}">${b} bps${isCurrent ? " ←" : ""}</td>
+            <td class="py-2 px-3">${p}%</td>
+            <td class="py-2 px-3">${d}</td>
+            <td class="py-2 px-3 hidden sm:table-cell">$${m}</td>
+          </tr>`;
+        })
+        .join("");
+    }
+
+    function updateAll() {
+      const v = parseFloat($input.value);
+      if (isNaN(v) || v < 0) return;
+
+      const p = v / 100;
+      const d = v / 10000;
+      const pml = v / 10;
+      const per100k = d * 100000;
+      const per1m = d * 1000000;
+
+      // Hero
+      setVal("hero-pct", fmt(p, 2) + "%");
+      setVal("hero-bps-label", String(v));
+      setVal("hero-pct2", fmt(p, 2) + "%");
+      setVal("hero-dec", fmt(d, 6));
+      setVal("hero-pml", fmt(pml, 3) + "‰");
+      setVal("hero-formula", `${v} basis points ÷ 100 = ${fmt(p, 2)}%`);
+
+      // Conversion cards
+      setVal("conv-title", String(v));
+      setVal("conv-pct", fmt(p, 2) + "%");
+      setVal("conv-dec", fmt(d, 6));
+      setVal("conv-pml", fmt(pml, 3) + "‰");
+      setVal("conv-100k", "$" + fmtUSD(per100k));
+      setVal("conv-1m", "$" + fmtUSD(per1m));
+
+      // Real-world impact
+      setVal("impact-title", String(v));
+      setVal("impact-mortgage", "$" + fmtUSD(d * 400000));
+      setVal("impact-loan", "$" + fmtUSD(d * 250000));
+      setVal("impact-portfolio", "$" + fmtUSD(d * 1000000));
+
+      // Quick answer sidebar
+      setVal("qa-bps", v + " bps");
+      setVal("qa-pct", fmt(p, 2) + "%");
+
+      // Nearby table
+      buildNearby(v);
+
+      // Sync slider ↔ input
+      $slider.value = Math.min(v, 500);
+    }
+
+    // Events
+    $input.addEventListener("input", updateAll);
+    $slider.addEventListener("input", () => {
+      $input.value = $slider.value;
+      updateAll();
+    });
+
+    // Initialize
+    $input.value = String(bps);
+    $slider.value = Math.min(bps, 500);
+    updateAll();
   </script>
 </Layout>
