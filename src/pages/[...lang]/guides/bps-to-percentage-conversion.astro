@@ -1,0 +1,609 @@
+---
+import CalculatorLayout, {
+  getStaticPaths as getStaticPathsCalc,
+} from "@theme/layouts/CalculatorLayout.astro";
+import {
+  getTranslations,
+  type Locale,
+  getLocalizedUrl,
+} from "@theme/i18n/utils";
+
+export const getStaticPaths = getStaticPathsCalc;
+
+const locale = (Astro.params.lang || "en") as Locale;
+const t = getTranslations(locale);
+
+const pageTitle = "BPS to Percentage Conversion: The Complete Guide";
+const pageDescription =
+  "Convert basis points to percentage instantly. Full formula, conversion chart (1 bps to 10,000 bps), step-by-step examples, and a free BPS-to-% calculator.";
+
+const relatedCalculators = [
+  {
+    name: "BPS to Percentage",
+    url: "/bps-calculators/basis-point-to-percentage/",
+  },
+  {
+    name: "Percentage to BPS",
+    url: "/bps-calculators/percentage-to-basis-point/",
+  },
+  {
+    name: "BPS Difference",
+    url: "/bps-calculators/basis-point-difference/",
+  },
+];
+
+const faqs = [
+  {
+    question: "How many basis points is 0.5%?",
+    answer: "0.5% × 100 = 50 basis points.",
+  },
+  {
+    question: "How many basis points is 0.25%?",
+    answer: "0.25% × 100 = 25 basis points (a quarter-point).",
+  },
+  {
+    question: "Is 100 basis points equal to 1%?",
+    answer: "Yes. 100 bps ÷ 100 = 1.00%. This is the fundamental relationship.",
+  },
+  {
+    question: "What is 1000 basis points as a percentage?",
+    answer: "1,000 ÷ 100 = 10.00%.",
+  },
+  {
+    question: "What does 10 bps mean?",
+    answer: "10 basis points = 0.10%, or one-tenth of one percent.",
+  },
+  {
+    question: "How do I convert bps to decimal in Excel?",
+    answer: "Use the formula =A1/10000 where A1 is your basis point cell.",
+  },
+  {
+    question: "Can basis points be negative?",
+    answer:
+      "Yes. A rate decrease of 25 bps = −0.25%. You'll see negative bps used when rates fall or spreads tighten.",
+  },
+];
+---
+
+<CalculatorLayout
+  title={pageTitle}
+  description={pageDescription}
+  calculatorType="guide"
+  relatedCalculators={relatedCalculators}
+  faqs={faqs}
+>
+  <article class="prose prose-slate max-w-none">
+    <h1 class="text-3xl font-bold text-slate-800">{pageTitle}</h1>
+
+    <!-- Quick Formula Box -->
+    <div class="not-prose bg-sky-50 rounded-xl p-6 my-6">
+      <p class="text-lg text-slate-700">
+        <strong>The One Formula You Need:</strong> Percentage = Basis Points ÷ 100
+      </p>
+      <p class="text-sm text-slate-500 mt-2">
+        And the reverse: Basis Points = Percentage × 100
+      </p>
+    </div>
+
+    <h2>Quick Examples</h2>
+    <div class="not-prose overflow-x-auto my-6">
+      <table class="w-full text-sm">
+        <thead class="bg-slate-100">
+          <tr>
+            <th class="px-4 py-2 text-left">Calculation</th>
+            <th class="px-4 py-2 text-left">Result</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="border-b"
+            ><td class="px-4 py-2">25 bps ÷ 100</td><td
+              class="px-4 py-2 font-semibold">0.25%</td
+            ></tr
+          >
+          <tr class="border-b"
+            ><td class="px-4 py-2">50 bps ÷ 100</td><td
+              class="px-4 py-2 font-semibold">0.50%</td
+            ></tr
+          >
+          <tr class="border-b"
+            ><td class="px-4 py-2">100 bps ÷ 100</td><td
+              class="px-4 py-2 font-semibold">1.00%</td
+            ></tr
+          >
+          <tr class="border-b"
+            ><td class="px-4 py-2">300 bps ÷ 100</td><td
+              class="px-4 py-2 font-semibold">3.00%</td
+            ></tr
+          >
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Low-Range Chart -->
+    <h2>Complete BPS to Percentage Conversion Chart</h2>
+
+    <h3>Low-Range BPS (1–100 bps)</h3>
+    <div class="not-prose overflow-x-auto my-6">
+      <table class="w-full text-sm">
+        <thead class="bg-slate-100">
+          <tr>
+            <th class="px-4 py-2 text-left">Basis Points</th>
+            <th class="px-4 py-2 text-left">Percentage</th>
+            <th class="px-4 py-2 text-left">Decimal</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="border-b"
+            ><td class="px-4 py-2">1 bps</td><td class="px-4 py-2">0.01%</td><td
+              class="px-4 py-2">0.0001</td
+            ></tr
+          >
+          <tr class="border-b"
+            ><td class="px-4 py-2">2 bps</td><td class="px-4 py-2">0.02%</td><td
+              class="px-4 py-2">0.0002</td
+            ></tr
+          >
+          <tr class="border-b"
+            ><td class="px-4 py-2">3 bps</td><td class="px-4 py-2">0.03%</td><td
+              class="px-4 py-2">0.0003</td
+            ></tr
+          >
+          <tr class="border-b"
+            ><td class="px-4 py-2">5 bps</td><td class="px-4 py-2">0.05%</td><td
+              class="px-4 py-2">0.0005</td
+            ></tr
+          >
+          <tr class="border-b"
+            ><td class="px-4 py-2">10 bps</td><td class="px-4 py-2">0.10%</td
+            ><td class="px-4 py-2">0.001</td></tr
+          >
+          <tr class="border-b"
+            ><td class="px-4 py-2">15 bps</td><td class="px-4 py-2">0.15%</td
+            ><td class="px-4 py-2">0.0015</td></tr
+          >
+          <tr class="border-b"
+            ><td class="px-4 py-2">20 bps</td><td class="px-4 py-2">0.20%</td
+            ><td class="px-4 py-2">0.002</td></tr
+          >
+          <tr class="border-b"
+            ><td class="px-4 py-2">25 bps</td><td class="px-4 py-2">0.25%</td
+            ><td class="px-4 py-2">0.0025</td></tr
+          >
+          <tr class="border-b"
+            ><td class="px-4 py-2">30 bps</td><td class="px-4 py-2">0.30%</td
+            ><td class="px-4 py-2">0.003</td></tr
+          >
+          <tr class="border-b"
+            ><td class="px-4 py-2">40 bps</td><td class="px-4 py-2">0.40%</td
+            ><td class="px-4 py-2">0.004</td></tr
+          >
+          <tr class="border-b"
+            ><td class="px-4 py-2">50 bps</td><td class="px-4 py-2">0.50%</td
+            ><td class="px-4 py-2">0.005</td></tr
+          >
+          <tr class="border-b"
+            ><td class="px-4 py-2">60 bps</td><td class="px-4 py-2">0.60%</td
+            ><td class="px-4 py-2">0.006</td></tr
+          >
+          <tr class="border-b"
+            ><td class="px-4 py-2">75 bps</td><td class="px-4 py-2">0.75%</td
+            ><td class="px-4 py-2">0.0075</td></tr
+          >
+          <tr class="border-b"
+            ><td class="px-4 py-2">80 bps</td><td class="px-4 py-2">0.80%</td
+            ><td class="px-4 py-2">0.008</td></tr
+          >
+          <tr class="border-b"
+            ><td class="px-4 py-2">90 bps</td><td class="px-4 py-2">0.90%</td
+            ><td class="px-4 py-2">0.009</td></tr
+          >
+          <tr class="border-b"
+            ><td class="px-4 py-2">100 bps</td><td class="px-4 py-2">1.00%</td
+            ><td class="px-4 py-2">0.01</td></tr
+          >
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Mid-Range Chart -->
+    <h3>Mid-Range BPS (100–1,000 bps)</h3>
+    <div class="not-prose overflow-x-auto my-6">
+      <table class="w-full text-sm">
+        <thead class="bg-slate-100">
+          <tr>
+            <th class="px-4 py-2 text-left">Basis Points</th>
+            <th class="px-4 py-2 text-left">Percentage</th>
+            <th class="px-4 py-2 text-left">Decimal</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="border-b"
+            ><td class="px-4 py-2">100 bps</td><td class="px-4 py-2">1.00%</td
+            ><td class="px-4 py-2">0.01</td></tr
+          >
+          <tr class="border-b"
+            ><td class="px-4 py-2">125 bps</td><td class="px-4 py-2">1.25%</td
+            ><td class="px-4 py-2">0.0125</td></tr
+          >
+          <tr class="border-b"
+            ><td class="px-4 py-2">150 bps</td><td class="px-4 py-2">1.50%</td
+            ><td class="px-4 py-2">0.015</td></tr
+          >
+          <tr class="border-b"
+            ><td class="px-4 py-2">175 bps</td><td class="px-4 py-2">1.75%</td
+            ><td class="px-4 py-2">0.0175</td></tr
+          >
+          <tr class="border-b"
+            ><td class="px-4 py-2">200 bps</td><td class="px-4 py-2">2.00%</td
+            ><td class="px-4 py-2">0.02</td></tr
+          >
+          <tr class="border-b"
+            ><td class="px-4 py-2">250 bps</td><td class="px-4 py-2">2.50%</td
+            ><td class="px-4 py-2">0.025</td></tr
+          >
+          <tr class="border-b"
+            ><td class="px-4 py-2">300 bps</td><td class="px-4 py-2">3.00%</td
+            ><td class="px-4 py-2">0.03</td></tr
+          >
+          <tr class="border-b"
+            ><td class="px-4 py-2">350 bps</td><td class="px-4 py-2">3.50%</td
+            ><td class="px-4 py-2">0.035</td></tr
+          >
+          <tr class="border-b"
+            ><td class="px-4 py-2">400 bps</td><td class="px-4 py-2">4.00%</td
+            ><td class="px-4 py-2">0.04</td></tr
+          >
+          <tr class="border-b"
+            ><td class="px-4 py-2">450 bps</td><td class="px-4 py-2">4.50%</td
+            ><td class="px-4 py-2">0.045</td></tr
+          >
+          <tr class="border-b"
+            ><td class="px-4 py-2">500 bps</td><td class="px-4 py-2">5.00%</td
+            ><td class="px-4 py-2">0.05</td></tr
+          >
+          <tr class="border-b"
+            ><td class="px-4 py-2">600 bps</td><td class="px-4 py-2">6.00%</td
+            ><td class="px-4 py-2">0.06</td></tr
+          >
+          <tr class="border-b"
+            ><td class="px-4 py-2">700 bps</td><td class="px-4 py-2">7.00%</td
+            ><td class="px-4 py-2">0.07</td></tr
+          >
+          <tr class="border-b"
+            ><td class="px-4 py-2">750 bps</td><td class="px-4 py-2">7.50%</td
+            ><td class="px-4 py-2">0.075</td></tr
+          >
+          <tr class="border-b"
+            ><td class="px-4 py-2">800 bps</td><td class="px-4 py-2">8.00%</td
+            ><td class="px-4 py-2">0.08</td></tr
+          >
+          <tr class="border-b"
+            ><td class="px-4 py-2">1000 bps</td><td class="px-4 py-2">10.00%</td
+            ><td class="px-4 py-2">0.10</td></tr
+          >
+        </tbody>
+      </table>
+    </div>
+
+    <!-- High-Range Chart -->
+    <h3>High-Range BPS (1,000–10,000 bps)</h3>
+    <div class="not-prose overflow-x-auto my-6">
+      <table class="w-full text-sm">
+        <thead class="bg-slate-100">
+          <tr>
+            <th class="px-4 py-2 text-left">Basis Points</th>
+            <th class="px-4 py-2 text-left">Percentage</th>
+            <th class="px-4 py-2 text-left">Decimal</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="border-b"
+            ><td class="px-4 py-2">1,000 bps</td><td class="px-4 py-2"
+              >10.00%</td
+            ><td class="px-4 py-2">0.10</td></tr
+          >
+          <tr class="border-b"
+            ><td class="px-4 py-2">1,500 bps</td><td class="px-4 py-2"
+              >15.00%</td
+            ><td class="px-4 py-2">0.15</td></tr
+          >
+          <tr class="border-b"
+            ><td class="px-4 py-2">2,000 bps</td><td class="px-4 py-2"
+              >20.00%</td
+            ><td class="px-4 py-2">0.20</td></tr
+          >
+          <tr class="border-b"
+            ><td class="px-4 py-2">2,500 bps</td><td class="px-4 py-2"
+              >25.00%</td
+            ><td class="px-4 py-2">0.25</td></tr
+          >
+          <tr class="border-b"
+            ><td class="px-4 py-2">5,000 bps</td><td class="px-4 py-2"
+              >50.00%</td
+            ><td class="px-4 py-2">0.50</td></tr
+          >
+          <tr class="border-b"
+            ><td class="px-4 py-2">10,000 bps</td><td class="px-4 py-2"
+              >100.00%</td
+            ><td class="px-4 py-2">1.00</td></tr
+          >
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Worked Examples -->
+    <h2>Step-by-Step: How to Convert BPS to Percentage</h2>
+
+    <div class="not-prose bg-amber-50 border-l-4 border-amber-400 p-4 my-6">
+      <p class="font-medium text-amber-800">Example 1: Fed Rate Hike</p>
+      <p class="text-amber-700 mt-2">
+        The Federal Reserve hiked rates by <strong>75 basis points</strong>.
+        What percentage is that?
+      </p>
+      <p class="text-amber-700 mt-1">
+        Step 1: 75 ÷ 100 = <strong>0.75%</strong>
+      </p>
+      <p class="text-amber-700 mt-1">
+        The Fed raised rates by three-quarters of a percentage point.
+      </p>
+    </div>
+
+    <div class="not-prose bg-sky-50 border-l-4 border-sky-400 p-4 my-6">
+      <p class="font-medium text-sky-800">
+        Example 2: Investment Fund Expense Ratio
+      </p>
+      <p class="text-sky-700 mt-2">
+        A mutual fund charges <strong>85 basis points</strong> in annual fees.
+      </p>
+      <p class="text-sky-700 mt-1">Step 1: 85 ÷ 100 = <strong>0.85%</strong></p>
+      <p class="text-sky-700 mt-1">
+        If you have $100,000 invested, you pay $850/year in fees.
+      </p>
+    </div>
+
+    <div class="not-prose bg-emerald-50 border-l-4 border-emerald-400 p-4 my-6">
+      <p class="font-medium text-emerald-800">Example 3: Bond Yield Spread</p>
+      <p class="text-emerald-700 mt-2">
+        A corporate bond yields <strong>350 bps</strong> over the 10-year Treasury
+        (4.20%).
+      </p>
+      <p class="text-emerald-700 mt-1">
+        Step 1: 350 ÷ 100 = <strong>3.50%</strong>
+      </p>
+      <p class="text-emerald-700 mt-1">
+        Step 2: 4.20% + 3.50% = <strong>7.70%</strong> corporate bond yield.
+      </p>
+    </div>
+
+    <div class="not-prose bg-violet-50 border-l-4 border-violet-400 p-4 my-6">
+      <p class="font-medium text-violet-800">Example 4: Mortgage Rate Change</p>
+      <p class="text-violet-700 mt-2">
+        You locked at <strong>6.50%</strong>, today it's <strong>7.25%</strong>.
+        How many bps did rates rise?
+      </p>
+      <p class="text-violet-700 mt-1">Step 1: 7.25% − 6.50% = 0.75%</p>
+      <p class="text-violet-700 mt-1">
+        Step 2: 0.75% × 100 = <strong>75 basis points</strong>
+      </p>
+    </div>
+
+    <div class="not-prose bg-rose-50 border-l-4 border-rose-400 p-4 my-6">
+      <p class="font-medium text-rose-800">
+        Example 5: Credit Card APR Comparison
+      </p>
+      <p class="text-rose-700 mt-2">
+        Card A: 1,999 bps = <strong>19.99%</strong> | Card B: 2,199 bps = <strong
+          >21.99%</strong
+        >
+      </p>
+      <p class="text-rose-700 mt-1">
+        Difference: 200 bps = <strong>2.00%</strong>
+      </p>
+    </div>
+
+    <!-- BPS to Decimal -->
+    <h2>BPS to Decimal Conversion (For Excel &amp; Financial Formulas)</h2>
+    <p>
+      Many financial calculations require decimal form, not percentage form:
+    </p>
+
+    <div class="not-prose bg-slate-50 rounded-lg p-6 my-6">
+      <p class="text-lg font-medium text-slate-700 mb-4">
+        Decimal = Basis Points ÷ 10,000
+      </p>
+      <table class="w-full text-sm">
+        <thead class="bg-slate-200">
+          <tr>
+            <th class="px-4 py-2 text-left">BPS</th>
+            <th class="px-4 py-2 text-left">Percentage</th>
+            <th class="px-4 py-2 text-left">Decimal</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="border-b"
+            ><td class="px-4 py-2">1</td><td class="px-4 py-2">0.01%</td><td
+              class="px-4 py-2">0.0001</td
+            ></tr
+          >
+          <tr class="border-b"
+            ><td class="px-4 py-2">25</td><td class="px-4 py-2">0.25%</td><td
+              class="px-4 py-2">0.0025</td
+            ></tr
+          >
+          <tr class="border-b"
+            ><td class="px-4 py-2">50</td><td class="px-4 py-2">0.50%</td><td
+              class="px-4 py-2">0.005</td
+            ></tr
+          >
+          <tr class="border-b"
+            ><td class="px-4 py-2">100</td><td class="px-4 py-2">1.00%</td><td
+              class="px-4 py-2">0.01</td
+            ></tr
+          >
+          <tr class="border-b"
+            ><td class="px-4 py-2">250</td><td class="px-4 py-2">2.50%</td><td
+              class="px-4 py-2">0.025</td
+            ></tr
+          >
+          <tr class="border-b"
+            ><td class="px-4 py-2">500</td><td class="px-4 py-2">5.00%</td><td
+              class="px-4 py-2">0.05</td
+            ></tr
+          >
+        </tbody>
+      </table>
+      <p class="text-sm text-slate-500 mt-4">
+        <strong>Excel formula:</strong>
+        <code>=A1/10000</code> (where A1 contains the basis point value)
+      </p>
+    </div>
+
+    <!-- Financial Contexts -->
+    <h2>Converting BPS in Different Financial Contexts</h2>
+
+    <h3>BPS in Bond Markets</h3>
+    <p>
+      Bond traders express yield spreads in basis points constantly. A "spread
+      of 150 bps" over Treasuries means the bond yields 1.50% more than the
+      benchmark. Widening spreads (in bps) signal rising risk; tightening
+      spreads signal improving credit quality.
+    </p>
+
+    <h3>BPS in Forex Markets</h3>
+    <p>
+      Currency traders sometimes use <strong>pips</strong> rather than basis points,
+      but in institutional forex, rate differentials between two countries are expressed
+      in basis points. A 200 bps interest rate differential between two central banks
+      is a major driver of currency flows.
+    </p>
+
+    <h3>BPS in Equity Markets</h3>
+    <p>
+      Stock indices can move by basis points too. A 50-point move in the S&amp;P
+      500 from 5,000 to 5,050 is a move of <strong
+        >100 basis points (1.00%)</strong
+      >.
+    </p>
+
+    <h3>BPS in Loan Origination Fees</h3>
+    <p>
+      Mortgage and loan origination fees are often quoted in basis points. A
+      "1-point origination fee" = 100 bps = 1% of the loan value. On a $500,000
+      loan, that's $5,000.
+    </p>
+
+    <!-- Common Mistakes -->
+    <h2>Common BPS Conversion Mistakes to Avoid</h2>
+
+    <div class="not-prose bg-red-50 border-l-4 border-red-400 p-4 my-6">
+      <p class="font-medium text-red-800">
+        Mistake 1: Confusing "percent" with "percentage points"
+      </p>
+      <p class="text-red-700 mt-2">
+        If a rate goes from 4% to 5%, it increased by 1 <em>percentage point</em
+        > (100 bps). It did NOT increase by 1 <em>percent</em> (which would be only
+        4 bps, since 1% of 4% = 0.04%).
+      </p>
+    </div>
+
+    <div class="not-prose bg-red-50 border-l-4 border-red-400 p-4 my-4">
+      <p class="font-medium text-red-800">
+        Mistake 2: Dividing by 1,000 instead of 100
+      </p>
+      <p class="text-red-700 mt-2">
+        A common error. Always divide basis points by <strong>100</strong> to get
+        percentage, or by <strong>10,000</strong> to get decimal. Never divide by
+        1,000.
+      </p>
+    </div>
+
+    <div class="not-prose bg-red-50 border-l-4 border-red-400 p-4 my-4">
+      <p class="font-medium text-red-800">
+        Mistake 3: Forgetting to add the spread to the base rate
+      </p>
+      <p class="text-red-700 mt-2">
+        When a bond has a "spread of 200 bps over the benchmark," you must add
+        2.00% to the benchmark rate — not treat the 200 bps as the final rate.
+      </p>
+    </div>
+
+    <!-- When to Use Calculator -->
+    <h2>When Should You Use a BPS Calculator vs Manual Math?</h2>
+
+    <div class="not-prose grid grid-cols-1 md:grid-cols-2 gap-4 my-6">
+      <div class="bg-emerald-50 rounded-lg p-4">
+        <h4 class="font-medium text-emerald-800 mb-2">
+          ✅ Do it manually when:
+        </h4>
+        <ul class="text-sm text-emerald-700 space-y-1">
+          <li>• Converting round numbers (100 bps, 50 bps)</li>
+          <li>• Quick sanity check</li>
+          <li>• Explaining the concept to someone</li>
+        </ul>
+      </div>
+      <div class="bg-sky-50 rounded-lg p-4">
+        <h4 class="font-medium text-sky-800 mb-2">🧮 Use a calculator when:</h4>
+        <ul class="text-sm text-sky-700 space-y-1">
+          <li>• Working with unusual numbers like 137.5 bps</li>
+          <li>• Comparing multiple rates simultaneously</li>
+          <li>• Calculating the difference between two rates</li>
+          <li>• Working on a financial model or presentation</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Summary Table -->
+    <h2>Summary: BPS to Percentage at a Glance</h2>
+    <div class="not-prose overflow-x-auto my-6">
+      <table class="w-full text-sm">
+        <thead class="bg-slate-100">
+          <tr>
+            <th class="px-4 py-2 text-left">To Convert</th>
+            <th class="px-4 py-2 text-left">Formula</th>
+            <th class="px-4 py-2 text-left">Example</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="border-b"
+            ><td class="px-4 py-2">BPS → Percentage</td><td class="px-4 py-2"
+              >BPS ÷ 100</td
+            ><td class="px-4 py-2">75 bps → 0.75%</td></tr
+          >
+          <tr class="border-b"
+            ><td class="px-4 py-2">Percentage → BPS</td><td class="px-4 py-2"
+              >% × 100</td
+            ><td class="px-4 py-2">1.5% → 150 bps</td></tr
+          >
+          <tr class="border-b"
+            ><td class="px-4 py-2">BPS → Decimal</td><td class="px-4 py-2"
+              >BPS ÷ 10,000</td
+            ><td class="px-4 py-2">50 bps → 0.005</td></tr
+          >
+          <tr class="border-b"
+            ><td class="px-4 py-2">Decimal → BPS</td><td class="px-4 py-2"
+              >Decimal × 10,000</td
+            ><td class="px-4 py-2">0.0025 → 25 bps</td></tr
+          >
+        </tbody>
+      </table>
+    </div>
+
+    <p>
+      Whether you're analyzing Fed rate decisions, comparing mortgage quotes,
+      evaluating bond yields, or checking fund fees — mastering the
+      BPS-to-percentage conversion is a foundational finance skill.
+    </p>
+
+    <div class="not-prose mt-8">
+      <a
+        href={getLocalizedUrl(
+          "/bps-calculators/basis-point-to-percentage/",
+          locale,
+        )}
+        class="inline-flex items-center gap-2 px-6 py-3 bg-sky-600 text-white rounded-lg hover:bg-sky-700 transition-colors"
+      >
+        → Skip the math — Convert any BPS value instantly
+      </a>
+    </div>
+  </article>
+</CalculatorLayout>
