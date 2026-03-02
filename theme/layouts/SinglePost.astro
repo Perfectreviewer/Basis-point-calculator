@@ -105,23 +105,6 @@ const dateFormat = new Intl.DateTimeFormat("en-US", {
             height="12"><polyline points="9 18 15 12 9 6"></polyline></svg
           >
           <a href="/guides/">Guides</a>
-          {
-            entry.data.category && (
-              <>
-                <svg
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  width="12"
-                  height="12"
-                >
-                  <polyline points="9 18 15 12 9 6" />
-                </svg>
-                <span>{entry.data.category}</span>
-              </>
-            )
-          }
         </nav>
 
         <!-- Category Badge -->
