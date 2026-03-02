@@ -9,7 +9,7 @@ const t = getTranslations(locale);
 const siteTitle = t.site_title;
 ---
 
-<header class="bg-white dark:bg-slate-900 border-slate-100 dark:border-slate-800 border-b relative z-50">
+<header class="bg-white dark:bg-slate-900 border-slate-100 dark:border-slate-800 border-b shadow-sm relative z-50">
   <div class="flex justify-between items-center mx-auto px-6 py-4 max-w-6xl">
     <a aria-label={`${siteTitle} ${t['Home']}`} class="flex flex-1 items-center gap-3" href={getLocalizedUrl('/', locale)}>
       <img src="/images/logo.png" width="50" height="50" alt={`${siteTitle} ${t['Logo']}`} loading="eager" />

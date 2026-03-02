@@ -286,7 +286,7 @@ const schema = JSON.stringify({
 
     <!-- Single Premium Calculator Card -->
     <div class="relative z-10 max-w-5xl mx-auto">
-      <section class="bg-white/80 dark:bg-slate-900/80 backdrop-blur-2xl rounded-3xl shadow-[0_8px_40px_rgba(0,0,0,0.06)] dark:shadow-none border border-white/60 dark:border-slate-800 transition-all duration-500 relative ring-1 ring-white/50 overflow-hidden">
+      <div id="calc-wrapper"><section id="calc-card" class="bg-white/80 dark:bg-slate-900/90 backdrop-blur-2xl rounded-3xl shadow-[0_8px_40px_rgba(0,0,0,0.06)] dark:shadow-none border border-white/60 dark:border-slate-800 transition-all duration-500 relative ring-1 ring-white/50 overflow-hidden">
         <!-- Glassmorphic Overlay -->
         <div class="absolute inset-0 bg-gradient-to-br from-white/60 via-transparent to-indigo-50/20 rounded-3xl pointer-events-none"></div>
 
@@ -404,7 +404,7 @@ const schema = JSON.stringify({
               <div class="absolute -inset-0.5 bg-gradient-to-br from-sky-400/25 to-sky-600/15 rounded-2xl blur-lg opacity-0 group-focus-within/tile:opacity-100 transition-opacity duration-300"></div>
               <div class="relative bg-gradient-to-br from-sky-50/80 to-sky-100/40 dark:from-sky-950/30 dark:to-sky-900/15 rounded-2xl p-4 border border-sky-200/40 dark:border-sky-800/25 transition-all duration-300 hover:shadow-lg hover:shadow-sky-200/25 hover:-translate-y-0.5">
                 <label class="block text-[10px] font-bold text-sky-500 dark:text-sky-400 uppercase tracking-widest mb-2">{t["percent"]}</label>
-                <input id="pct" inputmode="decimal" class="w-full bg-transparent border-0 p-0 text-xl lg:text-2xl font-bold text-sky-800 dark:text-sky-200 focus:ring-0 outline-none placeholder:text-sky-300 font-mono tracking-tight" placeholder="1.000" />
+                <input id="pct" inputmode="decimal" class="neon-text w-full bg-transparent border-0 p-0 text-xl lg:text-2xl font-bold text-sky-800 dark:text-sky-200 focus:ring-0 outline-none placeholder:text-sky-300 font-mono tracking-tight" placeholder="1.000" />
                 <span class="text-sky-400 text-xs font-bold mt-1 block">%</span>
               </div>
             </div>
@@ -413,7 +413,7 @@ const schema = JSON.stringify({
               <div class="absolute -inset-0.5 bg-gradient-to-br from-indigo-400/25 to-indigo-600/15 rounded-2xl blur-lg opacity-0 group-focus-within/tile:opacity-100 transition-opacity duration-300"></div>
               <div class="relative bg-gradient-to-br from-indigo-50/80 to-indigo-100/40 dark:from-indigo-950/30 dark:to-indigo-900/15 rounded-2xl p-4 border border-indigo-200/40 dark:border-indigo-800/25 transition-all duration-300 hover:shadow-lg hover:shadow-indigo-200/25 hover:-translate-y-0.5">
                 <label class="block text-[10px] font-bold text-indigo-500 dark:text-indigo-400 uppercase tracking-widest mb-2">{t["decimal"]}</label>
-                <input id="dec" inputmode="decimal" class="w-full bg-transparent border-0 p-0 text-xl lg:text-2xl font-bold text-indigo-800 dark:text-indigo-200 focus:ring-0 outline-none placeholder:text-indigo-300 font-mono tracking-tight" placeholder="0.010" />
+                <input id="dec" inputmode="decimal" class="neon-text w-full bg-transparent border-0 p-0 text-xl lg:text-2xl font-bold text-indigo-800 dark:text-indigo-200 focus:ring-0 outline-none placeholder:text-indigo-300 font-mono tracking-tight" placeholder="0.010" />
                 <span class="text-indigo-400 text-xs font-bold mt-1 block">DEC</span>
               </div>
             </div>
@@ -422,7 +422,7 @@ const schema = JSON.stringify({
               <div class="absolute -inset-0.5 bg-gradient-to-br from-violet-400/25 to-violet-600/15 rounded-2xl blur-lg opacity-0 group-focus-within/tile:opacity-100 transition-opacity duration-300"></div>
               <div class="relative bg-gradient-to-br from-violet-50/80 to-violet-100/40 dark:from-violet-950/30 dark:to-violet-900/15 rounded-2xl p-4 border border-violet-200/40 dark:border-violet-800/25 transition-all duration-300 hover:shadow-lg hover:shadow-violet-200/25 hover:-translate-y-0.5">
                 <label class="block text-[10px] font-bold text-violet-500 dark:text-violet-400 uppercase tracking-widest mb-2">{t["permille"]}</label>
-                <input id="permille" inputmode="decimal" class="w-full bg-transparent border-0 p-0 text-xl lg:text-2xl font-bold text-violet-800 dark:text-violet-200 focus:ring-0 outline-none placeholder:text-violet-300 font-mono tracking-tight" placeholder="10.000" />
+                <input id="permille" inputmode="decimal" class="neon-text w-full bg-transparent border-0 p-0 text-xl lg:text-2xl font-bold text-violet-800 dark:text-violet-200 focus:ring-0 outline-none placeholder:text-violet-300 font-mono tracking-tight" placeholder="10.000" />
                 <span class="text-violet-400 text-xs font-bold mt-1 block">&#8240;</span>
               </div>
             </div>
@@ -431,7 +431,7 @@ const schema = JSON.stringify({
               <div class="absolute -inset-0.5 bg-gradient-to-br from-emerald-400/25 to-emerald-600/15 rounded-2xl blur-lg opacity-0 group-hover:opacity-60 transition-opacity duration-300"></div>
               <div class="relative bg-gradient-to-br from-emerald-50/80 to-emerald-100/40 dark:from-emerald-950/30 dark:to-emerald-900/15 rounded-2xl p-4 border border-emerald-200/40 dark:border-emerald-800/25 transition-all duration-300 hover:shadow-lg hover:shadow-emerald-200/25 hover:-translate-y-0.5">
                 <label class="block text-[10px] font-bold text-emerald-500 dark:text-emerald-400 uppercase tracking-widest mb-2">Per $1M</label>
-                <p class="live-val text-xl lg:text-2xl font-bold text-emerald-800 dark:text-emerald-200 font-mono tracking-tight" id="strip-1m">$10,000</p>
+                <p class="neon-text live-val text-xl lg:text-2xl font-bold text-emerald-800 dark:text-emerald-200 font-mono tracking-tight" id="strip-1m">$10,000</p>
                 <span class="text-emerald-400 text-xs font-bold mt-1 block">Impact</span>
               </div>
             </div>
@@ -444,17 +444,17 @@ const schema = JSON.stringify({
               <span class="text-[10px] font-bold uppercase tracking-widest text-slate-400 dark:text-slate-500">Live Summary</span>
             </div>
             <div class="flex items-center gap-4 text-[11px] font-mono">
-              <span class="live-val text-sky-600 dark:text-sky-400 font-bold" id="strip-pct">1%</span>
+              <span class="neon-text live-val text-sky-600 dark:text-sky-400 font-bold" id="strip-pct">1%</span>
               <span class="text-slate-300 dark:text-slate-600">|</span>
-              <span class="live-val text-indigo-600 dark:text-indigo-400 font-bold" id="strip-dec">0.01</span>
+              <span class="neon-text live-val text-indigo-600 dark:text-indigo-400 font-bold" id="strip-dec">0.01</span>
               <span class="text-slate-300 dark:text-slate-600">|</span>
-              <span class="live-val text-violet-600 dark:text-violet-400 font-bold" id="strip-pml">10&#8240;</span>
+              <span class="neon-text live-val text-violet-600 dark:text-violet-400 font-bold" id="strip-pml">10&#8240;</span>
             </div>
           </div>
         </div>
 
       </section>
-    </div>
+    </div></div>
 
   <div class="space-y-12">
     <!-- Intro Section -->
@@ -1630,7 +1630,7 @@ const schema = JSON.stringify({
     elem.classList.add("pop");
   }
   function setStrip(elem, val) {
-    if (!elem || elem.textContent === val) return;
+    if (!elem) return;
     elem.textContent = val;
     popVal(elem);
   }
@@ -1643,6 +1643,112 @@ const schema = JSON.stringify({
   }
   const fmtStrip = (n, d) => n.toFixed(d).replace(/\.?0+$/, "");
   const fmtUSD = (n) => n.toLocaleString("en-US", { maximumFractionDigits: 2 });
+
+  // === NEON SPACE ENGINE ===
+  
+  // Spotlight effect
+  const wrapper = document.getElementById('calc-wrapper');
+  function enableSpotlight() { if(wrapper) wrapper.classList.add('spotlight-active'); }
+  function disableSpotlight() { if(wrapper) wrapper.classList.remove('spotlight-active'); }
+  
+  if ($bps) {
+    $bps.addEventListener('focus', enableSpotlight);
+    $bps.addEventListener('blur', disableSpotlight);
+  }
+  if ($slider) {
+    $slider.addEventListener('mousedown', enableSpotlight);
+    $slider.addEventListener('touchstart', enableSpotlight);
+    document.addEventListener('mouseup', disableSpotlight);
+    document.addEventListener('touchend', disableSpotlight);
+  }
+
+  // Reactive Neon Glow based on BPS intensity (maxes out around 500 bps)
+  const neonEls = [
+    { el: el('pct'), color: 'rgba(56, 189, 248, ' }, // sky
+    { el: el('dec'), color: 'rgba(129, 140, 248, ' }, // indigo
+    { el: el('permille'), color: 'rgba(192, 132, 252, ' }, // violet
+    { el: el('strip-1m'), color: 'rgba(52, 211, 153, ' } // emerald
+  ];
+  
+  function updateNeonIntensity(currentBps) {
+    const intensity = Math.min(Math.abs(currentBps) / 500, 1);
+    // Glow blur radius
+    const glowRadius = Math.max(5, intensity * 25);
+    // Opacity
+    const opacity = 0.2 + (intensity * 0.6);
+    
+    neonEls.forEach(function(item) {
+      if (!item.el) return;
+      item.el.style.textShadow = '0 0 ' + glowRadius + 'px ' + item.color + opacity + ')';
+      if (intensity > 0.8) {
+        item.el.style.color = '#fff';
+      } else {
+        item.el.style.color = '';
+      }
+    });
+
+    // Also update tiny strip values
+    const stripPct = el('strip-pct'); if(stripPct) stripPct.style.textShadow = '0 0 ' + (glowRadius/2) + 'px ' + neonEls[0].color + opacity + ')';
+    const stripDec = el('strip-dec'); if(stripDec) stripDec.style.textShadow = '0 0 ' + (glowRadius/2) + 'px ' + neonEls[1].color + opacity + ')';
+    const stripPml = el('strip-pml'); if(stripPml) stripPml.style.textShadow = '0 0 ' + (glowRadius/2) + 'px ' + neonEls[2].color + opacity + ')';
+  }
+
+  // High-Precision Smooth Roll Engine Trackers
+  const _rollTimers = new Map();
+
+  function fastRoll(elem, from, to, formatter, suffix) {
+    suffix = suffix || '';
+    if (!elem) return;
+    if (_rollTimers.has(elem)) cancelAnimationFrame(_rollTimers.get(elem));
+    
+    elem.classList.add('rolling-num');
+    const startTime = performance.now();
+    const diff = to - from;
+    const duration = 250; // VERY fast, like a high-end digital meter
+    
+    // Custom cubic bezier (sharp start, extremely smooth stop)
+    function easeOutQuart(t) { return 1 - (--t) * t * t * t; }
+
+    function tick(now) {
+      const p = Math.min((now - startTime) / duration, 1);
+      const current = from + diff * easeOutQuart(p);
+      elem.textContent = formatter(current) + suffix;
+
+      if (p < 1) {
+        _rollTimers.set(elem, requestAnimationFrame(tick));
+      } else {
+        elem.textContent = formatter(to) + suffix;
+        elem.classList.remove('rolling-num');
+        _rollTimers.delete(elem);
+      }
+    }
+    _rollTimers.set(elem, requestAnimationFrame(tick));
+  }
+
+  function fastRollInput(inputEl, from, to, formatter) {
+    if (!inputEl) return;
+    if (_rollTimers.has(inputEl)) cancelAnimationFrame(_rollTimers.get(inputEl));
+    inputEl.classList.add('rolling-num');
+    const startTime = performance.now();
+    const diff = to - from;
+    const duration = 250;
+    function easeOutQuart(t) { return 1 - (--t) * t * t * t; }
+    
+    function tick(now) {
+      const p = Math.min((now - startTime) / duration, 1);
+      inputEl.value = formatter(from + diff * easeOutQuart(p));
+      if (p < 1) {
+        _rollTimers.set(inputEl, requestAnimationFrame(tick));
+      } else {
+        inputEl.value = formatter(to);
+        inputEl.classList.remove('rolling-num');
+        _rollTimers.delete(inputEl);
+      }
+    }
+    _rollTimers.set(inputEl, requestAnimationFrame(tick));
+  }
+
+  let prevBps = 100;
 
   // Helpers
   const toNum = (v) => {
@@ -1832,6 +1938,7 @@ const schema = JSON.stringify({
 
   // Init with screenshot-like values
   function init() {
+    updateNeonIntensity(100);
     // Converter defaults ~ 1%
     state.bps = 100; // 1%
     reflectFromBps();
