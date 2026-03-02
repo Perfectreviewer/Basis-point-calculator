@@ -126,3 +126,58 @@ export async function saveConfigFile(
         };
     }
 }
+
+/**
+ * Upload a binary file (like an image) directly to GitHub.
+ * Returns the raw GitHub URL so the image can be viewed immediately before redeploy finishes.
+ */
+export async function uploadFileToGitHub(
+    repoPath: string,
+    base64Content: string,
+    commitMessage?: string
+): Promise<{ success: boolean; url?: string; error?: string }> {
+    const { token, repo, branch } = getGitHubConfig();
+
+    if (!token || !repo) {
+        return { success: false, error: 'Missing GitHub configuration. Please set GITHUB_TOKEN and GITHUB_REPO in Vercel.' };
+    }
+
+    const message = commitMessage || `chore(admin): upload ${repoPath.split('/').pop()}`;
+    const apiBase = `https://api.github.com/repos/${repo}/contents/${repoPath}`;
+
+    try {
+        const headers = {
+            Authorization: `Bearer ${token}`,
+            Accept: 'application/vnd.github+json',
+            'Content-Type': 'application/json',
+            'X-GitHub-Api-Version': '2022-11-28',
+        };
+
+        const body = {
+            message,
+            content: base64Content,
+            branch,
+        };
+
+        const putRes = await fetch(apiBase, {
+            method: 'PUT',
+            headers,
+            body: JSON.stringify(body),
+        });
+
+        if (!putRes.ok) {
+            const errData = await putRes.text();
+            console.error(`GitHub API error (${putRes.status}):`, errData);
+            return { success: false, error: `GitHub API error: ${putRes.status}` };
+        }
+
+        // Return a raw URL so the editor can preview it immediately
+        // jsdelivr is a reliable CDN for GitHub files
+        const cdnUrl = `https://cdn.jsdelivr.net/gh/${repo}@${branch}/${repoPath}`;
+
+        return { success: true, url: cdnUrl };
+    } catch (err: any) {
+        console.error('GitHub file upload error:', err);
+        return { success: false, error: `Failed to upload to GitHub: ${err.message}` };
+    }
+}

@@ -5,6 +5,9 @@ import { hasPermission } from '@admin/utils/roles';
 import type { Role } from '@admin/utils/roles';
 import { writeFileSync, mkdirSync, existsSync, readdirSync, statSync, unlinkSync } from 'node:fs';
 import { join, extname } from 'node:path';
+import { uploadFileToGitHub } from '@admin/utils/github-commit';
+
+const IS_VERCEL = !!process.env.VERCEL;
 
 export const prerender = false;
 
@@ -52,15 +55,26 @@ export const POST: APIRoute = async ({ request }) => {
             .replace(/-+/g, '-');
         const filename = `${timestamp}-${safeName}`;
 
-        const uploadDir = getUploadDir();
-        const filepath = join(uploadDir, filename);
-
-        // Write file
         const buffer = Buffer.from(await file.arrayBuffer());
-        writeFileSync(filepath, buffer);
 
         // Return public URL
-        const url = `/uploads/${filename}`;
+        let url = `/uploads/${filename}`;
+
+        if (IS_VERCEL) {
+            // Vercel is read-only, we must commit to GitHub
+            const base64 = buffer.toString('base64');
+            const result = await uploadFileToGitHub(`public/uploads/${filename}`, base64);
+            if (!result.success) {
+                return new Response(JSON.stringify({ error: result.error || 'Failed to upload to GitHub' }), { status: 500 });
+            }
+            // Use the fast CDN url immediately so it doesn't 404 while waiting for redeploy
+            url = result.url || url;
+        } else {
+            // Local dev - save directly to disk
+            const uploadDir = getUploadDir();
+            const filepath = join(uploadDir, filename);
+            writeFileSync(filepath, new Uint8Array(buffer));
+        }
 
         return new Response(JSON.stringify({
             success: true,
