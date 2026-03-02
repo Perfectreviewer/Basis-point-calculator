@@ -83,32 +83,50 @@ const dateFormat = new Intl.DateTimeFormat("en-US", {
   />
 
   <!-- Reading Progress Bar -->
-  <div class="sp-progress-bar" id="progress-bar"></div>
+  <div class="sp-progress" id="progress-bar"></div>
 
   <main class="sp-main">
-    <!-- Hero Section -->
+    <!-- ═══ HERO ═══ -->
     <header class="sp-hero">
-      <div class="sp-hero-bg"></div>
+      <div class="sp-hero-accent"></div>
       <div class="sp-hero-inner">
         <!-- Breadcrumb -->
         <nav class="sp-breadcrumb" aria-label="Breadcrumb">
-          <a href="/guides/">Guides</a>
+          <a href="/">Home</a>
           <svg
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
             stroke-width="2"
-            width="14"
-            height="14"><polyline points="9 18 15 12 9 6"></polyline></svg
+            width="12"
+            height="12"><polyline points="9 18 15 12 9 6"></polyline></svg
           >
+          <a href="/guides/">Guides</a>
           {
             entry.data.category && (
-              <a href={`/guides/category/${entry.data.category.toLowerCase()}`}>
-                {entry.data.category}
-              </a>
+              <>
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  width="12"
+                  height="12"
+                >
+                  <polyline points="9 18 15 12 9 6" />
+                </svg>
+                <span>{entry.data.category}</span>
+              </>
             )
           }
         </nav>
+
+        <!-- Category Badge -->
+        {
+          entry.data.category && (
+            <span class="sp-category-badge">{entry.data.category}</span>
+          )
+        }
 
         <!-- Title -->
         <h1 class="sp-title">{entry.data.title}</h1>
@@ -119,88 +137,41 @@ const dateFormat = new Intl.DateTimeFormat("en-US", {
           )
         }
 
-        <!-- Meta Bar -->
-        <div class="sp-meta-bar">
+        <!-- Author & Meta -->
+        <div class="sp-meta">
           <div class="sp-author-chip">
-            <div class="sp-author-avatar">
-              {entry.data.author.charAt(0)}
-            </div>
-            <div class="sp-author-info">
+            <div class="sp-avatar">{entry.data.author.charAt(0)}</div>
+            <div class="sp-author-text">
               <span class="sp-author-name">{entry.data.author}</span>
-              <span class="sp-author-role">Author</span>
+              <span class="sp-publish-info">
+                <time datetime={entry.data.date.toISOString()}
+                  >{dateFormat.format(entry.data.date)}</time
+                >
+                <span class="sp-dot">·</span>
+                {readTime} min read
+              </span>
             </div>
-          </div>
-          <div class="sp-meta-pills">
-            <span class="sp-meta-pill">
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                width="14"
-                height="14"
-              >
-                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-                <line x1="16" y1="2" x2="16" y2="6"></line>
-                <line x1="8" y1="2" x2="8" y2="6"></line>
-                <line x1="3" y1="10" x2="21" y2="10"></line>
-              </svg>
-              <time datetime={entry.data.date.toISOString()}
-                >{dateFormat.format(entry.data.date)}</time
-              >
-            </span>
-            <span class="sp-meta-pill">
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                width="14"
-                height="14"
-              >
-                <circle cx="12" cy="12" r="10"></circle>
-                <polyline points="12 6 12 12 16 14"></polyline>
-              </svg>
-              {readTime} min read
-            </span>
           </div>
         </div>
       </div>
-
-      <!-- Featured Image -->
-      {
-        entry.data.image && (
-          <div class="sp-hero-image-wrap">
-            <div class="sp-hero-image">
-              <img
-                src={entry.data.image}
-                alt={`Featured image: ${entry.data.title}`}
-                loading="eager"
-                fetchpriority="high"
-                onerror="this.parentElement.classList.add('sp-img-fallback')"
-              />
-            </div>
-          </div>
-        )
-      }
     </header>
 
-    <!-- Content Layout -->
-    <div class="sp-content-grid">
-      <!-- Sticky Left Sidebar — Share -->
-      <aside class="sp-sidebar-left">
+    <!-- ═══ CONTENT GRID ═══ -->
+    <div class="sp-grid">
+      <!-- LEFT: Share Sidebar -->
+      <aside class="sp-share-col">
         <div class="sp-share-rail">
           <span class="sp-share-label">Share</span>
           <a
             href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(entry.data.title)}&url=${encodeURIComponent(canonical)}`}
             target="_blank"
             rel="noopener noreferrer"
-            class="sp-share-btn sp-share-twitter"
-            title="Share on X / Twitter"
+            class="sp-share-btn"
+            title="Share on X"
           >
-            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"
+            <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"
               ><path
-                d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.84 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"
+                d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"
               ></path></svg
             >
           </a>
@@ -208,10 +179,10 @@ const dateFormat = new Intl.DateTimeFormat("en-US", {
             href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(canonical)}`}
             target="_blank"
             rel="noopener noreferrer"
-            class="sp-share-btn sp-share-facebook"
+            class="sp-share-btn"
             title="Share on Facebook"
           >
-            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"
+            <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"
               ><path
                 d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.791-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"
               ></path></svg
@@ -221,20 +192,16 @@ const dateFormat = new Intl.DateTimeFormat("en-US", {
             href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(canonical)}`}
             target="_blank"
             rel="noopener noreferrer"
-            class="sp-share-btn sp-share-linkedin"
+            class="sp-share-btn"
             title="Share on LinkedIn"
           >
-            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"
+            <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"
               ><path
                 d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"
               ></path></svg
             >
           </a>
-          <button
-            class="sp-share-btn sp-share-copy"
-            title="Copy link"
-            id="copy-link-btn"
-          >
+          <button class="sp-share-btn" title="Copy link" id="copy-link-btn">
             <svg
               viewBox="0 0 24 24"
               fill="none"
@@ -253,24 +220,23 @@ const dateFormat = new Intl.DateTimeFormat("en-US", {
         </div>
       </aside>
 
-      <!-- Main Article -->
+      <!-- CENTER: Article -->
       <div class="sp-article-col">
         <article class="sp-prose">
           <Content />
         </article>
 
-        <!-- In-Article Ad -->
         <AdSlot slot="blog_in_article" />
 
         <!-- Divider -->
         <div class="sp-divider"></div>
 
         <!-- Author Bio -->
-        <div class="sp-author-bio">
+        <div class="sp-bio">
           <div class="sp-bio-avatar">
             <span>{entry.data.author.charAt(0)}</span>
           </div>
-          <div class="sp-bio-content">
+          <div class="sp-bio-body">
             <div class="sp-bio-header">
               <h3>Written by {entry.data.author}</h3>
               <span class="sp-bio-badge">Author</span>
@@ -287,16 +253,21 @@ const dateFormat = new Intl.DateTimeFormat("en-US", {
         <!-- Mobile Share -->
         <div class="sp-mobile-share">
           <span class="sp-share-label">Share this article</span>
-          <div class="sp-mobile-share-btns">
+          <div class="sp-mobile-btns">
             <a
               href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(entry.data.title)}&url=${encodeURIComponent(canonical)}`}
               target="_blank"
               rel="noopener noreferrer"
-              class="sp-share-btn sp-share-twitter"
+              class="sp-share-btn"
+              title="X"
             >
-              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"
+              <svg
+                width="16"
+                height="16"
+                fill="currentColor"
+                viewBox="0 0 24 24"
                 ><path
-                  d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.84 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"
+                  d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"
                 ></path></svg
               >
             </a>
@@ -304,9 +275,14 @@ const dateFormat = new Intl.DateTimeFormat("en-US", {
               href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(canonical)}`}
               target="_blank"
               rel="noopener noreferrer"
-              class="sp-share-btn sp-share-facebook"
+              class="sp-share-btn"
+              title="Facebook"
             >
-              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"
+              <svg
+                width="16"
+                height="16"
+                fill="currentColor"
+                viewBox="0 0 24 24"
                 ><path
                   d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.791-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"
                 ></path></svg
@@ -316,9 +292,14 @@ const dateFormat = new Intl.DateTimeFormat("en-US", {
               href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(canonical)}`}
               target="_blank"
               rel="noopener noreferrer"
-              class="sp-share-btn sp-share-linkedin"
+              class="sp-share-btn"
+              title="LinkedIn"
             >
-              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"
+              <svg
+                width="16"
+                height="16"
+                fill="currentColor"
+                viewBox="0 0 24 24"
                 ><path
                   d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"
                 ></path></svg
@@ -328,19 +309,19 @@ const dateFormat = new Intl.DateTimeFormat("en-US", {
         </div>
       </div>
 
-      <!-- Sticky Right Sidebar — TOC -->
-      <aside class="sp-sidebar-right">
+      <!-- RIGHT: TOC + CTA -->
+      <aside class="sp-toc-col">
         {
           headings.length > 0 && (
             <div class="sp-toc-card">
-              <div class="sp-toc-header">
+              <div class="sp-toc-title">
                 <svg
                   viewBox="0 0 24 24"
                   fill="none"
                   stroke="currentColor"
                   stroke-width="2"
-                  width="16"
-                  height="16"
+                  width="14"
+                  height="14"
                 >
                   <line x1="8" y1="6" x2="21" y2="6" />
                   <line x1="8" y1="12" x2="21" y2="12" />
@@ -367,15 +348,15 @@ const dateFormat = new Intl.DateTimeFormat("en-US", {
         }
 
         <!-- CTA -->
-        <div class="sp-cta-card">
+        <div class="sp-cta">
           <div class="sp-cta-icon">
             <svg
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
-              stroke-width="2"
-              width="22"
-              height="22"
+              stroke-width="1.5"
+              width="24"
+              height="24"
             >
               <rect x="4" y="4" width="16" height="16" rx="2"></rect>
               <path d="M9 9h6v6H9z"></path>
@@ -383,8 +364,11 @@ const dateFormat = new Intl.DateTimeFormat("en-US", {
               ></path>
             </svg>
           </div>
-          <h4>Need a custom quote?</h4>
-          <p>Use our advanced calculators to get precise estimates.</p>
+          <h4>Try Our Calculators</h4>
+          <p>
+            Get precise basis point conversions and financial estimates
+            instantly.
+          </p>
           <a href="/calculators/" class="sp-cta-btn">
             Explore Calculators
             <svg
@@ -401,29 +385,27 @@ const dateFormat = new Intl.DateTimeFormat("en-US", {
           </a>
         </div>
 
-        <!-- Blog Sidebar Ad -->
         <AdSlot slot="blog_sidebar" />
       </aside>
     </div>
 
-    <!-- After Post Ad -->
     <AdSlot slot="blog_after_post" />
 
-    <!-- Related Posts -->
+    <!-- ═══ RELATED POSTS ═══ -->
     {
       relatedPosts.length > 0 && (
         <section class="sp-related">
-          <div class="sp-related-header">
+          <div class="sp-related-top">
             <h2>Related Articles</h2>
-            <a href="/guides/" class="sp-related-link">
-              View all articles
+            <a href="/guides/" class="sp-related-all">
+              View all
               <svg
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
                 stroke-width="2"
-                width="16"
-                height="16"
+                width="14"
+                height="14"
               >
                 <line x1="5" y1="12" x2="19" y2="12" />
                 <polyline points="12 5 19 12 12 19" />
@@ -433,7 +415,7 @@ const dateFormat = new Intl.DateTimeFormat("en-US", {
           <div class="sp-related-grid">
             {relatedPosts.map((post) => (
               <a href={`/guides/${post.id}/`} class="sp-related-card">
-                <div class="sp-related-img">
+                <div class="sp-related-thumb">
                   {post.data.image ? (
                     <img
                       src={post.data.image}
@@ -444,7 +426,7 @@ const dateFormat = new Intl.DateTimeFormat("en-US", {
                     />
                   ) : null}
                   <div
-                    class="sp-related-placeholder"
+                    class="sp-related-ph"
                     style={post.data.image ? "display:none" : ""}
                   >
                     <svg
@@ -452,8 +434,8 @@ const dateFormat = new Intl.DateTimeFormat("en-US", {
                       fill="none"
                       stroke="currentColor"
                       stroke-width="1.2"
-                      width="32"
-                      height="32"
+                      width="28"
+                      height="28"
                     >
                       <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
                       <circle cx="8.5" cy="8.5" r="1.5" />
@@ -461,7 +443,7 @@ const dateFormat = new Intl.DateTimeFormat("en-US", {
                     </svg>
                   </div>
                 </div>
-                <div class="sp-related-body">
+                <div class="sp-related-info">
                   <span class="sp-related-cat">{post.data.category}</span>
                   <h3>{post.data.title}</h3>
                   {post.data.description && <p>{post.data.description}</p>}
@@ -479,40 +461,46 @@ const dateFormat = new Intl.DateTimeFormat("en-US", {
 </Layout>
 
 <style is:global>
-  /* ═══ Progress Bar ═══ */
-  .sp-progress-bar {
+  /* ═══════════════════════════════════════
+     PREMIUM EDITORIAL SINGLE POST
+     ═══════════════════════════════════════ */
+
+  /* ─── Progress Bar ─── */
+  .sp-progress {
     position: fixed;
     top: 0;
     left: 0;
     width: 0%;
     height: 3px;
-    background: linear-gradient(90deg, #4f46e5, #7c3aed, #6366f1);
+    background: linear-gradient(90deg, #6366f1, #8b5cf6, #a78bfa);
     z-index: 9999;
-    transition: width 0.1s linear;
-    box-shadow: 0 0 8px rgba(79, 70, 229, 0.4);
+    transition: width 0.08s linear;
+    box-shadow: 0 0 12px rgba(99, 102, 241, 0.5);
   }
 
-  /* ═══ Main ═══ */
+  /* ─── Main ─── */
   .sp-main {
     min-height: 100vh;
-    padding-bottom: 64px;
+    padding-bottom: 80px;
   }
 
-  /* ═══ Hero ═══ */
+  /* ─── Hero ─── */
   .sp-hero {
     position: relative;
-    padding-top: 100px;
-    padding-bottom: 0;
+    padding: 72px 0 48px;
     overflow: hidden;
+    background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 50%, #f8fafc 100%);
   }
-  .sp-hero-bg {
+  .sp-hero-accent {
     position: absolute;
-    inset: 0;
-    background: linear-gradient(180deg, #f8faff 0%, #eef2ff 40%, #f8fafc 100%);
-    z-index: -1;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #6366f1, #8b5cf6, #38bdf8);
   }
   .sp-hero-inner {
-    max-width: 800px;
+    max-width: 780px;
     margin: 0 auto;
     padding: 0 24px;
     text-align: center;
@@ -522,62 +510,75 @@ const dateFormat = new Intl.DateTimeFormat("en-US", {
   .sp-breadcrumb {
     display: inline-flex;
     align-items: center;
-    gap: 8px;
-    margin-bottom: 24px;
-    font-size: 13px;
+    gap: 6px;
+    margin-bottom: 20px;
+    font-size: 12.5px;
     font-weight: 500;
+    color: #94a3b8;
   }
   .sp-breadcrumb a {
     color: #6366f1;
     text-decoration: none;
-    transition: color 0.2s;
+    transition: color 0.15s;
   }
   .sp-breadcrumb a:hover {
     color: #4338ca;
   }
   .sp-breadcrumb svg {
     color: #cbd5e1;
+    flex-shrink: 0;
+  }
+
+  /* Category Badge */
+  .sp-category-badge {
+    display: inline-block;
+    padding: 4px 14px;
+    background: linear-gradient(135deg, #eef2ff, #e0e7ff);
+    color: #4f46e5;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    border-radius: 20px;
+    margin-bottom: 16px;
+    border: 1px solid #c7d2fe;
   }
 
   /* Title */
   .sp-title {
-    font-size: clamp(28px, 5vw, 48px);
+    font-size: clamp(26px, 5vw, 44px);
     font-weight: 800;
     color: #0f172a;
-    letter-spacing: -0.5px;
+    letter-spacing: -0.6px;
     line-height: 1.15;
-    margin-bottom: 16px;
+    margin-bottom: 14px;
   }
   .sp-subtitle {
-    font-size: 17px;
+    font-size: 16.5px;
     color: #64748b;
-    line-height: 1.7;
-    max-width: 600px;
+    line-height: 1.65;
+    max-width: 580px;
     margin: 0 auto 28px;
   }
 
-  /* Meta Bar */
-  .sp-meta-bar {
+  /* Author / Meta */
+  .sp-meta {
     display: flex;
-    align-items: center;
     justify-content: center;
-    gap: 20px;
-    flex-wrap: wrap;
-    margin-bottom: 40px;
   }
   .sp-author-chip {
-    display: flex;
+    display: inline-flex;
     align-items: center;
     gap: 10px;
-    padding: 6px 14px 6px 6px;
+    padding: 6px 16px 6px 6px;
     background: white;
     border: 1px solid #e2e8f0;
     border-radius: 40px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
   }
-  .sp-author-avatar {
-    width: 32px;
-    height: 32px;
+  .sp-avatar {
+    width: 34px;
+    height: 34px;
     border-radius: 50%;
     background: linear-gradient(135deg, #6366f1, #8b5cf6);
     display: flex;
@@ -587,85 +588,37 @@ const dateFormat = new Intl.DateTimeFormat("en-US", {
     font-weight: 700;
     font-size: 13px;
   }
-  .sp-author-info {
+  .sp-author-text {
     display: flex;
     flex-direction: column;
-    line-height: 1.2;
+    line-height: 1.25;
   }
   .sp-author-name {
     font-size: 13px;
     font-weight: 600;
     color: #1e293b;
   }
-  .sp-author-role {
-    font-size: 11px;
+  .sp-publish-info {
+    font-size: 11.5px;
     color: #94a3b8;
   }
-  .sp-meta-pills {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-  .sp-meta-pill {
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-    padding: 6px 12px;
-    background: white;
-    border: 1px solid #e2e8f0;
-    border-radius: 8px;
-    font-size: 12.5px;
-    font-weight: 500;
-    color: #64748b;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
-  }
-  .sp-meta-pill svg {
-    color: #a5b4fc;
+  .sp-dot {
+    margin: 0 3px;
   }
 
-  /* Hero Image */
-  .sp-hero-image-wrap {
-    max-width: 960px;
-    margin: 0 auto;
-    padding: 0 24px;
-  }
-  .sp-hero-image {
-    position: relative;
-    aspect-ratio: 21 / 9;
-    border-radius: 16px;
-    overflow: hidden;
-    box-shadow:
-      0 20px 50px rgba(0, 0, 0, 0.1),
-      0 0 0 1px rgba(0, 0, 0, 0.05);
-    background: linear-gradient(135deg, #eef2ff, #e0e7ff, #c7d2fe);
-  }
-  .sp-hero-image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-  .sp-hero-image.sp-img-fallback img {
-    display: none;
-  }
-  .sp-hero-image.sp-img-fallback {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  /* ═══ Content Grid ═══ */
-  .sp-content-grid {
-    max-width: 1280px;
-    margin: 48px auto 0;
+  /* ─── Content Grid ─── */
+  .sp-grid {
+    max-width: 1240px;
+    margin: 40px auto 0;
     padding: 0 24px;
     display: grid;
-    grid-template-columns: 60px 1fr 240px;
-    gap: 40px;
+    grid-template-columns: 56px 1fr 230px;
+    gap: 36px;
     align-items: start;
   }
 
-  /* ═══ Left Sidebar — Share ═══ */
-  .sp-sidebar-left {
+  /* ─── Share Sidebar ─── */
+  .sp-share-col {
     position: sticky;
     top: 100px;
   }
@@ -673,7 +626,7 @@ const dateFormat = new Intl.DateTimeFormat("en-US", {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
   }
   .sp-share-label {
     font-size: 10px;
@@ -681,12 +634,12 @@ const dateFormat = new Intl.DateTimeFormat("en-US", {
     text-transform: uppercase;
     letter-spacing: 1px;
     color: #94a3b8;
-    margin-bottom: 4px;
+    margin-bottom: 2px;
   }
   .sp-share-btn {
-    width: 40px;
-    height: 40px;
-    border-radius: 12px;
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -694,102 +647,100 @@ const dateFormat = new Intl.DateTimeFormat("en-US", {
     border: 1px solid #e2e8f0;
     color: #64748b;
     cursor: pointer;
-    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     text-decoration: none;
   }
   .sp-share-btn:hover {
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-  }
-  .sp-share-twitter:hover {
-    color: #1da1f2;
-    border-color: #1da1f2;
-    background: #f0f9ff;
-  }
-  .sp-share-facebook:hover {
-    color: #1877f2;
-    border-color: #1877f2;
-    background: #eff6ff;
-  }
-  .sp-share-linkedin:hover {
-    color: #0a66c2;
-    border-color: #0a66c2;
-    background: #eff6ff;
-  }
-  .sp-share-copy:hover {
-    color: #6366f1;
-    border-color: #6366f1;
+    color: #4f46e5;
+    border-color: #a5b4fc;
     background: #eef2ff;
   }
-  .sp-share-copy.copied {
+  .sp-share-btn.copied {
     color: #10b981;
-    border-color: #10b981;
+    border-color: #6ee7b7;
     background: #ecfdf5;
   }
 
-  /* ═══ Article ═══ */
+  /* ─── Article ─── */
   .sp-article-col {
-    max-width: 720px;
+    max-width: 700px;
     min-width: 0;
   }
 
   /* Prose */
   .sp-prose {
     color: #334155;
-    font-size: 17px;
-    line-height: 1.8;
+    font-size: 17.5px;
+    line-height: 1.85;
     letter-spacing: -0.1px;
   }
   .sp-prose > * + * {
-    margin-top: 1.5em;
+    margin-top: 1.4em;
   }
   .sp-prose h1,
   .sp-prose h2,
   .sp-prose h3,
   .sp-prose h4 {
     color: #0f172a;
-    font-weight: 700;
+    font-weight: 740;
     line-height: 1.3;
     letter-spacing: -0.3px;
+    scroll-margin-top: 80px;
   }
   .sp-prose h1 {
     font-size: 2em;
     margin-top: 0;
-    margin-bottom: 0.8em;
+    margin-bottom: 0.7em;
   }
   .sp-prose h2 {
-    font-size: 1.6em;
-    margin-top: 2em;
-    margin-bottom: 0.7em;
-    padding-bottom: 8px;
+    font-size: 1.5em;
+    margin-top: 2.2em;
+    margin-bottom: 0.6em;
+    padding-bottom: 10px;
     border-bottom: 2px solid #eef2ff;
   }
   .sp-prose h3 {
-    font-size: 1.25em;
+    font-size: 1.2em;
     margin-top: 1.8em;
-    margin-bottom: 0.5em;
+    margin-bottom: 0.4em;
   }
   .sp-prose p {
-    margin-bottom: 1.25em;
+    margin-bottom: 1.2em;
   }
   .sp-prose ul {
-    list-style: disc;
-    padding-left: 1.5em;
-    margin-bottom: 1.25em;
+    list-style: none;
+    padding-left: 0;
+    margin-bottom: 1.2em;
+  }
+  .sp-prose ul li {
+    position: relative;
+    padding-left: 1.4em;
+    margin-bottom: 0.5em;
+  }
+  .sp-prose ul li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.65em;
+    width: 6px;
+    height: 6px;
+    background: #a5b4fc;
+    border-radius: 50%;
   }
   .sp-prose ol {
-    list-style: decimal;
     padding-left: 1.5em;
-    margin-bottom: 1.25em;
+    margin-bottom: 1.2em;
   }
-  .sp-prose li {
-    margin-bottom: 0.4em;
+  .sp-prose ol li {
+    margin-bottom: 0.5em;
   }
   .sp-prose blockquote {
     border-left: 3px solid #6366f1;
     padding: 16px 20px;
     background: #f8faff;
-    border-radius: 0 10px 10px 0;
+    border-radius: 0 12px 12px 0;
     font-style: italic;
     color: #475569;
     margin: 1.6em 0;
@@ -798,24 +749,27 @@ const dateFormat = new Intl.DateTimeFormat("en-US", {
     width: 100%;
     border-radius: 12px;
     margin: 2em 0;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
   }
   .sp-prose code {
-    color: #6366f1;
+    color: #4f46e5;
     font-weight: 600;
-    font-size: 0.88em;
-    padding: 2px 6px;
+    font-size: 0.87em;
+    padding: 2px 7px;
     background: #eef2ff;
     border-radius: 5px;
+    border: 1px solid #e0e7ff;
   }
   .sp-prose pre {
     overflow-x: auto;
     background: #1e293b;
     color: #e2e8f0;
-    padding: 1.2em;
+    padding: 1.2em 1.4em;
     border-radius: 12px;
     margin: 1.6em 0;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+    font-size: 0.9em;
+    line-height: 1.6;
   }
   .sp-prose pre code {
     background: transparent;
@@ -823,6 +777,7 @@ const dateFormat = new Intl.DateTimeFormat("en-US", {
     font-weight: 400;
     color: inherit;
     font-size: inherit;
+    border: none;
   }
   .sp-prose strong {
     color: #0f172a;
@@ -831,29 +786,52 @@ const dateFormat = new Intl.DateTimeFormat("en-US", {
   .sp-prose a {
     color: #4f46e5;
     text-decoration: underline;
+    text-decoration-color: #c7d2fe;
     text-underline-offset: 3px;
     font-weight: 500;
-    transition: color 0.2s;
+    transition:
+      text-decoration-color 0.2s,
+      color 0.2s;
   }
   .sp-prose a:hover {
     color: #4338ca;
+    text-decoration-color: #4f46e5;
   }
   .sp-prose table {
     width: 100%;
     border-collapse: collapse;
     margin: 1.5em 0;
-    font-size: 0.92em;
+    font-size: 0.88em;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+    border: 1px solid #e2e8f0;
   }
   .sp-prose th,
   .sp-prose td {
-    padding: 10px 14px;
-    border: 1px solid #e2e8f0;
+    padding: 10px 16px;
     text-align: left;
+    border-bottom: 1px solid #f1f5f9;
   }
   .sp-prose th {
     background: #f8fafc;
-    font-weight: 600;
+    font-weight: 650;
     color: #1e293b;
+    font-size: 0.92em;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+  }
+  .sp-prose tr:last-child td {
+    border-bottom: none;
+  }
+  .sp-prose tr:hover td {
+    background: #f8faff;
+  }
+  .sp-prose hr {
+    border: none;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, #e2e8f0, transparent);
+    margin: 2.5em 0;
   }
 
   /* Divider */
@@ -863,21 +841,21 @@ const dateFormat = new Intl.DateTimeFormat("en-US", {
     margin: 48px 0;
   }
 
-  /* ═══ Author Bio ═══ */
-  .sp-author-bio {
+  /* ─── Author Bio ─── */
+  .sp-bio {
     display: flex;
-    gap: 20px;
-    padding: 24px;
+    gap: 18px;
+    padding: 22px;
     background: white;
     border: 1px solid #e2e8f0;
-    border-radius: 16px;
+    border-radius: 14px;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
     align-items: flex-start;
   }
   .sp-bio-avatar {
-    width: 56px;
-    height: 56px;
-    border-radius: 14px;
+    width: 52px;
+    height: 52px;
+    border-radius: 12px;
     background: linear-gradient(135deg, #eef2ff, #e0e7ff);
     display: flex;
     align-items: center;
@@ -885,33 +863,34 @@ const dateFormat = new Intl.DateTimeFormat("en-US", {
     flex-shrink: 0;
   }
   .sp-bio-avatar span {
-    font-size: 22px;
+    font-size: 20px;
     font-weight: 700;
     color: #6366f1;
   }
   .sp-bio-header {
     display: flex;
     align-items: center;
-    gap: 10px;
-    margin-bottom: 8px;
+    gap: 8px;
+    margin-bottom: 6px;
   }
   .sp-bio-header h3 {
-    font-size: 16px;
+    font-size: 15px;
     font-weight: 700;
     color: #0f172a;
+    margin: 0;
   }
   .sp-bio-badge {
     padding: 2px 10px;
     background: #eef2ff;
     border-radius: 20px;
-    font-size: 11px;
+    font-size: 10px;
     font-weight: 600;
     color: #6366f1;
   }
-  .sp-bio-content p {
-    font-size: 14px;
+  .sp-bio-body p {
+    font-size: 13.5px;
     color: #64748b;
-    line-height: 1.6;
+    line-height: 1.55;
     margin: 0;
   }
 
@@ -920,83 +899,85 @@ const dateFormat = new Intl.DateTimeFormat("en-US", {
     display: none;
     flex-direction: column;
     align-items: center;
-    gap: 14px;
-    margin-top: 32px;
-    padding: 24px;
-    background: #f8fafc;
-    border-radius: 16px;
+    gap: 12px;
+    margin-top: 28px;
+    padding: 22px;
+    background: white;
+    border-radius: 14px;
     border: 1px solid #e2e8f0;
   }
-  .sp-mobile-share-btns {
+  .sp-mobile-btns {
     display: flex;
-    gap: 10px;
+    gap: 8px;
   }
 
-  /* ═══ Right Sidebar — TOC ═══ */
-  .sp-sidebar-right {
+  /* ─── TOC Sidebar ─── */
+  .sp-toc-col {
     position: sticky;
     top: 100px;
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 16px;
   }
   .sp-toc-card {
     background: white;
     border: 1px solid #e2e8f0;
-    border-radius: 14px;
-    padding: 20px;
+    border-radius: 12px;
+    padding: 16px;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
   }
-  .sp-toc-header {
+  .sp-toc-title {
     display: flex;
     align-items: center;
-    gap: 8px;
-    font-size: 12px;
+    gap: 6px;
+    font-size: 11px;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.8px;
     color: #94a3b8;
-    margin-bottom: 14px;
-    padding-bottom: 12px;
+    margin-bottom: 12px;
+    padding-bottom: 10px;
     border-bottom: 1px solid #f1f5f9;
   }
   .sp-toc-nav {
     display: flex;
     flex-direction: column;
-    gap: 2px;
-    position: relative;
+    gap: 1px;
   }
   .sp-toc-link {
     display: block;
-    padding: 6px 12px;
-    font-size: 13px;
+    padding: 5px 10px;
+    font-size: 12.5px;
     color: #64748b;
     text-decoration: none;
-    border-radius: 8px;
-    transition: all 0.2s;
+    border-radius: 6px;
+    transition: all 0.15s;
     line-height: 1.4;
+    border-left: 2px solid transparent;
   }
   .sp-toc-link:hover {
     color: #4f46e5;
-    background: #eef2ff;
+    background: #f8faff;
+    border-left-color: #c7d2fe;
   }
   .sp-toc-link.active {
     color: #4f46e5;
     background: #eef2ff;
     font-weight: 600;
+    border-left-color: #6366f1;
   }
   .sp-toc-sub {
-    padding-left: 24px;
-    font-size: 12.5px;
+    padding-left: 22px;
+    font-size: 12px;
   }
 
   /* CTA Card */
-  .sp-cta-card {
-    background: linear-gradient(135deg, #4f46e5, #6366f1);
-    border-radius: 14px;
-    padding: 22px;
+  .sp-cta {
+    background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+    border-radius: 12px;
+    padding: 20px;
     color: white;
-    box-shadow: 0 8px 24px rgba(79, 70, 229, 0.25);
+    box-shadow: 0 8px 24px rgba(79, 70, 229, 0.2);
   }
   .sp-cta-icon {
     width: 40px;
@@ -1006,18 +987,18 @@ const dateFormat = new Intl.DateTimeFormat("en-US", {
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: 14px;
+    margin-bottom: 12px;
   }
-  .sp-cta-card h4 {
-    font-size: 15px;
+  .sp-cta h4 {
+    font-size: 14px;
     font-weight: 700;
-    margin-bottom: 6px;
+    margin-bottom: 4px;
   }
-  .sp-cta-card p {
-    font-size: 13px;
+  .sp-cta p {
+    font-size: 12.5px;
     color: rgba(255, 255, 255, 0.8);
-    line-height: 1.5;
-    margin-bottom: 16px;
+    line-height: 1.45;
+    margin-bottom: 14px;
   }
   .sp-cta-btn {
     display: flex;
@@ -1025,12 +1006,12 @@ const dateFormat = new Intl.DateTimeFormat("en-US", {
     justify-content: center;
     gap: 6px;
     width: 100%;
-    padding: 10px;
+    padding: 9px;
     background: white;
     color: #4f46e5;
     font-size: 13px;
     font-weight: 700;
-    border-radius: 10px;
+    border-radius: 8px;
     text-decoration: none;
     transition: all 0.2s;
   }
@@ -1039,73 +1020,73 @@ const dateFormat = new Intl.DateTimeFormat("en-US", {
     transform: translateY(-1px);
   }
 
-  /* ═══ Related Posts ═══ */
+  /* ─── Related Posts ─── */
   .sp-related {
-    max-width: 1280px;
-    margin: 64px auto 0;
+    max-width: 1240px;
+    margin: 56px auto 0;
     padding: 0 24px;
   }
-  .sp-related-header {
+  .sp-related-top {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 24px;
+    margin-bottom: 20px;
   }
-  .sp-related-header h2 {
-    font-size: 22px;
+  .sp-related-top h2 {
+    font-size: 20px;
     font-weight: 800;
     color: #0f172a;
   }
-  .sp-related-link {
+  .sp-related-all {
     display: inline-flex;
     align-items: center;
-    gap: 5px;
+    gap: 4px;
     font-size: 13px;
     font-weight: 600;
     color: #6366f1;
     text-decoration: none;
     transition: gap 0.2s;
   }
-  .sp-related-link:hover {
+  .sp-related-all:hover {
     gap: 8px;
   }
 
   .sp-related-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 24px;
+    gap: 20px;
   }
   .sp-related-card {
     background: white;
     border: 1px solid #e2e8f0;
-    border-radius: 16px;
+    border-radius: 14px;
     overflow: hidden;
     text-decoration: none;
     color: inherit;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
   }
   .sp-related-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
+    transform: translateY(-3px);
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.07);
     border-color: #c7d2fe;
   }
-  .sp-related-img {
+  .sp-related-thumb {
     position: relative;
     aspect-ratio: 16 / 9;
     overflow: hidden;
     background: linear-gradient(135deg, #eef2ff, #e0e7ff, #c7d2fe);
   }
-  .sp-related-img img {
+  .sp-related-thumb img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.4s;
+    transition: transform 0.35s;
   }
-  .sp-related-card:hover .sp-related-img img {
-    transform: scale(1.05);
+  .sp-related-card:hover .sp-related-thumb img {
+    transform: scale(1.04);
   }
-  .sp-related-placeholder {
+  .sp-related-ph {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1113,63 +1094,68 @@ const dateFormat = new Intl.DateTimeFormat("en-US", {
     inset: 0;
     color: #a5b4fc;
   }
-  .sp-related-body {
-    padding: 18px 20px 20px;
+  .sp-related-info {
+    padding: 16px 18px 18px;
   }
   .sp-related-cat {
     display: inline-block;
-    font-size: 11px;
+    font-size: 10px;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.5px;
     color: #6366f1;
-    margin-bottom: 6px;
+    margin-bottom: 5px;
   }
-  .sp-related-body h3 {
-    font-size: 16px;
+  .sp-related-info h3 {
+    font-size: 15px;
     font-weight: 700;
     color: #0f172a;
-    line-height: 1.4;
-    margin-bottom: 6px;
+    line-height: 1.35;
+    margin-bottom: 5px;
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
     transition: color 0.2s;
   }
-  .sp-related-card:hover .sp-related-body h3 {
+  .sp-related-card:hover .sp-related-info h3 {
     color: #4f46e5;
   }
-  .sp-related-body p {
-    font-size: 13px;
+  .sp-related-info p {
+    font-size: 12.5px;
     color: #64748b;
-    line-height: 1.5;
+    line-height: 1.45;
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
-    margin-bottom: 8px;
+    margin-bottom: 6px;
   }
   .sp-related-date {
-    font-size: 12px;
+    font-size: 11px;
     color: #94a3b8;
   }
 
-  /* ═══ Responsive ═══ */
+  /* ─── Responsive ─── */
   @media (max-width: 1024px) {
-    .sp-content-grid {
+    .sp-grid {
       grid-template-columns: 1fr;
-      gap: 24px;
+      gap: 20px;
     }
-    .sp-sidebar-left {
+    .sp-share-col {
       display: none;
     }
-    .sp-sidebar-right {
+    .sp-toc-col {
       position: static;
       order: -1;
+      flex-direction: row;
+      gap: 12px;
     }
     .sp-toc-card {
-      display: none;
+      flex: 1;
+    }
+    .sp-cta {
+      flex: 1;
     }
     .sp-mobile-share {
       display: flex;
@@ -1183,27 +1169,31 @@ const dateFormat = new Intl.DateTimeFormat("en-US", {
   }
   @media (max-width: 640px) {
     .sp-hero {
-      padding-top: 80px;
+      padding: 56px 0 32px;
     }
-    .sp-meta-bar {
+    .sp-meta {
       flex-direction: column;
-      gap: 12px;
+      gap: 10px;
     }
-    .sp-author-bio {
+    .sp-bio {
       flex-direction: column;
       text-align: center;
       align-items: center;
     }
     .sp-bio-header {
       flex-direction: column;
+      gap: 4px;
     }
     .sp-related-grid {
       grid-template-columns: 1fr;
     }
-    .sp-related-header {
+    .sp-related-top {
       flex-direction: column;
-      gap: 8px;
+      gap: 6px;
       align-items: flex-start;
+    }
+    .sp-toc-col {
+      flex-direction: column;
     }
   }
 </style>
@@ -1251,7 +1241,11 @@ const dateFormat = new Intl.DateTimeFormat("en-US", {
       try {
         await navigator.clipboard.writeText(window.location.href);
         copyBtn.classList.add("copied");
-        setTimeout(() => copyBtn.classList.remove("copied"), 2000);
+        copyBtn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="16" height="16"><polyline points="20 6 9 17 4 12"></polyline></svg>`;
+        setTimeout(() => {
+          copyBtn.classList.remove("copied");
+          copyBtn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"></path></svg>`;
+        }, 2000);
       } catch (e) {}
     });
   }
