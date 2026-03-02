@@ -140,25 +140,7 @@
     },
     {
       "name": "Guides",
-      "url": "/guides/",
-      "children": [
-        {
-          "name": "How Interest Rates Work",
-          "url": "/guides/how-interest-rates-work/"
-        },
-        {
-          "name": "Central Bank Rate Changes",
-          "url": "/guides/central-bank-rate-changes/"
-        },
-        {
-          "name": "Impact of Basis Points on Loans",
-          "url": "/guides/basis-points-impact-on-loans/"
-        },
-        {
-          "name": "APR vs Interest Rate",
-          "url": "/guides/apr-vs-interest-rate/"
-        }
-      ]
+      "url": "/guides/"
     },
     {
       "name": "FAQ",
