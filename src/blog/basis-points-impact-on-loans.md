@@ -1,7 +1,7 @@
 ---
 title: "Impact of Basis Points on Loans"
 description: "Understand how small basis point changes in interest rates can significantly affect your loan payments and total cost."
-date: 2024-08-15
+date: 2026-03-02
 author: "Admin"
 category: "Guides"
 status: "published"
