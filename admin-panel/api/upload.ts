@@ -7,14 +7,19 @@ import { writeFileSync, mkdirSync, existsSync, readdirSync, statSync, unlinkSync
 import { join, extname } from 'node:path';
 import { uploadFileToGitHub } from '@admin/utils/github-commit';
 
-const IS_VERCEL = !!process.env.VERCEL;
-
+// Safe environment check for Vercel
+const IS_VERCEL = !!(
+    (typeof process !== 'undefined' && process.env?.VERCEL) ||
+    (import.meta && import.meta.env && import.meta.env.VERCEL)
+);
 export const prerender = false;
 
 // Upload directory
 function getUploadDir() {
     const dir = join(process.cwd(), 'public', 'uploads');
-    if (!existsSync(dir)) mkdirSync(dir, { recursive: true });
+    if (!IS_VERCEL && !existsSync(dir)) {
+        mkdirSync(dir, { recursive: true });
+    }
     return dir;
 }
 
@@ -99,20 +104,26 @@ export const GET: APIRoute = async ({ request }) => {
     if (!user) return new Response(JSON.stringify({ error: 'Forbidden' }), { status: 403 });
 
     const uploadDir = getUploadDir();
-    const files = existsSync(uploadDir)
-        ? readdirSync(uploadDir)
-            .filter(f => !f.startsWith('.'))
-            .map(f => {
-                const stat = statSync(join(uploadDir, f));
-                return {
-                    filename: f,
-                    url: `/uploads/${f}`,
-                    size: stat.size,
-                    modified: stat.mtime.toISOString(),
-                };
-            })
-            .sort((a, b) => b.modified.localeCompare(a.modified))
-        : [];
+    let files: any[] = [];
+
+    try {
+        if (existsSync(uploadDir)) {
+            files = readdirSync(uploadDir)
+                .filter(f => !f.startsWith('.'))
+                .map(f => {
+                    const stat = statSync(join(uploadDir, f));
+                    return {
+                        filename: f,
+                        url: `/uploads/${f}`,
+                        size: stat.size,
+                        modified: stat.mtime.toISOString(),
+                    };
+                })
+                .sort((a, b) => b.modified.localeCompare(a.modified));
+        }
+    } catch (e) {
+        console.warn('Could not read upload directory', e);
+    }
 
     return new Response(JSON.stringify({ files }), {
         status: 200,

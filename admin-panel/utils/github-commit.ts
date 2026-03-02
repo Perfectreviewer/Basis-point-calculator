@@ -5,7 +5,11 @@
 import { readFileSync, existsSync } from 'node:fs';
 import { join } from 'node:path';
 
-const IS_VERCEL = !!process.env.VERCEL;
+// Safe environment check for Vercel
+const IS_VERCEL = !!(
+    (typeof process !== 'undefined' && process.env?.VERCEL) ||
+    (import.meta && import.meta.env && import.meta.env.VERCEL)
+);
 
 // Environment variables (set in Vercel dashboard):
 //   GITHUB_TOKEN  – a fine-grained personal access token with "Contents: read & write" permission
