@@ -107,15 +107,6 @@ const dateFormat = new Intl.DateTimeFormat("en-US", {
           <a href="/guides/">Guides</a>
         </nav>
 
-        <!-- Category Badge -->
-        {
-          entry.data.category && (
-            <span class="sp-category-badge sp-reveal" style="--delay:.05s">
-              {entry.data.category}
-            </span>
-          )
-        }
-
         <!-- Title -->
         <h1 class="sp-title sp-reveal" style="--delay:.1s">
           {entry.data.title}
