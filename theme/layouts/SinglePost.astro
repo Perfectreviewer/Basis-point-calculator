@@ -89,9 +89,12 @@ const dateFormat = new Intl.DateTimeFormat("en-US", {
     <!-- ═══ HERO ═══ -->
     <header class="sp-hero">
       <div class="sp-hero-accent"></div>
+      <div class="sp-hero-orb sp-hero-orb-1"></div>
+      <div class="sp-hero-orb sp-hero-orb-2"></div>
+      <div class="sp-hero-orb sp-hero-orb-3"></div>
       <div class="sp-hero-inner">
         <!-- Breadcrumb -->
-        <nav class="sp-breadcrumb" aria-label="Breadcrumb">
+        <nav class="sp-breadcrumb sp-reveal" aria-label="Breadcrumb">
           <a href="/">Home</a>
           <svg
             viewBox="0 0 24 24"
@@ -124,16 +127,22 @@ const dateFormat = new Intl.DateTimeFormat("en-US", {
         <!-- Category Badge -->
         {
           entry.data.category && (
-            <span class="sp-category-badge">{entry.data.category}</span>
+            <span class="sp-category-badge sp-reveal" style="--delay:.05s">
+              {entry.data.category}
+            </span>
           )
         }
 
         <!-- Title -->
-        <h1 class="sp-title">{entry.data.title}</h1>
+        <h1 class="sp-title sp-reveal" style="--delay:.1s">
+          {entry.data.title}
+        </h1>
 
         {
           entry.data.description && (
-            <p class="sp-subtitle">{entry.data.description}</p>
+            <p class="sp-subtitle sp-reveal" style="--delay:.15s">
+              {entry.data.description}
+            </p>
           )
         }
 
@@ -232,7 +241,7 @@ const dateFormat = new Intl.DateTimeFormat("en-US", {
         <div class="sp-divider"></div>
 
         <!-- Author Bio -->
-        <div class="sp-bio">
+        <div class="sp-bio sp-reveal">
           <div class="sp-bio-avatar">
             <span>{entry.data.author.charAt(0)}</span>
           </div>
@@ -394,7 +403,7 @@ const dateFormat = new Intl.DateTimeFormat("en-US", {
     <!-- ═══ RELATED POSTS ═══ -->
     {
       relatedPosts.length > 0 && (
-        <section class="sp-related">
+        <section class="sp-related sp-reveal">
           <div class="sp-related-top">
             <h2>Related Articles</h2>
             <a href="/guides/" class="sp-related-all">
@@ -462,8 +471,78 @@ const dateFormat = new Intl.DateTimeFormat("en-US", {
 
 <style is:global>
   /* ═══════════════════════════════════════
-     PREMIUM EDITORIAL SINGLE POST
+     PREMIUM EDITORIAL SINGLE POST — v2
      ═══════════════════════════════════════ */
+
+  /* ─── Keyframe Animations ─── */
+  @keyframes sp-float-1 {
+    0%,
+    100% {
+      transform: translate(0, 0) scale(1);
+    }
+    33% {
+      transform: translate(30px, -20px) scale(1.05);
+    }
+    66% {
+      transform: translate(-15px, 15px) scale(0.97);
+    }
+  }
+  @keyframes sp-float-2 {
+    0%,
+    100% {
+      transform: translate(0, 0) scale(1);
+    }
+    33% {
+      transform: translate(-25px, 18px) scale(1.03);
+    }
+    66% {
+      transform: translate(20px, -25px) scale(0.96);
+    }
+  }
+  @keyframes sp-float-3 {
+    0%,
+    100% {
+      transform: translate(0, 0) scale(1);
+    }
+    50% {
+      transform: translate(15px, 25px) scale(1.04);
+    }
+  }
+  @keyframes sp-pulse-glow {
+    0%,
+    100% {
+      box-shadow: 0 0 12px rgba(99, 102, 241, 0.5);
+    }
+    50% {
+      box-shadow:
+        0 0 20px rgba(139, 92, 246, 0.7),
+        0 0 40px rgba(99, 102, 241, 0.2);
+    }
+  }
+  @keyframes sp-fade-up {
+    from {
+      opacity: 0;
+      transform: translateY(24px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* ─── Scroll Reveal ─── */
+  .sp-reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition:
+      opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+      transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    transition-delay: var(--delay, 0s);
+  }
+  .sp-reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
 
   /* ─── Progress Bar ─── */
   .sp-progress {
@@ -472,10 +551,11 @@ const dateFormat = new Intl.DateTimeFormat("en-US", {
     left: 0;
     width: 0%;
     height: 3px;
-    background: linear-gradient(90deg, #6366f1, #8b5cf6, #a78bfa);
+    background: linear-gradient(90deg, #6366f1, #8b5cf6, #a78bfa, #38bdf8);
+    background-size: 300% 100%;
+    animation: sp-pulse-glow 2s ease-in-out infinite;
     z-index: 9999;
     transition: width 0.08s linear;
-    box-shadow: 0 0 12px rgba(99, 102, 241, 0.5);
   }
 
   /* ─── Main ─── */
@@ -489,7 +569,13 @@ const dateFormat = new Intl.DateTimeFormat("en-US", {
     position: relative;
     padding: 72px 0 48px;
     overflow: hidden;
-    background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 50%, #f8fafc 100%);
+    background: linear-gradient(
+      160deg,
+      #f8fafc 0%,
+      #eef2ff 30%,
+      #f0f4ff 50%,
+      #f8fafc 100%
+    );
   }
   .sp-hero-accent {
     position: absolute;
@@ -497,7 +583,50 @@ const dateFormat = new Intl.DateTimeFormat("en-US", {
     left: 0;
     right: 0;
     height: 4px;
-    background: linear-gradient(90deg, #6366f1, #8b5cf6, #38bdf8);
+    background: linear-gradient(90deg, #6366f1, #8b5cf6, #a78bfa, #38bdf8);
+    background-size: 200% 100%;
+    animation: sp-shimmer 3s linear infinite;
+  }
+  @keyframes sp-shimmer {
+    0% {
+      background-position: 200% 0;
+    }
+    100% {
+      background-position: -200% 0;
+    }
+  }
+
+  /* Floating Orbs */
+  .sp-hero-orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.35;
+    pointer-events: none;
+  }
+  .sp-hero-orb-1 {
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, #818cf8, transparent 70%);
+    top: -60px;
+    right: 10%;
+    animation: sp-float-1 8s ease-in-out infinite;
+  }
+  .sp-hero-orb-2 {
+    width: 250px;
+    height: 250px;
+    background: radial-gradient(circle, #c084fc, transparent 70%);
+    bottom: -40px;
+    left: 5%;
+    animation: sp-float-2 10s ease-in-out infinite;
+  }
+  .sp-hero-orb-3 {
+    width: 200px;
+    height: 200px;
+    background: radial-gradient(circle, #38bdf8, transparent 70%);
+    top: 30%;
+    left: 60%;
+    animation: sp-float-3 12s ease-in-out infinite;
   }
   .sp-hero-inner {
     max-width: 780px;
@@ -532,8 +661,14 @@ const dateFormat = new Intl.DateTimeFormat("en-US", {
   /* Category Badge */
   .sp-category-badge {
     display: inline-block;
-    padding: 4px 14px;
-    background: linear-gradient(135deg, #eef2ff, #e0e7ff);
+    padding: 5px 16px;
+    background: linear-gradient(
+      135deg,
+      rgba(238, 242, 255, 0.8),
+      rgba(224, 231, 255, 0.8)
+    );
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
     color: #4f46e5;
     font-size: 11px;
     font-weight: 700;
@@ -541,7 +676,14 @@ const dateFormat = new Intl.DateTimeFormat("en-US", {
     text-transform: uppercase;
     border-radius: 20px;
     margin-bottom: 16px;
-    border: 1px solid #c7d2fe;
+    border: 1px solid rgba(199, 210, 254, 0.6);
+    transition:
+      transform 0.2s,
+      box-shadow 0.2s;
+  }
+  .sp-category-badge:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.15);
   }
 
   /* Title */
@@ -552,6 +694,10 @@ const dateFormat = new Intl.DateTimeFormat("en-US", {
     letter-spacing: -0.6px;
     line-height: 1.15;
     margin-bottom: 14px;
+    background: linear-gradient(135deg, #0f172a 0%, #334155 50%, #1e293b 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
   }
   .sp-subtitle {
     font-size: 16.5px;
@@ -571,10 +717,23 @@ const dateFormat = new Intl.DateTimeFormat("en-US", {
     align-items: center;
     gap: 10px;
     padding: 6px 16px 6px 6px;
-    background: white;
-    border: 1px solid #e2e8f0;
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(226, 232, 240, 0.6);
     border-radius: 40px;
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+    box-shadow:
+      0 2px 8px rgba(0, 0, 0, 0.04),
+      0 0 0 1px rgba(255, 255, 255, 0.6) inset;
+    transition:
+      transform 0.2s,
+      box-shadow 0.2s;
+  }
+  .sp-author-chip:hover {
+    transform: translateY(-1px);
+    box-shadow:
+      0 6px 16px rgba(0, 0, 0, 0.06),
+      0 0 0 1px rgba(255, 255, 255, 0.6) inset;
   }
   .sp-avatar {
     width: 34px;
@@ -643,19 +802,25 @@ const dateFormat = new Intl.DateTimeFormat("en-US", {
     display: flex;
     align-items: center;
     justify-content: center;
-    background: white;
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
     border: 1px solid #e2e8f0;
     color: #64748b;
     cursor: pointer;
-    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
     text-decoration: none;
   }
   .sp-share-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    transform: translateY(-3px) scale(1.08);
+    box-shadow: 0 6px 16px rgba(79, 70, 229, 0.15);
     color: #4f46e5;
     border-color: #a5b4fc;
     background: #eef2ff;
+  }
+  .sp-share-btn:active {
+    transform: translateY(0) scale(0.95);
+    transition-duration: 0.1s;
   }
   .sp-share-btn.copied {
     color: #10b981;
@@ -846,8 +1011,14 @@ const dateFormat = new Intl.DateTimeFormat("en-US", {
     display: flex;
     gap: 18px;
     padding: 22px;
-    background: white;
-    border: 1px solid #e2e8f0;
+    background: linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.9),
+      rgba(248, 250, 252, 0.9)
+    );
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(226, 232, 240, 0.6);
     border-radius: 14px;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
     align-items: flex-start;
@@ -973,11 +1144,29 @@ const dateFormat = new Intl.DateTimeFormat("en-US", {
 
   /* CTA Card */
   .sp-cta {
-    background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+    background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 50%, #6366f1 100%);
+    background-size: 200% 200%;
+    animation: sp-cta-shimmer 4s ease-in-out infinite;
     border-radius: 12px;
     padding: 20px;
     color: white;
-    box-shadow: 0 8px 24px rgba(79, 70, 229, 0.2);
+    box-shadow: 0 8px 24px rgba(79, 70, 229, 0.25);
+    transition:
+      box-shadow 0.3s,
+      transform 0.3s;
+  }
+  .sp-cta:hover {
+    box-shadow: 0 12px 32px rgba(79, 70, 229, 0.35);
+    transform: translateY(-2px);
+  }
+  @keyframes sp-cta-shimmer {
+    0%,
+    100% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
   }
   .sp-cta-icon {
     width: 40px;
@@ -1057,19 +1246,23 @@ const dateFormat = new Intl.DateTimeFormat("en-US", {
     gap: 20px;
   }
   .sp-related-card {
-    background: white;
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
     border: 1px solid #e2e8f0;
     border-radius: 14px;
     overflow: hidden;
     text-decoration: none;
     color: inherit;
-    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
   }
   .sp-related-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.07);
-    border-color: #c7d2fe;
+    transform: translateY(-5px) scale(1.01);
+    box-shadow:
+      0 16px 40px rgba(79, 70, 229, 0.1),
+      0 0 0 1px rgba(99, 102, 241, 0.1);
+    border-color: #a5b4fc;
   }
   .sp-related-thumb {
     position: relative;
@@ -1199,7 +1392,24 @@ const dateFormat = new Intl.DateTimeFormat("en-US", {
 </style>
 
 <script is:inline>
-  // Reading progress bar
+  // ─── Scroll Reveal ───
+  const revealEls = document.querySelectorAll(".sp-reveal");
+  if (revealEls.length) {
+    const revealObs = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) {
+            e.target.classList.add("visible");
+            revealObs.unobserve(e.target);
+          }
+        });
+      },
+      { threshold: 0.1, rootMargin: "0px 0px -40px 0px" },
+    );
+    revealEls.forEach((el) => revealObs.observe(el));
+  }
+
+  // ─── Reading progress bar ───
   const pb = document.getElementById("progress-bar");
   if (pb) {
     window.addEventListener("scroll", () => {
@@ -1209,14 +1419,13 @@ const dateFormat = new Intl.DateTimeFormat("en-US", {
     });
   }
 
-  // TOC active heading tracking
+  // ─── TOC active heading tracking ───
   const tocLinks = document.querySelectorAll(".sp-toc-link");
   if (tocLinks.length) {
     const headingEls = Array.from(tocLinks)
       .map((l) => document.getElementById(l.getAttribute("data-heading")))
       .filter(Boolean);
-
-    const observer = new IntersectionObserver(
+    const tocObs = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
@@ -1230,11 +1439,20 @@ const dateFormat = new Intl.DateTimeFormat("en-US", {
       },
       { rootMargin: "-80px 0px -60% 0px" },
     );
-
-    headingEls.forEach((el) => observer.observe(el));
+    headingEls.forEach((el) => tocObs.observe(el));
   }
 
-  // Copy link button
+  // ─── Smooth TOC scroll ───
+  document.querySelectorAll(".sp-toc-link").forEach((link) => {
+    link.addEventListener("click", (e) => {
+      e.preventDefault();
+      const id = link.getAttribute("href").slice(1);
+      const target = document.getElementById(id);
+      if (target) target.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+  });
+
+  // ─── Copy link button ───
   const copyBtn = document.getElementById("copy-link-btn");
   if (copyBtn) {
     copyBtn.addEventListener("click", async () => {
@@ -1247,6 +1465,21 @@ const dateFormat = new Intl.DateTimeFormat("en-US", {
           copyBtn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"></path></svg>`;
         }, 2000);
       } catch (e) {}
+    });
+  }
+
+  // ─── Parallax orbs on mouse move ───
+  const hero = document.querySelector(".sp-hero");
+  if (hero && window.innerWidth > 768) {
+    const orbs = hero.querySelectorAll(".sp-hero-orb");
+    hero.addEventListener("mousemove", (e) => {
+      const rect = hero.getBoundingClientRect();
+      const x = (e.clientX - rect.left) / rect.width - 0.5;
+      const y = (e.clientY - rect.top) / rect.height - 0.5;
+      orbs.forEach((orb, i) => {
+        const factor = (i + 1) * 12;
+        orb.style.transform = `translate(${x * factor}px, ${y * factor}px)`;
+      });
     });
   }
 </script>
