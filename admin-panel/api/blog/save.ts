@@ -4,6 +4,7 @@ import { writeBlogFile, ensureDataDir } from '@admin/utils/storage';
 import { getSessionFromCookies, validateSessionToken } from '@admin/utils/auth';
 import { hasPermission } from '@admin/utils/roles';
 import type { Role } from '@admin/utils/roles';
+import { uploadFileToGitHub } from '@admin/utils/github-commit';
 
 export const prerender = false;
 
@@ -70,6 +71,23 @@ export const POST: APIRoute = async ({ request }) => {
     const filename = `${safeSlug}.md`;
 
     writeBlogFile(filename, fullContent);
+
+    // On Vercel, also commit to GitHub so changes persist across deployments
+    const IS_VERCEL = !!(
+        (typeof process !== 'undefined' && process.env?.VERCEL) ||
+        (import.meta && import.meta.env && import.meta.env.VERCEL)
+    );
+    if (IS_VERCEL) {
+        const base64 = Buffer.from(fullContent, 'utf-8').toString('base64');
+        const result = await uploadFileToGitHub(
+            `src/blog/${filename}`,
+            base64,
+            `chore(blog): update ${filename}`
+        );
+        if (!result.success) {
+            console.error('GitHub commit failed for blog post:', result.error);
+        }
+    }
 
     return new Response(JSON.stringify({ success: true, filename, slug: safeSlug }), {
         status: 200,

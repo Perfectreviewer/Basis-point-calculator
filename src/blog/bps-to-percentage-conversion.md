@@ -4,6 +4,7 @@ description: "Convert basis points to percentage instantly. Full formula, conver
 date: 2025-03-02
 author: "Admin"
 category: "Guides"
+image: "/uploads/1772469784673-bps-to-percentage-conversion-the-complete-guide-with-instant-calculator-.jpg"
 status: "published"
 visibility: "public"
 ---
