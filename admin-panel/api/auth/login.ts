@@ -52,9 +52,19 @@ export const POST: APIRoute = async ({ request }) => {
             }
         }
 
+        if (user.status === 'suspended') {
+            return new Response(JSON.stringify({ error: 'Account suspended. Please contact an administrator.' }), {
+                status: 403,
+                headers: { 'Content-Type': 'application/json' },
+            });
+        }
+
+        user.lastLogin = new Date().toISOString();
+        writeJSON(usersFile, users);
+
         const token = await createSessionToken(user.id, user.username, user.role);
 
-        return new Response(JSON.stringify({ success: true, user: { id: user.id, username: user.username, role: user.role } }), {
+        return new Response(JSON.stringify({ success: true, user: { id: user.id, username: user.username, role: user.role, status: user.status } }), {
             status: 200,
             headers: {
                 'Content-Type': 'application/json',

@@ -20,7 +20,7 @@ export const POST: APIRoute = async ({ request }) => {
 
     ensureDataDir();
     const body = await request.json();
-    const { id, username, email, password, role } = body;
+    const { id, username, email, password, role, status } = body;
 
     if (!username || !role) {
         return new Response(JSON.stringify({ error: 'Username and role are required' }), { status: 400 });
@@ -39,8 +39,13 @@ export const POST: APIRoute = async ({ request }) => {
             return new Response(JSON.stringify({ error: 'User not found' }), { status: 404 });
         }
         users[idx].username = username;
+        // Don't let users edit the initial admin's role/status to prevent lockouts
+        if (users[idx].username !== 'admin') {
+            users[idx].role = role;
+            users[idx].status = status || 'active';
+        }
         users[idx].email = email || users[idx].email;
-        users[idx].role = role;
+
         if (password) {
             users[idx].passwordHash = await hashPassword(password);
         }
@@ -58,7 +63,9 @@ export const POST: APIRoute = async ({ request }) => {
             email: email || '',
             passwordHash: await hashPassword(password),
             role,
+            status: status || 'active',
             createdAt: new Date().toISOString(),
+            lastLogin: null
         };
         users.push(newUser);
     }

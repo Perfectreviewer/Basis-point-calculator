@@ -3,8 +3,19 @@
     "id": "1",
     "username": "admin",
     "email": "admin@example.com",
-    "passwordHash": "63d606942696c9ad4328894dc1e69356:cbee8a07d5386a26b2022e6ffaf7237f241682b684a549922784b583a911ffb1",
+    "passwordHash": "84df52a4265de4f0545ba3e91685f7e2:0cd97dae29eeff0c529382b6fb98596082b4fc7a17984e90fa4a1d23cd4665a2",
     "role": "admin",
-    "createdAt": "2026-02-11T00:00:00Z"
+    "createdAt": "2026-03-02T16:06:54.199Z",
+    "lastLogin": "2026-03-02T16:09:05.092Z"
+  },
+  {
+    "id": "1772467795961",
+    "username": "demo_user",
+    "email": "demo@example.com",
+    "passwordHash": "3dedd7ef92bed53b55c4acdbeae8c931:36a16807e4763fec8ad9e1c164bd1b58ea7f4a004842dccafea325177a1fd386",
+    "role": "editor",
+    "status": "suspended",
+    "createdAt": "2026-03-02T16:09:56.411Z",
+    "lastLogin": null
   }
 ]
