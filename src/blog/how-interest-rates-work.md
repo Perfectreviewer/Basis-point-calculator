@@ -7,6 +7,7 @@ category: "Guides"
 status: "published"
 visibility: "public"
 seoKeywords: "how interest rates work, simple interest, compound interest, interest rate explained, how banks set rates, cost of borrowing"
+image: "/uploads/1772551500138-how-interest-rates-work1.jpg"
 ---
 **In Simple Terms:** Interest rates are the cost of borrowing money, or the reward for saving it. They're expressed as a percentage of the principal over a specific time period.
 
