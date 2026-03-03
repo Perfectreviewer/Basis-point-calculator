@@ -39,7 +39,9 @@ const readTime = Math.ceil(wordCount / 200);
 
 const siteURL = Astro.url.origin;
 const canonical = `${siteURL}/guides/${entry.id}/`;
-const imageUrl = `${siteURL}${entry.data.image}`;
+const imageUrl = entry.data.image
+  ? `${siteURL}${entry.data.image}`
+  : `${siteURL}/images/og-image.jpg`;
 
 const dateFormat = new Intl.DateTimeFormat("en-US", {
   year: "numeric",
@@ -49,7 +51,7 @@ const dateFormat = new Intl.DateTimeFormat("en-US", {
 ---
 
 <Layout
-  img={entry.data.image}
+  img={entry.data.image || "/images/og-image.jpg"}
   title={entry.data.title + " | " + indexTranslations.en.site_title}
   description={entry.data.description}
 >
