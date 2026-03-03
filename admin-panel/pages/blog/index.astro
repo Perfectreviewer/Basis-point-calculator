@@ -225,7 +225,15 @@ if (editFile) {
                 <div id="featuredUploadArea" class="upload-area" style={editFrontmatter.image ? 'display:none' : ''}>
                   <input type="file" id="featuredFileInput" accept="image/*" style="display:none" />
                   <div class="upload-content">
-                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="margin-bottom:8px; opacity:0.4;"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                    <dotlottie-player
+                      src="https://lottie.host/8cd7b355-be23-45f8-ad23-bf193f4112e5/zD38rS9z0Q.json"
+                      background="transparent"
+                      speed="1"
+                      style="width: 80px; height: 80px; margin: 0 auto; opacity: 0.8; transition: all 0.3s;"
+                      loop
+                      autoplay
+                      id="uploadLottieAnimationMain"
+                    ></dotlottie-player>
                     <span class="upload-text">Click to upload or drag & drop</span>
                     <span class="upload-hint">JPG, PNG, WebP, GIF — Max 5MB</span>
                   </div>
@@ -503,6 +511,9 @@ if (editFile) {
       const fd = new FormData();
       fd.append('file', file);
       featuredUploadArea.querySelector('.upload-text').textContent = 'Uploading...';
+      const lottie = document.getElementById('uploadLottieAnimationMain');
+      if (lottie) lottie.setAttribute('src', 'https://lottie.host/81de3fca-a7db-4b44-b0c6-3d274530fc9c/QzY0kI8s9z.json'); // active upload animation
+      
       try {
         const res = await fetch('/api/upload/', { method: 'POST', body: fd });
         const data = await res.json();
@@ -512,7 +523,9 @@ if (editFile) {
           alert(data.error || 'Upload failed');
         }
       } catch { alert('Upload failed'); }
+      
       featuredUploadArea.querySelector('.upload-text').textContent = 'Click to upload or drag & drop';
+      if (lottie) lottie.setAttribute('src', 'https://lottie.host/8cd7b355-be23-45f8-ad23-bf193f4112e5/zD38rS9z0Q.json'); // idle animation
     }
 
     function setFeaturedImage(url) {
@@ -588,6 +601,9 @@ if (editFile) {
       progressFill.style.width = '30%';
       progressText.textContent = 'Uploading...';
 
+      const lottie = document.getElementById('uploadLottieAnimationModal');
+      if (lottie) lottie.setAttribute('src', 'https://lottie.host/81de3fca-a7db-4b44-b0c6-3d274530fc9c/QzY0kI8s9z.json'); // active upload animation
+
       const fd = new FormData();
       fd.append('file', file);
       try {
@@ -605,6 +621,8 @@ if (editFile) {
       } catch {
         progressText.textContent = 'Upload failed';
       }
+      
+      if (lottie) lottie.setAttribute('src', 'https://lottie.host/8cd7b355-be23-45f8-ad23-bf193f4112e5/zD38rS9z0Q.json'); // idle animation
     }
 
     // Media library
