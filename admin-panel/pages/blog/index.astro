@@ -377,12 +377,15 @@ if (editFile) {
       ) : (
         <div class="posts-list-grid">
           {posts.map((post, i) => (
-            <div class="post-card">
-              <div class="post-card-left">
-                <div class={`post-thumb ${post.image ? 'has-image' : ''}`} style={post.image ? `background-image: url(${post.image})` : ''}>
+            <div class="post-card" style={`--delay: ${i * 0.06}s`}>
+              <div class="post-card-number">
+                <span>{String(i + 1).padStart(2, '0')}</span>
+              </div>
+              <div class="post-card-thumb-wrap">
+                <div class={`post-thumb ${post.image ? 'has-img' : ''}`} style={post.image ? `background-image: url(${post.image})` : ''}>
                   {!post.image && (
-                    <div class="thumb-fallback">
-                      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <div class="thumb-placeholder">
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
                         <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
                         <polyline points="14,2 14,8 20,8"/>
                         <line x1="16" y1="13" x2="8" y2="13"/>
@@ -392,32 +395,33 @@ if (editFile) {
                   )}
                 </div>
               </div>
-              <div class="post-card-center">
-                <div class="post-card-top">
-                  <div class="post-card-badges">
-                    {post.status === 'draft' && <span class="badge badge-draft">Draft</span>}
-                    {post.status !== 'draft' && <span class="badge badge-published">Published</span>}
-                    {post.category && <span class="badge badge-category">{post.category}</span>}
+              <div class="post-card-content">
+                <div class="post-card-header">
+                  <div class="post-badges">
+                    {post.status === 'draft'
+                      ? <span class="pbadge pbadge--draft"><span class="pbadge-dot"></span>Draft</span>
+                      : <span class="pbadge pbadge--live"><span class="pbadge-dot"></span>Live</span>
+                    }
+                    {post.category && <span class="pbadge pbadge--cat">{post.category}</span>}
                   </div>
-                  <span class="post-card-date">{post.date || '—'} {post.author && <span class="by-author">by {post.author}</span>}</span>
+                  <span class="post-date">{post.date || '—'}{post.author && <>&nbsp;&middot;&nbsp;{post.author}</>}</span>
                 </div>
-                <h3 class="post-card-title">{post.title || post.filename}</h3>
-                {post.description && <p class="post-card-desc">{post.description}</p>}
+                <h3 class="post-title">{post.title || post.filename}</h3>
+                {post.description && <p class="post-excerpt">{post.description}</p>}
               </div>
-              <div class="post-card-right">
+              <div class="post-card-actions">
                 {canWrite && (
-                  <a href={`/admin/blog/?edit=${encodeURIComponent(post.filename)}`} class="action-btn action-edit" title="Edit">
-                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
-                    Edit
+                  <a href={`/admin/blog/?edit=${encodeURIComponent(post.filename)}`} class="act-btn act-edit" title="Edit">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
                   </a>
                 )}
                 {canDelete && (
-                  <button class="action-btn action-delete delete-btn" data-filename={post.filename} title="Delete">
-                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3,6 5,6 21,6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg>
-                    Delete
+                  <button class="act-btn act-del delete-btn" data-filename={post.filename} title="Delete">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3,6 5,6 21,6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg>
                   </button>
                 )}
               </div>
+              <div class="post-card-glow"></div>
             </div>
           ))}
         </div>
@@ -730,6 +734,15 @@ if (editFile) {
           if (res.ok) btn.closest('.post-card')?.remove();
           else alert('Failed to delete post');
         } catch { alert('Network error'); }
+      });
+    });
+
+    // ── Glow mouse tracking ──
+    document.querySelectorAll('.post-card').forEach(card => {
+      card.addEventListener('mousemove', e => {
+        const r = card.getBoundingClientRect();
+        card.style.setProperty('--mx', `${e.clientX - r.left}px`);
+        card.style.setProperty('--my', `${e.clientY - r.top}px`);
       });
     });
   </script>
@@ -1112,123 +1125,172 @@ if (editFile) {
   }
 
   /* ─── Posts List ─── */
-  .posts-list-grid { display: flex; flex-direction: column; gap: 6px; }
+  .posts-list-grid { display: flex; flex-direction: column; gap: 8px; }
+
+  @keyframes cardIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
 
   .post-card {
-    display: flex; align-items: center; gap: 18px;
-    padding: 14px 18px;
-    background: var(--bg-surface);
-    border: 1px solid var(--border-subtle);
-    border-left: 3px solid transparent;
-    border-radius: var(--radius-md);
-    transition: all 0.2s ease;
+    position: relative;
+    display: flex; align-items: center; gap: 16px;
+    padding: 16px 20px;
+    background: rgba(15, 23, 42, 0.6);
+    backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 14px;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
+    animation: cardIn 0.35s ease both;
+    animation-delay: var(--delay, 0s);
   }
   .post-card:hover {
-    border-left-color: var(--accent-blue);
-    background: var(--bg-elevated);
-    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-    transform: translateX(2px);
+    border-color: rgba(99,102,241,0.3);
+    background: rgba(15, 23, 42, 0.8);
+    transform: translateY(-1px);
+    box-shadow:
+      0 4px 20px rgba(0,0,0,0.25),
+      0 0 0 1px rgba(99,102,241,0.15),
+      inset 0 1px 0 rgba(255,255,255,0.04);
   }
 
-  .post-card-left { flex-shrink: 0; }
+  /* glow layer */
+  .post-card-glow {
+    position: absolute; inset: 0;
+    border-radius: 14px;
+    opacity: 0;
+    background: radial-gradient(600px circle at var(--mx, 50%) var(--my, 50%),
+      rgba(99,102,241,0.08), transparent 40%);
+    transition: opacity 0.3s;
+    pointer-events: none;
+  }
+  .post-card:hover .post-card-glow { opacity: 1; }
 
+  /* number column */
+  .post-card-number {
+    flex-shrink: 0; width: 28px;
+    text-align: center;
+  }
+  .post-card-number span {
+    font-size: 11px; font-weight: 800;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    color: rgba(148,163,184,0.35);
+    letter-spacing: 1px;
+    transition: color 0.25s;
+  }
+  .post-card:hover .post-card-number span {
+    color: rgba(99,102,241,0.7);
+  }
+
+  /* thumbnail */
+  .post-card-thumb-wrap { flex-shrink: 0; }
   .post-thumb {
-    width: 96px; height: 64px;
+    width: 84px; height: 58px;
     border-radius: 10px;
-    background-size: cover;
-    background-position: center;
+    background-size: cover; background-position: center;
     display: flex; align-items: center; justify-content: center;
-    overflow: hidden;
-    position: relative;
+    position: relative; overflow: hidden;
+    transition: transform 0.25s, box-shadow 0.25s;
   }
-  .post-thumb:not(.has-image) {
+  .post-card:hover .post-thumb { transform: scale(1.03); }
+  .post-thumb:not(.has-img) {
     background: linear-gradient(135deg,
-      rgba(56,152,236,0.08) 0%,
-      rgba(99,102,241,0.12) 50%,
-      rgba(168,85,247,0.08) 100%);
-    border: 1px solid rgba(99,102,241,0.12);
-  }
-  .post-thumb.has-image {
+      rgba(30,41,59,0.8) 0%,
+      rgba(51,65,85,0.5) 100%);
     border: 1px solid rgba(255,255,255,0.06);
   }
-  .thumb-fallback {
+  .post-thumb.has-img {
+    border: 1px solid rgba(255,255,255,0.08);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+  }
+  .thumb-placeholder {
     display: flex; align-items: center; justify-content: center;
-    width: 100%; height: 100%;
-    color: rgba(99,102,241,0.5);
+    color: rgba(148,163,184,0.3);
   }
 
-  .post-card-center { flex: 1; min-width: 0; }
+  /* content */
+  .post-card-content { flex: 1; min-width: 0; }
 
-  .post-card-top {
-    display: flex; align-items: center; gap: 10px;
-    margin-bottom: 5px;
+  .post-card-header {
+    display: flex; align-items: center; gap: 8px;
+    margin-bottom: 4px;
   }
-  .post-card-badges { display: flex; gap: 6px; }
-  .badge {
-    font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.6px;
-    padding: 2px 7px; border-radius: 4px; line-height: 1.4;
+  .post-badges { display: flex; gap: 5px; }
+  .pbadge {
+    display: inline-flex; align-items: center; gap: 4px;
+    font-size: 9px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.8px; padding: 2px 8px;
+    border-radius: 6px; line-height: 1.3;
   }
-  .badge-published {
-    background: rgba(34,197,94,0.1); color: #22c55e;
+  .pbadge-dot {
+    width: 5px; height: 5px; border-radius: 50%;
+    display: inline-block;
   }
-  .badge-draft {
-    background: rgba(251,191,36,0.12); color: #fbbf24;
+  .pbadge--live {
+    background: rgba(34,197,94,0.1); color: #4ade80;
   }
-  .badge-category {
-    background: rgba(56,152,236,0.1); color: var(--accent-blue);
+  .pbadge--live .pbadge-dot { background: #4ade80; box-shadow: 0 0 6px #4ade80; }
+  .pbadge--draft {
+    background: rgba(251,191,36,0.1); color: #fbbf24;
   }
-  .post-card-date {
-    font-size: 11.5px; color: var(--text-muted); margin-left: auto; white-space: nowrap;
-  }
-  .by-author { opacity: 0.7; }
-
-  .post-card-title {
-    font-size: 14.5px; font-weight: 600; color: var(--text-primary);
-    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-    line-height: 1.3;
-    margin: 0;
-  }
-  .post-card:hover .post-card-title { color: var(--accent-blue); }
-
-  .post-card-desc {
-    font-size: 12.5px; color: var(--text-secondary); margin: 3px 0 0;
-    display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical;
-    overflow: hidden; line-height: 1.4;
+  .pbadge--draft .pbadge-dot { background: #fbbf24; box-shadow: 0 0 6px #fbbf24; }
+  .pbadge--cat {
+    background: rgba(99,102,241,0.1); color: #818cf8;
   }
 
-  .post-card-right {
-    display: flex; gap: 6px; flex-shrink: 0;
+  .post-date {
+    font-size: 11px; color: rgba(148,163,184,0.5);
+    margin-left: auto; white-space: nowrap;
+    font-variant-numeric: tabular-nums;
   }
 
-  .action-btn {
-    display: inline-flex; align-items: center; gap: 5px;
-    font-size: 12px; font-weight: 600;
-    padding: 6px 14px; border-radius: 6px;
-    border: none; cursor: pointer;
+  .post-title {
+    font-size: 14.5px; font-weight: 600;
+    color: rgba(248,250,252,0.9);
+    white-space: nowrap; overflow: hidden;
+    text-overflow: ellipsis;
+    margin: 0; line-height: 1.3;
+    transition: color 0.2s;
+  }
+  .post-card:hover .post-title { color: #a5b4fc; }
+
+  .post-excerpt {
+    font-size: 12px; color: rgba(148,163,184,0.55);
+    margin: 2px 0 0; line-height: 1.4;
+    white-space: nowrap; overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* action buttons */
+  .post-card-actions {
+    display: flex; gap: 4px; flex-shrink: 0;
+    opacity: 0.5; transition: opacity 0.2s;
+  }
+  .post-card:hover .post-card-actions { opacity: 1; }
+
+  .act-btn {
+    width: 34px; height: 34px;
+    display: inline-flex; align-items: center; justify-content: center;
+    border-radius: 8px; border: none; cursor: pointer;
     transition: all 0.15s ease;
     text-decoration: none;
-    white-space: nowrap;
+    background: rgba(255,255,255,0.04);
+    color: rgba(148,163,184,0.7);
   }
-  .action-edit {
-    background: rgba(56,152,236,0.1); color: var(--accent-blue);
-  }
-  .action-edit:hover {
-    background: rgba(56,152,236,0.2);
-  }
-  .action-delete {
-    background: rgba(239,68,68,0.08); color: #ef4444;
-  }
-  .action-delete:hover {
-    background: rgba(239,68,68,0.18);
-  }
+  .act-btn:hover { background: rgba(255,255,255,0.08); }
+  .act-edit:hover { color: #818cf8; background: rgba(99,102,241,0.12); }
+  .act-del:hover  { color: #f87171; background: rgba(239,68,68,0.12); }
 
   .loading-state { padding: 40px 20px; text-align: center; color: var(--text-muted); font-size: 13px; }
 
   @media (max-width: 768px) {
     .editor-grid { grid-template-columns: 1fr; }
-    .post-card { flex-direction: column; align-items: stretch; gap: 12px; }
+    .post-card { flex-wrap: wrap; gap: 12px; padding: 14px; }
+    .post-card-number { display: none; }
     .post-thumb { width: 100%; height: 140px; }
-    .post-card-right { justify-content: flex-end; }
-    .post-card-top { flex-wrap: wrap; }
+    .post-card-content { width: 100%; }
+    .post-card-actions { margin-left: auto; }
+    .post-card-header { flex-wrap: wrap; }
   }
 </style>
