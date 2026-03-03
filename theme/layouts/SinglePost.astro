@@ -40,7 +40,9 @@ const readTime = Math.ceil(wordCount / 200);
 const siteURL = Astro.url.origin;
 const canonical = `${siteURL}/guides/${entry.id}/`;
 const imageUrl = entry.data.image
-  ? `${siteURL}${entry.data.image}`
+  ? entry.data.image.startsWith("http")
+    ? entry.data.image
+    : `${siteURL}${entry.data.image}`
   : `${siteURL}/images/og-image.jpg`;
 
 const dateFormat = new Intl.DateTimeFormat("en-US", {
