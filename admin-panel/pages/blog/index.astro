@@ -549,21 +549,25 @@ if (editFile) {
     }
 
     function setFeaturedImage(url) {
-      // Disable onerror so CDN lag doesn't nuke the value
-      featuredImg.onerror = null;
+      // Set the values for saving immediately
       postImageHidden.value = url;
       postImageUrl.value = url;
+      
+      // Attempt to load the image URL
+      featuredImg.onerror = function() {
+        // If the URL 404s (e.g. still deploying relative link), fall back to a placeholder visual
+        featuredImg.src = 'https://placehold.co/600x400/1e293b/94a3b8?text=Image+Deploying...';
+      };
       featuredImg.src = url;
+      
       featuredPreview.style.display = 'block';
       featuredUploadArea.style.display = 'none';
     }
 
-    // On initial page load, if the image is broken, fall back to upload area
-    // but do NOT clear the hidden value (user may want to keep the URL)
-    if (featuredImg) {
+    // On initial page load, if the image is broken (e.g., currently deploying), show placeholder
+    if (featuredImg && featuredImg.src) {
       featuredImg.onerror = function() {
-        featuredPreview.style.display = 'none';
-        featuredUploadArea.style.display = 'block';
+        featuredImg.src = 'https://placehold.co/600x400/1e293b/94a3b8?text=Image+Deploying...';
       };
     }
 
