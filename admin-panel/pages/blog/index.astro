@@ -718,7 +718,7 @@ if (editFile) {
             category: document.getElementById('postCategory').value,
             author: document.getElementById('postAuthor').value,
             date: document.getElementById('postDate').value,
-            image: document.getElementById('postImage').value,
+            image: document.getElementById('postImageUrl').value || document.getElementById('postImage').value,
             status: document.getElementById('postStatus').value,
             visibility: document.getElementById('postVisibility').value,
             tags: document.getElementById('postTags').value,
