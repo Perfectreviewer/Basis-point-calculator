@@ -17,9 +17,15 @@ const IS_VERCEL = !!(
 //   GITHUB_BRANCH – branch to commit to, defaults to "main"
 
 function getGitHubConfig() {
+    let repo = process.env.GITHUB_REPO || 'Perfectreviewer/Basis-point-calculator';
+    // If the repo env var is set but doesn't contain a slash (e.g. just the username), force the correct repo.
+    if (repo && !repo.includes('/')) {
+        repo = 'Perfectreviewer/Basis-point-calculator';
+    }
+
     return {
         token: process.env.GITHUB_TOKEN || '',
-        repo: process.env.GITHUB_REPO || '',
+        repo: repo,
         branch: process.env.GITHUB_BRANCH || 'main',
     };
 }
