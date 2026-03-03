@@ -216,8 +216,7 @@ if (editFile) {
             <div class="panel-body" id="panel-featured">
               <div id="featuredImageWrap">
                 <div id="featuredPreview" class="featured-preview" style={editFrontmatter.image ? '' : 'display:none'}>
-                  <img id="featuredImg" src={editFrontmatter.image || ''} alt="Featured"
-                  onerror="this.closest('.featured-preview').style.display='none'; document.getElementById('featuredUploadArea').style.display='block'; document.getElementById('postImage').value=''; document.getElementById('postImageUrl').value='';" />
+                  <img id="featuredImg" src={editFrontmatter.image || ''} alt="Featured" />
                   <button type="button" class="remove-featured" id="removeFeatured">
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
                     Remove
@@ -530,11 +529,22 @@ if (editFile) {
     }
 
     function setFeaturedImage(url) {
+      // Disable onerror so CDN lag doesn't nuke the value
+      featuredImg.onerror = null;
       postImageHidden.value = url;
       postImageUrl.value = url;
       featuredImg.src = url;
       featuredPreview.style.display = 'block';
       featuredUploadArea.style.display = 'none';
+    }
+
+    // On initial page load, if the image is broken, fall back to upload area
+    // but do NOT clear the hidden value (user may want to keep the URL)
+    if (featuredImg) {
+      featuredImg.onerror = function() {
+        featuredPreview.style.display = 'none';
+        featuredUploadArea.style.display = 'block';
+      };
     }
 
     postImageUrl?.addEventListener('input', () => {
