@@ -7,6 +7,7 @@ category: "Guides"
 status: "published"
 visibility: "public"
 seoKeywords: "basis points impact on loans, bps effect on mortgage, 25 bps rate change, loan payment impact, interest rate change on debt"
+image: "/uploads/1772554840296-impact-of-basis-points-on-loans.jpg"
 ---
 **The Bottom Line:** A seemingly small 25 basis point (0.25%) rate difference can cost you tens of thousands of dollars over the life of a mortgage. Always shop rates carefully!
 

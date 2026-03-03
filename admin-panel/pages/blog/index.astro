@@ -548,26 +548,59 @@ if (editFile) {
       if (lottie) lottie.setAttribute('src', 'https://lottie.host/8cd7b355-be23-45f8-ad23-bf193f4112e5/zD38rS9z0Q.json');
     }
 
+    function showImagePlaceholder(url) {
+      // Hide the <img> and show a CSS placeholder with the filename
+      featuredImg.style.display = 'none';
+      let placeholder = featuredPreview.querySelector('.img-placeholder');
+      if (!placeholder) {
+        placeholder = document.createElement('div');
+        placeholder.className = 'img-placeholder';
+        placeholder.innerHTML = `
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="opacity:0.4;margin-bottom:8px">
+            <rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/>
+          </svg>
+          <span style="font-size:13px;font-weight:600;color:#94a3b8;">Image saved ✓</span>
+          <span style="font-size:11px;color:#64748b;margin-top:4px;word-break:break-all;max-width:90%;text-align:center;">
+            Will appear after site redeploys (~1 min)
+          </span>`;
+        placeholder.style.cssText = 'display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:180px;background:linear-gradient(135deg,#0f172a,#1e293b);border-radius:10px;padding:20px;';
+        featuredPreview.insertBefore(placeholder, featuredPreview.firstChild);
+      }
+      placeholder.style.display = 'flex';
+      featuredPreview.style.display = 'block';
+      featuredUploadArea.style.display = 'none';
+    }
+
     function setFeaturedImage(url) {
       // Set the values for saving immediately
       postImageHidden.value = url;
       postImageUrl.value = url;
       
-      // Attempt to load the image URL
+      // Try loading the image; if it fails, show CSS placeholder
       featuredImg.onerror = function() {
-        // If the URL 404s (e.g. still deploying relative link), fall back to a placeholder visual
-        featuredImg.src = 'https://placehold.co/600x400/1e293b/94a3b8?text=Image+Deploying...';
+        this.onerror = null; // prevent infinite loop
+        showImagePlaceholder(url);
       };
-      featuredImg.src = url;
+      // Reset img visibility in case it was hidden by placeholder
+      featuredImg.style.display = '';
+      const placeholder = featuredPreview.querySelector('.img-placeholder');
+      if (placeholder) placeholder.style.display = 'none';
       
+      featuredImg.src = url;
       featuredPreview.style.display = 'block';
       featuredUploadArea.style.display = 'none';
     }
 
     // On initial page load, if the image is broken (e.g., currently deploying), show placeholder
-    if (featuredImg && featuredImg.src) {
+    if (featuredImg) {
       featuredImg.onerror = function() {
-        featuredImg.src = 'https://placehold.co/600x400/1e293b/94a3b8?text=Image+Deploying...';
+        this.onerror = null; // prevent infinite loop
+        if (postImageHidden.value || postImageUrl.value) {
+          showImagePlaceholder(postImageHidden.value || postImageUrl.value);
+        } else {
+          featuredPreview.style.display = 'none';
+          featuredUploadArea.style.display = 'block';
+        }
       };
     }
 
