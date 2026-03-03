@@ -143,6 +143,15 @@ const dateFormat = new Intl.DateTimeFormat("en-US", {
       </div>
     </header>
 
+    {/* ─── Featured Image Banner ─── */}
+    {
+      entry.data.image && (
+        <div class="sp-featured-img sp-reveal" style="--delay:.25s">
+          <img src={entry.data.image} alt={entry.data.title} loading="eager" />
+        </div>
+      )
+    }
+
     <!-- ═══ CONTENT GRID ═══ -->
     <div class="sp-grid">
       <!-- LEFT: Share Sidebar -->
@@ -611,6 +620,27 @@ const dateFormat = new Intl.DateTimeFormat("en-US", {
     margin: 0 auto;
     padding: 0 24px;
     text-align: center;
+  }
+
+  /* Featured Image Banner */
+  .sp-featured-img {
+    max-width: 860px;
+    margin: -20px auto 32px;
+    padding: 0 24px;
+  }
+  .sp-featured-img img {
+    width: 100%;
+    height: auto;
+    max-height: 420px;
+    object-fit: cover;
+    border-radius: 16px;
+    box-shadow:
+      0 8px 32px rgba(0, 0, 0, 0.35),
+      0 0 0 1px rgba(255, 255, 255, 0.06);
+    transition: transform 0.4s ease;
+  }
+  .sp-featured-img img:hover {
+    transform: scale(1.01);
   }
 
   /* Breadcrumb */
