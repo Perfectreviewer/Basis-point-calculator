@@ -512,20 +512,27 @@ if (editFile) {
       fd.append('file', file);
       featuredUploadArea.querySelector('.upload-text').textContent = 'Uploading...';
       const lottie = document.getElementById('uploadLottieAnimationMain');
-      if (lottie) lottie.setAttribute('src', 'https://lottie.host/81de3fca-a7db-4b44-b0c6-3d274530fc9c/QzY0kI8s9z.json'); // active upload animation
+      if (lottie) lottie.setAttribute('src', 'https://lottie.host/81de3fca-a7db-4b44-b0c6-3d274530fc9c/QzY0kI8s9z.json');
       
       try {
         const res = await fetch('/api/upload/', { method: 'POST', body: fd });
         const data = await res.json();
         if (res.ok) {
-          setFeaturedImage(data.url);
+          // Store the server URL for saving
+          postImageHidden.value = data.url;
+          postImageUrl.value = data.url;
+          // Use a local blob URL for instant visual preview
+          featuredImg.onerror = null;
+          featuredImg.src = URL.createObjectURL(file);
+          featuredPreview.style.display = 'block';
+          featuredUploadArea.style.display = 'none';
         } else {
           alert(data.error || 'Upload failed');
         }
       } catch { alert('Upload failed'); }
       
       featuredUploadArea.querySelector('.upload-text').textContent = 'Click to upload or drag & drop';
-      if (lottie) lottie.setAttribute('src', 'https://lottie.host/8cd7b355-be23-45f8-ad23-bf193f4112e5/zD38rS9z0Q.json'); // idle animation
+      if (lottie) lottie.setAttribute('src', 'https://lottie.host/8cd7b355-be23-45f8-ad23-bf193f4112e5/zD38rS9z0Q.json');
     }
 
     function setFeaturedImage(url) {

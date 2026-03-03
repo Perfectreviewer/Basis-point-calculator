@@ -175,11 +175,10 @@ export async function uploadFileToGitHub(
             return { success: false, error: `GitHub API error: ${putRes.status}` };
         }
 
-        // Return a raw URL so the editor can preview it immediately
-        // jsdelivr is a reliable CDN for GitHub files
-        const cdnUrl = `https://cdn.jsdelivr.net/gh/${repo}@${branch}/${repoPath}`;
+        // raw.githubusercontent.com is available immediately after commit
+        const rawUrl = `https://raw.githubusercontent.com/${repo}/${branch}/${repoPath}`;
 
-        return { success: true, url: cdnUrl };
+        return { success: true, url: rawUrl };
     } catch (err: any) {
         console.error('GitHub file upload error:', err);
         return { success: false, error: `Failed to upload to GitHub: ${err.message}` };
