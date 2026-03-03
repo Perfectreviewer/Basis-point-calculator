@@ -62,7 +62,6 @@ export const POST: APIRoute = async ({ request }) => {
 
         const buffer = Buffer.from(await file.arrayBuffer());
 
-        // Return public URL
         let url = `/uploads/${filename}`;
 
         if (IS_VERCEL) {
@@ -72,8 +71,7 @@ export const POST: APIRoute = async ({ request }) => {
             if (!result.success) {
                 return new Response(JSON.stringify({ error: result.error || 'Failed to upload to GitHub' }), { status: 500 });
             }
-            // Use the fast CDN url immediately so it doesn't 404 while waiting for redeploy
-            url = result.url || url;
+            // Always use the relative url so it writes correctly to the markdown frontmatter
         } else {
             // Local dev - save directly to disk
             const uploadDir = getUploadDir();
