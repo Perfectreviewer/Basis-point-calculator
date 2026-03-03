@@ -6,6 +6,7 @@ author: "Admin"
 category: "Guides"
 status: "published"
 visibility: "public"
+seoKeywords: "APR vs interest rate, what is APR, annual percentage rate explained, APR vs nominal rate, true cost of borrowing"
 ---
 **The Key Difference:** Interest rate is just the cost of borrowing the principal. APR includes the interest rate PLUS fees, giving you the true annual cost.
 

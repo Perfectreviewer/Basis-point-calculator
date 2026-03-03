@@ -7,6 +7,7 @@ category: "Guides"
 image: "/uploads/1772469784673-bps-to-percentage-conversion-the-complete-guide-with-instant-calculator-.jpg"
 status: "published"
 visibility: "public"
+seoKeywords: "bps to percentage conversion, convert basis points to percent, bps to % formula, basis point conversion chart, bps converter"
 ---
 
 ## Convert BPS to Percentage: The One Formula You Need

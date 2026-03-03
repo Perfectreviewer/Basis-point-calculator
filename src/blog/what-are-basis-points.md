@@ -6,6 +6,7 @@ author: "Admin"
 category: "Guides"
 status: "published"
 visibility: "public"
+seoKeywords: "what are basis points, basis points definition, bps meaning, basis points explained, 1 basis point, bps in finance"
 ---
 ## Why Use Basis Points?
 

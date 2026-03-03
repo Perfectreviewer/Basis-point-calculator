@@ -6,6 +6,7 @@ author: "Admin"
 category: "Guides"
 status: "published"
 visibility: "public"
+seoKeywords: "central bank rate changes, federal reserve rate, interest rate decisions, Fed rate hike, monetary policy, rate cut impact"
 ---
 **Key Insight:** Central banks use interest rate changes as their primary tool to manage inflation, employment, and economic stability. A single rate decision can ripple through all financial markets.
 
