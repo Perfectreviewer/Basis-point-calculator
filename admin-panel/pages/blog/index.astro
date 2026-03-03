@@ -514,6 +514,13 @@ if (editFile) {
       const lottie = document.getElementById('uploadLottieAnimationMain');
       if (lottie) lottie.setAttribute('src', 'https://lottie.host/81de3fca-a7db-4b44-b0c6-3d274530fc9c/QzY0kI8s9z.json');
       
+      const saveBtn = document.getElementById('saveBtn');
+      if (saveBtn) {
+        saveBtn.disabled = true;
+        const btnText = document.getElementById('postStatus')?.value === 'draft' ? 'Save Draft' : 'Publish';
+        saveBtn.innerHTML = '<span style="opacity:0.7">Uploading Image...</span>';
+      }
+
       try {
         const res = await fetch('/api/upload/', { method: 'POST', body: fd });
         const data = await res.json();
@@ -531,6 +538,12 @@ if (editFile) {
         }
       } catch { alert('Upload failed'); }
       
+      if (saveBtn) {
+        saveBtn.disabled = false;
+        const btnText = document.getElementById('postStatus')?.value === 'draft' ? 'Save Draft' : 'Publish';
+        saveBtn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><polyline points="17,21 17,13 7,13 7,21"/><polyline points="7,3 7,8 15,8"/></svg> ${btnText}`;
+      }
+
       featuredUploadArea.querySelector('.upload-text').textContent = 'Click to upload or drag & drop';
       if (lottie) lottie.setAttribute('src', 'https://lottie.host/8cd7b355-be23-45f8-ad23-bf193f4112e5/zD38rS9z0Q.json');
     }
