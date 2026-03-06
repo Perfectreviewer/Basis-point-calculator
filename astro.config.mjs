@@ -19,6 +19,9 @@ export default defineConfig({
 
   redirects: {
     '/guides/what-are-basis-points/': '/bps-calculators/basis-point-guide/',
+    '/en/bps-calculators-page-list/': '/bps-calculators/',
+    '/en/bps/basis-point-faq/': '/faq/basis-point-faq/',
+    '/bn/bps/': '/bn/bps-calculators/',
   },
 
   integrations: [

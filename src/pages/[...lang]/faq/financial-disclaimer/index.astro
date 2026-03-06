@@ -5,15 +5,12 @@ import {
   type Locale,
   getLocalizedUrl,
 } from "@theme/i18n/utils";
+import indexTranslations from "~/i18n/index.json";
 
 export function getStaticPaths() {
-  return [
-    { params: { lang: undefined } },
-    { params: { lang: "en" } },
-    { params: { lang: "es" } },
-    { params: { lang: "fr" } },
-    { params: { lang: "de" } },
-  ];
+  return Object.keys(indexTranslations).map((locale) => ({
+    params: { lang: locale === "en" ? undefined : locale },
+  }));
 }
 
 const locale = (Astro.params.lang || "en") as Locale;
@@ -48,9 +45,10 @@ const pageDescription =
 
       <h2>Educational Purpose Only</h2>
       <p>
-        BasisPointCalculator.com provides financial calculators and educational content to
-        help users understand financial concepts like basis points, interest
-        rates, and loan calculations. The tools and information provided are:
+        BasisPointCalculator.com provides financial calculators and educational
+        content to help users understand financial concepts like basis points,
+        interest rates, and loan calculations. The tools and information
+        provided are:
       </p>
       <ul>
         <li>For general educational purposes only</li>
