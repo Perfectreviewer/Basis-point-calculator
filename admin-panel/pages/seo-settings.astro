@@ -501,6 +501,123 @@ Crawl-delay: 10"
         </div>
       </div>
     </div>
+
+    <!-- ═══ IndexNow Instant Indexing ═══ -->
+    <div class="settings-section card">
+      <div class="section-header">
+        <div class="section-icon indexnow-icon">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+          </svg>
+        </div>
+        <div>
+          <h3>IndexNow — Instant Indexing</h3>
+          <p class="section-desc">
+            Submit URLs for instant indexing on Bing, Yandex, and other
+            supporting search engines
+          </p>
+        </div>
+      </div>
+      <div class="section-body">
+        <div class="form-row-2col">
+          <div class="form-group">
+            <label for="indexnow-key">API Key</label>
+            <div class="indexnow-key-row">
+              <input
+                type="text"
+                id="indexnow-key"
+                class="form-input setting-input mono-sm"
+                placeholder="e.g. a1b2c3d4e5f6..."
+                readonly
+              />
+              <button type="button" class="btn-secondary" id="generate-key-btn">
+                Generate Key
+              </button>
+            </div>
+            <div class="help-text">
+              Your IndexNow API key. A verification file will be served at
+              <code>/{"{key}"}.txt</code>. Saved with settings.
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Status</label>
+            <div style="padding-top: 8px;">
+              <span id="indexnow-status" class="console-badge not-set"
+                >Not Set</span
+              >
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="indexnow-urls">URLs to Submit</label>
+          <textarea
+            id="indexnow-urls"
+            class="form-input form-textarea mono-input"
+            rows="5"
+            placeholder="https://www.basispointcalculator.com/bps-calculators/
+https://www.basispointcalculator.com/faq/
+(one URL per line)"
+          ></textarea>
+          <div class="help-text">
+            Enter URLs to submit for instant indexing (one per line, max 10,000)
+          </div>
+        </div>
+
+        <div class="indexnow-actions">
+          <button
+            type="button"
+            class="btn-primary"
+            id="submit-indexnow-btn"
+            disabled
+          >
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              width="14"
+              height="14"
+            >
+              <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"
+              ></polygon>
+            </svg>
+            <span class="btn-text">Submit to IndexNow</span>
+          </button>
+          <button
+            type="button"
+            class="btn-secondary"
+            id="submit-sitemap-btn"
+            disabled
+          >
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              width="14"
+              height="14"
+            >
+              <path d="M6 3v12"></path>
+              <circle cx="18" cy="6" r="3"></circle>
+              <circle cx="6" cy="18" r="3"></circle>
+              <path d="M18 9a9 9 0 01-9 9"></path>
+            </svg>
+            Submit All Sitemap URLs
+          </button>
+        </div>
+
+        <div id="indexnow-log" class="indexnow-log" style="display: none;">
+          <label class="section-label">Submission Log</label>
+          <div id="indexnow-log-entries" class="indexnow-log-entries"></div>
+        </div>
+      </div>
+    </div>
   </div>
 </AdminLayout>
 
@@ -539,6 +656,83 @@ Crawl-delay: 10"
     to {
       transform: rotate(360deg);
     }
+  }
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* ─── IndexNow ─── */
+  .indexnow-key-row {
+    display: flex;
+    gap: 8px;
+  }
+  .indexnow-key-row .form-input {
+    flex: 1;
+  }
+  .indexnow-actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .indexnow-actions button {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .indexnow-log {
+    margin-top: 8px;
+    background: var(--bg-deep);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-sm);
+    padding: 16px;
+  }
+  .indexnow-log-entries {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    max-height: 200px;
+    overflow-y: auto;
+    font-size: 12.5px;
+    font-family: "SF Mono", "Consolas", "Menlo", monospace;
+  }
+  .log-entry {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 10px;
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.03);
+  }
+  .log-entry.success {
+    color: var(--accent-green);
+  }
+  .log-entry.error {
+    color: #f87171;
+  }
+  .log-entry.info {
+    color: var(--accent-blue);
+  }
+  .log-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .log-entry.success .log-dot {
+    background: var(--accent-green);
+  }
+  .log-entry.error .log-dot {
+    background: #f87171;
+  }
+  .log-entry.info .log-dot {
+    background: var(--accent-blue);
   }
 
   .save-bar {
@@ -617,6 +811,10 @@ Crawl-delay: 10"
   .meta-icon {
     background: rgba(124, 91, 240, 0.12);
     color: var(--accent-violet);
+  }
+  .indexnow-icon {
+    background: rgba(251, 146, 60, 0.12);
+    color: #fb923c;
   }
 
   .section-body {
@@ -1185,6 +1383,14 @@ Crawl-delay: 10"
     ).value = meta.globalDefault || "index, follow";
     renderTags("noindex-patterns", meta.noindexPatterns || []);
 
+    // IndexNow
+    const indexNow = data.indexNow || {};
+    const keyInput = document.getElementById(
+      "indexnow-key",
+    ) as HTMLInputElement;
+    keyInput.value = indexNow.apiKey || "";
+    updateIndexNowStatus(indexNow.apiKey);
+
     // Attach change listener
     containerEl.addEventListener("input", markDirty);
     containerEl.addEventListener("change", markDirty);
@@ -1273,6 +1479,32 @@ Crawl-delay: 10"
         addOverrideRow("", "0.7", "weekly");
         markDirty();
       });
+
+    // IndexNow — Generate key
+    document
+      .getElementById("generate-key-btn")!
+      .addEventListener("click", () => {
+        const newKey = crypto.randomUUID().replace(/-/g, "");
+        (document.getElementById("indexnow-key") as HTMLInputElement).value =
+          newKey;
+        updateIndexNowStatus(newKey);
+        markDirty();
+      });
+
+    // IndexNow — Submit URLs
+    document
+      .getElementById("submit-indexnow-btn")!
+      .addEventListener("click", submitIndexNow);
+
+    // IndexNow — Submit sitemap URLs
+    document
+      .getElementById("submit-sitemap-btn")!
+      .addEventListener("click", submitSitemapUrls);
+
+    // Enable/disable submit buttons based on key
+    keyInput.addEventListener("input", () => {
+      updateIndexNowStatus(keyInput.value);
+    });
   }
 
   /* ─── Search Console Badges ─── */
@@ -1643,6 +1875,11 @@ Crawl-delay: 10"
         ).value,
         noindexPatterns: collectTags("noindex-patterns"),
       },
+      indexNow: {
+        apiKey: (
+          document.getElementById("indexnow-key") as HTMLInputElement
+        ).value.trim(),
+      },
     };
 
     try {
@@ -1672,6 +1909,186 @@ Crawl-delay: 10"
       btnText.textContent = "Save All Settings";
       saveBtn.disabled = false;
     }
+  }
+
+  /* ─── INDEXNOW ─── */
+  function updateIndexNowStatus(key: string) {
+    const badge = document.getElementById("indexnow-status")!;
+    const submitBtn = document.getElementById(
+      "submit-indexnow-btn",
+    ) as HTMLButtonElement;
+    const sitemapBtn = document.getElementById(
+      "submit-sitemap-btn",
+    ) as HTMLButtonElement;
+    if (key && key.trim()) {
+      badge.textContent = "Active";
+      badge.className = "console-badge connected";
+      submitBtn.disabled = false;
+      sitemapBtn.disabled = false;
+    } else {
+      badge.textContent = "Not Set";
+      badge.className = "console-badge not-set";
+      submitBtn.disabled = true;
+      sitemapBtn.disabled = true;
+    }
+  }
+
+  function addLogEntry(
+    message: string,
+    type: "success" | "error" | "info" = "info",
+  ) {
+    const logEl = document.getElementById("indexnow-log")!;
+    const entries = document.getElementById("indexnow-log-entries")!;
+    logEl.style.display = "block";
+    const time = new Date().toLocaleTimeString();
+    const entry = document.createElement("div");
+    entry.className = `log-entry ${type}`;
+    entry.innerHTML = `<span class="log-dot"></span><span>[${time}] ${esc(message)}</span>`;
+    entries.prepend(entry);
+  }
+
+  async function submitIndexNow() {
+    const key = (
+      document.getElementById("indexnow-key") as HTMLInputElement
+    ).value.trim();
+    const urlsText = (
+      document.getElementById("indexnow-urls") as HTMLTextAreaElement
+    ).value.trim();
+    if (!key) {
+      addLogEntry("No API key set — generate or enter one first", "error");
+      return;
+    }
+    if (!urlsText) {
+      addLogEntry("No URLs entered", "error");
+      return;
+    }
+
+    const urls = urlsText
+      .split("\n")
+      .map((u) => u.trim())
+      .filter((u) => u && u.startsWith("http"));
+    if (urls.length === 0) {
+      addLogEntry("No valid URLs found (must start with http)", "error");
+      return;
+    }
+
+    const btn = document.getElementById(
+      "submit-indexnow-btn",
+    ) as HTMLButtonElement;
+    const btnText = btn.querySelector(".btn-text")!;
+    btn.disabled = true;
+    btnText.textContent = "Submitting...";
+    addLogEntry(`Submitting ${urls.length} URL(s)...`, "info");
+
+    try {
+      const host = new URL(urls[0]).hostname;
+      const res = await fetch("/api/admin/indexnow/", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ key, urls, host }),
+      });
+      const result = await res.json();
+      if (result.success) {
+        addLogEntry(result.message, "success");
+      } else {
+        addLogEntry(
+          result.message || result.error || "Submission failed",
+          "error",
+        );
+      }
+    } catch (e) {
+      addLogEntry("Network error submitting to IndexNow", "error");
+    }
+    btn.disabled = false;
+    btnText.textContent = "Submit to IndexNow";
+  }
+
+  async function submitSitemapUrls() {
+    const key = (
+      document.getElementById("indexnow-key") as HTMLInputElement
+    ).value.trim();
+    if (!key) {
+      addLogEntry("No API key set", "error");
+      return;
+    }
+
+    const sitemapBtn = document.getElementById(
+      "submit-sitemap-btn",
+    ) as HTMLButtonElement;
+    sitemapBtn.disabled = true;
+    sitemapBtn.textContent = "Fetching sitemap...";
+    addLogEntry("Fetching sitemap-0.xml...", "info");
+
+    try {
+      const sitemapRes = await fetch("/sitemap-0.xml");
+      if (!sitemapRes.ok) {
+        addLogEntry("Could not fetch sitemap-0.xml", "error");
+        sitemapBtn.disabled = false;
+        sitemapBtn.textContent = "Submit All Sitemap URLs";
+        return;
+      }
+      const xml = await sitemapRes.text();
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(xml, "text/xml");
+      const locs = doc.querySelectorAll("url > loc");
+      const urls = Array.from(locs)
+        .map((el) => el.textContent || "")
+        .filter(Boolean);
+
+      if (urls.length === 0) {
+        addLogEntry("No URLs found in sitemap", "error");
+        sitemapBtn.disabled = false;
+        sitemapBtn.textContent = "Submit All Sitemap URLs";
+        return;
+      }
+
+      addLogEntry(
+        `Found ${urls.length} URLs in sitemap, submitting in batches...`,
+        "info",
+      );
+      sitemapBtn.textContent = `Submitting ${urls.length} URLs...`;
+
+      // Submit in batches of 500
+      const batchSize = 500;
+      const host = new URL(urls[0]).hostname;
+      let submitted = 0;
+
+      for (let i = 0; i < urls.length; i += batchSize) {
+        const batch = urls.slice(i, i + batchSize);
+        try {
+          const res = await fetch("/api/admin/indexnow/", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ key, urls: batch, host }),
+          });
+          const result = await res.json();
+          submitted += batch.length;
+          if (result.success) {
+            addLogEntry(
+              `Batch ${Math.floor(i / batchSize) + 1}: ${result.message}`,
+              "success",
+            );
+          } else {
+            addLogEntry(
+              `Batch ${Math.floor(i / batchSize) + 1}: ${result.message || result.error}`,
+              "error",
+            );
+          }
+        } catch (e) {
+          addLogEntry(
+            `Batch ${Math.floor(i / batchSize) + 1}: Network error`,
+            "error",
+          );
+        }
+        sitemapBtn.textContent = `Submitted ${submitted}/${urls.length}...`;
+      }
+
+      addLogEntry(`Done — ${submitted} URL(s) submitted`, "success");
+    } catch (e) {
+      addLogEntry("Error processing sitemap", "error");
+    }
+    sitemapBtn.disabled = false;
+    sitemapBtn.textContent = "Submit All Sitemap URLs";
   }
 
   init();
