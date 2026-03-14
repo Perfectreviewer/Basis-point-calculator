@@ -77,11 +77,11 @@
         "links": [
           {
             "name": "About Us",
-            "url": "/about/about-us/"
+            "url": "/about-us/"
           },
           {
             "name": "Contact Us",
-            "url": "/about/contact/"
+            "url": "/contact-us/"
           },
           {
             "name": "FAQ",
