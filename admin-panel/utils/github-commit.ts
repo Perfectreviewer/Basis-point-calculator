@@ -163,11 +163,21 @@ export async function uploadFileToGitHub(
             'X-GitHub-Api-Version': '2022-11-28',
         };
 
-        const body = {
+        // 1. Get current file SHA if it already exists (required for updates)
+        const getRes = await fetch(`${apiBase}?ref=${branch}`, { headers });
+        let sha: string | undefined;
+        if (getRes.ok) {
+            const fileData = await getRes.json() as any;
+            sha = fileData.sha;
+        }
+
+        // 2. Create or update the file
+        const body: any = {
             message,
             content: base64Content,
             branch,
         };
+        if (sha) body.sha = sha;
 
         const putRes = await fetch(apiBase, {
             method: 'PUT',
