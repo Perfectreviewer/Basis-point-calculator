@@ -68,11 +68,12 @@ export const POST: APIRoute = async ({ request }) => {
             // Vercel is read-only, we must commit to GitHub
             const base64 = buffer.toString('base64');
             const result = await uploadFileToGitHub(`public/uploads/${filename}`, base64);
-            if (!result.success || !result.url) {
+            if (!result.success) {
                 return new Response(JSON.stringify({ error: result.error || 'Failed to upload to GitHub' }), { status: 500 });
             }
-            // Use the raw GitHub content URL so images display instantly without waiting for a redeploy
-            url = result.url;
+            // We use the relative URL `/uploads/...`. Our dynamic fallback route at
+            // src/pages/uploads/[...file].ts will correctly serve the image directly 
+            // from GitHub BEFORE the Vercel build finishes, so it works instantly!
         } else {
             // Local dev - save directly to disk
             const uploadDir = getUploadDir();
@@ -135,7 +136,7 @@ export const GET: APIRoute = async ({ request }) => {
                             .filter((item: any) => item.type === 'file' && !item.name.startsWith('.'))
                             .map((item: any) => ({
                                 filename: item.name,
-                                url: `https://raw.githubusercontent.com/${repo}/${branch}/public/uploads/${item.name}`,
+                                url: `/uploads/${item.name}`,
                                 size: item.size,
                                 // GitHub Contents API doesn't return modified date natively, 
                                 // but we use the filename timestamp as a fallback sort
