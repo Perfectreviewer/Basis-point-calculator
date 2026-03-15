@@ -68,10 +68,11 @@ export const POST: APIRoute = async ({ request }) => {
             // Vercel is read-only, we must commit to GitHub
             const base64 = buffer.toString('base64');
             const result = await uploadFileToGitHub(`public/uploads/${filename}`, base64);
-            if (!result.success) {
+            if (!result.success || !result.url) {
                 return new Response(JSON.stringify({ error: result.error || 'Failed to upload to GitHub' }), { status: 500 });
             }
-            // Always use the relative url so it writes correctly to the markdown frontmatter
+            // Use the raw GitHub content URL so images display instantly without waiting for a redeploy
+            url = result.url;
         } else {
             // Local dev - save directly to disk
             const uploadDir = getUploadDir();
@@ -101,23 +102,68 @@ export const GET: APIRoute = async ({ request }) => {
     const user = await validateSessionToken(session);
     if (!user) return new Response(JSON.stringify({ error: 'Forbidden' }), { status: 403 });
 
-    const uploadDir = getUploadDir();
     let files: any[] = [];
 
     try {
-        if (existsSync(uploadDir)) {
-            files = readdirSync(uploadDir)
-                .filter(f => !f.startsWith('.'))
-                .map(f => {
-                    const stat = statSync(join(uploadDir, f));
-                    return {
-                        filename: f,
-                        url: `/uploads/${f}`,
-                        size: stat.size,
-                        modified: stat.mtime.toISOString(),
-                    };
-                })
-                .sort((a, b) => b.modified.localeCompare(a.modified));
+        if (IS_VERCEL) {
+            // Define a local helper to get GitHub config cleanly
+            const getGitHubConfigLocal = () => {
+                let repo = process.env.GITHUB_REPO || 'Perfectreviewer/Basis-point-calculator';
+                if (repo && !repo.includes('/')) repo = 'Perfectreviewer/Basis-point-calculator';
+                return {
+                    token: process.env.GITHUB_TOKEN || '',
+                    repo: repo,
+                    branch: process.env.GITHUB_BRANCH || 'main',
+                };
+            };
+
+            const { token, repo, branch } = getGitHubConfigLocal();
+            if (token && repo) {
+                const apiBase = `https://api.github.com/repos/${repo}/contents/public/uploads?ref=${branch}`;
+                const getRes = await fetch(apiBase, {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                        Accept: 'application/vnd.github+json',
+                        'X-GitHub-Api-Version': '2022-11-28',
+                    }
+                });
+
+                if (getRes.ok) {
+                    const data = await getRes.json();
+                    if (Array.isArray(data)) {
+                        files = data
+                            .filter((item: any) => item.type === 'file' && !item.name.startsWith('.'))
+                            .map((item: any) => ({
+                                filename: item.name,
+                                url: `https://raw.githubusercontent.com/${repo}/${branch}/public/uploads/${item.name}`,
+                                size: item.size,
+                                // GitHub Contents API doesn't return modified date natively, 
+                                // but we use the filename timestamp as a fallback sort
+                                modified: new Date().toISOString(), 
+                            }))
+                            .sort((a: any, b: any) => b.filename.localeCompare(a.filename)); // Sort by filename (which includes timestamp)
+                    }
+                } else {
+                    console.error("Failed to fetch uploads from GitHub:", await getRes.text());
+                }
+            }
+        } else {
+            // Local fallback
+            const uploadDir = getUploadDir();
+            if (existsSync(uploadDir)) {
+                files = readdirSync(uploadDir)
+                    .filter(f => !f.startsWith('.'))
+                    .map(f => {
+                        const stat = statSync(join(uploadDir, f));
+                        return {
+                            filename: f,
+                            url: `/uploads/${f}`,
+                            size: stat.size,
+                            modified: stat.mtime.toISOString(),
+                        };
+                    })
+                    .sort((a, b) => b.modified.localeCompare(a.modified));
+            }
         }
     } catch (e) {
         console.warn('Could not read upload directory', e);
@@ -145,17 +191,80 @@ export const DELETE: APIRoute = async ({ request }) => {
     const uploadDir = getUploadDir();
     const filepath = join(uploadDir, filename);
 
-    // Security: prevent path traversal
+    // Security: prevent path traversal locally
     if (!filepath.startsWith(uploadDir)) {
         return new Response(JSON.stringify({ error: 'Invalid filename' }), { status: 400 });
     }
 
-    if (existsSync(filepath)) {
-        unlinkSync(filepath);
-    }
+    try {
+        if (IS_VERCEL) {
+            // Delete from GitHub
+            const getGitHubConfigLocal = () => {
+                let repo = process.env.GITHUB_REPO || 'Perfectreviewer/Basis-point-calculator';
+                if (repo && !repo.includes('/')) repo = 'Perfectreviewer/Basis-point-calculator';
+                return {
+                    token: process.env.GITHUB_TOKEN || '',
+                    repo: repo,
+                    branch: process.env.GITHUB_BRANCH || 'main',
+                };
+            };
 
-    return new Response(JSON.stringify({ success: true }), {
-        status: 200,
-        headers: { 'Content-Type': 'application/json' },
-    });
+            const { token, repo, branch } = getGitHubConfigLocal();
+            if (token && repo) {
+                const apiBase = `https://api.github.com/repos/${repo}/contents/public/uploads/${filename}`;
+                
+                // 1. Get the file's SHA (required to delete via GitHub API)
+                const getRes = await fetch(`${apiBase}?ref=${branch}`, {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                        Accept: 'application/vnd.github+json',
+                        'X-GitHub-Api-Version': '2022-11-28',
+                    }
+                });
+
+                if (getRes.ok) {
+                    const fileData = await getRes.json();
+                    const sha = fileData.sha;
+
+                    // 2. Delete the file
+                    const deleteRes = await fetch(apiBase, {
+                        method: 'DELETE',
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                            Accept: 'application/vnd.github+json',
+                            'X-GitHub-Api-Version': '2022-11-28',
+                        },
+                        body: JSON.stringify({
+                            message: `chore: delete image ${filename}`,
+                            sha: sha,
+                            branch: branch
+                        })
+                    });
+
+                    if (!deleteRes.ok) {
+                        return new Response(JSON.stringify({ error: 'Failed to delete from GitHub' }), { status: 500 });
+                    }
+                } else if (getRes.status === 404) {
+                    return new Response(JSON.stringify({ error: 'File not found on GitHub' }), { status: 404 });
+                } else {
+                     return new Response(JSON.stringify({ error: 'Failed to fetch file SHA from GitHub' }), { status: 500 });
+                }
+            } else {
+                 return new Response(JSON.stringify({ error: 'Server misconfiguration: GitHub token missing' }), { status: 500 });
+            }
+
+        } else {
+            // Local delete
+            if (existsSync(filepath)) {
+                unlinkSync(filepath);
+            }
+        }
+
+        return new Response(JSON.stringify({ success: true }), {
+            status: 200,
+            headers: { 'Content-Type': 'application/json' },
+        });
+    } catch (err: any) {
+        return new Response(JSON.stringify({ error: err.message || 'Delete failed' }), { status: 500 });
+    }
 };
