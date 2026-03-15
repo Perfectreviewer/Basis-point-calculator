@@ -4,10 +4,10 @@ description: "Understand how interest rates work, what influences them, and how 
 date: 2026-03-02
 author: "Admin"
 category: "Guides"
+image: "https://tg5wyleo1fmzpuba.public.blob.vercel-storage.com/uploads/1773607073584-how-interest-rates-work1.jpg"
 status: "published"
 visibility: "public"
 seoKeywords: "how interest rates work, simple interest, compound interest, interest rate explained, how banks set rates, cost of borrowing"
-image: "/uploads/1772551500138-how-interest-rates-work1.jpg"
 ---
 **In Simple Terms:** Interest rates are the cost of borrowing money, or the reward for saving it. They're expressed as a percentage of the principal over a specific time period.
 
