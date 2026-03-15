@@ -17,6 +17,12 @@ export default defineConfig({
   site: config.site.base_url,
   trailingSlash: 'ignore',
 
+  // Disable built-in origin check — our API routes have their own auth (session + role checks).
+  // This was blocking multipart form uploads on Vercel with "Cross-site request forgery" errors.
+  security: {
+    checkOrigin: false,
+  },
+
   redirects: {
     '/guides/what-are-basis-points/': '/bps-calculators/basis-point-guide/',
     '/en/bps-calculators-page-list/': '/bps-calculators/',
