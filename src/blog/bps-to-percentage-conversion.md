@@ -4,12 +4,11 @@ description: "Convert basis points to percentage instantly. Full formula, conver
 date: 2026-03-02
 author: "Admin"
 category: "Guides"
-image: "/uploads/1772469784673-bps-to-percentage-conversion-the-complete-guide-with-instant-calculator-.jpg"
+image: "https://tg5wyleo1fmzpuba.public.blob.vercel-storage.com/uploads/1773606938015-bps-to-percentage-conversion-the-complete-guide-with-instant-calculator-.jpg"
 status: "published"
 visibility: "public"
 seoKeywords: "bps to percentage conversion, convert basis points to percent, bps to % formula, basis point conversion chart, bps converter"
 ---
-
 ## Convert BPS to Percentage: The One Formula You Need
 
 Converting basis points to a percentage requires just one simple operation:
