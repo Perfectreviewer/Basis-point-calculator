@@ -4,10 +4,10 @@ description: "Understand how central bank rate decisions affect the economy, mar
 date: 2026-03-02
 author: "Admin"
 category: "Guides"
+image: "https://tg5wyleo1fmzpuba.public.blob.vercel-storage.com/uploads/1773607048094-central-bank-rate-changes.jpg"
 status: "published"
 visibility: "public"
 seoKeywords: "central bank rate changes, federal reserve rate, interest rate decisions, Fed rate hike, monetary policy, rate cut impact"
-image: "/uploads/1772552578335-central-bank-rate-changes.jpg"
 ---
 **Key Insight:** Central banks use interest rate changes as their primary tool to manage inflation, employment, and economic stability. A single rate decision can ripple through all financial markets.
 
