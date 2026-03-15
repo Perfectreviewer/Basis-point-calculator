@@ -12,7 +12,7 @@ export const POST: APIRoute = async ({ request }) => {
                 status: 400,
                 headers: { 'Content-Type': 'application/json' },
             });
-        }
+        }   
 
         // IndexNow supports batch submission up to 10,000 URLs
         const payload = {
