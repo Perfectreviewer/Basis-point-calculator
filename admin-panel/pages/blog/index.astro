@@ -536,7 +536,7 @@ if (editFile) {
         } else {
           alert(data.error || 'Upload failed');
         }
-      } catch { alert('Upload failed'); }
+      } catch (uploadErr) { alert('Upload failed: ' + (uploadErr.message || uploadErr)); }
       
       if (saveBtn) {
         saveBtn.disabled = false;
@@ -686,8 +686,8 @@ if (editFile) {
         } else {
           progressText.textContent = data.error || 'Upload failed';
         }
-      } catch {
-        progressText.textContent = 'Upload failed';
+      } catch (uploadErr) {
+        progressText.textContent = 'Upload failed: ' + (uploadErr.message || uploadErr);
       }
       
       if (lottie) lottie.setAttribute('src', 'https://lottie.host/8cd7b355-be23-45f8-ad23-bf193f4112e5/zD38rS9z0Q.json'); // idle animation
