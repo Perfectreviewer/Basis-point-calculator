@@ -62,11 +62,21 @@ export const POST: APIRoute = async ({ request }) => {
         let url = `/uploads/${filename}`;
 
         if (IS_VERCEL) {
+            // Check that Vercel Blob is configured
+            const token = process.env.BLOB_READ_WRITE_TOKEN;
+            if (!token) {
+                console.error('BLOB_READ_WRITE_TOKEN is not set. Please create a Blob Store in the Vercel Dashboard.');
+                return new Response(JSON.stringify({ 
+                    error: 'Blob Storage not configured. Go to Vercel Dashboard → Storage → Create Blob Store.' 
+                }), { status: 500 });
+            }
+
             // Use Vercel Blob Storage — images are served instantly from CDN
             const { put } = await import('@vercel/blob');
             const blob = await put(`uploads/${filename}`, file, {
                 access: 'public',
                 addRandomSuffix: false,
+                token,
             });
             url = blob.url;
         } else {
@@ -89,7 +99,7 @@ export const POST: APIRoute = async ({ request }) => {
         });
     } catch (err: any) {
         console.error('Upload error:', err);
-        return new Response(JSON.stringify({ error: err.message || 'Upload failed' }), { status: 500 });
+        return new Response(JSON.stringify({ error: `Upload failed: ${err.message}` }), { status: 500 });
     }
 };
 
