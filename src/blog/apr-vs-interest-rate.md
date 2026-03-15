@@ -4,6 +4,7 @@ description: "Understand the key differences between APR and interest rate, and 
 date: 2026-03-02
 author: "Admin"
 category: "Guides"
+image: "https://tg5wyleo1fmzpuba.public.blob.vercel-storage.com/uploads/1773606793089-apr-vs-interest-rate.jpg"
 status: "published"
 visibility: "public"
 seoKeywords: "APR vs interest rate, what is APR, annual percentage rate explained, APR vs nominal rate, true cost of borrowing"
