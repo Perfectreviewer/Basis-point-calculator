@@ -4,10 +4,10 @@ description: "A complete primer on basis points (bps) — what they are, why fin
 date: 2026-03-02
 author: "Admin"
 category: "Guides"
+image: "https://tg5wyleo1fmzpuba.public.blob.vercel-storage.com/uploads/1773607099952-what-are-basispoint-calculators.jpg"
 status: "published"
 visibility: "public"
 seoKeywords: "what are basis points, basis points definition, bps meaning, basis points explained, 1 basis point, bps in finance"
-image: "/uploads/1772550000535-what-are-basispoint-calculators.jpg"
 ---
 ## Why Use Basis Points?
 
