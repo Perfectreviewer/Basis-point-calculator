@@ -1396,6 +1396,104 @@ const dateFormat = new Intl.DateTimeFormat("en-US", {
     .sp-toc-col {
       flex-direction: column;
     }
+    
+    .pros-cons-grid {
+      grid-template-columns: 1fr !important;
+    }
+  }
+
+  /* ─── Premium Tables ─── */
+  .sp-prose table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin: 32px 0;
+    font-size: 15px;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+    border: 1px solid #e2e8f0;
+  }
+  .sp-prose th {
+    background-color: #4f46e5;
+    color: white;
+    font-weight: 600;
+    text-align: left;
+    padding: 16px 20px;
+    letter-spacing: 0.5px;
+  }
+  .sp-prose td {
+    padding: 14px 20px;
+    color: #334155;
+    border-bottom: 1px solid #e2e8f0;
+  }
+  .sp-prose tr:last-child td {
+    border-bottom: none;
+  }
+  .sp-prose tr:nth-child(even) td {
+    background-color: #f8fafc;
+  }
+  .sp-prose tr:hover td {
+    background-color: #f1f5f9;
+  }
+
+  /* ─── Pros & Cons Cards ─── */
+  .pros-cons-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin: 36px 0;
+  }
+  .pros-card, .cons-card {
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+    border: 1px solid #e2e8f0;
+  }
+  .pros-card {
+    background-color: #f0fdf4;
+    border-left: 4px solid #22c55e;
+  }
+  .cons-card {
+    background-color: #fef2f2;
+    border-left: 4px solid #ef4444;
+  }
+  .pros-header, .cons-header {
+    margin-top: 0 !important;
+    margin-bottom: 16px !important;
+    font-size: 18px !important;
+    font-weight: 700 !important;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .pros-header { color: #15803d !important; }
+  .cons-header { color: #b91c1c !important; }
+  .pros-card ul, .cons-card ul {
+    list-style: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+  .pros-card li, .cons-card li {
+    position: relative;
+    padding-left: 28px !important;
+    margin-bottom: 10px !important;
+    color: #334155;
+    line-height: 1.5;
+  }
+  .pros-card li::before {
+    content: "✓";
+    position: absolute;
+    left: 4px;
+    color: #16a34a;
+    font-weight: 800;
+  }
+  .cons-card li::before {
+    content: "✕";
+    position: absolute;
+    left: 4px;
+    color: #dc2626;
+    font-weight: 800;
   }
 </style>
 
