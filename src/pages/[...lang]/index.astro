@@ -29,64 +29,12 @@ const pageDescription =
     ? seo.description[locale] || seo.description.en
     : seo.description) || t.index_description;
 
-const schema = JSON.stringify({
-  "@context": "https://schema.org",
-  "@graph": [
-    {
-      "@type": "Organization",
-      "@id": "https://www.basispointcalculator.com/#organization",
-      name: "Basis Point Calculator",
-      url: "https://www.basispointcalculator.com/",
-      logo: {
-        "@type": "ImageObject",
-        url: "https://www.basispointcalculator.com/logo.png",
-      },
-      sameAs: [],
-    },
-    {
-      "@type": "WebSite",
-      "@id": "https://www.basispointcalculator.com/#website",
-      url: "https://www.basispointcalculator.com/",
-      name: "Basis Point Calculator",
-      publisher: {
-        "@id": "https://www.basispointcalculator.com/#organization",
-      },
-      inLanguage: "en",
-    },
-    {
-      "@type": "WebPage",
-      "@id": "https://www.basispointcalculator.com/#homepage",
-      url: "https://www.basispointcalculator.com/",
-      name: pageTitle,
-      isPartOf: {
-        "@id": "https://www.basispointcalculator.com/#website",
-      },
-      about: {
-        "@type": "Thing",
-        name: "Basis Points Calculation",
-      },
-      description: pageDescription,
-    },
-    {
-      "@type": "FAQPage",
-      "@id": "https://www.basispointcalculator.com/#faq",
-      mainEntity: t.faqs.map((faq: any) => ({
-        "@type": "Question",
-        name: faq.question,
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: faq.answer,
-        },
-      })),
-    },
-  ],
-});
 ---
 
 <IndexLayout
   title={locale === "en" ? pageTitle : t.index_title}
   description={locale === "en" ? pageDescription : t.index_description}
-  schema={locale !== "en"}
+  schema={true}
 >
   <style is:global>
     html {
@@ -261,12 +209,6 @@ const schema = JSON.stringify({
       transform: translateY(-1px);
     }
   </style>
-
-  {
-    locale === "en" && (
-      <script type="application/ld+json" set:html={schema} slot="head" />
-    )
-  }
 
   <div class="relative mb-8" id="calculator">
     <!-- Background Decoration: Premium Mesh Atmosphere -->

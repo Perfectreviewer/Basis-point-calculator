@@ -36,8 +36,7 @@ const siteURL = Astro.url.origin;
         set:html={JSON.stringify({
           '@context': 'https://schema.org',
           '@type': 'FAQPage',
-          mainEntity: [
-            t.faqs.map((faq: FAQ) => ({
+          mainEntity: t.faqs.map((faq: FAQ) => ({
               '@type': 'Question',
               name: faq.question,
               acceptedAnswer: {
@@ -45,7 +44,6 @@ const siteURL = Astro.url.origin;
                 text: faq.answer,
               },
             })),
-          ],
         })}
       />
     )

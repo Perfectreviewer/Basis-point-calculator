@@ -40,5 +40,8 @@
             "/admin/*",
             "/api/*"
         ]
+    },
+    "indexNow": {
+        "apiKey": ""
     }
 }       
