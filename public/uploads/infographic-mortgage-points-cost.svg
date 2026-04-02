@@ -1,0 +1,102 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 420" width="900" height="420">
+  <defs>
+    <linearGradient id="bg1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0a1f3d"/>
+      <stop offset="100%" style="stop-color:#0d2d4f"/>
+    </linearGradient>
+    <linearGradient id="bar1" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#38bdf8"/>
+      <stop offset="100%" style="stop-color:#0284c7"/>
+    </linearGradient>
+    <linearGradient id="bar2" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#fbbf24"/>
+      <stop offset="100%" style="stop-color:#d97706"/>
+    </linearGradient>
+    <pattern id="dotgrid" width="20" height="20" patternUnits="userSpaceOnUse">
+      <circle cx="1" cy="1" r="0.8" fill="#ffffff" fill-opacity="0.04"/>
+    </pattern>
+  </defs>
+
+  <!-- Background -->
+  <rect width="900" height="420" fill="url(#bg1)" rx="14"/>
+  <rect width="900" height="420" fill="url(#dotgrid)" rx="14"/>
+
+  <!-- Top accent bar -->
+  <rect x="0" y="0" width="900" height="4" rx="2" fill="#38bdf8"/>
+
+  <!-- Title -->
+  <text x="450" y="42" font-family="'Segoe UI',Arial,sans-serif" font-size="20" font-weight="800" fill="#ffffff" text-anchor="middle">How Much Does 1 Mortgage Point Cost?</text>
+  <text x="450" y="64" font-family="'Segoe UI',Arial,sans-serif" font-size="13" fill="#94a3b8" text-anchor="middle">1 Mortgage Point = 1% of your loan amount, paid upfront at closing</text>
+
+  <!-- Legend -->
+  <rect x="230" y="80" width="14" height="14" rx="3" fill="url(#bar1)"/>
+  <text x="250" y="92" font-family="'Segoe UI',Arial,sans-serif" font-size="13" fill="#94c8f5" font-weight="600">1 Point</text>
+  <rect x="330" y="80" width="14" height="14" rx="3" fill="url(#bar2)"/>
+  <text x="350" y="92" font-family="'Segoe UI',Arial,sans-serif" font-size="13" fill="#fde68a" font-weight="600">2 Points</text>
+
+  <!-- Y-axis gridlines and labels -->
+  <line x1="80" y1="330" x2="860" y2="330" stroke="#ffffff" stroke-opacity="0.08" stroke-width="1"/>
+  <text x="68" y="334" font-family="'Segoe UI',Arial,sans-serif" font-size="11" fill="#64748b" text-anchor="end">$0</text>
+
+  <line x1="80" y1="268" x2="860" y2="268" stroke="#ffffff" stroke-opacity="0.08" stroke-width="1"/>
+  <text x="68" y="272" font-family="'Segoe UI',Arial,sans-serif" font-size="11" fill="#64748b" text-anchor="end">$3k</text>
+
+  <line x1="80" y1="205" x2="860" y2="205" stroke="#ffffff" stroke-opacity="0.08" stroke-width="1"/>
+  <text x="68" y="209" font-family="'Segoe UI',Arial,sans-serif" font-size="11" fill="#64748b" text-anchor="end">$6k</text>
+
+  <line x1="80" y1="143" x2="860" y2="143" stroke="#ffffff" stroke-opacity="0.08" stroke-width="1"/>
+  <text x="68" y="147" font-family="'Segoe UI',Arial,sans-serif" font-size="11" fill="#64748b" text-anchor="end">$9k</text>
+
+  <line x1="80" y1="80" x2="860" y2="80" stroke="#ffffff" stroke-opacity="0.08" stroke-width="1"/>
+  <text x="68" y="84" font-family="'Segoe UI',Arial,sans-serif" font-size="11" fill="#64748b" text-anchor="end">$12k</text>
+
+  <!-- Y-axis line -->
+  <line x1="80" y1="70" x2="80" y2="336" stroke="#334155" stroke-width="1.5"/>
+
+  <!-- === GROUP 1: $150,000 === -->
+  <!-- 1 pt = $1,500 → h=31px, y=299 -->
+  <rect x="122" y="299" width="50" height="31" rx="4" fill="url(#bar1)"/>
+  <text x="147" y="294" font-family="'Segoe UI',Arial,sans-serif" font-size="11" font-weight="700" fill="#38bdf8" text-anchor="middle">$1,500</text>
+  <!-- 2 pts = $3,000 → h=63px, y=267 -->
+  <rect x="178" y="267" width="50" height="63" rx="4" fill="url(#bar2)"/>
+  <text x="203" y="262" font-family="'Segoe UI',Arial,sans-serif" font-size="11" font-weight="700" fill="#fbbf24" text-anchor="middle">$3,000</text>
+  <!-- Group label -->
+  <text x="175" y="358" font-family="'Segoe UI',Arial,sans-serif" font-size="13" font-weight="700" fill="#e2e8f0" text-anchor="middle">$150,000</text>
+  <text x="175" y="374" font-family="'Segoe UI',Arial,sans-serif" font-size="11" fill="#64748b" text-anchor="middle">Loan Amount</text>
+
+  <!-- === GROUP 2: $250,000 === -->
+  <!-- 1 pt = $2,500 → h=52px, y=278 -->
+  <rect x="312" y="278" width="50" height="52" rx="4" fill="url(#bar1)"/>
+  <text x="337" y="273" font-family="'Segoe UI',Arial,sans-serif" font-size="11" font-weight="700" fill="#38bdf8" text-anchor="middle">$2,500</text>
+  <!-- 2 pts = $5,000 → h=104px, y=226 -->
+  <rect x="368" y="226" width="50" height="104" rx="4" fill="url(#bar2)"/>
+  <text x="393" y="221" font-family="'Segoe UI',Arial,sans-serif" font-size="11" font-weight="700" fill="#fbbf24" text-anchor="middle">$5,000</text>
+  <text x="365" y="358" font-family="'Segoe UI',Arial,sans-serif" font-size="13" font-weight="700" fill="#e2e8f0" text-anchor="middle">$250,000</text>
+  <text x="365" y="374" font-family="'Segoe UI',Arial,sans-serif" font-size="11" fill="#64748b" text-anchor="middle">Loan Amount</text>
+
+  <!-- === GROUP 3: $400,000 === -->
+  <!-- 1 pt = $4,000 → h=83px, y=247 -->
+  <rect x="502" y="247" width="50" height="83" rx="4" fill="url(#bar1)"/>
+  <text x="527" y="242" font-family="'Segoe UI',Arial,sans-serif" font-size="11" font-weight="700" fill="#38bdf8" text-anchor="middle">$4,000</text>
+  <!-- 2 pts = $8,000 → h=167px, y=163 -->
+  <rect x="558" y="163" width="50" height="167" rx="4" fill="url(#bar2)"/>
+  <text x="583" y="158" font-family="'Segoe UI',Arial,sans-serif" font-size="11" font-weight="700" fill="#fbbf24" text-anchor="middle">$8,000</text>
+  <text x="555" y="358" font-family="'Segoe UI',Arial,sans-serif" font-size="13" font-weight="700" fill="#e2e8f0" text-anchor="middle">$400,000</text>
+  <text x="555" y="374" font-family="'Segoe UI',Arial,sans-serif" font-size="11" fill="#64748b" text-anchor="middle">Loan Amount</text>
+
+  <!-- === GROUP 4: $600,000 === -->
+  <!-- 1 pt = $6,000 → h=125px, y=205 -->
+  <rect x="692" y="205" width="50" height="125" rx="4" fill="url(#bar1)"/>
+  <text x="717" y="200" font-family="'Segoe UI',Arial,sans-serif" font-size="11" font-weight="700" fill="#38bdf8" text-anchor="middle">$6,000</text>
+  <!-- 2 pts = $12,000 → h=250px, y=80 -->
+  <rect x="748" y="80" width="50" height="250" rx="4" fill="url(#bar2)"/>
+  <text x="773" y="75" font-family="'Segoe UI',Arial,sans-serif" font-size="11" font-weight="700" fill="#fbbf24" text-anchor="middle">$12,000</text>
+  <text x="745" y="358" font-family="'Segoe UI',Arial,sans-serif" font-size="13" font-weight="700" fill="#e2e8f0" text-anchor="middle">$600,000</text>
+  <text x="745" y="374" font-family="'Segoe UI',Arial,sans-serif" font-size="11" fill="#64748b" text-anchor="middle">Loan Amount</text>
+
+  <!-- Bottom baseline -->
+  <line x1="80" y1="330" x2="860" y2="330" stroke="#334155" stroke-width="1.5"/>
+
+  <!-- Watermark -->
+  <text x="450" y="408" font-family="'Segoe UI',Arial,sans-serif" font-size="10" fill="#ffffff" text-anchor="middle" opacity="0.2" letter-spacing="2">BASISPOINTCALCULATOR.COM</text>
+</svg>

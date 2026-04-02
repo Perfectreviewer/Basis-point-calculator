@@ -1,0 +1,111 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 340" width="900" height="340">
+  <defs>
+    <linearGradient id="bg4" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0a1f3d"/>
+      <stop offset="100%" style="stop-color:#0d2640"/>
+    </linearGradient>
+    <linearGradient id="redCard" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#450a0a"/>
+      <stop offset="100%" style="stop-color:#3b0808"/>
+    </linearGradient>
+    <linearGradient id="yellowCard" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#1c1300"/>
+      <stop offset="100%" style="stop-color:#1a1200"/>
+    </linearGradient>
+    <linearGradient id="greenCard" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#052e16"/>
+      <stop offset="100%" style="stop-color:#04200f"/>
+    </linearGradient>
+    <pattern id="dotgrid4" width="20" height="20" patternUnits="userSpaceOnUse">
+      <circle cx="1" cy="1" r="0.8" fill="#ffffff" fill-opacity="0.03"/>
+    </pattern>
+  </defs>
+
+  <rect width="900" height="340" fill="url(#bg4)" rx="14"/>
+  <rect width="900" height="340" fill="url(#dotgrid4)" rx="14"/>
+  <rect x="0" y="0" width="900" height="4" rx="2" fill="#a78bfa"/>
+
+  <!-- Title -->
+  <text x="450" y="40" font-family="'Segoe UI',Arial,sans-serif" font-size="20" font-weight="800" fill="#ffffff" text-anchor="middle">Should You Pay Mortgage Points?</text>
+  <text x="450" y="60" font-family="'Segoe UI',Arial,sans-serif" font-size="13" fill="#94a3b8" text-anchor="middle">Your break-even window depends on how long you plan to stay in the home</text>
+
+  <!-- === CARD 1: Less than 3 years === -->
+  <rect x="30" y="80" width="255" height="230" rx="12" fill="url(#redCard)" stroke="#ef4444" stroke-width="1.5"/>
+
+  <!-- Card header -->
+  <rect x="30" y="80" width="255" height="52" rx="12" fill="#ef4444" fill-opacity="0.25"/>
+  <rect x="30" y="108" width="255" height="24" fill="#ef4444" fill-opacity="0.25"/>
+  <text x="158" y="105" font-family="'Segoe UI',Arial,sans-serif" font-size="28" font-weight="900" fill="#ef4444" text-anchor="middle">✕</text>
+  <text x="158" y="122" font-family="'Segoe UI',Arial,sans-serif" font-size="14" font-weight="700" fill="#fca5a5" text-anchor="middle">SKIP POINTS</text>
+
+  <text x="158" y="152" font-family="'Segoe UI',Arial,sans-serif" font-size="20" font-weight="800" fill="#ffffff" text-anchor="middle">Under 3 Years</text>
+  <text x="158" y="172" font-family="'Segoe UI',Arial,sans-serif" font-size="12" fill="#94a3b8" text-anchor="middle">(fewer than 36 months)</text>
+
+  <line x1="55" y1="186" x2="260" y2="186" stroke="#ef4444" stroke-width="0.6" stroke-opacity="0.3"/>
+
+  <circle cx="55" cy="206" r="3.5" fill="#ef4444"/>
+  <text x="67" y="211" font-family="'Segoe UI',Arial,sans-serif" font-size="12.5" fill="#fca5a5">Won't recoup upfront cost</text>
+
+  <circle cx="55" cy="230" r="3.5" fill="#ef4444"/>
+  <text x="67" y="235" font-family="'Segoe UI',Arial,sans-serif" font-size="12.5" fill="#fca5a5">Better off keeping cash</text>
+
+  <circle cx="55" cy="254" r="3.5" fill="#ef4444"/>
+  <text x="67" y="259" font-family="'Segoe UI',Arial,sans-serif" font-size="12.5" fill="#fca5a5">Or pay down principal instead</text>
+
+  <!-- Badge -->
+  <rect x="68" y="278" width="180" height="22" rx="11" fill="#ef4444" fill-opacity="0.2" stroke="#ef4444" stroke-width="1"/>
+  <text x="158" y="293" font-family="'Segoe UI',Arial,sans-serif" font-size="11" font-weight="700" fill="#fca5a5" text-anchor="middle">High risk of moving before break-even</text>
+
+  <!-- === CARD 2: 3–7 years === -->
+  <rect x="323" y="80" width="255" height="230" rx="12" fill="url(#yellowCard)" stroke="#fbbf24" stroke-width="1.5"/>
+
+  <rect x="323" y="80" width="255" height="52" rx="12" fill="#fbbf24" fill-opacity="0.2"/>
+  <rect x="323" y="108" width="255" height="24" fill="#fbbf24" fill-opacity="0.2"/>
+  <text x="450" y="105" font-family="'Segoe UI',Arial,sans-serif" font-size="28" font-weight="900" fill="#fbbf24" text-anchor="middle">≈</text>
+  <text x="450" y="122" font-family="'Segoe UI',Arial,sans-serif" font-size="14" font-weight="700" fill="#fde68a" text-anchor="middle">CALCULATE FIRST</text>
+
+  <text x="450" y="152" font-family="'Segoe UI',Arial,sans-serif" font-size="20" font-weight="800" fill="#ffffff" text-anchor="middle">3 to 7 Years</text>
+  <text x="450" y="172" font-family="'Segoe UI',Arial,sans-serif" font-size="12" fill="#94a3b8" text-anchor="middle">(36 to 84 months)</text>
+
+  <line x1="348" y1="186" x2="553" y2="186" stroke="#fbbf24" stroke-width="0.6" stroke-opacity="0.3"/>
+
+  <circle cx="348" cy="206" r="3.5" fill="#fbbf24"/>
+  <text x="360" y="211" font-family="'Segoe UI',Arial,sans-serif" font-size="12.5" fill="#fde68a">May or may not pay off</text>
+
+  <circle cx="348" cy="230" r="3.5" fill="#fbbf24"/>
+  <text x="360" y="235" font-family="'Segoe UI',Arial,sans-serif" font-size="12.5" fill="#fde68a">Run your break-even math</text>
+
+  <circle cx="348" cy="254" r="3.5" fill="#fbbf24"/>
+  <text x="360" y="259" font-family="'Segoe UI',Arial,sans-serif" font-size="12.5" fill="#fde68a">Factor in refinance likelihood</text>
+
+  <rect x="362" y="278" width="177" height="22" rx="11" fill="#fbbf24" fill-opacity="0.2" stroke="#fbbf24" stroke-width="1"/>
+  <text x="450" y="293" font-family="'Segoe UI',Arial,sans-serif" font-size="11" font-weight="700" fill="#fde68a" text-anchor="middle">Depends on your exact numbers</text>
+
+  <!-- === CARD 3: 7+ years === -->
+  <rect x="615" y="80" width="255" height="230" rx="12" fill="url(#greenCard)" stroke="#4ade80" stroke-width="1.5"/>
+
+  <rect x="615" y="80" width="255" height="52" rx="12" fill="#4ade80" fill-opacity="0.2"/>
+  <rect x="615" y="108" width="255" height="24" fill="#4ade80" fill-opacity="0.2"/>
+  <text x="743" y="105" font-family="'Segoe UI',Arial,sans-serif" font-size="28" font-weight="900" fill="#4ade80" text-anchor="middle">✓</text>
+  <text x="743" y="122" font-family="'Segoe UI',Arial,sans-serif" font-size="14" font-weight="700" fill="#86efac" text-anchor="middle">POINTS LIKELY WORTH IT</text>
+
+  <text x="743" y="152" font-family="'Segoe UI',Arial,sans-serif" font-size="20" font-weight="800" fill="#ffffff" text-anchor="middle">7+ Years</text>
+  <text x="743" y="172" font-family="'Segoe UI',Arial,sans-serif" font-size="12" fill="#94a3b8" text-anchor="middle">(84+ months)</text>
+
+  <line x1="640" y1="186" x2="845" y2="186" stroke="#4ade80" stroke-width="0.6" stroke-opacity="0.3"/>
+
+  <circle cx="640" cy="206" r="3.5" fill="#4ade80"/>
+  <text x="652" y="211" font-family="'Segoe UI',Arial,sans-serif" font-size="12.5" fill="#bbf7d0">Savings exceed upfront cost</text>
+
+  <circle cx="640" cy="230" r="3.5" fill="#4ade80"/>
+  <text x="652" y="235" font-family="'Segoe UI',Arial,sans-serif" font-size="12.5" fill="#bbf7d0">Compounding savings add up</text>
+
+  <circle cx="640" cy="254" r="3.5" fill="#4ade80"/>
+  <text x="652" y="259" font-family="'Segoe UI',Arial,sans-serif" font-size="12.5" fill="#bbf7d0">Long-term stability amplifies gains</text>
+
+  <rect x="654" y="278" width="178" height="22" rx="11" fill="#4ade80" fill-opacity="0.2" stroke="#4ade80" stroke-width="1"/>
+  <text x="743" y="293" font-family="'Segoe UI',Arial,sans-serif" font-size="11" font-weight="700" fill="#86efac" text-anchor="middle">Best use case for paying points</text>
+
+  <!-- Watermark -->
+  <text x="450" y="330" font-family="'Segoe UI',Arial,sans-serif" font-size="10" fill="#ffffff" text-anchor="middle" opacity="0.2" letter-spacing="2">BASISPOINTCALCULATOR.COM</text>
+</svg>

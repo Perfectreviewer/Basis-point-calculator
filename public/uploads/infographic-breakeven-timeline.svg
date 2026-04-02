@@ -1,0 +1,106 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 360" width="900" height="360">
+  <defs>
+    <linearGradient id="bg3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0a1f3d"/>
+      <stop offset="100%" style="stop-color:#0d2a40"/>
+    </linearGradient>
+    <linearGradient id="lossZone" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#7f1d1d;stop-opacity:0.5"/>
+      <stop offset="100%" style="stop-color:#991b1b;stop-opacity:0.3"/>
+    </linearGradient>
+    <linearGradient id="gainZone" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#14532d;stop-opacity:0.3"/>
+      <stop offset="100%" style="stop-color:#166534;stop-opacity:0.5"/>
+    </linearGradient>
+    <pattern id="dotgrid3" width="20" height="20" patternUnits="userSpaceOnUse">
+      <circle cx="1" cy="1" r="0.8" fill="#ffffff" fill-opacity="0.03"/>
+    </pattern>
+  </defs>
+
+  <rect width="900" height="360" fill="url(#bg3)" rx="14"/>
+  <rect width="900" height="360" fill="url(#dotgrid3)" rx="14"/>
+  <rect x="0" y="0" width="900" height="4" rx="2" fill="#f59e0b"/>
+
+  <!-- Title -->
+  <text x="450" y="40" font-family="'Segoe UI',Arial,sans-serif" font-size="20" font-weight="800" fill="#ffffff" text-anchor="middle">Break-Even Timeline: When Do Mortgage Points Pay Off?</text>
+  <text x="450" y="60" font-family="'Segoe UI',Arial,sans-serif" font-size="12.5" fill="#94a3b8" text-anchor="middle">Based on $250,000 loan · 1 point ($2,500 upfront) · Rate drops 25 bps (6.50% → 6.25%) · Monthly savings: $41</text>
+
+  <!-- Timeline track -->
+  <!-- Loss zone: months 0–61, x from 60 to 538 -->
+  <rect x="60" y="148" width="478" height="50" rx="6" fill="url(#lossZone)" stroke="#ef4444" stroke-width="1" stroke-opacity="0.4"/>
+  <!-- Gain zone: months 61–120, x from 538 to 840 -->
+  <rect x="538" y="148" width="302" height="50" rx="6" fill="url(#gainZone)" stroke="#4ade80" stroke-width="1" stroke-opacity="0.4"/>
+
+  <!-- Zone labels -->
+  <text x="299" y="178" font-family="'Segoe UI',Arial,sans-serif" font-size="14" font-weight="700" fill="#fca5a5" text-anchor="middle">📉  Recouping upfront cost</text>
+  <text x="689" y="178" font-family="'Segoe UI',Arial,sans-serif" font-size="14" font-weight="700" fill="#86efac" text-anchor="middle">📈  Pure savings</text>
+
+  <!-- Timeline axis line -->
+  <line x1="60" y1="198" x2="840" y2="198" stroke="#475569" stroke-width="1.5"/>
+
+  <!-- Month markers: 0, 12, 24, 36, 48, 60, 72, 84, 96, 108, 120 -->
+  <!-- Scale: 0-120 months across 780px → 6.5px per month -->
+  <!-- x = 60 + (month * 6.5) -->
+  <!-- 0 → 60, 12 → 138, 24 → 216, 36 → 294, 48 → 372, 60 → 450 (approx), 61 → 456.5 ≈ 457, 72 → 528, 84 → 606, 96 → 684, 108 → 762, 120 → 840 -->
+
+  <line x1="60" y1="193" x2="60" y2="208" stroke="#64748b" stroke-width="1.5"/>
+  <text x="60" y="222" font-family="'Segoe UI',Arial,sans-serif" font-size="11" fill="#64748b" text-anchor="middle">Month 0</text>
+
+  <line x1="138" y1="198" x2="138" y2="208" stroke="#475569" stroke-width="1"/>
+  <text x="138" y="222" font-family="'Segoe UI',Arial,sans-serif" font-size="11" fill="#475569" text-anchor="middle">12</text>
+
+  <line x1="216" y1="198" x2="216" y2="208" stroke="#475569" stroke-width="1"/>
+  <text x="216" y="222" font-family="'Segoe UI',Arial,sans-serif" font-size="11" fill="#475569" text-anchor="middle">24</text>
+
+  <line x1="294" y1="198" x2="294" y2="208" stroke="#475569" stroke-width="1"/>
+  <text x="294" y="222" font-family="'Segoe UI',Arial,sans-serif" font-size="11" fill="#475569" text-anchor="middle">36</text>
+
+  <line x1="372" y1="198" x2="372" y2="208" stroke="#475569" stroke-width="1"/>
+  <text x="372" y="222" font-family="'Segoe UI',Arial,sans-serif" font-size="11" fill="#475569" text-anchor="middle">48</text>
+
+  <!-- Break-even line at month 61 → x = 60 + 61*6.5 = 60 + 396.5 = 456.5 ≈ 457 -->
+  <line x1="457" y1="110" x2="457" y2="210" stroke="#f59e0b" stroke-width="2.5" stroke-dasharray="6,3"/>
+  <text x="457" y="222" font-family="'Segoe UI',Arial,sans-serif" font-size="11" fill="#f59e0b" text-anchor="middle" font-weight="700">61</text>
+
+  <line x1="528" y1="198" x2="528" y2="208" stroke="#475569" stroke-width="1"/>
+  <text x="528" y="222" font-family="'Segoe UI',Arial,sans-serif" font-size="11" fill="#475569" text-anchor="middle">72</text>
+
+  <line x1="606" y1="198" x2="606" y2="208" stroke="#475569" stroke-width="1"/>
+  <text x="606" y="222" font-family="'Segoe UI',Arial,sans-serif" font-size="11" fill="#475569" text-anchor="middle">84</text>
+
+  <line x1="684" y1="198" x2="684" y2="208" stroke="#475569" stroke-width="1"/>
+  <text x="684" y="222" font-family="'Segoe UI',Arial,sans-serif" font-size="11" fill="#475569" text-anchor="middle">96</text>
+
+  <line x1="762" y1="198" x2="762" y2="208" stroke="#475569" stroke-width="1"/>
+  <text x="762" y="222" font-family="'Segoe UI',Arial,sans-serif" font-size="11" fill="#475569" text-anchor="middle">108</text>
+
+  <line x1="840" y1="193" x2="840" y2="208" stroke="#64748b" stroke-width="1.5"/>
+  <text x="840" y="222" font-family="'Segoe UI',Arial,sans-serif" font-size="11" fill="#64748b" text-anchor="middle">120</text>
+
+  <!-- X axis label -->
+  <text x="450" y="240" font-family="'Segoe UI',Arial,sans-serif" font-size="11" fill="#475569" text-anchor="middle">Months in Home</text>
+
+  <!-- Break-even callout -->
+  <rect x="358" y="100" width="200" height="42" rx="8" fill="#1c1400" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="458" y="118" font-family="'Segoe UI',Arial,sans-serif" font-size="12" font-weight="700" fill="#fbbf24" text-anchor="middle">⚡ Break-Even: Month 61</text>
+  <text x="458" y="135" font-family="'Segoe UI',Arial,sans-serif" font-size="11" fill="#fde68a" text-anchor="middle">≈ 5 years &amp; 1 month</text>
+
+  <!-- Start point marker -->
+  <circle cx="60" cy="173" r="7" fill="#ef4444" stroke="#fca5a5" stroke-width="2"/>
+  <!-- Callout: pay $2,500 -->
+  <rect x="60" y="255" width="175" height="46" rx="8" fill="#1a0a0a" stroke="#ef4444" stroke-width="1.2"/>
+  <text x="147" y="274" font-family="'Segoe UI',Arial,sans-serif" font-size="12" font-weight="700" fill="#fca5a5" text-anchor="middle">Month 0: Pay $2,500</text>
+  <text x="147" y="291" font-family="'Segoe UI',Arial,sans-serif" font-size="11" fill="#fecaca" text-anchor="middle">Upfront cost at closing</text>
+  <line x1="60" y1="198" x2="147" y2="255" stroke="#ef4444" stroke-width="1" stroke-opacity="0.5" stroke-dasharray="3,3"/>
+
+  <!-- End point marker -->
+  <circle cx="840" cy="173" r="7" fill="#4ade80" stroke="#86efac" stroke-width="2"/>
+  <!-- Callout: total saved -->
+  <rect x="668" y="255" width="175" height="46" rx="8" fill="#0a1a0a" stroke="#4ade80" stroke-width="1.2"/>
+  <text x="755" y="274" font-family="'Segoe UI',Arial,sans-serif" font-size="12" font-weight="700" fill="#86efac" text-anchor="middle">Month 120: Save $4,920</text>
+  <text x="755" y="291" font-family="'Segoe UI',Arial,sans-serif" font-size="11" fill="#bbf7d0" text-anchor="middle">Net gain: $2,420 over 10 yrs</text>
+  <line x1="840" y1="198" x2="755" y2="255" stroke="#4ade80" stroke-width="1" stroke-opacity="0.5" stroke-dasharray="3,3"/>
+
+  <!-- Watermark -->
+  <text x="450" y="348" font-family="'Segoe UI',Arial,sans-serif" font-size="10" fill="#ffffff" text-anchor="middle" opacity="0.2" letter-spacing="2">BASISPOINTCALCULATOR.COM</text>
+</svg>
