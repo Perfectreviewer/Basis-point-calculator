@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 380" width="900" height="380">
+  <defs>
+    <linearGradient id="bg2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0a1f3d"/>
+      <stop offset="100%" style="stop-color:#0d2640"/>
+    </linearGradient>
+    <pattern id="dots2" width="20" height="20" patternUnits="userSpaceOnUse">
+      <circle cx="1" cy="1" r="0.8" fill="#ffffff" fill-opacity="0.03"/>
+    </pattern>
+  </defs>
+
+  <rect width="900" height="380" fill="url(#bg2)" rx="14"/>
+  <rect width="900" height="380" fill="url(#dots2)" rx="14"/>
+  <rect x="0" y="0" width="900" height="4" rx="2" fill="#a78bfa"/>
+
+  <!-- Title -->
+  <text x="450" y="36" font-family="'Segoe UI',Arial,sans-serif" font-size="19" font-weight="800" fill="#ffffff" text-anchor="middle">Which Rate Should You Look At?</text>
+  <text x="450" y="56" font-family="'Segoe UI',Arial,sans-serif" font-size="12.5" fill="#64748b" text-anchor="middle">Use the right metric for your situation — they answer different questions</text>
+
+  <!-- CENTER: QUESTION -->
+  <rect x="320" y="72" width="260" height="50" rx="25" fill="#1e293b" stroke="#a78bfa" stroke-width="1.5"/>
+  <text x="450" y="102" font-family="'Segoe UI',Arial,sans-serif" font-size="15" font-weight="700" fill="#c4b5fd" text-anchor="middle">What are you doing?</text>
+
+  <!-- Left branch: Borrowing -->
+  <line x1="320" y1="97" x2="220" y2="150" stroke="#475569" stroke-width="1.5" stroke-dasharray="5,3"/>
+  <rect x="60" y="148" width="310" height="36" rx="18" fill="#0f2040" stroke="#38bdf8" stroke-width="1.2"/>
+  <text x="215" y="170" font-family="'Segoe UI',Arial,sans-serif" font-size="14" font-weight="700" fill="#7dd3fc" text-anchor="middle">Borrowing Money (Loan / Mortgage)</text>
+
+  <!-- Right branch: Saving/Investing -->
+  <line x1="580" y1="97" x2="680" y2="150" stroke="#475569" stroke-width="1.5" stroke-dasharray="5,3"/>
+  <rect x="530" y="148" width="310" height="36" rx="18" fill="#051a0a" stroke="#4ade80" stroke-width="1.2"/>
+  <text x="685" y="170" font-family="'Segoe UI',Arial,sans-serif" font-size="14" font-weight="700" fill="#86efac" text-anchor="middle">Saving / Investing Money</text>
+
+  <!-- Borrowing sub-cards -->
+  <!-- Card: Compare lenders -->
+  <line x1="155" y1="184" x2="130" y2="220" stroke="#38bdf8" stroke-width="1" stroke-opacity="0.5"/>
+  <rect x="30" y="218" width="200" height="100" rx="10" fill="#0d1e35" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="130" y="240" font-family="'Segoe UI',Arial,sans-serif" font-size="13" font-weight="700" fill="#fbbf24" text-anchor="middle">Compare Lenders</text>
+  <line x1="30" y1="250" x2="230" y2="250" stroke="#f59e0b" stroke-width="0.5" stroke-opacity="0.3"/>
+  <text x="130" y="268" font-family="'Segoe UI',Arial,sans-serif" font-size="20" font-weight="900" fill="#f59e0b" text-anchor="middle">Use APR</text>
+  <text x="130" y="286" font-family="'Segoe UI',Arial,sans-serif" font-size="11" fill="#94a3b8" text-anchor="middle">Includes all fees —</text>
+  <text x="130" y="302" font-family="'Segoe UI',Arial,sans-serif" font-size="11" fill="#94a3b8" text-anchor="middle">true cost comparison</text>
+
+  <!-- Card: Monthly payment -->
+  <line x1="270" y1="184" x2="290" y2="220" stroke="#38bdf8" stroke-width="1" stroke-opacity="0.5"/>
+  <rect x="240" y="218" width="200" height="100" rx="10" fill="#0d1e35" stroke="#38bdf8" stroke-width="1.5"/>
+  <text x="340" y="240" font-family="'Segoe UI',Arial,sans-serif" font-size="13" font-weight="700" fill="#7dd3fc" text-anchor="middle">Monthly Payment</text>
+  <line x1="240" y1="250" x2="440" y2="250" stroke="#38bdf8" stroke-width="0.5" stroke-opacity="0.3"/>
+  <text x="340" y="268" font-family="'Segoe UI',Arial,sans-serif" font-size="20" font-weight="900" fill="#38bdf8" text-anchor="middle">Use Rate</text>
+  <text x="340" y="286" font-family="'Segoe UI',Arial,sans-serif" font-size="11" fill="#94a3b8" text-anchor="middle">Base rate drives</text>
+  <text x="340" y="302" font-family="'Segoe UI',Arial,sans-serif" font-size="11" fill="#94a3b8" text-anchor="middle">your actual payment</text>
+
+  <!-- Saving sub-cards -->
+  <!-- Card: Compare savings accounts -->
+  <line x1="635" y1="184" x2="610" y2="220" stroke="#4ade80" stroke-width="1" stroke-opacity="0.5"/>
+  <rect x="460" y="218" width="200" height="100" rx="10" fill="#030f06" stroke="#4ade80" stroke-width="1.5"/>
+  <text x="560" y="240" font-family="'Segoe UI',Arial,sans-serif" font-size="13" font-weight="700" fill="#86efac" text-anchor="middle">Compare Accounts</text>
+  <line x1="460" y1="250" x2="660" y2="250" stroke="#4ade80" stroke-width="0.5" stroke-opacity="0.3"/>
+  <text x="560" y="268" font-family="'Segoe UI',Arial,sans-serif" font-size="20" font-weight="900" fill="#4ade80" text-anchor="middle">Use APY</text>
+  <text x="560" y="286" font-family="'Segoe UI',Arial,sans-serif" font-size="11" fill="#94a3b8" text-anchor="middle">Compounding included —</text>
+  <text x="560" y="302" font-family="'Segoe UI',Arial,sans-serif" font-size="11" fill="#94a3b8" text-anchor="middle">true earnings comparison</text>
+
+  <!-- Card: Total earnings -->
+  <line x1="750" y1="184" x2="770" y2="220" stroke="#4ade80" stroke-width="1" stroke-opacity="0.5"/>
+  <rect x="670" y="218" width="200" height="100" rx="10" fill="#030f06" stroke="#a78bfa" stroke-width="1.5"/>
+  <text x="770" y="240" font-family="'Segoe UI',Arial,sans-serif" font-size="13" font-weight="700" fill="#c4b5fd" text-anchor="middle">Total Earnings</text>
+  <line x1="670" y1="250" x2="870" y2="250" stroke="#a78bfa" stroke-width="0.5" stroke-opacity="0.3"/>
+  <text x="770" y="268" font-family="'Segoe UI',Arial,sans-serif" font-size="20" font-weight="900" fill="#a78bfa" text-anchor="middle">Use APY</text>
+  <text x="770" y="286" font-family="'Segoe UI',Arial,sans-serif" font-size="11" fill="#94a3b8" text-anchor="middle">Shows real annual</text>
+  <text x="770" y="302" font-family="'Segoe UI',Arial,sans-serif" font-size="11" fill="#94a3b8" text-anchor="middle">return on savings</text>
+
+  <!-- Bottom rule -->
+  <rect x="30" y="332" width="840" height="32" rx="10" fill="#0f172a" stroke="#1e3a5f" stroke-width="1"/>
+  <text x="450" y="352" font-family="'Segoe UI',Arial,sans-serif" font-size="13" fill="#64748b" text-anchor="middle">
+    <tspan font-weight="700" fill="#f59e0b">APR</tspan> = borrowing cost &nbsp;|&nbsp; <tspan font-weight="700" fill="#4ade80">APY</tspan> = savings return &nbsp;|&nbsp; <tspan font-weight="700" fill="#38bdf8">Interest Rate</tspan> = base rate behind both
+  </text>
+
+  <text x="450" y="370" font-family="'Segoe UI',Arial,sans-serif" font-size="10" fill="#ffffff" text-anchor="middle" opacity="0.2" letter-spacing="2">BASISPOINTCALCULATOR.COM</text>
+</svg>

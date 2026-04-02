@@ -1,0 +1,130 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 420" width="900" height="420">
+  <defs>
+    <linearGradient id="bg1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0a1f3d"/>
+      <stop offset="100%" style="stop-color:#0d2a4a"/>
+    </linearGradient>
+    <linearGradient id="barG" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#4ade80"/>
+      <stop offset="100%" style="stop-color:#16a34a"/>
+    </linearGradient>
+    <linearGradient id="barB" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#38bdf8"/>
+      <stop offset="100%" style="stop-color:#0284c7"/>
+    </linearGradient>
+    <pattern id="dots1" width="20" height="20" patternUnits="userSpaceOnUse">
+      <circle cx="1" cy="1" r="0.8" fill="#ffffff" fill-opacity="0.03"/>
+    </pattern>
+    <filter id="glow1">
+      <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+      <feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <rect width="900" height="420" fill="url(#bg1)" rx="14"/>
+  <rect width="900" height="420" fill="url(#dots1)" rx="14"/>
+  <rect x="0" y="0" width="900" height="4" rx="2" fill="#4ade80"/>
+
+  <!-- Title -->
+  <text x="450" y="36" font-family="'Segoe UI',Arial,sans-serif" font-size="19" font-weight="800" fill="#ffffff" text-anchor="middle">How Compounding Turns 6.00% Into 6.17% APY</text>
+  <text x="450" y="56" font-family="'Segoe UI',Arial,sans-serif" font-size="12.5" fill="#64748b" text-anchor="middle">$10,000 deposit at 6.00% nominal rate — watching interest compound each month</text>
+
+  <!-- Y axis -->
+  <line x1="75" y1="75" x2="75" y2="310" stroke="#334155" stroke-width="1.5"/>
+  <!-- X axis -->
+  <line x1="75" y1="310" x2="870" y2="310" stroke="#334155" stroke-width="1.5"/>
+
+  <!-- Y gridlines and labels -->
+  <line x1="75" y1="270" x2="870" y2="270" stroke="#ffffff" stroke-opacity="0.05" stroke-width="1"/>
+  <text x="65" y="274" font-family="'Segoe UI',Arial,sans-serif" font-size="10" fill="#475569" text-anchor="end">$10,100</text>
+  <line x1="75" y1="230" x2="870" y2="230" stroke="#ffffff" stroke-opacity="0.05" stroke-width="1"/>
+  <text x="65" y="234" font-family="'Segoe UI',Arial,sans-serif" font-size="10" fill="#475569" text-anchor="end">$10,200</text>
+  <line x1="75" y1="190" x2="870" y2="190" stroke="#ffffff" stroke-opacity="0.05" stroke-width="1"/>
+  <text x="65" y="194" font-family="'Segoe UI',Arial,sans-serif" font-size="10" fill="#475569" text-anchor="end">$10,300</text>
+  <line x1="75" y1="150" x2="870" y2="150" stroke="#ffffff" stroke-opacity="0.05" stroke-width="1"/>
+  <text x="65" y="154" font-family="'Segoe UI',Arial,sans-serif" font-size="10" fill="#475569" text-anchor="end">$10,400</text>
+  <line x1="75" y1="110" x2="870" y2="110" stroke="#ffffff" stroke-opacity="0.05" stroke-width="1"/>
+  <text x="65" y="114" font-family="'Segoe UI',Arial,sans-serif" font-size="10" fill="#475569" text-anchor="end">$10,500</text>
+  <line x1="75" y1="75" x2="870" y2="75" stroke="#ffffff" stroke-opacity="0.05" stroke-width="1"/>
+  <text x="65" y="79" font-family="'Segoe UI',Arial,sans-serif" font-size="10" fill="#475569" text-anchor="end">$10,617</text>
+
+  <!-- Simple interest line (APR - straight) -->
+  <!-- Goes from (75,310) to (870,75) linearly - $10k to $10,600 over 12 months -->
+  <!-- But we want to show APR as straight: $10k to $10,600 -->
+  <!-- y = 310 - (val-10000)/600 * 235 -->
+  <line x1="75" y1="310" x2="870" y2="77" stroke="#38bdf8" stroke-width="2" stroke-dasharray="8,4"/>
+
+  <!-- Compound interest curve (APY - curved up slightly) -->
+  <!-- 12 monthly compound points: each month = (870-75)/12 = 66.25px apart -->
+  <!-- Month balances at 6%/12=0.5% per month: 10000*(1.005)^n -->
+  <!-- n=0: 10000, n=1:10050, n=2:10100.25, n=3:10150.75, n=4:10201.5, n=5:10252.51, n=6:10303.77, n=7:10355.29, n=8:10407.07, n=9:10459.11, n=10:10511.4, n=11:10563.96, n=12:10616.78 -->
+  <!-- y = 310 - ((bal - 10000)/617) * 235 -->
+  <!-- n=0 → x=75, y=310 -->
+  <!-- n=1 → x=141.25, bal=10050, diff=50, y=310-50/617*235=310-19.04=290.96≈291 -->
+  <!-- n=2 → x=207.5, bal=10100.25, diff=100.25, y=310-38.18=271.82≈272 -->
+  <!-- n=3 → x=273.75, bal=10150.75, diff=150.75, y=310-57.43=252.57≈253 -->
+  <!-- n=4 → x=340, bal=10201.5, diff=201.5, y=310-76.76=233.24≈233 -->
+  <!-- n=5 → x=406.25, bal=10252.51, diff=252.51, y=310-96.16=213.84≈214 -->
+  <!-- n=6 → x=472.5, bal=10303.77, diff=303.77, y=310-115.72=194.28≈194 -->
+  <!-- n=7 → x=538.75, bal=10355.29, diff=355.29, y=310-135.35=174.65≈175 -->
+  <!-- n=8 → x=605, bal=10407.07, diff=407.07, y=310-155.07=154.93≈155 -->
+  <!-- n=9 → x=671.25, bal=10459.11, diff=459.11, y=310-174.9=135.1≈135 -->
+  <!-- n=10 → x=737.5, bal=10511.4, diff=511.4, y=310-194.8=115.2≈115 -->
+  <!-- n=11 → x=803.75, bal=10563.96, diff=563.96, y=310-214.87=95.13≈95 -->
+  <!-- n=12 → x=870, bal=10616.78, diff=616.78, y=310-234.95=75.05≈75 -->
+
+  <polyline points="75,310 141,291 208,272 274,253 340,233 406,214 473,194 539,175 605,155 671,135 738,115 804,95 870,75"
+    fill="none" stroke="#4ade80" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- Dots on compound curve -->
+  <circle cx="141" cy="291" r="4" fill="#4ade80"/>
+  <circle cx="208" cy="272" r="4" fill="#4ade80"/>
+  <circle cx="274" cy="253" r="4" fill="#4ade80"/>
+  <circle cx="340" cy="233" r="4" fill="#4ade80"/>
+  <circle cx="406" cy="214" r="4" fill="#4ade80"/>
+  <circle cx="473" cy="194" r="4" fill="#4ade80"/>
+  <circle cx="539" cy="175" r="4" fill="#4ade80"/>
+  <circle cx="605" cy="155" r="4" fill="#4ade80"/>
+  <circle cx="671" cy="135" r="4" fill="#4ade80"/>
+  <circle cx="738" cy="115" r="4" fill="#4ade80"/>
+  <circle cx="804" cy="95" r="4" fill="#4ade80"/>
+  <circle cx="870" cy="75" r="5" fill="#4ade80" stroke="#ffffff" stroke-width="2"/>
+
+  <!-- End point APR -->
+  <circle cx="870" cy="77" r="5" fill="#38bdf8" stroke="#ffffff" stroke-width="2"/>
+
+  <!-- X axis labels -->
+  <text x="75" y="325" font-family="'Segoe UI',Arial,sans-serif" font-size="10" fill="#475569" text-anchor="middle">Jan</text>
+  <text x="141" y="325" font-family="'Segoe UI',Arial,sans-serif" font-size="10" fill="#475569" text-anchor="middle">Feb</text>
+  <text x="208" y="325" font-family="'Segoe UI',Arial,sans-serif" font-size="10" fill="#475569" text-anchor="middle">Mar</text>
+  <text x="274" y="325" font-family="'Segoe UI',Arial,sans-serif" font-size="10" fill="#475569" text-anchor="middle">Apr</text>
+  <text x="340" y="325" font-family="'Segoe UI',Arial,sans-serif" font-size="10" fill="#475569" text-anchor="middle">May</text>
+  <text x="406" y="325" font-family="'Segoe UI',Arial,sans-serif" font-size="10" fill="#475569" text-anchor="middle">Jun</text>
+  <text x="473" y="325" font-family="'Segoe UI',Arial,sans-serif" font-size="10" fill="#475569" text-anchor="middle">Jul</text>
+  <text x="539" y="325" font-family="'Segoe UI',Arial,sans-serif" font-size="10" fill="#475569" text-anchor="middle">Aug</text>
+  <text x="605" y="325" font-family="'Segoe UI',Arial,sans-serif" font-size="10" fill="#475569" text-anchor="middle">Sep</text>
+  <text x="671" y="325" font-family="'Segoe UI',Arial,sans-serif" font-size="10" fill="#475569" text-anchor="middle">Oct</text>
+  <text x="738" y="325" font-family="'Segoe UI',Arial,sans-serif" font-size="10" fill="#475569" text-anchor="middle">Nov</text>
+  <text x="804" y="325" font-family="'Segoe UI',Arial,sans-serif" font-size="10" fill="#475569" text-anchor="middle">Dec</text>
+
+  <!-- Gap annotation at end -->
+  <line x1="875" y1="75" x2="875" y2="77" stroke="#f59e0b" stroke-width="1.5"/>
+  <line x1="870" y1="75" x2="890" y2="75" stroke="#f59e0b" stroke-width="1"/>
+  <line x1="870" y1="77" x2="890" y2="77" stroke="#f59e0b" stroke-width="1"/>
+  <text x="893" y="73" font-family="'Segoe UI',Arial,sans-serif" font-size="10" fill="#f59e0b">+$17</text>
+  <text x="893" y="82" font-family="'Segoe UI',Arial,sans-serif" font-size="9" fill="#64748b">extra from</text>
+  <text x="893" y="91" font-family="'Segoe UI',Arial,sans-serif" font-size="9" fill="#64748b">compounding</text>
+
+  <!-- Legend -->
+  <line x1="80" y1="358" x2="110" y2="358" stroke="#4ade80" stroke-width="3"/>
+  <circle cx="95" cy="358" r="4" fill="#4ade80"/>
+  <text x="118" y="363" font-family="'Segoe UI',Arial,sans-serif" font-size="13" fill="#86efac" font-weight="600">APY — 6.17% (monthly compounding)</text>
+  <text x="118" y="380" font-family="'Segoe UI',Arial,sans-serif" font-size="12" fill="#64748b">$10,000 → $10,616.78 after 12 months</text>
+
+  <line x1="480" y1="358" x2="510" y2="358" stroke="#38bdf8" stroke-width="2" stroke-dasharray="8,4"/>
+  <circle cx="495" cy="358" r="4" fill="#38bdf8"/>
+  <text x="518" y="363" font-family="'Segoe UI',Arial,sans-serif" font-size="13" fill="#7dd3fc" font-weight="600">APR — 6.00% (no compounding)</text>
+  <text x="518" y="380" font-family="'Segoe UI',Arial,sans-serif" font-size="12" fill="#64748b">$10,000 → $10,600.00 after 12 months</text>
+
+  <text x="450" y="408" font-family="'Segoe UI',Arial,sans-serif" font-size="10" fill="#ffffff" text-anchor="middle" opacity="0.2" letter-spacing="2">BASISPOINTCALCULATOR.COM</text>
+</svg>

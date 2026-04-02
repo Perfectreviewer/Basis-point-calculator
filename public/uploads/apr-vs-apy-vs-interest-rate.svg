@@ -1,0 +1,133 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0a1f3d"/>
+      <stop offset="60%" style="stop-color:#0d2a4a"/>
+      <stop offset="100%" style="stop-color:#091c35"/>
+    </linearGradient>
+    <linearGradient id="p1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0f3060"/>
+      <stop offset="100%" style="stop-color:#1a4070"/>
+    </linearGradient>
+    <linearGradient id="p2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a1200"/>
+      <stop offset="100%" style="stop-color:#1c1500"/>
+    </linearGradient>
+    <linearGradient id="p3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#052e16"/>
+      <stop offset="100%" style="stop-color:#04200f"/>
+    </linearGradient>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#ffffff" stroke-width="0.3" stroke-opacity="0.05"/>
+    </pattern>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+      <feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect width="1200" height="630" fill="url(#grid)"/>
+
+  <!-- Decorative circles -->
+  <circle cx="0" cy="0" r="300" fill="none" stroke="#38bdf8" stroke-width="1" stroke-opacity="0.07"/>
+  <circle cx="1200" cy="630" r="300" fill="none" stroke="#4ade80" stroke-width="1" stroke-opacity="0.07"/>
+
+  <!-- Top accent -->
+  <rect x="0" y="0" width="1200" height="5" fill="#a78bfa"/>
+
+  <!-- Header -->
+  <text x="600" y="55" font-family="'Segoe UI',Arial,sans-serif" font-size="15" font-weight="700" fill="#64748b" text-anchor="middle" letter-spacing="3">COMPLETE COMPARISON GUIDE</text>
+  <text x="600" y="98" font-family="'Segoe UI',Arial,sans-serif" font-size="44" font-weight="900" fill="#ffffff" text-anchor="middle">APR vs APY vs Interest Rate</text>
+  <text x="600" y="128" font-family="'Segoe UI',Arial,sans-serif" font-size="16" fill="#64748b" text-anchor="middle">Three terms. Three different meanings. One guide to understand them all.</text>
+
+  <line x1="100" y1="146" x2="1100" y2="146" stroke="#1e3a5f" stroke-width="1"/>
+
+  <!-- PANEL 1: Interest Rate -->
+  <rect x="40" y="162" width="340" height="390" rx="14" fill="url(#p1)" stroke="#38bdf8" stroke-width="1.5" stroke-opacity="0.7"/>
+  <rect x="105" y="150" width="210" height="28" rx="14" fill="#1d4ed8"/>
+  <text x="210" y="168" font-family="'Segoe UI',Arial,sans-serif" font-size="13" font-weight="700" fill="#ffffff" text-anchor="middle" letter-spacing="0.5">INTEREST RATE</text>
+
+  <text x="210" y="228" font-family="'Segoe UI',Arial,sans-serif" font-size="52" font-weight="900" fill="#38bdf8" text-anchor="middle" filter="url(#glow)">r</text>
+  <text x="210" y="260" font-family="'Segoe UI',Arial,sans-serif" font-size="15" font-weight="700" fill="#7dd3fc" text-anchor="middle">The Base Rate</text>
+
+  <line x1="65" y1="275" x2="355" y2="275" stroke="#38bdf8" stroke-width="0.6" stroke-opacity="0.3"/>
+
+  <circle cx="68" cy="300" r="4" fill="#38bdf8"/>
+  <text x="82" y="305" font-family="'Segoe UI',Arial,sans-serif" font-size="13" fill="#dbeafe">No fees included</text>
+  <circle cx="68" cy="328" r="4" fill="#38bdf8"/>
+  <text x="82" y="333" font-family="'Segoe UI',Arial,sans-serif" font-size="13" fill="#dbeafe">No compounding</text>
+  <circle cx="68" cy="356" r="4" fill="#38bdf8"/>
+  <text x="82" y="361" font-family="'Segoe UI',Arial,sans-serif" font-size="13" fill="#dbeafe">Simple annual rate</text>
+  <circle cx="68" cy="384" r="4" fill="#38bdf8"/>
+  <text x="82" y="389" font-family="'Segoe UI',Arial,sans-serif" font-size="13" fill="#dbeafe">Used in loan contracts</text>
+
+  <rect x="60" y="408" width="300" height="50" rx="10" fill="#0a1628" stroke="#38bdf8" stroke-width="0.8" stroke-opacity="0.4"/>
+  <text x="210" y="428" font-family="'Segoe UI',Arial,sans-serif" font-size="12" fill="#7dd3fc" text-anchor="middle">Example: 6.00% mortgage rate</text>
+  <text x="210" y="447" font-family="'Segoe UI',Arial,sans-serif" font-size="12" fill="#94a3b8" text-anchor="middle">The raw rate before fees or compounding</text>
+
+  <rect x="60" y="472" width="300" height="64" rx="10" fill="#0d1e35" stroke="#38bdf8" stroke-width="0.6" stroke-opacity="0.3"/>
+  <text x="210" y="494" font-family="'Segoe UI',Arial,sans-serif" font-size="12" fill="#64748b" text-anchor="middle">Best for:</text>
+  <text x="210" y="512" font-family="'Segoe UI',Arial,sans-serif" font-size="13" font-weight="700" fill="#7dd3fc" text-anchor="middle">Comparing loan base costs</text>
+  <text x="210" y="528" font-family="'Segoe UI',Arial,sans-serif" font-size="12" fill="#475569" text-anchor="middle">when all else is equal</text>
+
+  <!-- PANEL 2: APR -->
+  <rect x="430" y="162" width="340" height="390" rx="14" fill="url(#p2)" stroke="#f59e0b" stroke-width="1.5" stroke-opacity="0.7"/>
+  <rect x="495" y="150" width="210" height="28" rx="14" fill="#b45309"/>
+  <text x="600" y="168" font-family="'Segoe UI',Arial,sans-serif" font-size="13" font-weight="700" fill="#ffffff" text-anchor="middle" letter-spacing="0.5">APR</text>
+
+  <text x="600" y="228" font-family="'Segoe UI',Arial,sans-serif" font-size="52" font-weight="900" fill="#f59e0b" text-anchor="middle" filter="url(#glow)">%+</text>
+  <text x="600" y="260" font-family="'Segoe UI',Arial,sans-serif" font-size="15" font-weight="700" fill="#fbbf24" text-anchor="middle">Rate + All Fees</text>
+
+  <line x1="455" y1="275" x2="745" y2="275" stroke="#f59e0b" stroke-width="0.6" stroke-opacity="0.3"/>
+
+  <circle cx="458" cy="300" r="4" fill="#f59e0b"/>
+  <text x="472" y="305" font-family="'Segoe UI',Arial,sans-serif" font-size="13" fill="#fef3c7">Includes origination fees</text>
+  <circle cx="458" cy="328" r="4" fill="#f59e0b"/>
+  <text x="472" y="333" font-family="'Segoe UI',Arial,sans-serif" font-size="13" fill="#fef3c7">Includes closing costs</text>
+  <circle cx="458" cy="356" r="4" fill="#f59e0b"/>
+  <text x="472" y="361" font-family="'Segoe UI',Arial,sans-serif" font-size="13" fill="#fef3c7">No compounding effect</text>
+  <circle cx="458" cy="384" r="4" fill="#f59e0b"/>
+  <text x="472" y="389" font-family="'Segoe UI',Arial,sans-serif" font-size="13" fill="#fef3c7">Required by US law (TILA)</text>
+
+  <rect x="450" y="408" width="300" height="50" rx="10" fill="#1a1000" stroke="#f59e0b" stroke-width="0.8" stroke-opacity="0.4"/>
+  <text x="600" y="428" font-family="'Segoe UI',Arial,sans-serif" font-size="12" fill="#fbbf24" text-anchor="middle">Example: 6.45% APR on same loan</text>
+  <text x="600" y="447" font-family="'Segoe UI',Arial,sans-serif" font-size="12" fill="#94a3b8" text-anchor="middle">Rate + $2,500 in fees spread over term</text>
+
+  <rect x="450" y="472" width="300" height="64" rx="10" fill="#12100a" stroke="#f59e0b" stroke-width="0.6" stroke-opacity="0.3"/>
+  <text x="600" y="494" font-family="'Segoe UI',Arial,sans-serif" font-size="12" fill="#64748b" text-anchor="middle">Best for:</text>
+  <text x="600" y="512" font-family="'Segoe UI',Arial,sans-serif" font-size="13" font-weight="700" fill="#fbbf24" text-anchor="middle">Comparing total loan costs</text>
+  <text x="600" y="528" font-family="'Segoe UI',Arial,sans-serif" font-size="12" fill="#475569" text-anchor="middle">across different lenders</text>
+
+  <!-- PANEL 3: APY -->
+  <rect x="820" y="162" width="340" height="390" rx="14" fill="url(#p3)" stroke="#4ade80" stroke-width="1.5" stroke-opacity="0.7"/>
+  <rect x="885" y="150" width="210" height="28" rx="14" fill="#16a34a"/>
+  <text x="990" y="168" font-family="'Segoe UI',Arial,sans-serif" font-size="13" font-weight="700" fill="#ffffff" text-anchor="middle" letter-spacing="0.5">APY</text>
+
+  <text x="990" y="228" font-family="'Segoe UI',Arial,sans-serif" font-size="52" font-weight="900" fill="#4ade80" text-anchor="middle" filter="url(#glow)">∞%</text>
+  <text x="990" y="260" font-family="'Segoe UI',Arial,sans-serif" font-size="15" font-weight="700" fill="#86efac" text-anchor="middle">Rate + Compounding</text>
+
+  <line x1="845" y1="275" x2="1135" y2="275" stroke="#4ade80" stroke-width="0.6" stroke-opacity="0.3"/>
+
+  <circle cx="848" cy="300" r="4" fill="#4ade80"/>
+  <text x="862" y="305" font-family="'Segoe UI',Arial,sans-serif" font-size="13" fill="#dcfce7">Includes compounding effect</text>
+  <circle cx="848" cy="328" r="4" fill="#4ade80"/>
+  <text x="862" y="333" font-family="'Segoe UI',Arial,sans-serif" font-size="13" fill="#dcfce7">Always ≥ interest rate</text>
+  <circle cx="848" cy="356" r="4" fill="#4ade80"/>
+  <text x="862" y="361" font-family="'Segoe UI',Arial,sans-serif" font-size="13" fill="#dcfce7">No fees included</text>
+  <circle cx="848" cy="384" r="4" fill="#4ade80"/>
+  <text x="862" y="389" font-family="'Segoe UI',Arial,sans-serif" font-size="13" fill="#dcfce7">Used for savings &amp; investments</text>
+
+  <rect x="840" y="408" width="300" height="50" rx="10" fill="#051a0a" stroke="#4ade80" stroke-width="0.8" stroke-opacity="0.4"/>
+  <text x="990" y="428" font-family="'Segoe UI',Arial,sans-serif" font-size="12" fill="#86efac" text-anchor="middle">Example: 6.17% APY from 6.00% rate</text>
+  <text x="990" y="447" font-family="'Segoe UI',Arial,sans-serif" font-size="12" fill="#94a3b8" text-anchor="middle">compounded monthly</text>
+
+  <rect x="840" y="472" width="300" height="64" rx="10" fill="#030f06" stroke="#4ade80" stroke-width="0.6" stroke-opacity="0.3"/>
+  <text x="990" y="494" font-family="'Segoe UI',Arial,sans-serif" font-size="12" fill="#64748b" text-anchor="middle">Best for:</text>
+  <text x="990" y="512" font-family="'Segoe UI',Arial,sans-serif" font-size="13" font-weight="700" fill="#86efac" text-anchor="middle">Comparing savings accounts</text>
+  <text x="990" y="528" font-family="'Segoe UI',Arial,sans-serif" font-size="12" fill="#475569" text-anchor="middle">and investment returns</text>
+
+  <!-- Bottom rule -->
+  <text x="600" y="574" font-family="'Segoe UI',Arial,sans-serif" font-size="13" fill="#475569" text-anchor="middle">Interest Rate ≤ APY &nbsp;|&nbsp; Interest Rate ≤ APR &nbsp;|&nbsp; APR and APY are not directly comparable</text>
+  <text x="600" y="618" font-family="'Segoe UI',Arial,sans-serif" font-size="10" fill="#ffffff" text-anchor="middle" opacity="0.2" letter-spacing="2">BASISPOINTCALCULATOR.COM</text>
+</svg>
