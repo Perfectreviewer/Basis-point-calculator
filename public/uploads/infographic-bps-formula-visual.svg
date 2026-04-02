@@ -1,0 +1,97 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 400" width="900" height="400">
+  <defs>
+    <linearGradient id="bg1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0a1f3d"/>
+      <stop offset="100%" style="stop-color:#0d2a4a"/>
+    </linearGradient>
+    <pattern id="dots" width="20" height="20" patternUnits="userSpaceOnUse">
+      <circle cx="1" cy="1" r="0.8" fill="#ffffff" fill-opacity="0.04"/>
+    </pattern>
+    <marker id="arrowBlue" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#38bdf8"/>
+    </marker>
+    <marker id="arrowAmber" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#f59e0b"/>
+    </marker>
+    <filter id="glow1">
+      <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+      <feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <rect width="900" height="400" fill="url(#bg1)" rx="14"/>
+  <rect width="900" height="400" fill="url(#dots)" rx="14"/>
+  <rect x="0" y="0" width="900" height="4" rx="2" fill="#38bdf8"/>
+
+  <!-- Title -->
+  <text x="450" y="38" font-family="'Segoe UI',Arial,sans-serif" font-size="19" font-weight="800" fill="#ffffff" text-anchor="middle">BPS Formula: Step-by-Step Visual Breakdown</text>
+  <text x="450" y="58" font-family="'Segoe UI',Arial,sans-serif" font-size="12.5" fill="#64748b" text-anchor="middle">Example: Rate drops from 6.50% to 6.25% — how many basis points is that?</text>
+
+  <!-- Step 1: Rate A box -->
+  <rect x="40" y="85" width="140" height="70" rx="10" fill="#0f3060" stroke="#38bdf8" stroke-width="1.5"/>
+  <text x="110" y="113" font-family="'Segoe UI',Arial,sans-serif" font-size="12" fill="#7dd3fc" text-anchor="middle" font-weight="600">RATE A</text>
+  <text x="110" y="142" font-family="'Segoe UI',Arial,sans-serif" font-size="30" font-weight="900" fill="#38bdf8" text-anchor="middle" filter="url(#glow1)">6.50%</text>
+
+  <!-- Minus sign -->
+  <text x="215" y="128" font-family="'Segoe UI',Arial,sans-serif" font-size="36" font-weight="900" fill="#ef4444" text-anchor="middle">−</text>
+
+  <!-- Rate B box -->
+  <rect x="245" y="85" width="140" height="70" rx="10" fill="#0f3060" stroke="#38bdf8" stroke-width="1.5"/>
+  <text x="315" y="113" font-family="'Segoe UI',Arial,sans-serif" font-size="12" fill="#7dd3fc" text-anchor="middle" font-weight="600">RATE B</text>
+  <text x="315" y="142" font-family="'Segoe UI',Arial,sans-serif" font-size="30" font-weight="900" fill="#38bdf8" text-anchor="middle" filter="url(#glow1)">6.25%</text>
+
+  <!-- Equals sign -->
+  <text x="420" y="128" font-family="'Segoe UI',Arial,sans-serif" font-size="36" font-weight="900" fill="#94a3b8" text-anchor="middle">=</text>
+
+  <!-- Difference box -->
+  <rect x="448" y="85" width="140" height="70" rx="10" fill="#1a2a0a" stroke="#4ade80" stroke-width="1.5"/>
+  <text x="518" y="113" font-family="'Segoe UI',Arial,sans-serif" font-size="12" fill="#86efac" text-anchor="middle" font-weight="600">DIFFERENCE</text>
+  <text x="518" y="142" font-family="'Segoe UI',Arial,sans-serif" font-size="30" font-weight="900" fill="#4ade80" text-anchor="middle" filter="url(#glow1)">0.25%</text>
+
+  <!-- Times 100 -->
+  <text x="622" y="128" font-family="'Segoe UI',Arial,sans-serif" font-size="20" font-weight="900" fill="#f59e0b" text-anchor="middle">× 100</text>
+
+  <!-- Result box -->
+  <rect x="660" y="75" width="200" height="90" rx="12" fill="#1c1200" stroke="#f59e0b" stroke-width="2.5"/>
+  <text x="760" y="107" font-family="'Segoe UI',Arial,sans-serif" font-size="13" fill="#fbbf24" text-anchor="middle" font-weight="700">RESULT</text>
+  <text x="760" y="148" font-family="'Segoe UI',Arial,sans-serif" font-size="42" font-weight="900" fill="#f59e0b" text-anchor="middle" filter="url(#glow1)">25 BPS</text>
+
+  <!-- Connector arrow -->
+  <line x1="588" y1="120" x2="652" y2="120" stroke="#f59e0b" stroke-width="2" marker-end="url(#arrowAmber)"/>
+
+  <!-- Step annotations below -->
+  <text x="110" y="175" font-family="'Segoe UI',Arial,sans-serif" font-size="11" fill="#475569" text-anchor="middle">① Starting rate</text>
+  <text x="315" y="175" font-family="'Segoe UI',Arial,sans-serif" font-size="11" fill="#475569" text-anchor="middle">② New rate</text>
+  <text x="518" y="175" font-family="'Segoe UI',Arial,sans-serif" font-size="11" fill="#475569" text-anchor="middle">③ Subtract</text>
+  <text x="760" y="175" font-family="'Segoe UI',Arial,sans-serif" font-size="11" fill="#475569" text-anchor="middle">④ Multiply by 100</text>
+
+  <!-- Divider -->
+  <line x1="40" y1="195" x2="860" y2="195" stroke="#1e3a5f" stroke-width="1"/>
+
+  <!-- Three scenarios below -->
+  <text x="450" y="220" font-family="'Segoe UI',Arial,sans-serif" font-size="14" font-weight="700" fill="#94a3b8" text-anchor="middle">More Examples</text>
+
+  <!-- Scenario 1 -->
+  <rect x="40" y="235" width="255" height="100" rx="10" fill="#0d1f3a" stroke="#38bdf8" stroke-width="1" stroke-opacity="0.5"/>
+  <text x="168" y="258" font-family="'Segoe UI',Arial,sans-serif" font-size="12" font-weight="700" fill="#7dd3fc" text-anchor="middle">Fed Rate Hike</text>
+  <text x="168" y="278" font-family="'Segoe UI',Arial,sans-serif" font-size="13" fill="#94a3b8" text-anchor="middle">5.25% → 5.50%</text>
+  <text x="168" y="300" font-family="'Courier New',monospace" font-size="13" fill="#ffffff" text-anchor="middle">(5.50 − 5.25) × 100</text>
+  <text x="168" y="322" font-family="'Segoe UI',Arial,sans-serif" font-size="16" font-weight="800" fill="#38bdf8" text-anchor="middle">= 25 BPS ↑</text>
+
+  <!-- Scenario 2 -->
+  <rect x="323" y="235" width="255" height="100" rx="10" fill="#0d1f3a" stroke="#f59e0b" stroke-width="1" stroke-opacity="0.5"/>
+  <text x="450" y="258" font-family="'Segoe UI',Arial,sans-serif" font-size="12" font-weight="700" fill="#fbbf24" text-anchor="middle">Mortgage Negotiation</text>
+  <text x="450" y="278" font-family="'Segoe UI',Arial,sans-serif" font-size="13" fill="#94a3b8" text-anchor="middle">7.00% → 6.50%</text>
+  <text x="450" y="300" font-family="'Courier New',monospace" font-size="13" fill="#ffffff" text-anchor="middle">(7.00 − 6.50) × 100</text>
+  <text x="450" y="322" font-family="'Segoe UI',Arial,sans-serif" font-size="16" font-weight="800" fill="#f59e0b" text-anchor="middle">= 50 BPS ↓</text>
+
+  <!-- Scenario 3 -->
+  <rect x="606" y="235" width="255" height="100" rx="10" fill="#0d1f3a" stroke="#4ade80" stroke-width="1" stroke-opacity="0.5"/>
+  <text x="733" y="258" font-family="'Segoe UI',Arial,sans-serif" font-size="12" font-weight="700" fill="#86efac" text-anchor="middle">Bond Yield Spread</text>
+  <text x="733" y="278" font-family="'Segoe UI',Arial,sans-serif" font-size="13" fill="#94a3b8" text-anchor="middle">4.00% → 2.50%</text>
+  <text x="733" y="300" font-family="'Courier New',monospace" font-size="13" fill="#ffffff" text-anchor="middle">(4.00 − 2.50) × 100</text>
+  <text x="733" y="322" font-family="'Segoe UI',Arial,sans-serif" font-size="16" font-weight="800" fill="#4ade80" text-anchor="middle">= 150 BPS ↓</text>
+
+  <!-- Watermark -->
+  <text x="450" y="388" font-family="'Segoe UI',Arial,sans-serif" font-size="10" fill="#ffffff" text-anchor="middle" opacity="0.2" letter-spacing="2">BASISPOINTCALCULATOR.COM</text>
+</svg>

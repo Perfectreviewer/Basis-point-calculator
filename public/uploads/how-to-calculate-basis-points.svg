@@ -1,0 +1,162 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0a1f3d"/>
+      <stop offset="60%" style="stop-color:#0d2a4a"/>
+      <stop offset="100%" style="stop-color:#0a2540"/>
+    </linearGradient>
+    <linearGradient id="leftG" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0f3060"/>
+      <stop offset="100%" style="stop-color:#1a4070"/>
+    </linearGradient>
+    <linearGradient id="rightG" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a1200"/>
+      <stop offset="100%" style="stop-color:#1c1500"/>
+    </linearGradient>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#ffffff" stroke-width="0.3" stroke-opacity="0.05"/>
+    </pattern>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+      <feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect width="1200" height="630" fill="url(#grid)"/>
+
+  <!-- Accent circles -->
+  <circle cx="0" cy="0" r="250" fill="none" stroke="#3b9eff" stroke-width="1" stroke-opacity="0.08"/>
+  <circle cx="1200" cy="630" r="250" fill="none" stroke="#f59e0b" stroke-width="1" stroke-opacity="0.08"/>
+
+  <!-- Top bar -->
+  <rect x="0" y="0" width="1200" height="5" fill="#f59e0b"/>
+
+  <!-- Header -->
+  <text x="600" y="60" font-family="'Segoe UI',Arial,sans-serif" font-size="16" font-weight="700" fill="#94a3b8" text-anchor="middle" letter-spacing="3">COMPLETE FORMULA GUIDE</text>
+  <text x="600" y="100" font-family="'Segoe UI',Arial,sans-serif" font-size="40" font-weight="900" fill="#ffffff" text-anchor="middle">How to Calculate Basis Points</text>
+
+  <!-- Subtitle -->
+  <text x="600" y="130" font-family="'Segoe UI',Arial,sans-serif" font-size="16" fill="#64748b" text-anchor="middle">Formulas · Examples · Excel · Dollar Value · Commission</text>
+
+  <!-- Separator -->
+  <line x1="150" y1="148" x2="1050" y2="148" stroke="#1e3a5f" stroke-width="1"/>
+
+  <!-- ===== LEFT PANEL: Core Formula ===== -->
+  <rect x="50" y="165" width="510" height="390" rx="14" fill="url(#leftG)" stroke="#3b9eff" stroke-width="1.5" stroke-opacity="0.6"/>
+
+  <!-- Left header pill -->
+  <rect x="175" y="152" width="260" height="28" rx="14" fill="#1d4ed8"/>
+  <text x="305" y="170" font-family="'Segoe UI',Arial,sans-serif" font-size="13" font-weight="700" fill="#ffffff" text-anchor="middle" letter-spacing="0.5">CORE FORMULA</text>
+
+  <!-- Formula display -->
+  <rect x="80" y="190" width="450" height="80" rx="10" fill="#0a1628" stroke="#3b9eff" stroke-width="1" stroke-opacity="0.5"/>
+  <text x="305" y="240" font-family="'Courier New',monospace" font-size="28" font-weight="900" fill="#f59e0b" text-anchor="middle" filter="url(#glow)">BPS = (A − B) × 10,000</text>
+
+  <!-- Formula annotation -->
+  <text x="305" y="293" font-family="'Segoe UI',Arial,sans-serif" font-size="13" fill="#7dd3fc" text-anchor="middle">where A and B are two interest rates or percentages</text>
+
+  <!-- Divider -->
+  <line x1="80" y1="310" x2="530" y2="310" stroke="#3b9eff" stroke-width="0.6" stroke-opacity="0.3"/>
+
+  <!-- Three sub-formulas -->
+  <text x="305" y="338" font-family="'Segoe UI',Arial,sans-serif" font-size="14" font-weight="700" fill="#94c8f5" text-anchor="middle">Three ways to use it:</text>
+
+  <!-- Sub 1 -->
+  <rect x="80" y="350" width="200" height="54" rx="8" fill="#0d2040" stroke="#3b9eff" stroke-width="0.8" stroke-opacity="0.4"/>
+  <text x="180" y="372" font-family="'Courier New',monospace" font-size="13" fill="#7dd3fc" text-anchor="middle">% × 100 = BPS</text>
+  <text x="180" y="392" font-family="'Segoe UI',Arial,sans-serif" font-size="11" fill="#475569" text-anchor="middle">% → BPS</text>
+
+  <!-- Sub 2 -->
+  <rect x="195" y="350" width="220" height="54" rx="8" fill="#0d2040" stroke="#3b9eff" stroke-width="0.8" stroke-opacity="0.4"/>
+  <text x="305" y="372" font-family="'Courier New',monospace" font-size="13" fill="#7dd3fc" text-anchor="middle">BPS ÷ 100 = %</text>
+  <text x="305" y="392" font-family="'Segoe UI',Arial,sans-serif" font-size="11" fill="#475569" text-anchor="middle">BPS → %</text>
+
+  <!-- Sub 3 -->
+  <rect x="330" y="350" width="200" height="54" rx="8" fill="#0d2040" stroke="#3b9eff" stroke-width="0.8" stroke-opacity="0.4"/>
+  <text x="430" y="372" font-family="'Courier New',monospace" font-size="13" fill="#7dd3fc" text-anchor="middle">Loan × BPS/10k</text>
+  <text x="430" y="392" font-family="'Segoe UI',Arial,sans-serif" font-size="11" fill="#475569" text-anchor="middle">BPS → $</text>
+
+  <!-- Example worked -->
+  <rect x="80" y="420" width="450" height="110" rx="10" fill="#050f1e" stroke="#f59e0b" stroke-width="1" stroke-opacity="0.5"/>
+  <text x="305" y="442" font-family="'Segoe UI',Arial,sans-serif" font-size="13" font-weight="700" fill="#fbbf24" text-anchor="middle">Worked Example</text>
+  <text x="305" y="464" font-family="'Segoe UI',Arial,sans-serif" font-size="13" fill="#94a3b8" text-anchor="middle">Rate A = 6.50%,  Rate B = 6.25%</text>
+  <text x="305" y="484" font-family="'Courier New',monospace" font-size="14" fill="#ffffff" text-anchor="middle">(6.50 − 6.25) × 100 = <tspan fill="#f59e0b" font-weight="900">25 BPS</tspan></text>
+  <text x="305" y="506" font-family="'Segoe UI',Arial,sans-serif" font-size="12" fill="#64748b" text-anchor="middle">The difference between the two rates is 25 basis points</text>
+  <text x="305" y="522" font-family="'Segoe UI',Arial,sans-serif" font-size="12" fill="#64748b" text-anchor="middle">(Note: use % values directly, multiply by 100 not 10,000)</text>
+
+  <!-- ===== RIGHT PANEL: Quick Reference ===== -->
+  <rect x="640" y="165" width="510" height="390" rx="14" fill="url(#rightG)" stroke="#f59e0b" stroke-width="1.5" stroke-opacity="0.6"/>
+
+  <!-- Right header pill -->
+  <rect x="765" y="152" width="260" height="28" rx="14" fill="#b45309"/>
+  <text x="895" y="170" font-family="'Segoe UI',Arial,sans-serif" font-size="13" font-weight="700" fill="#ffffff" text-anchor="middle" letter-spacing="0.5">QUICK REFERENCE</text>
+
+  <!-- Table header -->
+  <rect x="665" y="182" width="460" height="32" rx="6" fill="#1c1200"/>
+  <text x="790" y="202" font-family="'Segoe UI',Arial,sans-serif" font-size="12" font-weight="700" fill="#f59e0b" text-anchor="middle">BPS</text>
+  <text x="895" y="202" font-family="'Segoe UI',Arial,sans-serif" font-size="12" font-weight="700" fill="#f59e0b" text-anchor="middle">Percent</text>
+  <text x="1030" y="202" font-family="'Segoe UI',Arial,sans-serif" font-size="12" font-weight="700" fill="#f59e0b" text-anchor="middle">$300k Impact/yr</text>
+
+  <!-- Table rows -->
+  <line x1="665" y1="214" x2="1125" y2="214" stroke="#f59e0b" stroke-width="0.5" stroke-opacity="0.3"/>
+
+  <!-- Row 1 -->
+  <text x="790" y="234" font-family="'Segoe UI',Arial,sans-serif" font-size="13" fill="#ffffff" text-anchor="middle">1</text>
+  <text x="895" y="234" font-family="'Segoe UI',Arial,sans-serif" font-size="13" fill="#94a3b8" text-anchor="middle">0.01%</text>
+  <text x="1030" y="234" font-family="'Segoe UI',Arial,sans-serif" font-size="13" fill="#fde68a" text-anchor="middle">$30/yr</text>
+  <line x1="665" y1="242" x2="1125" y2="242" stroke="#ffffff" stroke-width="0.3" stroke-opacity="0.05"/>
+
+  <!-- Row 2 -->
+  <rect x="665" y="243" width="460" height="28" fill="#1a1000" fill-opacity="0.5"/>
+  <text x="790" y="262" font-family="'Segoe UI',Arial,sans-serif" font-size="13" fill="#ffffff" text-anchor="middle">10</text>
+  <text x="895" y="262" font-family="'Segoe UI',Arial,sans-serif" font-size="13" fill="#94a3b8" text-anchor="middle">0.10%</text>
+  <text x="1030" y="262" font-family="'Segoe UI',Arial,sans-serif" font-size="13" fill="#fde68a" text-anchor="middle">$300/yr</text>
+
+  <!-- Row 3 -->
+  <text x="790" y="290" font-family="'Segoe UI',Arial,sans-serif" font-size="13" fill="#f59e0b" font-weight="700" text-anchor="middle">25</text>
+  <text x="895" y="290" font-family="'Segoe UI',Arial,sans-serif" font-size="13" fill="#fbbf24" font-weight="700" text-anchor="middle">0.25%</text>
+  <text x="1030" y="290" font-family="'Segoe UI',Arial,sans-serif" font-size="13" fill="#f59e0b" font-weight="700" text-anchor="middle">$750/yr ← Fed move</text>
+  <line x1="665" y1="298" x2="1125" y2="298" stroke="#ffffff" stroke-width="0.3" stroke-opacity="0.05"/>
+
+  <!-- Row 4 -->
+  <rect x="665" y="299" width="460" height="28" fill="#1a1000" fill-opacity="0.5"/>
+  <text x="790" y="318" font-family="'Segoe UI',Arial,sans-serif" font-size="13" fill="#ffffff" text-anchor="middle">50</text>
+  <text x="895" y="318" font-family="'Segoe UI',Arial,sans-serif" font-size="13" fill="#94a3b8" text-anchor="middle">0.50%</text>
+  <text x="1030" y="318" font-family="'Segoe UI',Arial,sans-serif" font-size="13" fill="#fde68a" text-anchor="middle">$1,500/yr</text>
+
+  <!-- Row 5 -->
+  <text x="790" y="346" font-family="'Segoe UI',Arial,sans-serif" font-size="13" fill="#ffffff" text-anchor="middle">75</text>
+  <text x="895" y="346" font-family="'Segoe UI',Arial,sans-serif" font-size="13" fill="#94a3b8" text-anchor="middle">0.75%</text>
+  <text x="1030" y="346" font-family="'Segoe UI',Arial,sans-serif" font-size="13" fill="#fde68a" text-anchor="middle">$2,250/yr</text>
+  <line x1="665" y1="354" x2="1125" y2="354" stroke="#ffffff" stroke-width="0.3" stroke-opacity="0.05"/>
+
+  <!-- Row 6 -->
+  <rect x="665" y="355" width="460" height="28" fill="#1a1000" fill-opacity="0.5"/>
+  <text x="790" y="374" font-family="'Segoe UI',Arial,sans-serif" font-size="13" fill="#4ade80" font-weight="700" text-anchor="middle">100</text>
+  <text x="895" y="374" font-family="'Segoe UI',Arial,sans-serif" font-size="13" fill="#4ade80" font-weight="700" text-anchor="middle">1.00%</text>
+  <text x="1030" y="374" font-family="'Segoe UI',Arial,sans-serif" font-size="13" fill="#4ade80" font-weight="700" text-anchor="middle">$3,000/yr</text>
+
+  <!-- Row 7 -->
+  <text x="790" y="402" font-family="'Segoe UI',Arial,sans-serif" font-size="13" fill="#ffffff" text-anchor="middle">200</text>
+  <text x="895" y="402" font-family="'Segoe UI',Arial,sans-serif" font-size="13" fill="#94a3b8" text-anchor="middle">2.00%</text>
+  <text x="1030" y="402" font-family="'Segoe UI',Arial,sans-serif" font-size="13" fill="#fde68a" text-anchor="middle">$6,000/yr</text>
+  <line x1="665" y1="410" x2="1125" y2="410" stroke="#ffffff" stroke-width="0.3" stroke-opacity="0.05"/>
+
+  <!-- Row 8 -->
+  <rect x="665" y="411" width="460" height="28" fill="#1a1000" fill-opacity="0.5"/>
+  <text x="790" y="430" font-family="'Segoe UI',Arial,sans-serif" font-size="13" fill="#ffffff" text-anchor="middle">500</text>
+  <text x="895" y="430" font-family="'Segoe UI',Arial,sans-serif" font-size="13" fill="#94a3b8" text-anchor="middle">5.00%</text>
+  <text x="1030" y="430" font-family="'Segoe UI',Arial,sans-serif" font-size="13" fill="#fde68a" text-anchor="middle">$15,000/yr</text>
+
+  <!-- Excel teaser box -->
+  <rect x="665" y="452" width="460" height="90" rx="10" fill="#050f1e" stroke="#3b9eff" stroke-width="1" stroke-opacity="0.5"/>
+  <text x="895" y="474" font-family="'Segoe UI',Arial,sans-serif" font-size="13" font-weight="700" fill="#7dd3fc" text-anchor="middle">Excel Formula</text>
+  <text x="895" y="497" font-family="'Courier New',monospace" font-size="14" fill="#ffffff" text-anchor="middle">=<tspan fill="#4ade80">(A2-B2)</tspan>*<tspan fill="#f59e0b">10000</tspan></text>
+  <text x="895" y="518" font-family="'Segoe UI',Arial,sans-serif" font-size="12" fill="#64748b" text-anchor="middle">Put rates in A2 and B2 as decimals (e.g. 0.065)</text>
+  <text x="895" y="534" font-family="'Segoe UI',Arial,sans-serif" font-size="12" fill="#64748b" text-anchor="middle">Result = basis points difference</text>
+
+  <!-- Bottom watermark -->
+  <text x="600" y="616" font-family="'Segoe UI',Arial,sans-serif" font-size="11" fill="#ffffff" text-anchor="middle" opacity="0.2" letter-spacing="2">BASISPOINTCALCULATOR.COM</text>
+</svg>
