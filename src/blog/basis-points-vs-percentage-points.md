@@ -4,7 +4,7 @@ description: "Confused about basis points vs percentage points? Learn the exact 
 date: 2026-04-01
 author: "Admin"
 category: "Guides"
-image: "https://tg5wyleo1fmzpuba.public.blob.vercel-storage.com/uploads/1743465600000-basis-points-vs-percentage-points.jpg"
+image: "/uploads/basis-points-vs-percentage-points.svg"
 status: "published"
 visibility: "public" 
 seoKeywords: "basis points vs percentage points, difference between basis points and percentage points, what is a percentage point, basis point vs percent, bps vs percentage points, basis points explained"

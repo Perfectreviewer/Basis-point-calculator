@@ -1,0 +1,183 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <!-- Background gradient -->
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0a1f3d;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#0d2d4f;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#0a2540;stop-opacity:1" />
+    </linearGradient>
+    <!-- Left panel gradient -->
+    <linearGradient id="leftPanelGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0f3460;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1a4a7a;stop-opacity:1" />
+    </linearGradient>
+    <!-- Right panel gradient -->
+    <linearGradient id="rightPanelGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a2f1a;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#0d3320;stop-opacity:1" />
+    </linearGradient>
+    <!-- Gold glow -->
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <!-- Subtle glow for panels -->
+    <filter id="panelGlow">
+      <feGaussianBlur stdDeviation="8" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <!-- Grid pattern -->
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#ffffff" stroke-width="0.3" stroke-opacity="0.05"/>
+    </pattern>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="630" fill="url(#bgGrad)"/>
+  <!-- Grid overlay -->
+  <rect width="1200" height="630" fill="url(#grid)"/>
+
+  <!-- Decorative top-left circle -->
+  <circle cx="-40" cy="-40" r="200" fill="none" stroke="#2a6496" stroke-width="1" stroke-opacity="0.2"/>
+  <circle cx="-40" cy="-40" r="280" fill="none" stroke="#2a6496" stroke-width="1" stroke-opacity="0.1"/>
+  <!-- Decorative bottom-right circle -->
+  <circle cx="1240" cy="670" r="200" fill="none" stroke="#1a7a3a" stroke-width="1" stroke-opacity="0.2"/>
+  <circle cx="1240" cy="670" r="280" fill="none" stroke="#1a7a3a" stroke-width="1" stroke-opacity="0.1"/>
+
+  <!-- ===== TOP HEADER STRIP ===== -->
+  <rect x="0" y="0" width="1200" height="5" fill="#3b9eff" rx="0"/>
+
+  <!-- ===== TITLE AREA ===== -->
+  <text x="600" y="72" font-family="'Segoe UI', Arial, sans-serif" font-size="38" font-weight="800" fill="#ffffff" text-anchor="middle" letter-spacing="0.5">Basis Points</text>
+  <text x="600" y="72" font-family="'Segoe UI', Arial, sans-serif" font-size="38" font-weight="800" fill="#ffffff" text-anchor="middle" letter-spacing="0.5" opacity="0"> </text>
+
+  <!-- Title line 2 with "vs" styled differently -->
+  <text x="600" y="115" font-family="'Segoe UI', Arial, sans-serif" font-size="38" font-weight="800" fill="#ffffff" text-anchor="middle" letter-spacing="0.5">
+    <tspan fill="#3b9eff">bps</tspan>
+    <tspan fill="#aaaaaa" font-size="30" font-weight="400"> vs </tspan>
+    <tspan fill="#4ade80">Percentage Points</tspan>
+  </text>
+
+  <!-- Thin separator line -->
+  <line x1="200" y1="135" x2="1000" y2="135" stroke="#ffffff" stroke-width="0.5" stroke-opacity="0.2"/>
+
+  <!-- ===== LEFT PANEL — Basis Points ===== -->
+  <!-- Panel background -->
+  <rect x="60" y="155" width="460" height="370" rx="16" fill="url(#leftPanelGrad)" stroke="#3b9eff" stroke-width="1.5" stroke-opacity="0.6"/>
+  <!-- Inner glow border -->
+  <rect x="60" y="155" width="460" height="370" rx="16" fill="none" stroke="#3b9eff" stroke-width="8" stroke-opacity="0.08"/>
+
+  <!-- Panel label pill -->
+  <rect x="220" y="142" width="160" height="30" rx="15" fill="#3b9eff"/>
+  <text x="300" y="162" font-family="'Segoe UI', Arial, sans-serif" font-size="13" font-weight="700" fill="#ffffff" text-anchor="middle" letter-spacing="1">BASIS POINTS</text>
+
+  <!-- BPS symbol/icon area -->
+  <!-- Chart bars icon -->
+  <rect x="122" y="220" width="18" height="50" rx="3" fill="#3b9eff" opacity="0.5"/>
+  <rect x="148" y="200" width="18" height="70" rx="3" fill="#3b9eff" opacity="0.7"/>
+  <rect x="174" y="185" width="18" height="85" rx="3" fill="#3b9eff" opacity="0.9"/>
+  <rect x="200" y="210" width="18" height="60" rx="3" fill="#3b9eff" opacity="0.6"/>
+  <!-- Upward trend line -->
+  <polyline points="122,268 148,265 174,240 200,235 230,210" fill="none" stroke="#7dd3fc" stroke-width="2.5" stroke-linecap="round"/>
+  <circle cx="230" cy="210" r="5" fill="#7dd3fc"/>
+
+  <!-- Main value -->
+  <text x="390" y="255" font-family="'Segoe UI', Arial, sans-serif" font-size="72" font-weight="900" fill="#3b9eff" text-anchor="middle" filter="url(#glow)">0.01%</text>
+
+  <!-- Label -->
+  <text x="290" y="310" font-family="'Segoe UI', Arial, sans-serif" font-size="15" font-weight="600" fill="#7dd3fc" text-anchor="middle" letter-spacing="1">PER BASIS POINT</text>
+
+  <!-- Divider -->
+  <line x1="100" y1="335" x2="480" y2="335" stroke="#3b9eff" stroke-width="0.8" stroke-opacity="0.3"/>
+
+  <!-- Formula -->
+  <text x="290" y="370" font-family="'Segoe UI', Arial, sans-serif" font-size="17" fill="#94c8f5" text-anchor="middle">
+    <tspan font-weight="700" fill="#ffffff">1 bps</tspan> = 0.01% = 0.0001
+  </text>
+
+  <!-- Bullet points -->
+  <circle cx="110" cy="406" r="4" fill="#3b9eff"/>
+  <text x="124" y="411" font-family="'Segoe UI', Arial, sans-serif" font-size="14" fill="#94c8f5">Used in interest rates &amp; bond yields</text>
+
+  <circle cx="110" cy="436" r="4" fill="#3b9eff"/>
+  <text x="124" y="441" font-family="'Segoe UI', Arial, sans-serif" font-size="14" fill="#94c8f5">Fed rate moves: 25, 50, 75 bps</text>
+
+  <circle cx="110" cy="466" r="4" fill="#3b9eff"/>
+  <text x="124" y="471" font-family="'Segoe UI', Arial, sans-serif" font-size="14" fill="#94c8f5">Precision for small rate changes</text>
+
+  <!-- ===== CENTER DIVIDER ===== -->
+  <!-- NOT EQUAL symbol -->
+  <circle cx="600" cy="340" r="52" fill="#1a2a3a" stroke="#ffffff" stroke-width="1.5" stroke-opacity="0.2"/>
+  <text x="600" y="360" font-family="'Segoe UI', Arial, sans-serif" font-size="54" font-weight="900" fill="#f59e0b" text-anchor="middle" filter="url(#glow)">≠</text>
+
+  <!-- Connecting lines -->
+  <line x1="520" y1="340" x2="548" y2="340" stroke="#555" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <line x1="652" y1="340" x2="680" y2="340" stroke="#555" stroke-width="1.5" stroke-dasharray="4,3"/>
+
+  <!-- Scale indicator between panels -->
+  <text x="600" y="410" font-family="'Segoe UI', Arial, sans-serif" font-size="11" fill="#888888" text-anchor="middle" letter-spacing="0.5">SCALE DIFFERS BY</text>
+  <text x="600" y="428" font-family="'Segoe UI', Arial, sans-serif" font-size="18" font-weight="800" fill="#f59e0b" text-anchor="middle">100×</text>
+
+  <!-- ===== RIGHT PANEL — Percentage Points ===== -->
+  <rect x="680" y="155" width="460" height="370" rx="16" fill="url(#rightPanelGrad)" stroke="#4ade80" stroke-width="1.5" stroke-opacity="0.6"/>
+  <rect x="680" y="155" width="460" height="370" rx="16" fill="none" stroke="#4ade80" stroke-width="8" stroke-opacity="0.08"/>
+
+  <!-- Panel label pill -->
+  <rect x="820" y="142" width="200" height="30" rx="15" fill="#16a34a"/>
+  <text x="920" y="162" font-family="'Segoe UI', Arial, sans-serif" font-size="13" font-weight="700" fill="#ffffff" text-anchor="middle" letter-spacing="1">PERCENTAGE POINTS</text>
+
+  <!-- Chart bars icon — taller/bigger to show larger scale -->
+  <rect x="722" y="205" width="18" height="65" rx="3" fill="#4ade80" opacity="0.4"/>
+  <rect x="748" y="185" width="18" height="85" rx="3" fill="#4ade80" opacity="0.6"/>
+  <rect x="774" y="165" width="18" height="105" rx="3" fill="#4ade80" opacity="0.8"/>
+  <rect x="800" y="190" width="18" height="80" rx="3" fill="#4ade80" opacity="0.5"/>
+  <!-- Upward trend line -->
+  <polyline points="722,268 748,265 774,240 800,238 830,210" fill="none" stroke="#86efac" stroke-width="2.5" stroke-linecap="round"/>
+  <circle cx="830" cy="210" r="5" fill="#86efac"/>
+
+  <!-- Main value -->
+  <text x="990" y="255" font-family="'Segoe UI', Arial, sans-serif" font-size="72" font-weight="900" fill="#4ade80" text-anchor="middle" filter="url(#glow)">1.00%</text>
+
+  <!-- Label -->
+  <text x="890" y="310" font-family="'Segoe UI', Arial, sans-serif" font-size="15" font-weight="600" fill="#86efac" text-anchor="middle" letter-spacing="1">PER PERCENTAGE POINT</text>
+
+  <!-- Divider -->
+  <line x1="720" y1="335" x2="1100" y2="335" stroke="#4ade80" stroke-width="0.8" stroke-opacity="0.3"/>
+
+  <!-- Formula -->
+  <text x="890" y="370" font-family="'Segoe UI', Arial, sans-serif" font-size="17" fill="#86efac" text-anchor="middle">
+    <tspan font-weight="700" fill="#ffffff">1 pp</tspan> = 1.00% = 0.01
+  </text>
+
+  <!-- Bullet points -->
+  <circle cx="730" cy="406" r="4" fill="#4ade80"/>
+  <text x="744" y="411" font-family="'Segoe UI', Arial, sans-serif" font-size="14" fill="#86efac">Used in economics &amp; statistics</text>
+
+  <circle cx="730" cy="436" r="4" fill="#4ade80"/>
+  <text x="744" y="441" font-family="'Segoe UI', Arial, sans-serif" font-size="14" fill="#86efac">Broad rate comparisons</text>
+
+  <circle cx="730" cy="466" r="4" fill="#4ade80"/>
+  <text x="744" y="471" font-family="'Segoe UI', Arial, sans-serif" font-size="14" fill="#86efac">100× larger than 1 basis point</text>
+
+  <!-- ===== BOTTOM FORMULA BAR ===== -->
+  <rect x="60" y="548" width="1080" height="58" rx="12" fill="#0f2d50" stroke="#3b9eff" stroke-width="1" stroke-opacity="0.4"/>
+
+  <!-- Formula text -->
+  <text x="600" y="584" font-family="'Segoe UI', Arial, sans-serif" font-size="22" font-weight="700" fill="#ffffff" text-anchor="middle">
+    <tspan fill="#3b9eff">100 basis points (bps)</tspan>
+    <tspan fill="#f59e0b"> = </tspan>
+    <tspan fill="#4ade80">1 percentage point (pp)</tspan>
+    <tspan fill="#f59e0b"> = </tspan>
+    <tspan fill="#ffffff">1.00%</tspan>
+  </text>
+
+  <!-- ===== WATERMARK / SITE LABEL ===== -->
+  <text x="600" y="622" font-family="'Segoe UI', Arial, sans-serif" font-size="12" fill="#ffffff" text-anchor="middle" opacity="0.35" letter-spacing="2">BASISPOINTCALCULATOR.COM</text>
+
+</svg>
