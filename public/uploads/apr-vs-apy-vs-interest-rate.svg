@@ -104,7 +104,7 @@
   <rect x="885" y="150" width="210" height="28" rx="14" fill="#16a34a"/>
   <text x="990" y="168" font-family="'Segoe UI',Arial,sans-serif" font-size="13" font-weight="700" fill="#ffffff" text-anchor="middle" letter-spacing="0.5">APY</text>
 
-  <text x="990" y="228" font-family="'Segoe UI',Arial,sans-serif" font-size="52" font-weight="900" fill="#4ade80" text-anchor="middle" filter="url(#glow)">∞%</text>
+  <text x="990" y="228" font-family="'Segoe UI',Arial,sans-serif" font-size="52" font-weight="900" fill="#4ade80" text-anchor="middle" filter="url(#glow)">&#x221E;%</text>
   <text x="990" y="260" font-family="'Segoe UI',Arial,sans-serif" font-size="15" font-weight="700" fill="#86efac" text-anchor="middle">Rate + Compounding</text>
 
   <line x1="845" y1="275" x2="1135" y2="275" stroke="#4ade80" stroke-width="0.6" stroke-opacity="0.3"/>
@@ -112,7 +112,7 @@
   <circle cx="848" cy="300" r="4" fill="#4ade80"/>
   <text x="862" y="305" font-family="'Segoe UI',Arial,sans-serif" font-size="13" fill="#dcfce7">Includes compounding effect</text>
   <circle cx="848" cy="328" r="4" fill="#4ade80"/>
-  <text x="862" y="333" font-family="'Segoe UI',Arial,sans-serif" font-size="13" fill="#dcfce7">Always ≥ interest rate</text>
+  <text x="862" y="333" font-family="'Segoe UI',Arial,sans-serif" font-size="13" fill="#dcfce7">Always &#x2265; interest rate</text>
   <circle cx="848" cy="356" r="4" fill="#4ade80"/>
   <text x="862" y="361" font-family="'Segoe UI',Arial,sans-serif" font-size="13" fill="#dcfce7">No fees included</text>
   <circle cx="848" cy="384" r="4" fill="#4ade80"/>
@@ -128,6 +128,6 @@
   <text x="990" y="528" font-family="'Segoe UI',Arial,sans-serif" font-size="12" fill="#475569" text-anchor="middle">and investment returns</text>
 
   <!-- Bottom rule -->
-  <text x="600" y="574" font-family="'Segoe UI',Arial,sans-serif" font-size="13" fill="#475569" text-anchor="middle">Interest Rate ≤ APY &nbsp;|&nbsp; Interest Rate ≤ APR &nbsp;|&nbsp; APR and APY are not directly comparable</text>
+  <text x="600" y="574" font-family="'Segoe UI',Arial,sans-serif" font-size="13" fill="#475569" text-anchor="middle">Interest Rate &#x2264; APY   |   Interest Rate &#x2264; APR   |   APR and APY are not directly comparable</text>
   <text x="600" y="618" font-family="'Segoe UI',Arial,sans-serif" font-size="10" fill="#ffffff" text-anchor="middle" opacity="0.2" letter-spacing="2">BASISPOINTCALCULATOR.COM</text>
 </svg>
