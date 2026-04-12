@@ -49,7 +49,7 @@ const allItems: GuideItem[] = [
     url: `/guides/${p.id}/`,
     image: p.data.image,
     category: p.data.category || "Article",
-    readTime: `${Math.max(1, Math.round((p.data.description || "").split(/\s+/).length / 200))} min read`,
+    readTime: `${Math.max(1, Math.round(((p.body || "").split(/\s+/).length) / 200))} min read`,
     date:
       p.data.date instanceof Date
         ? p.data.date.toISOString().split("T")[0]

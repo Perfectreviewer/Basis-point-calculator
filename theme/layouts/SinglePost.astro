@@ -54,8 +54,8 @@ const dateFormat = new Intl.DateTimeFormat("en-US", {
 
 <Layout
   img={entry.data.image || "/images/og-image.jpg"}
-  title={entry.data.title + " | " + indexTranslations.en.site_title}
-  description={entry.data.description}
+  title={entry.data.seoTitle || (entry.data.title + " | " + indexTranslations.en.site_title)}
+  description={entry.data.ogDescription || entry.data.description}
 >
   <!-- Schema.org JSON-LD -->
   <script

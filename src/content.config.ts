@@ -17,6 +17,13 @@ const blog = defineCollection({
         date: z.date().or(z.string().transform(str => new Date(str))),
         author: z.string().optional(),
         category: z.string().optional(),
+        status: z.string().optional(),
+        visibility: z.string().optional(),
+        seoKeywords: z.string().optional(),
+        seoTitle: z.string().optional(),
+        ogTitle: z.string().optional(),
+        ogDescription: z.string().optional(),
+        tags: z.string().optional(),
     }),
     loader: glob({ pattern: "**/*.{md,mdx}", base: blogBase }),
 });

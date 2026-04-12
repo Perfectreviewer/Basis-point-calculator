@@ -19,63 +19,129 @@ const pageDescription =
 ---
 
 <Layout title={seoTitle} description={pageDescription}>
-  <h1 class="font-semibold text-slate-800 text-3xl">{pageTitle}</h1>
 
-  <section class="mt-4 space-y-5 text-slate-700">
-    <p>
-      <strong
-        >BasisPointCalculator.com grew out of countless "what's 25 bps in
+  <!-- Hero -->
+  <div class="relative overflow-hidden bg-gradient-to-br from-sky-50 via-white to-slate-50 border border-sky-100 rounded-2xl px-8 py-12 mb-8">
+    <div class="absolute -top-20 -right-20 w-64 h-64 bg-sky-100 rounded-full opacity-40 pointer-events-none"></div>
+    <div class="absolute -bottom-16 -left-16 w-48 h-48 bg-slate-100 rounded-full opacity-30 pointer-events-none"></div>
+    <div class="relative">
+      <span class="inline-block bg-sky-100 text-sky-700 text-xs font-bold tracking-widest uppercase px-3 py-1 rounded-full mb-5">About</span>
+      <h1 class="text-4xl font-bold text-slate-900 mb-5">{pageTitle}</h1>
+      <p class="text-lg font-semibold text-slate-800 max-w-2xl leading-relaxed">
+        BasisPointCalculator.com grew out of countless "what's 25 bps in
         percent again?" moments while comparing rates, fees, and tiny changes
         that matter. Everyone had different spreadsheets and shortcuts—so I made
-        a clean, fast calculator that makes bps obvious.</strong
-      >
-
-      <p>
+        a clean, fast calculator that makes bps obvious.
+      </p>
+      <p class="mt-4 text-slate-600 max-w-2xl leading-relaxed">
         The goal is clarity: type a value and instantly convert bps ⇄ percent ⇄
         permille ⇄ decimal, or figure out <em>x</em> bps of any amount (helpful for
         fees/commissions). No clutter, no sign-up walls—just answers you can trust
         and double-check.
       </p>
+    </div>
+  </div>
 
-      <h2 class="text-2xl font-semibold text-slate-800">What I care about</h2>
-      <ul class="list-disc pl-6 space-y-2">
-        <li>
-          <strong>Accuracy first.</strong> Conversions and formulas are transparent
+  <!-- What I care about -->
+  <section class="mb-8">
+    <h2 class="text-2xl font-bold text-slate-800 mb-5">What I care about</h2>
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+
+      <div class="bg-white border border-slate-100 rounded-xl p-5 shadow-sm flex gap-4 items-start">
+        <div class="flex-shrink-0 w-10 h-10 bg-sky-50 rounded-lg flex items-center justify-center text-sky-600">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+          </svg>
+        </div>
+        <p class="text-slate-700 leading-relaxed">
+          <strong class="text-slate-900">Accuracy first.</strong> Conversions and formulas are transparent
           (e.g., commission = amount × (bps ÷ 10,000)).
-        </li>
-        <li>
-          <strong>Privacy by default.</strong> Inputs are handled client-side; you
+        </p>
+      </div>
+
+      <div class="bg-white border border-slate-100 rounded-xl p-5 shadow-sm flex gap-4 items-start">
+        <div class="flex-shrink-0 w-10 h-10 bg-sky-50 rounded-lg flex items-center justify-center text-sky-600">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+          </svg>
+        </div>
+        <p class="text-slate-700 leading-relaxed">
+          <strong class="text-slate-900">Privacy by default.</strong> Inputs are handled client-side; you
           shouldn't need an account to do basic math.
-        </li>
-        <li>
-          <strong>Speed & clarity.</strong> Interface stays readable and fast—even
+        </p>
+      </div>
+
+      <div class="bg-white border border-slate-100 rounded-xl p-5 shadow-sm flex gap-4 items-start">
+        <div class="flex-shrink-0 w-10 h-10 bg-sky-50 rounded-lg flex items-center justify-center text-sky-600">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+          </svg>
+        </div>
+        <p class="text-slate-700 leading-relaxed">
+          <strong class="text-slate-900">Speed & clarity.</strong> Interface stays readable and fast—even
           on mid-range phones and spotty networks.
-        </li>
-        <li>
-          <strong>Accessibility.</strong> Keyboard-friendly controls, sensible focus
+        </p>
+      </div>
+
+      <div class="bg-white border border-slate-100 rounded-xl p-5 shadow-sm flex gap-4 items-start">
+        <div class="flex-shrink-0 w-10 h-10 bg-sky-50 rounded-lg flex items-center justify-center text-sky-600">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+            <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+          </svg>
+        </div>
+        <p class="text-slate-700 leading-relaxed">
+          <strong class="text-slate-900">Accessibility.</strong> Keyboard-friendly controls, sensible focus
           states, and readable typography are non-negotiable.
-        </li>
-      </ul>
+        </p>
+      </div>
 
-      <h2 class="text-2xl font-semibold text-slate-800">Where this is going</h2>
-      <ul class="list-disc pl-6 space-y-2">
-        <li>Rate-change & spread helpers (e.g., "from A% to B% = ? bps")</li>
-        <li>"Dollar value of bps" quick math for amounts (handy for fees)</li>
-        <li>Saved scenarios and CSV/PDF export</li>
-        <li>Keyboard shortcuts and dark mode</li>
-        <li>More finance micro-tools in the same clean style</li>
-      </ul>
-
-      <h2 class="text-2xl font-semibold text-slate-800">Say hello</h2>
-      <p>
-        Got feedback, a bug, or a feature idea? I'd love to hear it. The best
-        way to reach me is the <a
-          href="/contact-us/"
-          class="text-sky-800 hover:underline">contact page</a
-        >. Your notes help keep the tool sharp and genuinely useful.
-      </p>
-
-      <p class="text-slate-500 text-sm">Last updated: November 4, 2025</p>
-    </p>
+    </div>
   </section>
+
+  <!-- Where this is going -->
+  <section class="mb-8">
+    <h2 class="text-2xl font-bold text-slate-800 mb-5">Where this is going</h2>
+    <div class="bg-white border border-slate-100 rounded-xl shadow-sm overflow-hidden">
+      <div class="flex items-center gap-3 px-5 py-4 border-b border-slate-50">
+        <span class="flex-shrink-0 w-2 h-2 bg-sky-500 rounded-full"></span>
+        <span class="text-slate-700">Rate-change &amp; spread helpers (e.g., "from A% to B% = ? bps")</span>
+      </div>
+      <div class="flex items-center gap-3 px-5 py-4 border-b border-slate-50 bg-slate-50/40">
+        <span class="flex-shrink-0 w-2 h-2 bg-sky-500 rounded-full"></span>
+        <span class="text-slate-700">"Dollar value of bps" quick math for amounts (handy for fees)</span>
+      </div>
+      <div class="flex items-center gap-3 px-5 py-4 border-b border-slate-50">
+        <span class="flex-shrink-0 w-2 h-2 bg-sky-500 rounded-full"></span>
+        <span class="text-slate-700">Saved scenarios and CSV/PDF export</span>
+      </div>
+      <div class="flex items-center gap-3 px-5 py-4 border-b border-slate-50 bg-slate-50/40">
+        <span class="flex-shrink-0 w-2 h-2 bg-sky-500 rounded-full"></span>
+        <span class="text-slate-700">Keyboard shortcuts and dark mode</span>
+      </div>
+      <div class="flex items-center gap-3 px-5 py-4">
+        <span class="flex-shrink-0 w-2 h-2 bg-sky-500 rounded-full"></span>
+        <span class="text-slate-700">More finance micro-tools in the same clean style</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Say hello -->
+  <section class="bg-gradient-to-br from-slate-800 to-slate-900 rounded-2xl px-8 py-10 text-center">
+    <div class="w-12 h-12 bg-sky-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-sky-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+      </svg>
+    </div>
+    <h2 class="text-2xl font-bold text-white mb-3">Say hello</h2>
+    <p class="text-slate-300 max-w-lg mx-auto leading-relaxed">
+      Got feedback, a bug, or a feature idea? I'd love to hear it. The best
+      way to reach me is the <a
+        href="/contact-us/"
+        class="text-sky-400 hover:text-sky-300 underline underline-offset-2">contact page</a
+      >. Your notes help keep the tool sharp and genuinely useful.
+    </p>
+    <p class="text-slate-500 text-sm mt-6">Last updated: November 4, 2025</p>
+  </section>
+
 </Layout>
