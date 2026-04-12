@@ -24,10 +24,24 @@ export default defineConfig({
   },
 
   redirects: {
+    // Existing
     '/guides/what-are-basis-points/': '/bps-calculators/basis-point-guide/',
     '/en/bps-calculators-page-list/': '/bps-calculators/',
     '/en/bps/basis-point-faq/': '/faq/basis-point-faq/',
     '/bn/bps/': '/bn/bps-calculators/',
+
+    // Old root pages → canonical legal pages
+    '/terms/': '/legal/terms-and-conditions/',
+    '/privacy/': '/legal/privacy-policy/',
+    '/about/contact/': '/contact-us/',
+
+    // Localized old URLs → canonical localized pages (dynamic redirects)
+    '/[lang]/terms/': '/[lang]/legal/terms-and-conditions/',
+    '/[lang]/privacy/': '/[lang]/legal/privacy-policy/',
+    '/[lang]/about/contact/': '/[lang]/contact-us/',
+
+    // Localized sitemap hits → HTML sitemap
+    '/[lang]/sitemap/': '/sitemap/',
   },
 
   integrations: [
