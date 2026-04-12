@@ -1,0 +1,204 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0a1f3d"/>
+      <stop offset="60%" style="stop-color:#0d2a4a"/>
+      <stop offset="100%" style="stop-color:#091c35"/>
+    </linearGradient>
+    <linearGradient id="leftG" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#052e16"/>
+      <stop offset="100%" style="stop-color:#04200f"/>
+    </linearGradient>
+    <linearGradient id="rightG" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0f3060"/>
+      <stop offset="100%" style="stop-color:#1a4070"/>
+    </linearGradient>
+    <linearGradient id="bar1" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#10b981"/>
+      <stop offset="100%" style="stop-color:#34d399"/>
+    </linearGradient>
+    <linearGradient id="bar2" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#3b82f6"/>
+      <stop offset="100%" style="stop-color:#60a5fa"/>
+    </linearGradient>
+    <linearGradient id="bar3" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#6366f1"/>
+      <stop offset="100%" style="stop-color:#818cf8"/>
+    </linearGradient>
+    <linearGradient id="bar4" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#8b5cf6"/>
+      <stop offset="100%" style="stop-color:#a78bfa"/>
+    </linearGradient>
+    <linearGradient id="bar5" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#f59e0b"/>
+      <stop offset="100%" style="stop-color:#fbbf24"/>
+    </linearGradient>
+    <linearGradient id="bar6" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#f97316"/>
+      <stop offset="100%" style="stop-color:#fb923c"/>
+    </linearGradient>
+    <linearGradient id="bar7" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#ef4444"/>
+      <stop offset="100%" style="stop-color:#f87171"/>
+    </linearGradient>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#ffffff" stroke-width="0.3" stroke-opacity="0.05"/>
+    </pattern>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+      <feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect width="1200" height="630" fill="url(#grid)"/>
+
+  <!-- Decorative circles -->
+  <circle cx="0" cy="0" r="300" fill="none" stroke="#10b981" stroke-width="1" stroke-opacity="0.07"/>
+  <circle cx="1200" cy="630" r="300" fill="none" stroke="#3b82f6" stroke-width="1" stroke-opacity="0.07"/>
+
+  <!-- Top accent bar -->
+  <rect x="0" y="0" width="1200" height="5" fill="#10b981"/>
+
+  <!-- Header -->
+  <text x="600" y="55" font-family="'Segoe UI',Arial,sans-serif" font-size="15" font-weight="700" fill="#64748b" text-anchor="middle" letter-spacing="3">INVESTMENT FEE GUIDE</text>
+  <text x="600" y="98" font-family="'Segoe UI',Arial,sans-serif" font-size="40" font-weight="900" fill="#ffffff" text-anchor="middle">Basis Points in Investment Fees</text>
+  <text x="600" y="128" font-family="'Segoe UI',Arial,sans-serif" font-size="16" fill="#64748b" text-anchor="middle">ETFs · Mutual Funds · Advisors · Hedge Funds — Every Fee in BPS</text>
+
+  <line x1="100" y1="146" x2="1100" y2="146" stroke="#1e3a5f" stroke-width="1"/>
+
+  <!-- ===== LEFT PANEL: The Fee Spectrum ===== -->
+  <rect x="50" y="162" width="510" height="390" rx="14" fill="url(#leftG)" stroke="#10b981" stroke-width="1.5" stroke-opacity="0.6"/>
+
+  <!-- Left pill -->
+  <rect x="130" y="150" width="250" height="28" rx="14" fill="#065f46"/>
+  <text x="255" y="168" font-family="'Segoe UI',Arial,sans-serif" font-size="13" font-weight="700" fill="#ffffff" text-anchor="middle" letter-spacing="0.5">THE FEE SPECTRUM</text>
+
+  <!-- Left subtitle -->
+  <text x="305" y="188" font-family="'Segoe UI',Arial,sans-serif" font-size="12" fill="#64748b" text-anchor="middle">Annual fee by investment type · basis points (BPS)</text>
+
+  <line x1="68" y1="198" x2="542" y2="198" stroke="#10b981" stroke-width="0.5" stroke-opacity="0.3"/>
+
+  <!-- Bar rows: bar top y, bar height=22, row spacing=42px, start y=207 -->
+  <!-- Labels right-aligned at x=228; bars start x=235; scale: 200 BPS = 240px → 1 BPS = 1.2px -->
+
+  <!-- Row 1 — Index ETF: ~9 BPS → 20px min width -->
+  <text x="228" y="223" font-family="'Segoe UI',Arial,sans-serif" font-size="12" fill="#a7f3d0" text-anchor="end">Index ETF</text>
+  <rect x="235" y="210" width="20" height="20" rx="4" fill="url(#bar1)"/>
+  <text x="260" y="224" font-family="'Segoe UI',Arial,sans-serif" font-size="11" font-weight="700" fill="#34d399">3–15 BPS</text>
+  <text x="540" y="224" font-family="'Segoe UI',Arial,sans-serif" font-size="10" fill="#34d399" text-anchor="end" opacity="0.7">Excellent</text>
+
+  <!-- Row 2 — Index Mutual Fund: 30 BPS → 36px -->
+  <text x="228" y="265" font-family="'Segoe UI',Arial,sans-serif" font-size="12" fill="#93c5fd" text-anchor="end">Index Mutual Fund</text>
+  <rect x="235" y="252" width="36" height="20" rx="4" fill="url(#bar2)"/>
+  <text x="276" y="266" font-family="'Segoe UI',Arial,sans-serif" font-size="11" font-weight="700" fill="#60a5fa">20–40 BPS</text>
+  <text x="540" y="266" font-family="'Segoe UI',Arial,sans-serif" font-size="10" fill="#60a5fa" text-anchor="end" opacity="0.7">Very Low</text>
+
+  <!-- Row 3 — Robo-Advisor: 40 BPS → 48px -->
+  <text x="228" y="307" font-family="'Segoe UI',Arial,sans-serif" font-size="12" fill="#c4b5fd" text-anchor="end">Robo-Advisor</text>
+  <rect x="235" y="294" width="48" height="20" rx="4" fill="url(#bar3)"/>
+  <text x="288" y="308" font-family="'Segoe UI',Arial,sans-serif" font-size="11" font-weight="700" fill="#818cf8">30–50 BPS</text>
+  <text x="540" y="308" font-family="'Segoe UI',Arial,sans-serif" font-size="10" fill="#818cf8" text-anchor="end" opacity="0.7">Low</text>
+
+  <!-- Row 4 — Active ETF: 75 BPS → 90px -->
+  <text x="228" y="349" font-family="'Segoe UI',Arial,sans-serif" font-size="12" fill="#ddd6fe" text-anchor="end">Active ETF</text>
+  <rect x="235" y="336" width="90" height="20" rx="4" fill="url(#bar4)"/>
+  <text x="330" y="350" font-family="'Segoe UI',Arial,sans-serif" font-size="11" font-weight="700" fill="#a78bfa">50–100 BPS</text>
+  <text x="540" y="350" font-family="'Segoe UI',Arial,sans-serif" font-size="10" fill="#a78bfa" text-anchor="end" opacity="0.7">Moderate</text>
+
+  <!-- Row 5 — Financial Advisor: 100 BPS → 120px -->
+  <text x="228" y="391" font-family="'Segoe UI',Arial,sans-serif" font-size="12" fill="#fde68a" text-anchor="end">Financial Advisor</text>
+  <rect x="235" y="378" width="120" height="20" rx="4" fill="url(#bar5)"/>
+  <text x="360" y="392" font-family="'Segoe UI',Arial,sans-serif" font-size="11" font-weight="700" fill="#fbbf24">75–125 BPS</text>
+  <text x="540" y="392" font-family="'Segoe UI',Arial,sans-serif" font-size="10" fill="#fbbf24" text-anchor="end" opacity="0.7">Monitor</text>
+
+  <!-- Row 6 — Active Mutual Fund: 112 BPS → 134px -->
+  <text x="228" y="433" font-family="'Segoe UI',Arial,sans-serif" font-size="12" fill="#fed7aa" text-anchor="end">Active Mutual Fund</text>
+  <rect x="235" y="420" width="134" height="20" rx="4" fill="url(#bar6)"/>
+  <text x="374" y="434" font-family="'Segoe UI',Arial,sans-serif" font-size="11" font-weight="700" fill="#fb923c">75–150 BPS</text>
+  <text x="540" y="434" font-family="'Segoe UI',Arial,sans-serif" font-size="10" fill="#fb923c" text-anchor="end" opacity="0.7">High</text>
+
+  <!-- Row 7 — Hedge Fund: 200 BPS → 240px -->
+  <text x="228" y="475" font-family="'Segoe UI',Arial,sans-serif" font-size="12" fill="#fca5a5" text-anchor="end">Hedge Fund</text>
+  <rect x="235" y="462" width="240" height="20" rx="4" fill="url(#bar7)"/>
+  <text x="480" y="476" font-family="'Segoe UI',Arial,sans-serif" font-size="11" font-weight="700" fill="#f87171">200+ BPS</text>
+  <text x="540" y="476" font-family="'Segoe UI',Arial,sans-serif" font-size="10" fill="#f87171" text-anchor="end" opacity="0.7">Very High</text>
+
+  <!-- Left note box -->
+  <rect x="65" y="496" width="480" height="48" rx="10" fill="#031a0e" stroke="#10b981" stroke-width="0.8" stroke-opacity="0.5"/>
+  <text x="305" y="516" font-family="'Segoe UI',Arial,sans-serif" font-size="12" font-weight="700" fill="#10b981" text-anchor="middle">1 BPS = 0.01% · Lower fees compound into higher long-term wealth</text>
+  <text x="305" y="534" font-family="'Segoe UI',Arial,sans-serif" font-size="11" fill="#64748b" text-anchor="middle">Compare all-in costs — advisor fee + fund expense ratio combined</text>
+
+  <!-- ===== RIGHT PANEL: Dollar Impact Table ===== -->
+  <rect x="640" y="162" width="510" height="390" rx="14" fill="url(#rightG)" stroke="#3b82f6" stroke-width="1.5" stroke-opacity="0.6"/>
+
+  <!-- Right pill -->
+  <rect x="720" y="150" width="260" height="28" rx="14" fill="#1d4ed8"/>
+  <text x="850" y="168" font-family="'Segoe UI',Arial,sans-serif" font-size="13" font-weight="700" fill="#ffffff" text-anchor="middle" letter-spacing="0.5">DOLLAR IMPACT</text>
+
+  <!-- Right subtitle -->
+  <text x="895" y="188" font-family="'Segoe UI',Arial,sans-serif" font-size="12" fill="#64748b" text-anchor="middle">Annual fee cost on a $500,000 portfolio</text>
+
+  <!-- Table header -->
+  <rect x="658" y="196" width="476" height="30" rx="6" fill="#0a1e40"/>
+  <text x="735" y="215" font-family="'Segoe UI',Arial,sans-serif" font-size="12" font-weight="700" fill="#7dd3fc" text-anchor="middle">Fee</text>
+  <text x="838" y="215" font-family="'Segoe UI',Arial,sans-serif" font-size="12" font-weight="700" fill="#7dd3fc" text-anchor="middle">Per Year</text>
+  <text x="968" y="215" font-family="'Segoe UI',Arial,sans-serif" font-size="12" font-weight="700" fill="#7dd3fc" text-anchor="middle">10-Year Cost*</text>
+  <text x="1090" y="215" font-family="'Segoe UI',Arial,sans-serif" font-size="12" font-weight="700" fill="#7dd3fc" text-anchor="middle">Rating</text>
+
+  <!-- Row 1: 5 BPS -->
+  <rect x="658" y="226" width="476" height="34" rx="0" fill="#0f3060" fill-opacity="0.25"/>
+  <text x="735" y="247" font-family="'Segoe UI',Arial,sans-serif" font-size="13" font-weight="700" fill="#34d399" text-anchor="middle">5 BPS</text>
+  <text x="838" y="247" font-family="'Segoe UI',Arial,sans-serif" font-size="13" fill="#ffffff" text-anchor="middle">$250</text>
+  <text x="968" y="247" font-family="'Segoe UI',Arial,sans-serif" font-size="13" fill="#ffffff" text-anchor="middle">~$3,600</text>
+  <text x="1090" y="247" font-family="'Segoe UI',Arial,sans-serif" font-size="11" font-weight="700" fill="#34d399" text-anchor="middle">Excellent</text>
+
+  <!-- Row 2: 15 BPS -->
+  <text x="735" y="281" font-family="'Segoe UI',Arial,sans-serif" font-size="13" font-weight="700" fill="#60a5fa" text-anchor="middle">15 BPS</text>
+  <text x="838" y="281" font-family="'Segoe UI',Arial,sans-serif" font-size="13" fill="#ffffff" text-anchor="middle">$750</text>
+  <text x="968" y="281" font-family="'Segoe UI',Arial,sans-serif" font-size="13" fill="#ffffff" text-anchor="middle">~$10,800</text>
+  <text x="1090" y="281" font-family="'Segoe UI',Arial,sans-serif" font-size="11" font-weight="700" fill="#60a5fa" text-anchor="middle">Very Low</text>
+  <line x1="658" y1="294" x2="1134" y2="294" stroke="#ffffff" stroke-width="0.3" stroke-opacity="0.06"/>
+
+  <!-- Row 3: 40 BPS -->
+  <rect x="658" y="294" width="476" height="34" rx="0" fill="#0f3060" fill-opacity="0.25"/>
+  <text x="735" y="315" font-family="'Segoe UI',Arial,sans-serif" font-size="13" font-weight="700" fill="#818cf8" text-anchor="middle">40 BPS</text>
+  <text x="838" y="315" font-family="'Segoe UI',Arial,sans-serif" font-size="13" fill="#ffffff" text-anchor="middle">$2,000</text>
+  <text x="968" y="315" font-family="'Segoe UI',Arial,sans-serif" font-size="13" fill="#ffffff" text-anchor="middle">~$28,800</text>
+  <text x="1090" y="315" font-family="'Segoe UI',Arial,sans-serif" font-size="11" font-weight="700" fill="#818cf8" text-anchor="middle">Reasonable</text>
+
+  <!-- Row 4: 75 BPS (highlighted) -->
+  <rect x="658" y="328" width="476" height="34" rx="0" fill="#1a2800" fill-opacity="0.7"/>
+  <text x="735" y="349" font-family="'Segoe UI',Arial,sans-serif" font-size="13" font-weight="700" fill="#fbbf24" text-anchor="middle">75 BPS</text>
+  <text x="838" y="349" font-family="'Segoe UI',Arial,sans-serif" font-size="13" font-weight="700" fill="#fbbf24" text-anchor="middle">$3,750</text>
+  <text x="968" y="349" font-family="'Segoe UI',Arial,sans-serif" font-size="13" font-weight="700" fill="#fbbf24" text-anchor="middle">~$54,000</text>
+  <text x="1090" y="349" font-family="'Segoe UI',Arial,sans-serif" font-size="11" font-weight="700" fill="#fbbf24" text-anchor="middle">Monitor</text>
+
+  <!-- Row 5: 100 BPS -->
+  <rect x="658" y="362" width="476" height="34" rx="0" fill="#0f3060" fill-opacity="0.25"/>
+  <text x="735" y="383" font-family="'Segoe UI',Arial,sans-serif" font-size="13" font-weight="700" fill="#fb923c" text-anchor="middle">100 BPS</text>
+  <text x="838" y="383" font-family="'Segoe UI',Arial,sans-serif" font-size="13" fill="#ffffff" text-anchor="middle">$5,000</text>
+  <text x="968" y="383" font-family="'Segoe UI',Arial,sans-serif" font-size="13" fill="#ffffff" text-anchor="middle">~$72,000</text>
+  <text x="1090" y="383" font-family="'Segoe UI',Arial,sans-serif" font-size="11" font-weight="700" fill="#fb923c" text-anchor="middle">Justify It</text>
+
+  <!-- Row 6: 200 BPS -->
+  <text x="735" y="417" font-family="'Segoe UI',Arial,sans-serif" font-size="13" font-weight="700" fill="#f87171" text-anchor="middle">200 BPS</text>
+  <text x="838" y="417" font-family="'Segoe UI',Arial,sans-serif" font-size="13" fill="#ffffff" text-anchor="middle">$10,000</text>
+  <text x="968" y="417" font-family="'Segoe UI',Arial,sans-serif" font-size="13" fill="#ffffff" text-anchor="middle">~$144,000</text>
+  <text x="1090" y="417" font-family="'Segoe UI',Arial,sans-serif" font-size="11" font-weight="700" fill="#f87171" text-anchor="middle">Very High</text>
+
+  <line x1="658" y1="430" x2="1134" y2="430" stroke="#1e3a5f" stroke-width="1"/>
+
+  <!-- Right note box -->
+  <rect x="658" y="436" width="476" height="108" rx="10" fill="#050f1e" stroke="#3b82f6" stroke-width="1" stroke-opacity="0.5"/>
+  <text x="896" y="459" font-family="'Segoe UI',Arial,sans-serif" font-size="13" font-weight="700" fill="#7dd3fc" text-anchor="middle">Dollar Cost Formula</text>
+  <text x="896" y="483" font-family="'Courier New',monospace" font-size="14" fill="#ffffff" text-anchor="middle">Annual Fee = Portfolio × <tspan fill="#10b981" font-weight="900">(BPS ÷ 10,000)</tspan></text>
+  <text x="896" y="504" font-family="'Segoe UI',Arial,sans-serif" font-size="12" fill="#94a3b8" text-anchor="middle">$500,000 × (100 ÷ 10,000) = $5,000/year at 100 BPS</text>
+  <text x="896" y="523" font-family="'Segoe UI',Arial,sans-serif" font-size="11" fill="#64748b" text-anchor="middle">Each 1 BPS = $50/year on a $500,000 portfolio</text>
+  <text x="896" y="538" font-family="'Segoe UI',Arial,sans-serif" font-size="10" fill="#475569" text-anchor="middle">*10-year cost assumes 7% gross return with annual fee drag compounded</text>
+
+  <!-- Footer -->
+  <text x="600" y="574" font-family="'Segoe UI',Arial,sans-serif" font-size="13" fill="#475569" text-anchor="middle">Every basis point saved stays in your portfolio and compounds · Low fees are the only risk-free return improvement</text>
+  <text x="600" y="618" font-family="'Segoe UI',Arial,sans-serif" font-size="10" fill="#ffffff" text-anchor="middle" opacity="0.2" letter-spacing="2">BASISPOINTCALCULATOR.COM</text>
+</svg>
