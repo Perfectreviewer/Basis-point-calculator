@@ -35,10 +35,28 @@ export default defineConfig({
     '/privacy/': '/legal/privacy-policy/',
     '/about/contact/': '/contact-us/',
 
-    // Localized old URLs → canonical localized pages (dynamic redirects)
+    // Localized old URLs → canonical localized pages
     '/[lang]/terms/': '/[lang]/legal/terms-and-conditions/',
     '/[lang]/privacy/': '/[lang]/legal/privacy-policy/',
-    '/[lang]/about/contact/': '/[lang]/contact-us/',
+
+    // Old /about/contact/ redirects — expanded per locale to avoid getStaticPaths() build error
+    '/hi/about/contact/': '/hi/contact-us/',
+    '/es/about/contact/': '/es/contact-us/',
+    '/ru/about/contact/': '/ru/contact-us/',
+    '/fr/about/contact/': '/fr/contact-us/',
+    '/de/about/contact/': '/de/contact-us/',
+    '/it/about/contact/': '/it/contact-us/',
+    '/pt/about/contact/': '/pt/contact-us/',
+    '/bn/about/contact/': '/bn/contact-us/',
+    '/ja/about/contact/': '/ja/contact-us/',
+    '/ko/about/contact/': '/ko/contact-us/',
+    '/ms/about/contact/': '/ms/contact-us/',
+    '/pl/about/contact/': '/pl/contact-us/',
+    '/id/about/contact/': '/id/contact-us/',
+    '/ar/about/contact/': '/ar/contact-us/',
+    '/bg/about/contact/': '/bg/contact-us/',
+    '/tr/about/contact/': '/tr/contact-us/',
+    '/sv/about/contact/': '/sv/contact-us/',
 
     // Localized sitemap hits → HTML sitemap
     '/[lang]/sitemap/': '/sitemap/',
