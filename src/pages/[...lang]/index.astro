@@ -226,176 +226,176 @@ const pageDescription =
       </div>
     </div>
 
-    <!-- Single Premium Calculator Card -->
-    <div class="relative z-10 max-w-5xl mx-auto">
-      <div id="calc-wrapper"><section id="calc-card" class="bg-white/80 dark:bg-slate-900/90 backdrop-blur-2xl rounded-3xl shadow-[0_8px_40px_rgba(0,0,0,0.06)] dark:shadow-none border border-white/60 dark:border-slate-800 transition-all duration-500 relative ring-1 ring-white/50 overflow-hidden">
-        <!-- Glassmorphic Overlay -->
-        <div class="absolute inset-0 bg-gradient-to-br from-white/60 via-transparent to-indigo-50/20 rounded-3xl pointer-events-none"></div>
-
-        <!-- Header Bar -->
-        <div class="relative px-8 lg:px-10 pt-8 lg:pt-10 pb-0">
-          <div class="flex items-center justify-between mb-2">
-            <h2 class="text-3xl lg:text-4xl font-bold font-serif text-slate-900 dark:text-white tracking-tight">
-              {t["basis_point_calculator"]}
-            </h2>
-            <div class="flex items-center gap-2">
-              <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-              <span class="px-3 py-1 rounded-full bg-indigo-50 dark:bg-indigo-900/30 text-[10px] font-bold text-indigo-600 dark:text-indigo-300 ring-1 ring-indigo-500/20 uppercase tracking-widest">Live</span>
-            </div>
-          </div>
-          <div class="h-px bg-gradient-to-r from-indigo-500/40 via-purple-500/30 to-transparent"></div>
-        </div>
-
-        <!-- Calculator Body -->
-        <div class="relative p-8 lg:p-10 space-y-8">
-
-          <!-- === TOP ROW: BPS Hero + Scenario Side by Side === -->
-          <div class="grid grid-cols-1 lg:grid-cols-5 gap-8 items-start">
-
-            <!-- LEFT: BPS Input + Slider (3 cols) -->
-            <div class="lg:col-span-3 space-y-5">
-              <label class="flex justify-between items-center text-[11px] font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-[0.2em]">
-                {t["basis_points"]}
-                <span class="px-2.5 py-0.5 rounded-full bg-indigo-50 dark:bg-indigo-900/30 text-[10px] text-indigo-600 dark:text-indigo-300 ring-1 ring-indigo-500/20 tracking-normal">{t["home_calculated"]}</span>
-              </label>
-              <div class="relative group/bps">
-                <div class="absolute -inset-1.5 bg-gradient-to-r from-indigo-500/15 via-purple-500/15 to-indigo-500/15 rounded-[22px] blur-xl transition-opacity duration-500 opacity-0 group-focus-within/bps:opacity-100"></div>
-                <input
-                  id="bps"
-                  inputmode="decimal"
-                  class="block w-full rounded-2xl border-0 ring-2 ring-indigo-200/80 dark:ring-indigo-800/50 bg-gradient-to-br from-white to-indigo-50/30 dark:from-slate-800 dark:to-indigo-950/20 py-6 px-7 text-5xl font-extrabold text-slate-900 dark:text-white shadow-[0_8px_32px_rgba(99,102,241,0.10)] dark:shadow-none focus:ring-[3px] focus:ring-indigo-500 focus:shadow-[0_0_0_8px_rgba(99,102,241,0.08),0_12px_40px_rgba(99,102,241,0.12)] transition-all duration-300 outline-none relative z-10 tracking-tight"
-                  placeholder="100"
-                />
-                <span class="absolute right-7 top-1/2 -translate-y-1/2 text-indigo-400 dark:text-indigo-500 text-sm font-extrabold uppercase pointer-events-none tracking-[0.2em] z-10">{t["bps"]}</span>
-              </div>
-              <!-- Slider -->
-              <div class="px-1">
-                <input id="home-slider" type="range" min="1" max="500" value="100" class="home-slider" />
-                <div class="flex justify-between text-[10px] text-slate-400 mt-1.5 px-0.5 font-medium">
-                  <span>1 bps</span><span>100</span><span>250</span><span>500 bps</span>
-                </div>
-              </div>
-            </div>
-
-            <!-- RIGHT: Scenario Simulation (2 cols) -->
-            <div class="lg:col-span-2 space-y-4">
-              <label class="block text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-[0.2em]">{t["home_scenario_simulation"]}</label>
-
-              <!-- X BPS input -->
-              <div class="flex rounded-xl bg-white dark:bg-slate-800 ring-1 ring-slate-200/80 dark:ring-slate-700 shadow-[inset_0_1px_3px_rgba(0,0,0,0.03)] focus-within:ring-2 focus-within:ring-indigo-500 transition-all duration-300 overflow-hidden">
-                <input id="xval" inputmode="decimal" class="block w-full border-0 py-3.5 px-4 text-lg font-medium text-slate-900 dark:text-white focus:ring-0 bg-transparent placeholder:text-slate-300 outline-none" placeholder="1.5" />
-                <div class="relative my-1 mr-1">
-                  <select id="xunit" class="h-full rounded-lg border-0 bg-slate-50 dark:bg-slate-700 py-0 pl-3 pr-7 text-[10px] font-bold text-slate-600 dark:text-slate-300 focus:ring-0 cursor-pointer uppercase tracking-wider hover:bg-slate-100 dark:hover:bg-slate-600 transition-colors">
-                    <option value="bps" selected>{t["bps"]}</option>
-                    <option value="pct">%</option>
-                    <option value="dec">{t["decimal"]}</option>
-                  </select>
-                </div>
-              </div>
-
-              <!-- Of amount -->
-              <div class="flex rounded-xl bg-white dark:bg-slate-800 ring-1 ring-slate-200/80 dark:ring-slate-700 shadow-[inset_0_1px_3px_rgba(0,0,0,0.03)] focus-within:ring-2 focus-within:ring-indigo-500 transition-all duration-300 overflow-hidden">
-                <div class="relative my-1 ml-1">
-                  <select id="currency" class="h-full rounded-lg border-0 bg-slate-50 dark:bg-slate-700 py-0 pl-3 pr-7 text-[10px] font-bold text-slate-600 dark:text-slate-300 focus:ring-0 cursor-pointer uppercase tracking-wider hover:bg-slate-100 dark:hover:bg-slate-600 transition-colors">
-                    <option>PKR</option>
-                    <option selected>USD</option>
-                    <option>EUR</option>
-                    <option>GBP</option>
-                  </select>
-                </div>
-                <input id="amount" inputmode="decimal" class="block w-full border-0 py-3.5 px-4 text-lg font-medium text-right text-slate-900 dark:text-white focus:ring-0 bg-transparent placeholder:text-slate-300 outline-none" placeholder="65,000.00" />
-              </div>
-
-              <!-- Result -->
-              <div class="relative overflow-hidden rounded-2xl bg-gradient-to-r from-indigo-500 via-purple-500 to-indigo-500 bg-[length:200%_auto] animate-gradient p-0.5 shadow-lg shadow-indigo-500/25 group">
-                <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/25 to-transparent -translate-x-full group-hover:translate-x-full duration-1000 transition-transform"></div>
-                <div class="relative bg-white/10 backdrop-blur-sm rounded-xl p-1 flex items-center">
-                  <div class="pl-4 pr-2">
-                    <span class="text-white/70 font-bold text-xs" id="cur-left-2">USD</span>
-                  </div>
-                  <input id="equals" class="block w-full rounded-xl border-0 bg-transparent py-4 px-3 text-3xl font-bold text-white text-right focus:ring-0 cursor-default placeholder-white/50" readonly placeholder="9.75" />
-                </div>
-              </div>
-
-              <!-- Explanation -->
-              <div id="explain" class="pt-3 border-t border-slate-100 dark:border-slate-800/50">
-                <div class="bg-indigo-50/50 dark:bg-slate-800/50 rounded-xl p-3 border border-indigo-100/40 dark:border-slate-700/50">
-                  <p id="line1" class="text-slate-800 dark:text-slate-200 text-xs font-medium leading-relaxed mb-0.5"></p>
-                  <p id="line2" class="text-slate-500 dark:text-slate-400 text-[11px] leading-relaxed"></p>
-                  <p id="line3" class="hidden"></p>
-                </div>
-              </div>
-            </div>
-
-          </div>
-
-          <!-- === CONVERSION SECTION === -->
-          <div class="flex items-center gap-3">
-            <div class="flex-1 h-px bg-gradient-to-r from-transparent via-indigo-300/50 to-transparent"></div>
-            <div class="flex items-center gap-1.5">
-              <svg class="w-3.5 h-3.5 text-indigo-400 animate-bounce" style="animation-duration: 2s" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/></svg>
-              <span class="text-[10px] font-bold text-indigo-400 uppercase tracking-widest">Instant Conversions</span>
-            </div>
-            <div class="flex-1 h-px bg-gradient-to-r from-transparent via-indigo-300/50 to-transparent"></div>
-          </div>
-
-          <!-- === FOUR CONVERSION TILES === -->
-          <div class="grid grid-cols-2 lg:grid-cols-4 gap-3">
-            <!-- Percentage -->
-            <div class="group/tile relative">
-              <div class="absolute -inset-0.5 bg-gradient-to-br from-sky-400/25 to-sky-600/15 rounded-2xl blur-lg opacity-0 group-focus-within/tile:opacity-100 transition-opacity duration-300"></div>
-              <div class="relative bg-gradient-to-br from-sky-50/80 to-sky-100/40 dark:from-sky-950/30 dark:to-sky-900/15 rounded-2xl p-4 border border-sky-200/40 dark:border-sky-800/25 transition-all duration-300 hover:shadow-lg hover:shadow-sky-200/25 hover:-translate-y-0.5">
-                <label class="block text-[10px] font-bold text-sky-500 dark:text-sky-400 uppercase tracking-widest mb-2">{t["percent"]}</label>
-                <input id="pct" inputmode="decimal" class="neon-text w-full bg-transparent border-0 p-0 text-xl lg:text-2xl font-bold text-sky-800 dark:text-sky-200 focus:ring-0 outline-none placeholder:text-sky-300 font-mono tracking-tight" placeholder="1.000" />
-                <span class="text-sky-400 text-xs font-bold mt-1 block">%</span>
-              </div>
-            </div>
-            <!-- Decimal -->
-            <div class="group/tile relative">
-              <div class="absolute -inset-0.5 bg-gradient-to-br from-indigo-400/25 to-indigo-600/15 rounded-2xl blur-lg opacity-0 group-focus-within/tile:opacity-100 transition-opacity duration-300"></div>
-              <div class="relative bg-gradient-to-br from-indigo-50/80 to-indigo-100/40 dark:from-indigo-950/30 dark:to-indigo-900/15 rounded-2xl p-4 border border-indigo-200/40 dark:border-indigo-800/25 transition-all duration-300 hover:shadow-lg hover:shadow-indigo-200/25 hover:-translate-y-0.5">
-                <label class="block text-[10px] font-bold text-indigo-500 dark:text-indigo-400 uppercase tracking-widest mb-2">{t["decimal"]}</label>
-                <input id="dec" inputmode="decimal" class="neon-text w-full bg-transparent border-0 p-0 text-xl lg:text-2xl font-bold text-indigo-800 dark:text-indigo-200 focus:ring-0 outline-none placeholder:text-indigo-300 font-mono tracking-tight" placeholder="0.010" />
-                <span class="text-indigo-400 text-xs font-bold mt-1 block">DEC</span>
-              </div>
-            </div>
-            <!-- Permille -->
-            <div class="group/tile relative">
-              <div class="absolute -inset-0.5 bg-gradient-to-br from-violet-400/25 to-violet-600/15 rounded-2xl blur-lg opacity-0 group-focus-within/tile:opacity-100 transition-opacity duration-300"></div>
-              <div class="relative bg-gradient-to-br from-violet-50/80 to-violet-100/40 dark:from-violet-950/30 dark:to-violet-900/15 rounded-2xl p-4 border border-violet-200/40 dark:border-violet-800/25 transition-all duration-300 hover:shadow-lg hover:shadow-violet-200/25 hover:-translate-y-0.5">
-                <label class="block text-[10px] font-bold text-violet-500 dark:text-violet-400 uppercase tracking-widest mb-2">{t["permille"]}</label>
-                <input id="permille" inputmode="decimal" class="neon-text w-full bg-transparent border-0 p-0 text-xl lg:text-2xl font-bold text-violet-800 dark:text-violet-200 focus:ring-0 outline-none placeholder:text-violet-300 font-mono tracking-tight" placeholder="10.000" />
-                <span class="text-violet-400 text-xs font-bold mt-1 block">&#8240;</span>
-              </div>
-            </div>
-            <!-- Per $1M -->
-            <div class="group/tile relative">
-              <div class="absolute -inset-0.5 bg-gradient-to-br from-emerald-400/25 to-emerald-600/15 rounded-2xl blur-lg opacity-0 group-hover:opacity-60 transition-opacity duration-300"></div>
-              <div class="relative bg-gradient-to-br from-emerald-50/80 to-emerald-100/40 dark:from-emerald-950/30 dark:to-emerald-900/15 rounded-2xl p-4 border border-emerald-200/40 dark:border-emerald-800/25 transition-all duration-300 hover:shadow-lg hover:shadow-emerald-200/25 hover:-translate-y-0.5">
-                <label class="block text-[10px] font-bold text-emerald-500 dark:text-emerald-400 uppercase tracking-widest mb-2">Per $1M</label>
-                <p class="neon-text live-val text-xl lg:text-2xl font-bold text-emerald-800 dark:text-emerald-200 font-mono tracking-tight" id="strip-1m">$10,000</p>
-                <span class="text-emerald-400 text-xs font-bold mt-1 block">Impact</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- === LIVE STRIP FOOTER === -->
-          <div class="flex items-center justify-between px-1 pt-4 border-t border-slate-100/80 dark:border-slate-800/30">
-            <div class="flex items-center gap-2">
-              <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-              <span class="text-[10px] font-bold uppercase tracking-widest text-slate-400 dark:text-slate-500">Live Summary</span>
-            </div>
-            <div class="flex items-center gap-4 text-[11px] font-mono">
-              <span class="neon-text live-val text-sky-600 dark:text-sky-400 font-bold" id="strip-pct">1%</span>
-              <span class="text-slate-300 dark:text-slate-600">|</span>
-              <span class="neon-text live-val text-indigo-600 dark:text-indigo-400 font-bold" id="strip-dec">0.01</span>
-              <span class="text-slate-300 dark:text-slate-600">|</span>
-              <span class="neon-text live-val text-violet-600 dark:text-violet-400 font-bold" id="strip-pml">10&#8240;</span>
-            </div>
-          </div>
-        </div>
-
-      </section>
+    <!-- Single Premium Calculator Card -->
+    <div class="relative z-10 max-w-5xl mx-auto">
+      <div id="calc-wrapper"><section id="calc-card" class="bg-white/80 dark:bg-slate-900/90 backdrop-blur-2xl rounded-3xl shadow-[0_8px_40px_rgba(0,0,0,0.06)] dark:shadow-none border border-white/60 dark:border-slate-800 transition-all duration-500 relative ring-1 ring-white/50 overflow-hidden">
+        <!-- Glassmorphic Overlay -->
+        <div class="absolute inset-0 bg-gradient-to-br from-white/60 via-transparent to-indigo-50/20 rounded-3xl pointer-events-none"></div>
+
+        <!-- Header Bar -->
+        <div class="relative px-8 lg:px-10 pt-8 lg:pt-10 pb-0">
+          <div class="flex items-center justify-between mb-2">
+            <h2 class="text-3xl lg:text-4xl font-bold font-serif text-slate-900 dark:text-white tracking-tight">
+              {t["basis_point_calculator"]}
+            </h2>
+            <div class="flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+              <span class="px-3 py-1 rounded-full bg-indigo-50 dark:bg-indigo-900/30 text-[10px] font-bold text-indigo-600 dark:text-indigo-300 ring-1 ring-indigo-500/20 uppercase tracking-widest">Live</span>
+            </div>
+          </div>
+          <div class="h-px bg-gradient-to-r from-indigo-500/40 via-purple-500/30 to-transparent"></div>
+        </div>
+
+        <!-- Calculator Body -->
+        <div class="relative p-8 lg:p-10 space-y-8">
+
+          <!-- === TOP ROW: BPS Hero + Scenario Side by Side === -->
+          <div class="grid grid-cols-1 lg:grid-cols-5 gap-8 items-start">
+
+            <!-- LEFT: BPS Input + Slider (3 cols) -->
+            <div class="lg:col-span-3 space-y-5">
+              <label class="flex justify-between items-center text-[11px] font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-[0.2em]">
+                {t["basis_points"]}
+                <span class="px-2.5 py-0.5 rounded-full bg-indigo-50 dark:bg-indigo-900/30 text-[10px] text-indigo-600 dark:text-indigo-300 ring-1 ring-indigo-500/20 tracking-normal">{t["home_calculated"]}</span>
+              </label>
+              <div class="relative group/bps">
+                <div class="absolute -inset-1.5 bg-gradient-to-r from-indigo-500/15 via-purple-500/15 to-indigo-500/15 rounded-[22px] blur-xl transition-opacity duration-500 opacity-0 group-focus-within/bps:opacity-100"></div>
+                <input
+                  id="bps"
+                  inputmode="decimal"
+                  class="block w-full rounded-2xl border-0 ring-2 ring-indigo-200/80 dark:ring-indigo-800/50 bg-gradient-to-br from-white to-indigo-50/30 dark:from-slate-800 dark:to-indigo-950/20 py-6 px-7 text-5xl font-extrabold text-slate-900 dark:text-white shadow-[0_8px_32px_rgba(99,102,241,0.10)] dark:shadow-none focus:ring-[3px] focus:ring-indigo-500 focus:shadow-[0_0_0_8px_rgba(99,102,241,0.08),0_12px_40px_rgba(99,102,241,0.12)] transition-all duration-300 outline-none relative z-10 tracking-tight"
+                  placeholder="100"
+                />
+                <span class="absolute right-7 top-1/2 -translate-y-1/2 text-indigo-400 dark:text-indigo-500 text-sm font-extrabold uppercase pointer-events-none tracking-[0.2em] z-10">{t["bps"]}</span>
+              </div>
+              <!-- Slider -->
+              <div class="px-1">
+                <input id="home-slider" type="range" min="1" max="500" value="100" class="home-slider" />
+                <div class="flex justify-between text-[10px] text-slate-400 mt-1.5 px-0.5 font-medium">
+                  <span>1 bps</span><span>100</span><span>250</span><span>500 bps</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- RIGHT: Scenario Simulation (2 cols) -->
+            <div class="lg:col-span-2 space-y-4">
+              <label class="block text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-[0.2em]">{t["home_scenario_simulation"]}</label>
+
+              <!-- X BPS input -->
+              <div class="flex rounded-xl bg-white dark:bg-slate-800 ring-1 ring-slate-200/80 dark:ring-slate-700 shadow-[inset_0_1px_3px_rgba(0,0,0,0.03)] focus-within:ring-2 focus-within:ring-indigo-500 transition-all duration-300 overflow-hidden">
+                <input id="xval" inputmode="decimal" class="block w-full border-0 py-3.5 px-4 text-lg font-medium text-slate-900 dark:text-white focus:ring-0 bg-transparent placeholder:text-slate-300 outline-none" placeholder="1.5" />
+                <div class="relative my-1 mr-1">
+                  <select id="xunit" class="h-full rounded-lg border-0 bg-slate-50 dark:bg-slate-700 py-0 pl-3 pr-7 text-[10px] font-bold text-slate-600 dark:text-slate-300 focus:ring-0 cursor-pointer uppercase tracking-wider hover:bg-slate-100 dark:hover:bg-slate-600 transition-colors">
+                    <option value="bps" selected>{t["bps"]}</option>
+                    <option value="pct">%</option>
+                    <option value="dec">{t["decimal"]}</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Of amount -->
+              <div class="flex rounded-xl bg-white dark:bg-slate-800 ring-1 ring-slate-200/80 dark:ring-slate-700 shadow-[inset_0_1px_3px_rgba(0,0,0,0.03)] focus-within:ring-2 focus-within:ring-indigo-500 transition-all duration-300 overflow-hidden">
+                <div class="relative my-1 ml-1">
+                  <select id="currency" class="h-full rounded-lg border-0 bg-slate-50 dark:bg-slate-700 py-0 pl-3 pr-7 text-[10px] font-bold text-slate-600 dark:text-slate-300 focus:ring-0 cursor-pointer uppercase tracking-wider hover:bg-slate-100 dark:hover:bg-slate-600 transition-colors">
+                    <option>PKR</option>
+                    <option selected>USD</option>
+                    <option>EUR</option>
+                    <option>GBP</option>
+                  </select>
+                </div>
+                <input id="amount" inputmode="decimal" class="block w-full border-0 py-3.5 px-4 text-lg font-medium text-right text-slate-900 dark:text-white focus:ring-0 bg-transparent placeholder:text-slate-300 outline-none" placeholder="65,000.00" />
+              </div>
+
+              <!-- Result -->
+              <div class="relative overflow-hidden rounded-2xl bg-gradient-to-r from-indigo-500 via-purple-500 to-indigo-500 bg-[length:200%_auto] animate-gradient p-0.5 shadow-lg shadow-indigo-500/25 group">
+                <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/25 to-transparent -translate-x-full group-hover:translate-x-full duration-1000 transition-transform"></div>
+                <div class="relative bg-white/10 backdrop-blur-sm rounded-xl p-1 flex items-center">
+                  <div class="pl-4 pr-2">
+                    <span class="text-white/70 font-bold text-xs" id="cur-left-2">USD</span>
+                  </div>
+                  <input id="equals" class="block w-full rounded-xl border-0 bg-transparent py-4 px-3 text-3xl font-bold text-white text-right focus:ring-0 cursor-default placeholder-white/50" readonly placeholder="9.75" />
+                </div>
+              </div>
+
+              <!-- Explanation -->
+              <div id="explain" class="pt-3 border-t border-slate-100 dark:border-slate-800/50">
+                <div class="bg-indigo-50/50 dark:bg-slate-800/50 rounded-xl p-3 border border-indigo-100/40 dark:border-slate-700/50">
+                  <p id="line1" class="text-slate-800 dark:text-slate-200 text-xs font-medium leading-relaxed mb-0.5"></p>
+                  <p id="line2" class="text-slate-500 dark:text-slate-400 text-[11px] leading-relaxed"></p>
+                  <p id="line3" class="hidden"></p>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- === CONVERSION SECTION === -->
+          <div class="flex items-center gap-3">
+            <div class="flex-1 h-px bg-gradient-to-r from-transparent via-indigo-300/50 to-transparent"></div>
+            <div class="flex items-center gap-1.5">
+              <svg class="w-3.5 h-3.5 text-indigo-400 animate-bounce" style="animation-duration: 2s" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/></svg>
+              <span class="text-[10px] font-bold text-indigo-400 uppercase tracking-widest">Instant Conversions</span>
+            </div>
+            <div class="flex-1 h-px bg-gradient-to-r from-transparent via-indigo-300/50 to-transparent"></div>
+          </div>
+
+          <!-- === FOUR CONVERSION TILES === -->
+          <div class="grid grid-cols-2 lg:grid-cols-4 gap-3">
+            <!-- Percentage -->
+            <div class="group/tile relative">
+              <div class="absolute -inset-0.5 bg-gradient-to-br from-sky-400/25 to-sky-600/15 rounded-2xl blur-lg opacity-0 group-focus-within/tile:opacity-100 transition-opacity duration-300"></div>
+              <div class="relative bg-gradient-to-br from-sky-50/80 to-sky-100/40 dark:from-sky-950/30 dark:to-sky-900/15 rounded-2xl p-4 border border-sky-200/40 dark:border-sky-800/25 transition-all duration-300 hover:shadow-lg hover:shadow-sky-200/25 hover:-translate-y-0.5">
+                <label class="block text-[10px] font-bold text-sky-500 dark:text-sky-400 uppercase tracking-widest mb-2">{t["percent"]}</label>
+                <input id="pct" inputmode="decimal" class="neon-text w-full bg-transparent border-0 p-0 text-xl lg:text-2xl font-bold text-sky-800 dark:text-sky-200 focus:ring-0 outline-none placeholder:text-sky-300 font-mono tracking-tight" placeholder="1.000" />
+                <span class="text-sky-400 text-xs font-bold mt-1 block">%</span>
+              </div>
+            </div>
+            <!-- Decimal -->
+            <div class="group/tile relative">
+              <div class="absolute -inset-0.5 bg-gradient-to-br from-indigo-400/25 to-indigo-600/15 rounded-2xl blur-lg opacity-0 group-focus-within/tile:opacity-100 transition-opacity duration-300"></div>
+              <div class="relative bg-gradient-to-br from-indigo-50/80 to-indigo-100/40 dark:from-indigo-950/30 dark:to-indigo-900/15 rounded-2xl p-4 border border-indigo-200/40 dark:border-indigo-800/25 transition-all duration-300 hover:shadow-lg hover:shadow-indigo-200/25 hover:-translate-y-0.5">
+                <label class="block text-[10px] font-bold text-indigo-500 dark:text-indigo-400 uppercase tracking-widest mb-2">{t["decimal"]}</label>
+                <input id="dec" inputmode="decimal" class="neon-text w-full bg-transparent border-0 p-0 text-xl lg:text-2xl font-bold text-indigo-800 dark:text-indigo-200 focus:ring-0 outline-none placeholder:text-indigo-300 font-mono tracking-tight" placeholder="0.010" />
+                <span class="text-indigo-400 text-xs font-bold mt-1 block">DEC</span>
+              </div>
+            </div>
+            <!-- Permille -->
+            <div class="group/tile relative">
+              <div class="absolute -inset-0.5 bg-gradient-to-br from-violet-400/25 to-violet-600/15 rounded-2xl blur-lg opacity-0 group-focus-within/tile:opacity-100 transition-opacity duration-300"></div>
+              <div class="relative bg-gradient-to-br from-violet-50/80 to-violet-100/40 dark:from-violet-950/30 dark:to-violet-900/15 rounded-2xl p-4 border border-violet-200/40 dark:border-violet-800/25 transition-all duration-300 hover:shadow-lg hover:shadow-violet-200/25 hover:-translate-y-0.5">
+                <label class="block text-[10px] font-bold text-violet-500 dark:text-violet-400 uppercase tracking-widest mb-2">{t["permille"]}</label>
+                <input id="permille" inputmode="decimal" class="neon-text w-full bg-transparent border-0 p-0 text-xl lg:text-2xl font-bold text-violet-800 dark:text-violet-200 focus:ring-0 outline-none placeholder:text-violet-300 font-mono tracking-tight" placeholder="10.000" />
+                <span class="text-violet-400 text-xs font-bold mt-1 block">&#8240;</span>
+              </div>
+            </div>
+            <!-- Per $1M -->
+            <div class="group/tile relative">
+              <div class="absolute -inset-0.5 bg-gradient-to-br from-emerald-400/25 to-emerald-600/15 rounded-2xl blur-lg opacity-0 group-hover:opacity-60 transition-opacity duration-300"></div>
+              <div class="relative bg-gradient-to-br from-emerald-50/80 to-emerald-100/40 dark:from-emerald-950/30 dark:to-emerald-900/15 rounded-2xl p-4 border border-emerald-200/40 dark:border-emerald-800/25 transition-all duration-300 hover:shadow-lg hover:shadow-emerald-200/25 hover:-translate-y-0.5">
+                <label class="block text-[10px] font-bold text-emerald-500 dark:text-emerald-400 uppercase tracking-widest mb-2">Per $1M</label>
+                <p class="neon-text live-val text-xl lg:text-2xl font-bold text-emerald-800 dark:text-emerald-200 font-mono tracking-tight" id="strip-1m">$10,000</p>
+                <span class="text-emerald-400 text-xs font-bold mt-1 block">Impact</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- === LIVE STRIP FOOTER === -->
+          <div class="flex items-center justify-between px-1 pt-4 border-t border-slate-100/80 dark:border-slate-800/30">
+            <div class="flex items-center gap-2">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+              <span class="text-[10px] font-bold uppercase tracking-widest text-slate-400 dark:text-slate-500">Live Summary</span>
+            </div>
+            <div class="flex items-center gap-4 text-[11px] font-mono">
+              <span class="neon-text live-val text-sky-600 dark:text-sky-400 font-bold" id="strip-pct">1%</span>
+              <span class="text-slate-300 dark:text-slate-600">|</span>
+              <span class="neon-text live-val text-indigo-600 dark:text-indigo-400 font-bold" id="strip-dec">0.01</span>
+              <span class="text-slate-300 dark:text-slate-600">|</span>
+              <span class="neon-text live-val text-violet-600 dark:text-violet-400 font-bold" id="strip-pml">10&#8240;</span>
+            </div>
+          </div>
+        </div>
+
+      </section>
     </div></div>
 
   <div class="space-y-12">
@@ -405,11 +405,11 @@ const pageDescription =
         class="inline-block px-4 py-1.5 rounded-full bg-sky-50 dark:bg-sky-900/30 text-sky-700 dark:text-sky-300 text-xs font-bold uppercase tracking-wider mb-6 border border-sky-100 dark:border-sky-800"
         >{t["home_badge"]}</span
       >
-      <h2
+      <h1
         class="text-4xl font-extrabold text-slate-900 dark:text-white sm:text-5xl text-balance mb-6 tracking-tight"
       >
         {t["home_hero_title"]}
-      </h2>
+      </h1>
       <p
         class="text-xl text-slate-600 dark:text-slate-300 leading-relaxed text-balance max-w-2xl mx-auto"
         set:html={t["home_hero_desc"]}

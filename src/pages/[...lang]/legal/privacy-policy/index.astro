@@ -4,16 +4,13 @@ import {
   getTranslations,
   type Locale,
   getLocalizedUrl,
+  locales,
 } from "@theme/i18n/utils";
 
 export function getStaticPaths() {
-  return [
-    { params: { lang: undefined } },
-    { params: { lang: "en" } },
-    { params: { lang: "es" } },
-    { params: { lang: "fr" } },
-    { params: { lang: "de" } },
-  ];
+  return locales.map((locale) => ({
+    params: { lang: locale === "en" ? undefined : locale },
+  }));
 }
 
 const locale = (Astro.params.lang || "en") as Locale;
