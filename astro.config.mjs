@@ -92,8 +92,24 @@ export default defineConfig({
     '/tr/about/contact/': '/tr/contact-us/',
     '/sv/about/contact/': '/sv/contact-us/',
 
-    // Localized sitemap hits → HTML sitemap
-    '/[lang]/sitemap/': '/sitemap/',
+    // Old /sitemap/ redirects — expanded per locale
+    '/hi/sitemap/': '/sitemap/',
+    '/es/sitemap/': '/sitemap/',
+    '/ru/sitemap/': '/sitemap/',
+    '/fr/sitemap/': '/sitemap/',
+    '/de/sitemap/': '/sitemap/',
+    '/it/sitemap/': '/sitemap/',
+    '/pt/sitemap/': '/sitemap/',
+    '/bn/sitemap/': '/sitemap/',
+    '/ja/sitemap/': '/sitemap/',
+    '/ko/sitemap/': '/sitemap/',
+    '/ms/sitemap/': '/sitemap/',
+    '/pl/sitemap/': '/sitemap/',
+    '/id/sitemap/': '/sitemap/',
+    '/ar/sitemap/': '/sitemap/',
+    '/bg/sitemap/': '/sitemap/',
+    '/tr/sitemap/': '/sitemap/',
+    '/sv/sitemap/': '/sitemap/',
   },
 
   integrations: [
