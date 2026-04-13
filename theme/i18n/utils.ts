@@ -2,6 +2,7 @@ import type { GetStaticPaths } from 'astro';
 
 import indexTranslations from '~/i18n/index.json';
 import faqsTranslations from '~/i18n/faqs.json';
+import aboutTranslations from '~/i18n/about.json';
 
 import otherTranslations from '@theme/i18n/translations/other.json';
 
@@ -36,11 +37,13 @@ function mergeTranslations(locale: Locale) {
   const indexData = (indexTranslations as any)[locale] || (indexTranslations as any)['en'];
   const otherData = (otherTranslations as any)[locale] || (otherTranslations as any)['en'];
   const faqsData = (faqsTranslations as any)[locale] || (faqsTranslations as any)['en'];
+  const aboutData = (aboutTranslations as any)[locale] || (aboutTranslations as any)['en'];
 
   return {
     ...indexData,
     ...otherData,
     ...faqsData,
+    about: aboutData,
   };
 }
 

@@ -23,46 +23,48 @@ const seoDescription = cp.seoDescription || "";
 
 <Layout title={seoTitle} description={seoDescription}>
 
-  <div class="max-w-2xl mx-auto">
+  <div class="contact-wrap">
 
     <!-- Hero -->
-    <div class="text-center mb-8">
-      <div class="inline-flex items-center justify-center w-14 h-14 bg-sky-50 border border-sky-100 rounded-2xl mb-5">
-        <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 text-sky-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
-        </svg>
+    <div class="contact-hero">
+      <div class="contact-hero-dot-grid"></div>
+      <div class="contact-hero-glow"></div>
+      <div class="contact-hero-inner">
+        <div class="contact-icon-wrap">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" width="28" height="28">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+          </svg>
+        </div>
+        <h1 class="contact-hero-title">{pageTitle}</h1>
+        {pageSubtitle && <p class="contact-hero-sub">{pageSubtitle}</p>}
       </div>
-      <h1 class="text-4xl font-bold text-slate-900">{pageTitle}</h1>
-      {pageSubtitle && (
-        <p class="mt-3 text-slate-600 text-lg max-w-md mx-auto leading-relaxed">{pageSubtitle}</p>
-      )}
     </div>
 
     <!-- Trust signals -->
-    <div class="grid grid-cols-3 gap-3 mb-2">
-      <div class="bg-white border border-slate-100 rounded-xl p-4 text-center shadow-sm">
-        <div class="w-8 h-8 bg-green-50 rounded-lg flex items-center justify-center mx-auto mb-2">
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+    <div class="contact-trust-grid">
+      <div class="contact-trust-card">
+        <div class="contact-trust-icon contact-trust-icon--green">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" width="17" height="17">
             <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
           </svg>
         </div>
-        <p class="text-xs text-slate-600 font-medium leading-snug">We read every message</p>
+        <p>We read every message</p>
       </div>
-      <div class="bg-white border border-slate-100 rounded-xl p-4 text-center shadow-sm">
-        <div class="w-8 h-8 bg-sky-50 rounded-lg flex items-center justify-center mx-auto mb-2">
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-sky-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+      <div class="contact-trust-card">
+        <div class="contact-trust-icon contact-trust-icon--indigo">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" width="17" height="17">
             <path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
           </svg>
         </div>
-        <p class="text-xs text-slate-600 font-medium leading-snug">Your data stays private</p>
+        <p>Your data stays private</p>
       </div>
-      <div class="bg-white border border-slate-100 rounded-xl p-4 text-center shadow-sm">
-        <div class="w-8 h-8 bg-amber-50 rounded-lg flex items-center justify-center mx-auto mb-2">
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-amber-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+      <div class="contact-trust-card">
+        <div class="contact-trust-icon contact-trust-icon--amber">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" width="17" height="17">
             <path stroke-linecap="round" stroke-linejoin="round" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
           </svg>
         </div>
-        <p class="text-xs text-slate-600 font-medium leading-snug">Bugs & ideas welcome</p>
+        <p>Bugs &amp; ideas welcome</p>
       </div>
     </div>
 
@@ -72,3 +74,123 @@ const seoDescription = cp.seoDescription || "";
   </div>
 
 </Layout>
+
+<style>
+  .contact-wrap {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  /* ─── Hero ─── */
+  .contact-hero {
+    position: relative;
+    overflow: hidden;
+    background: #0f172a;
+    border-radius: 20px;
+    padding: 48px 40px;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  .contact-hero-dot-grid {
+    position: absolute;
+    inset: 0;
+    opacity: 0.04;
+    background-image: radial-gradient(circle at 1px 1px, white 1px, transparent 1px);
+    background-size: 28px 28px;
+    pointer-events: none;
+  }
+  .contact-hero-glow {
+    position: absolute;
+    top: -60px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 340px;
+    height: 200px;
+    background: radial-gradient(ellipse, rgba(99,102,241,0.2) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .contact-hero-inner {
+    position: relative;
+  }
+  .contact-icon-wrap {
+    width: 58px;
+    height: 58px;
+    background: linear-gradient(135deg, rgba(99,102,241,0.15), rgba(99,102,241,0.05));
+    border: 1px solid rgba(99,102,241,0.35);
+    border-radius: 16px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #a5b4fc;
+    margin-bottom: 18px;
+  }
+  .contact-hero-title {
+    font-size: 38px;
+    font-weight: 800;
+    color: white;
+    letter-spacing: -0.6px;
+  }
+  .contact-hero-sub {
+    margin-top: 10px;
+    font-size: 15px;
+    color: #94a3b8;
+    line-height: 1.6;
+  }
+
+  /* ─── Trust signals ─── */
+  .contact-trust-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 0;
+  }
+  .contact-trust-card {
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 14px;
+    padding: 20px 14px;
+    text-align: center;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .contact-trust-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 24px rgba(0,0,0,0.07), 0 4px 8px rgba(79,70,229,0.06);
+    border-color: #c7d2fe;
+  }
+  .contact-trust-card p {
+    font-size: 12px;
+    font-weight: 600;
+    color: #475569;
+    line-height: 1.4;
+    margin-top: 10px;
+  }
+  .contact-trust-icon {
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+  }
+  .contact-trust-icon--green {
+    background: linear-gradient(135deg, #10b981, #059669);
+    box-shadow: 0 3px 8px rgba(16,185,129,0.25);
+  }
+  .contact-trust-icon--indigo {
+    background: linear-gradient(135deg, #4f46e5, #6366f1);
+    box-shadow: 0 3px 8px rgba(79,70,229,0.25);
+  }
+  .contact-trust-icon--amber {
+    background: linear-gradient(135deg, #f59e0b, #d97706);
+    box-shadow: 0 3px 8px rgba(245,158,11,0.25);
+  }
+
+  /* ─── Responsive ─── */
+  @media (max-width: 640px) {
+    .contact-hero { padding: 36px 24px; }
+    .contact-hero-title { font-size: 30px; }
+    .contact-trust-grid { grid-template-columns: 1fr; }
+  }
+</style>

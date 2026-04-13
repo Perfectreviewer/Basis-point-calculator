@@ -1,37 +1,388 @@
 ---
-import PageLayout from "@theme/layouts/PageLayout.astro";
+import Layout from "@theme/layouts/Layout.astro";
+import indexTranslations from "~/i18n/index.json";
+
+const pageTitle = "About Us";
+const seoTitle = `${pageTitle} | ${indexTranslations.en.site_title}`;
+const pageDescription =
+  "Hi, I'm Aleem Iqbal—the builder behind Basis Point (bps) Calculator. Here's why I created it and what I'm building next.";
 ---
 
-<PageLayout title="About Us" description="Hi, I’m Aleem Iqbal—the builder behind Basis Point (bps) Calculator. Here’s why I created it and what I’m building next.">
-  <h1 class="font-semibold text-slate-800 text-3xl">About Us</h1>
+<Layout title={seoTitle} description={pageDescription}>
 
-  <section class="mt-4 space-y-5 text-slate-700">
-    <p>
-      <strong>BasisPointCalculator.com grew out of countless “what’s 25 bps in percent again?” moments while comparing rates, fees, and tiny changes that matter. Everyone had different spreadsheets and shortcuts—so I made a clean, fast calculator that makes bps obvious.</strong>
+  <!-- Hero -->
+  <div class="about-hero">
+    <div class="about-hero-dot-grid"></div>
+    <div class="about-hero-glow-1"></div>
+    <div class="about-hero-glow-2"></div>
+    <div class="about-hero-inner">
+      <span class="about-badge">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13">
+          <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+        </svg>
+        About
+      </span>
+      <h1 class="about-hero-title">{pageTitle}</h1>
+      <p class="about-hero-lead">
+        BasisPointCalculator.com grew out of countless "what's 25 bps in
+        percent again?" moments while comparing rates, fees, and tiny changes
+        that matter. Everyone had different spreadsheets and shortcuts—so I made
+        a clean, fast calculator that makes bps obvious.
+      </p>
+      <p class="about-hero-body">
+        The goal is clarity: type a value and instantly convert bps ⇄ percent ⇄
+        permille ⇄ decimal, or figure out <em>x</em> bps of any amount (helpful for
+        fees/commissions). No clutter, no sign-up walls—just answers you can trust
+        and double-check.
+      </p>
+    </div>
+  </div>
 
-      <p>The goal is clarity: type a value and instantly convert bps ⇄ percent ⇄ permille ⇄ decimal, or figure out <em>x</em> bps of any amount (helpful for fees/commissions). No clutter, no sign-up walls—just answers you can trust and double-check.</p>
+  <!-- What I care about -->
+  <section class="about-section">
+    <div class="about-section-header">
+      <h2 class="about-section-title">What I care about</h2>
+    </div>
+    <div class="about-values-grid">
 
-      <h2 class="text-2xl font-semibold text-slate-800">What I care about</h2>
-      <ul class="list-disc pl-6 space-y-2">
-        <li><strong>Accuracy first.</strong> Conversions and formulas are transparent (e.g., commission = amount × (bps ÷ 10,000)).</li>
-        <li><strong>Privacy by default.</strong> Inputs are handled client-side; you shouldn’t need an account to do basic math.</li>
-        <li><strong>Speed & clarity.</strong> Interface stays readable and fast—even on mid-range phones and spotty networks.</li>
-        <li><strong>Accessibility.</strong> Keyboard-friendly controls, sensible focus states, and readable typography are non-negotiable.</li>
-      </ul>
+      <div class="about-value-card">
+        <div class="about-value-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" width="20" height="20">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+          </svg>
+        </div>
+        <p><strong>Accuracy first.</strong> Conversions and formulas are transparent (e.g., commission = amount &times; (bps &divide; 10,000)).</p>
+      </div>
 
-      <h2 class="text-2xl font-semibold text-slate-800">Where this is going</h2>
-      <ul class="list-disc pl-6 space-y-2">
-        <li>Rate-change & spread helpers (e.g., “from A% to B% = ? bps”)</li>
-        <li>“Dollar value of bps” quick math for amounts (handy for fees)</li>
-        <li>Saved scenarios and CSV/PDF export</li>
-        <li>Keyboard shortcuts and dark mode</li>
-        <li>More finance micro-tools in the same clean style</li>
-      </ul>
+      <div class="about-value-card">
+        <div class="about-value-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" width="20" height="20">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+          </svg>
+        </div>
+        <p><strong>Privacy by default.</strong> Inputs are handled client-side; you shouldn't need an account to do basic math.</p>
+      </div>
 
-      <h2 class="text-2xl font-semibold text-slate-800">Say hello</h2>
-      <p>Got feedback, a bug, or a feature idea? I’d love to hear it. The best way to reach me is the <a href="/contact-us/" class="text-sky-800 hover:underline">contact page</a>. Your notes help keep the tool sharp and genuinely useful.</p>
+      <div class="about-value-card">
+        <div class="about-value-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" width="20" height="20">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+          </svg>
+        </div>
+        <p><strong>Speed &amp; clarity.</strong> Interface stays readable and fast—even on mid-range phones and spotty networks.</p>
+      </div>
 
-      <p class="text-slate-500 text-sm">Last updated: November 4, 2025</p>
-    </p>
+      <div class="about-value-card">
+        <div class="about-value-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" width="20" height="20">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+            <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+          </svg>
+        </div>
+        <p><strong>Accessibility.</strong> Keyboard-friendly controls, sensible focus states, and readable typography are non-negotiable.</p>
+      </div>
+
+    </div>
   </section>
-</PageLayout>
+
+  <!-- Where this is going -->
+  <section class="about-section">
+    <div class="about-section-header">
+      <h2 class="about-section-title">Where this is going</h2>
+    </div>
+    <div class="about-roadmap">
+      <div class="about-roadmap-item">
+        <span class="about-roadmap-dot"></span>
+        <span>Rate-change &amp; spread helpers (e.g., "from A% to B% = ? bps")</span>
+      </div>
+      <div class="about-roadmap-item">
+        <span class="about-roadmap-dot"></span>
+        <span>"Dollar value of bps" quick math for amounts (handy for fees)</span>
+      </div>
+      <div class="about-roadmap-item">
+        <span class="about-roadmap-dot"></span>
+        <span>Saved scenarios and CSV/PDF export</span>
+      </div>
+      <div class="about-roadmap-item">
+        <span class="about-roadmap-dot"></span>
+        <span>Keyboard shortcuts and dark mode</span>
+      </div>
+      <div class="about-roadmap-item">
+        <span class="about-roadmap-dot"></span>
+        <span>More finance micro-tools in the same clean style</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Say hello -->
+  <section class="about-cta">
+    <div class="about-cta-glow"></div>
+    <div class="about-cta-icon">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" width="26" height="26">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+      </svg>
+    </div>
+    <h2 class="about-cta-title">Say hello</h2>
+    <p class="about-cta-body">
+      Got feedback, a bug, or a feature idea? I'd love to hear it. The best
+      way to reach me is the <a href="/contact-us/">contact page</a>. Your notes
+      help keep the tool sharp and genuinely useful.
+    </p>
+    <p class="about-cta-date">Last updated: November 4, 2025</p>
+  </section>
+
+</Layout>
+
+<style>
+  /* ─── Hero ─── */
+  .about-hero {
+    position: relative;
+    overflow: hidden;
+    background: #0f172a;
+    border-radius: 20px;
+    padding: 56px 52px;
+    margin-bottom: 40px;
+  }
+  .about-hero-dot-grid {
+    position: absolute;
+    inset: 0;
+    opacity: 0.04;
+    background-image: radial-gradient(circle at 1px 1px, white 1px, transparent 1px);
+    background-size: 28px 28px;
+    pointer-events: none;
+  }
+  .about-hero-glow-1 {
+    position: absolute;
+    top: -80px;
+    right: -60px;
+    width: 320px;
+    height: 320px;
+    background: radial-gradient(circle, rgba(99,102,241,0.18) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .about-hero-glow-2 {
+    position: absolute;
+    bottom: -60px;
+    left: -40px;
+    width: 240px;
+    height: 240px;
+    background: radial-gradient(circle, rgba(14,165,233,0.1) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .about-hero-inner {
+    position: relative;
+    max-width: 640px;
+  }
+  .about-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 14px;
+    background: linear-gradient(135deg, #312e81, #3730a3);
+    border: 1px solid #4338ca;
+    border-radius: 20px;
+    font-size: 11.5px;
+    font-weight: 700;
+    color: #a5b4fc;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    margin-bottom: 20px;
+  }
+  .about-hero-title {
+    font-size: 42px;
+    font-weight: 800;
+    color: #ffffff;
+    letter-spacing: -0.8px;
+    line-height: 1.15;
+    margin-bottom: 20px;
+  }
+  .about-hero-lead {
+    font-size: 16px;
+    font-weight: 500;
+    color: #e2e8f0;
+    line-height: 1.7;
+    margin-bottom: 12px;
+  }
+  .about-hero-body {
+    font-size: 15px;
+    color: #94a3b8;
+    line-height: 1.7;
+  }
+  .about-hero-body em {
+    color: #cbd5e1;
+    font-style: italic;
+  }
+
+  /* ─── Sections ─── */
+  .about-section {
+    margin-bottom: 36px;
+  }
+  .about-section-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 20px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid #e2e8f0;
+  }
+  .about-section-title {
+    font-size: 22px;
+    font-weight: 700;
+    color: #0f172a;
+    letter-spacing: -0.3px;
+  }
+
+  /* ─── Values Grid ─── */
+  .about-values-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+  .about-value-card {
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 16px;
+    padding: 24px;
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 1px 2px rgba(0,0,0,0.03);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .about-value-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 16px 32px rgba(0,0,0,0.07), 0 6px 12px rgba(79,70,229,0.07);
+    border-color: #c7d2fe;
+  }
+  .about-value-icon {
+    flex-shrink: 0;
+    width: 42px;
+    height: 42px;
+    background: linear-gradient(135deg, #4f46e5, #6366f1);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    box-shadow: 0 4px 10px rgba(79,70,229,0.25);
+    margin-top: 2px;
+  }
+  .about-value-card p {
+    font-size: 14.5px;
+    color: #475569;
+    line-height: 1.65;
+  }
+  .about-value-card p strong {
+    display: block;
+    color: #0f172a;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+
+  /* ─── Roadmap ─── */
+  .about-roadmap {
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-left: 3px solid #4f46e5;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  }
+  .about-roadmap-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px 24px;
+    font-size: 14.5px;
+    color: #475569;
+    border-bottom: 1px solid #f1f5f9;
+    transition: background 0.15s;
+  }
+  .about-roadmap-item:last-child {
+    border-bottom: none;
+  }
+  .about-roadmap-item:hover {
+    background: #fafafe;
+  }
+  .about-roadmap-dot {
+    flex-shrink: 0;
+    width: 8px;
+    height: 8px;
+    background: linear-gradient(135deg, #4f46e5, #6366f1);
+    border-radius: 50%;
+    box-shadow: 0 0 0 3px rgba(79,70,229,0.12);
+  }
+
+  /* ─── CTA ─── */
+  .about-cta {
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(135deg, #1e1b4b 0%, #0f172a 60%, #1e293b 100%);
+    border: 1px solid #312e81;
+    border-radius: 20px;
+    padding: 52px 48px;
+    text-align: center;
+  }
+  .about-cta-glow {
+    position: absolute;
+    top: -60px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 400px;
+    height: 200px;
+    background: radial-gradient(ellipse, rgba(99,102,241,0.15) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .about-cta-icon {
+    position: relative;
+    width: 52px;
+    height: 52px;
+    background: linear-gradient(135deg, rgba(99,102,241,0.15), rgba(99,102,241,0.05));
+    border: 1px solid rgba(99,102,241,0.3);
+    border-radius: 14px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #a5b4fc;
+    margin-bottom: 20px;
+  }
+  .about-cta-title {
+    position: relative;
+    font-size: 26px;
+    font-weight: 700;
+    color: white;
+    letter-spacing: -0.3px;
+    margin-bottom: 12px;
+  }
+  .about-cta-body {
+    position: relative;
+    font-size: 15px;
+    color: #94a3b8;
+    max-width: 460px;
+    margin: 0 auto;
+    line-height: 1.7;
+  }
+  .about-cta-body a {
+    color: #a5b4fc;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    transition: color 0.2s;
+  }
+  .about-cta-body a:hover {
+    color: #c7d2fe;
+  }
+  .about-cta-date {
+    position: relative;
+    font-size: 12.5px;
+    color: #475569;
+    margin-top: 24px;
+  }
+
+  /* ─── Responsive ─── */
+  @media (max-width: 640px) {
+    .about-hero { padding: 36px 24px; }
+    .about-hero-title { font-size: 30px; }
+    .about-values-grid { grid-template-columns: 1fr; }
+    .about-cta { padding: 36px 24px; }
+  }
+</style>
