@@ -2,7 +2,7 @@
 title: "How to Calculate Basis Points: Formulas, Examples & Excel Guide"
 description: "Learn how to calculate basis points with simple formulas. Convert BPS to percentage, find BPS between two rates, calculate dollar impact, and use Excel formulas — with worked examples."
 date: 2026-04-02
-author: "Admin"
+author: "Umar Kashif"
 category: "Guides"
 image: "/uploads/how-to-calculate-basis-points.svg"
 status: "published"

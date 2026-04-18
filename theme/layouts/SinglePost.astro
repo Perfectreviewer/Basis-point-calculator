@@ -55,7 +55,7 @@ const dateFormat = new Intl.DateTimeFormat("en-US", {
 <Layout
   img={entry.data.image || "/images/og-image.jpg"}
   title={entry.data.seoTitle || (entry.data.title + " | " + indexTranslations.en.site_title)}
-  description={entry.data.ogDescription || entry.data.description}
+  description={entry.data.ogDescription || entry.data.description || ""}
 >
   <!-- Schema.org JSON-LD -->
   <script
@@ -74,6 +74,8 @@ const dateFormat = new Intl.DateTimeFormat("en-US", {
       author: {
         "@type": "Person",
         name: entry.data.author,
+        ...(entry.data.authorTitle ? { jobTitle: entry.data.authorTitle } : {}),
+        ...(entry.data.authorBio ? { description: entry.data.authorBio } : {}),
       },
       publisher: {
         "@type": "Organization",
@@ -124,18 +126,39 @@ const dateFormat = new Intl.DateTimeFormat("en-US", {
           )
         }
 
+        <!-- Trust Bar -->
+        <div class="sp-trust-bar sp-reveal" style="--delay:.18s">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          Fact-checked &amp; editorially reviewed
+          <span class="sp-trust-sep">·</span>
+          All figures verified against authoritative financial sources
+          <span class="sp-trust-sep">·</span>
+          <a href="/about/editorial-policy/">Editorial standards →</a>
+        </div>
+
         <!-- Author & Meta -->
         <div class="sp-meta">
           <div class="sp-author-chip">
-            <div class="sp-avatar">{entry.data.author.charAt(0)}</div>
+            <div class="sp-avatar">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/></svg>
+            </div>
             <div class="sp-author-text">
               <span class="sp-author-name">{entry.data.author}</span>
-              <span class="sp-publish-info">
-                <time datetime={entry.data.date.toISOString()}
-                  >{dateFormat.format(entry.data.date)}</time
-                >
-                <span class="sp-dot">·</span>
+              {entry.data.authorTitle && <span class="sp-author-role">{entry.data.authorTitle}</span>}
+              {!entry.data.authorTitle && <span class="sp-author-role">Financial Expert &amp; Writer</span>}
+            </div>
+            <div class="sp-meta-stats">
+              <span class="sp-meta-item">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                <time datetime={entry.data.date.toISOString()}>{dateFormat.format(entry.data.date)}</time>
+              </span>
+              <span class="sp-meta-item">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
                 {readTime} min read
+              </span>
+              <span class="sp-meta-item">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                {wordCount.toLocaleString()} words
               </span>
             </div>
           </div>
@@ -227,22 +250,36 @@ const dateFormat = new Intl.DateTimeFormat("en-US", {
         <!-- Divider -->
         <div class="sp-divider"></div>
 
-        <!-- Author Bio -->
+        <!-- Author Bio Card -->
         <div class="sp-bio sp-reveal">
-          <div class="sp-bio-avatar">
-            <span>{entry.data.author.charAt(0)}</span>
+          <div class="sp-bio-topbar">
+            <span class="sp-bio-label">About the Author</span>
+            <span class="sp-bio-evidence">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              Evidence-based content
+            </span>
           </div>
-          <div class="sp-bio-body">
-            <div class="sp-bio-header">
-              <h3>Written by {entry.data.author}</h3>
-              <span class="sp-bio-badge">Author</span>
+          <div class="sp-bio-inner">
+            <div class="sp-bio-avatar">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/></svg>
             </div>
-            <p>
-              {entry.data.author} is a content creator and financial expert at {
-                indexTranslations.en.site_title
-              }. Passionate about making complex financial topics accessible to
-              everyone.
-            </p>
+            <div class="sp-bio-body">
+              <div class="sp-bio-header">
+                <h3>{entry.data.author}</h3>
+                <span class="sp-bio-badge">{entry.data.authorTitle || "Financial Expert"}</span>
+                <span class="sp-bio-badge sp-bio-badge--green">Fact-checked</span>
+              </div>
+              <p>
+                {entry.data.authorBio
+                  ? entry.data.authorBio
+                  : `${entry.data.author} is a financial content specialist at ${indexTranslations.en.site_title}, focused on making interest rates, basis points, and investment concepts clear and actionable — free, instant, and without the jargon.`
+                }
+              </p>
+              <div class="sp-bio-links">
+                <a href="/guides/">View all articles →</a>
+                <a href="/about-us/">About the site →</a>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -720,58 +757,6 @@ const dateFormat = new Intl.DateTimeFormat("en-US", {
     display: flex;
     justify-content: center;
   }
-  .sp-author-chip {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    padding: 6px 16px 6px 6px;
-    background: rgba(255, 255, 255, 0.7);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(226, 232, 240, 0.6);
-    border-radius: 40px;
-    box-shadow:
-      0 2px 8px rgba(0, 0, 0, 0.04),
-      0 0 0 1px rgba(255, 255, 255, 0.6) inset;
-    transition:
-      transform 0.2s,
-      box-shadow 0.2s;
-  }
-  .sp-author-chip:hover {
-    transform: translateY(-1px);
-    box-shadow:
-      0 6px 16px rgba(0, 0, 0, 0.06),
-      0 0 0 1px rgba(255, 255, 255, 0.6) inset;
-  }
-  .sp-avatar {
-    width: 34px;
-    height: 34px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, #6366f1, #8b5cf6);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    font-weight: 700;
-    font-size: 13px;
-  }
-  .sp-author-text {
-    display: flex;
-    flex-direction: column;
-    line-height: 1.25;
-  }
-  .sp-author-name {
-    font-size: 13px;
-    font-weight: 600;
-    color: #1e293b;
-  }
-  .sp-publish-info {
-    font-size: 11.5px;
-    color: #94a3b8;
-  }
-  .sp-dot {
-    margin: 0 3px;
-  }
 
   /* ─── Content Grid ─── */
   .sp-grid {
@@ -1066,12 +1051,177 @@ const dateFormat = new Intl.DateTimeFormat("en-US", {
     font-weight: 600;
     color: #6366f1;
   }
-  .sp-bio-body p {
-    font-size: 13.5px;
+  /* ─── Trust Bar ─── */
+  .sp-trust-bar {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin: 0 auto 24px;
+    padding: 8px 18px;
+    background: rgba(240, 253, 244, 0.9);
+    border: 1px solid #bbf7d0;
+    border-radius: 40px;
+    font-size: 12px;
+    color: #166534;
+    font-weight: 500;
+  }
+  .sp-trust-bar svg { color: #16a34a; flex-shrink: 0; }
+  .sp-trust-bar a { color: #15803d; font-weight: 600; text-decoration: underline; text-decoration-color: #86efac; }
+  .sp-trust-sep { color: #86efac; }
+
+  /* ─── Hero meta chip (redesigned) ─── */
+  .sp-author-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 18px 10px 10px;
+    background: rgba(255,255,255,0.8);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(226,232,240,0.7);
+    border-radius: 14px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  }
+  .sp-avatar {
+    width: 42px;
+    height: 42px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    flex-shrink: 0;
+  }
+  .sp-author-text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.3;
+    border-right: 1px solid #e2e8f0;
+    padding-right: 14px;
+  }
+  .sp-author-name {
+    font-size: 14px;
+    font-weight: 700;
+    color: #0f172a;
+  }
+  .sp-author-role {
+    font-size: 11.5px;
+    color: #6366f1;
+    font-weight: 500;
+  }
+  .sp-meta-stats {
+    display: flex;
+    gap: 14px;
+  }
+  .sp-meta-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 12px;
     color: #64748b;
-    line-height: 1.55;
+    font-weight: 500;
+    white-space: nowrap;
+  }
+  .sp-meta-item svg { color: #94a3b8; flex-shrink: 0; }
+
+  /* ─── Author Bio Card (redesigned) ─── */
+  .sp-bio {
+    border: 1px solid #e2e8f0;
+    border-radius: 14px;
+    overflow: hidden;
+    background: #f8faff;
+  }
+  .sp-bio-topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 18px;
+    border-bottom: 1px solid #e2e8f0;
+    background: white;
+  }
+  .sp-bio-label {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: #94a3b8;
+  }
+  .sp-bio-evidence {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 11.5px;
+    font-weight: 600;
+    color: #16a34a;
+  }
+  .sp-bio-evidence svg { color: #16a34a; }
+  .sp-bio-inner {
+    display: flex;
+    gap: 16px;
+    padding: 18px 20px 20px;
+    align-items: flex-start;
+  }
+  .sp-bio-avatar {
+    width: 52px;
+    height: 52px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    flex-shrink: 0;
+  }
+  .sp-bio-body { flex: 1; min-width: 0; }
+  .sp-bio-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+    flex-wrap: wrap;
+  }
+  .sp-bio-header h3 {
+    font-size: 15px;
+    font-weight: 700;
+    color: #0f172a;
     margin: 0;
   }
+  .sp-bio-badge {
+    padding: 3px 10px;
+    background: #eef2ff;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    color: #6366f1;
+    border: 1px solid #e0e7ff;
+  }
+  .sp-bio-badge--green {
+    background: #f0fdf4;
+    color: #16a34a;
+    border-color: #bbf7d0;
+  }
+  .sp-bio-body p {
+    font-size: 13.5px;
+    color: #475569;
+    line-height: 1.6;
+    margin: 0 0 12px;
+  }
+  .sp-bio-links {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .sp-bio-links a {
+    font-size: 13px;
+    font-weight: 600;
+    color: #6366f1;
+    text-decoration: none;
+    transition: color 0.15s;
+  }
+  .sp-bio-links a:hover { color: #4338ca; }
 
   /* Mobile Share */
   .sp-mobile-share {

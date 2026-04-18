@@ -2,7 +2,7 @@
 title: "APR vs APY vs Interest Rate: What's the Difference?"
 description: "APR, APY, and interest rate all sound similar but mean very different things. Learn the exact difference, how compounding changes your returns, and which rate to use when comparing loans and savings accounts."
 date: 2026-04-02
-author: "Admin"
+author: "Umar Kashif"
 category: "Guides"
 image: "/uploads/apr-vs-apy-vs-interest-rate.svg"
 status: "published"

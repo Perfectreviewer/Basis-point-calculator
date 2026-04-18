@@ -2,7 +2,7 @@
 title: "APR vs Interest Rate"
 description: "Understand the key differences between APR and interest rate, and why APR gives you the true cost of borrowing."
 date: 2026-03-02
-author: "Admin"
+author: "Umar Kashif"
 category: "Guides"
 image: "https://tg5wyleo1fmzpuba.public.blob.vercel-storage.com/uploads/1773606793089-apr-vs-interest-rate.jpg"
 status: "published"

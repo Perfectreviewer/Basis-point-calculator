@@ -198,12 +198,20 @@ if (editFile) {
             </div>
             <div class="panel-body" id="panel-author">
               <div class="setting-row">
-                <label class="setting-label">Author</label>
-                <input type="text" class="form-input setting-input" id="postAuthor" value={editFrontmatter.author || user.username} placeholder="Author name" />
+                <label class="setting-label">Author Name</label>
+                <input type="text" class="form-input setting-input" id="postAuthor" value={editFrontmatter.author || user.username} placeholder="e.g. Sarah Johnson" />
               </div>
               <div class="setting-row">
-                <label class="setting-label">Description</label>
-                <textarea class="form-input setting-input" id="postDescription" placeholder="SEO description" style="min-height:60px;">{editFrontmatter.description || ''}</textarea>
+                <label class="setting-label">Title / Credentials <span class="setting-hint" style="display:inline">(E-E-A-T)</span></label>
+                <input type="text" class="form-input setting-input" id="postAuthorTitle" value={editFrontmatter.authorTitle || ''} placeholder="e.g. CFA, Financial Analyst · 10 yrs exp" />
+              </div>
+              <div class="setting-row">
+                <label class="setting-label">Author Bio <span class="setting-hint" style="display:inline">(E-E-A-T)</span></label>
+                <textarea class="form-input setting-input" id="postAuthorBio" placeholder="e.g. Sarah is a CFA charterholder with 10 years in fixed income and interest rate strategy..." style="min-height:72px;">{editFrontmatter.authorBio || ''}</textarea>
+              </div>
+              <div class="setting-row">
+                <label class="setting-label">SEO Description</label>
+                <textarea class="form-input setting-input" id="postDescription" placeholder="SEO meta description" style="min-height:60px;">{editFrontmatter.description || ''}</textarea>
               </div>
               <div class="setting-row">
                 <label class="setting-label">Excerpt</label>
@@ -794,6 +802,8 @@ if (editFile) {
             description: document.getElementById('postDescription').value,
             category: document.getElementById('postCategory').value,
             author: document.getElementById('postAuthor').value,
+            authorTitle: document.getElementById('postAuthorTitle')?.value || '',
+            authorBio: document.getElementById('postAuthorBio')?.value || '',
             date: document.getElementById('postDate').value,
             image: document.getElementById('postImageUrl').value || document.getElementById('postImage').value,
             status: document.getElementById('postStatus').value,

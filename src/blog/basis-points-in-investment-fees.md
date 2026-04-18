@@ -2,7 +2,7 @@
 title: "Basis Points in Investment Fees: ETFs, Mutual Funds, Advisors & Hedge Funds"
 description: "Investment fees are quoted in basis points — and even a difference of 50 bps can cost you tens of thousands of dollars over time. Learn how to read, compare, and calculate the real cost of BPS fees across every investment type."
 date: 2026-04-12
-author: "Admin"
+author: "Umar Kashif"
 category: "Guides"
 image: "/uploads/basis-points-in-investment-fees.svg"
 status: "published"

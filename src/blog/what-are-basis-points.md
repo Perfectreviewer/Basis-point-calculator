@@ -2,7 +2,7 @@
 title: "What are Basis Points?"
 description: "A complete primer on basis points (bps) — what they are, why finance uses them instead of percentages, and how to convert between the two."
 date: 2026-03-02
-author: "Admin"
+author: "Umar Kashif"
 category: "Guides"
 image: "https://tg5wyleo1fmzpuba.public.blob.vercel-storage.com/uploads/1773607099952-what-are-basispoint-calculators.jpg"
 status: "published"

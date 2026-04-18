@@ -2,7 +2,7 @@
 title: "Fixed vs Adjustable Rate Mortgage: Which Should You Choose?"
 description: ""
 date: 2026-03-16
-author: "admin"
+author: "Umar Kashif"
 category: "Guides"
 image: "https://tg5wyleo1fmzpuba.public.blob.vercel-storage.com/uploads/1773647770602-fixed-vs-adjustable-rate-mortgage-which-should-you-choose.jpg"
 status: "published"

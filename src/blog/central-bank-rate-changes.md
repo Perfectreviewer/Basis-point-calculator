@@ -2,7 +2,7 @@
 title: "Central Bank Rate Changes"
 description: "Understand how central bank rate decisions affect the economy, markets, and your personal finances."
 date: 2026-03-02
-author: "Admin"
+author: "Umar Kashif"
 category: "Guides"
 image: "https://tg5wyleo1fmzpuba.public.blob.vercel-storage.com/uploads/1773607048094-central-bank-rate-changes.jpg"
 status: "published"

@@ -2,7 +2,7 @@
 title: "Basis Points vs Percentage Points: Key Differences Explained with Examples"
 description: "Confused about basis points vs percentage points? Learn the exact difference, when each term is used, conversion formulas, and real-world examples from mortgages and Fed rate decisions."
 date: 2026-04-01
-author: "Admin"
+author: "Umar Kashif"
 category: "Guides"
 image: "/uploads/basis-points-vs-percentage-points.svg"
 status: "published"

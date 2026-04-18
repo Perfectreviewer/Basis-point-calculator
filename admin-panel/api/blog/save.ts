@@ -21,7 +21,7 @@ export const POST: APIRoute = async ({ request }) => {
     ensureDataDir();
     const body = await request.json();
     const {
-        slug, title, description, date, author, category, image,
+        slug, title, description, date, author, authorTitle, authorBio, category, image,
         status, visibility, tags, excerpt, content,
         seoTitle, seoKeywords, canonicalUrl, robotsIndex, robotsFollow,
         ogTitle, ogDescription, ogImage
@@ -46,6 +46,8 @@ export const POST: APIRoute = async ({ request }) => {
         `author: "${(author || 'Admin').replace(/"/g, '\\"')}"`,
         `category: "${(category || 'General').replace(/"/g, '\\"')}"`,
     ];
+    if (authorTitle) fmLines.push(`authorTitle: "${authorTitle.replace(/"/g, '\\"')}"`);
+    if (authorBio) fmLines.push(`authorBio: "${authorBio.replace(/"/g, '\\"')}"`);
 
     // Optional fields — only include when set
     if (image) fmLines.push(`image: "${image.replace(/"/g, '\\"')}"`);

@@ -2,7 +2,7 @@
 title: "Mortgage Points vs Basis Points: What's the Difference?"
 description: "Mortgage points and basis points both sound like 'points' but mean completely different things. Learn what each term means, how they interact, and when paying mortgage points actually saves you money."
 date: 2026-04-02
-author: "Admin"
+author: "Umar Kashif"
 category: "Guides"
 image: "/uploads/infographic-mortgage-vs-basis-comparison.svg"
 status: "published"

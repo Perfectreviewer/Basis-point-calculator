@@ -2,7 +2,7 @@
 title: "How Interest Rates Work"
 description: "Understand how interest rates work, what influences them, and how they affect your finances."
 date: 2026-03-02
-author: "Admin"
+author: "Umar Kashif"
 category: "Guides"
 image: "https://tg5wyleo1fmzpuba.public.blob.vercel-storage.com/uploads/1773607073584-how-interest-rates-work1.jpg"
 status: "published"

@@ -2,7 +2,7 @@
 title: "BPS to Percentage Conversion: The Complete Guide (With Instant Calculator)"
 description: "Convert basis points to percentage instantly. Full formula, conversion chart (1 bps to 10,000 bps), step-by-step examples, and a free BPS-to-% calculator."
 date: 2026-03-02
-author: "Admin"
+author: "Umar Kashif"
 category: "Guides"
 image: "https://tg5wyleo1fmzpuba.public.blob.vercel-storage.com/uploads/1773606938015-bps-to-percentage-conversion-the-complete-guide-with-instant-calculator-.jpg"
 status: "published"
