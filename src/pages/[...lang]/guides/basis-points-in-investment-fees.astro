@@ -1,0 +1,212 @@
+---
+import CalculatorLayout, {
+  getStaticPaths as getStaticPathsCalc,
+} from "@theme/layouts/CalculatorLayout.astro";
+import {
+  getTranslations,
+  type Locale,
+  getLocalizedUrl,
+} from "@theme/i18n/utils";
+
+export const getStaticPaths = getStaticPathsCalc;
+
+const locale = (Astro.params.lang || "en") as Locale;
+const t = getTranslations(locale);
+
+const pageTitle = "Basis Points in Investment Fees: ETFs, Mutual Funds, Advisors & Hedge Funds";
+const pageDescription =
+  "Investment fees are quoted in basis points — and even a difference of 50 bps can cost you tens of thousands over time. Learn how to read, compare, and calculate the real cost of BPS fees.";
+
+const relatedCalculators = [
+  {
+    name: "BPS to Percentage",
+    url: "/bps-calculators/basis-point-to-percentage/",
+  },
+  {
+    name: "Basis Point Guide",
+    url: "/bps-calculators/basis-point-guide/",
+  },
+  {
+    name: "Percentage to BPS",
+    url: "/bps-calculators/percentage-to-basis-point/",
+  },
+];
+
+const faqs = [
+  {
+    question: "What does '50 basis points' mean as a fee?",
+    answer:
+      "50 basis points equals 0.50%. On a $200,000 portfolio, a 50 BPS annual fee costs $1,000 per year. Over 20 years with compounding, that fee reduces your ending portfolio by approximately $28,000–$35,000 (assuming 7% gross return).",
+  },
+  {
+    question: "What is a reasonable expense ratio in basis points?",
+    answer:
+      "For a broad-market index ETF, 3–15 BPS is excellent. For an index mutual fund, 20–40 BPS is reasonable. For actively managed funds, under 75 BPS is competitive. Above 100 BPS warrants scrutiny.",
+  },
+  {
+    question: "Is a 100 basis point financial advisor fee worth it?",
+    answer:
+      "At 100 BPS, a full-service advisor on a $500,000 portfolio costs $5,000/year. If their planning (tax optimization, estate planning, behavioral coaching) saves or generates more than $5,000 annually, the fee is justified. Many advisors now offer similar services at 50–75 BPS.",
+  },
+  {
+    question: "What is the hedge fund '2 and 20' in basis points?",
+    answer:
+      "The 2% management fee equals 200 basis points. The 20% performance fee is a profit-sharing arrangement. Combined, the effective fee drag in a good year (e.g. 15% gross return) can exceed 300–400 basis points.",
+  },
+  {
+    question: "How do I calculate the dollar cost of an expense ratio?",
+    answer:
+      "Multiply your investment value by the expense ratio as a decimal. For a $250,000 investment in a fund with a 0.40% (40 BPS) expense ratio: $250,000 × 0.0040 = $1,000 per year.",
+  },
+  {
+    question: "What is Vanguard's expense ratio in basis points?",
+    answer:
+      "As of 2026, Vanguard's average ETF expense ratio is approximately 4 basis points (0.04%), and its overall fund average is around 6 basis points (0.06%). The industry average ETF expense ratio is approximately 23 basis points.",
+  },
+];
+---
+
+<CalculatorLayout
+  title={pageTitle}
+  description={pageDescription}
+  calculatorType="guide"
+  relatedCalculators={relatedCalculators}
+  faqs={faqs}
+>
+  <article class="prose prose-slate max-w-none">
+    <h1 class="text-3xl font-bold text-slate-800">{pageTitle}</h1>
+
+    <div class="not-prose bg-sky-50 rounded-xl p-6 my-6">
+      <p class="text-lg text-slate-700">
+        <strong>Key Insight:</strong> A fee difference of just 50 BPS on a $500,000 portfolio over 30 years can cost over $200,000 in lost compounding. Every basis point matters.
+      </p>
+    </div>
+
+    <h2>Why Investment Fees Are Quoted in Basis Points</h2>
+    <p>
+      When fees are small fractions of a percent, basis points make comparisons unambiguous.
+      "3 basis points" is clearer than "0.03%", and avoids confusion about relative vs. absolute changes.
+    </p>
+
+    <div class="not-prose overflow-x-auto my-6">
+      <table class="w-full text-sm border-collapse">
+        <thead class="bg-slate-100">
+          <tr>
+            <th class="px-4 py-2 text-left border border-slate-200">Fee in BPS</th>
+            <th class="px-4 py-2 text-left border border-slate-200">Fee as Percentage</th>
+            <th class="px-4 py-2 text-left border border-slate-200">Common Context</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="border-b border-slate-200"><td class="px-4 py-2 border border-slate-200">3 BPS</td><td class="px-4 py-2 border border-slate-200">0.03%</td><td class="px-4 py-2 border border-slate-200">Ultra-low-cost index ETF</td></tr>
+          <tr class="border-b border-slate-200"><td class="px-4 py-2 border border-slate-200">10 BPS</td><td class="px-4 py-2 border border-slate-200">0.10%</td><td class="px-4 py-2 border border-slate-200">Low-cost ETF</td></tr>
+          <tr class="border-b border-slate-200"><td class="px-4 py-2 border border-slate-200">40 BPS</td><td class="px-4 py-2 border border-slate-200">0.40%</td><td class="px-4 py-2 border border-slate-200">Average equity mutual fund</td></tr>
+          <tr class="border-b border-slate-200"><td class="px-4 py-2 border border-slate-200">75 BPS</td><td class="px-4 py-2 border border-slate-200">0.75%</td><td class="px-4 py-2 border border-slate-200">Financial advisor (mid-range)</td></tr>
+          <tr class="border-b border-slate-200"><td class="px-4 py-2 border border-slate-200">100 BPS</td><td class="px-4 py-2 border border-slate-200">1.00%</td><td class="px-4 py-2 border border-slate-200">Financial advisor (standard)</td></tr>
+          <tr class="border-b border-slate-200"><td class="px-4 py-2 border border-slate-200">200 BPS</td><td class="px-4 py-2 border border-slate-200">2.00%</td><td class="px-4 py-2 border border-slate-200">Hedge fund management fee</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2>ETF Expense Ratios in Basis Points</h2>
+    <p>An expense ratio is the annual fee deducted automatically from your fund's returns.</p>
+
+    <div class="not-prose overflow-x-auto my-6">
+      <table class="w-full text-sm border-collapse">
+        <thead class="bg-slate-100">
+          <tr>
+            <th class="px-4 py-2 text-left border border-slate-200">ETF Category</th>
+            <th class="px-4 py-2 text-left border border-slate-200">Average Expense Ratio</th>
+            <th class="px-4 py-2 text-left border border-slate-200">In Basis Points</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="border-b border-slate-200"><td class="px-4 py-2 border border-slate-200">Index equity ETFs</td><td class="px-4 py-2 border border-slate-200">0.14%</td><td class="px-4 py-2 border border-slate-200"><strong>14 BPS</strong></td></tr>
+          <tr class="border-b border-slate-200"><td class="px-4 py-2 border border-slate-200">Index bond ETFs</td><td class="px-4 py-2 border border-slate-200">0.09%</td><td class="px-4 py-2 border border-slate-200"><strong>9 BPS</strong></td></tr>
+          <tr class="border-b border-slate-200"><td class="px-4 py-2 border border-slate-200">Active equity ETFs</td><td class="px-4 py-2 border border-slate-200">0.74%</td><td class="px-4 py-2 border border-slate-200"><strong>74 BPS</strong></td></tr>
+          <tr class="border-b border-slate-200"><td class="px-4 py-2 border border-slate-200">Vanguard ETFs (avg)</td><td class="px-4 py-2 border border-slate-200">0.04%</td><td class="px-4 py-2 border border-slate-200"><strong>4 BPS</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2>Financial Advisor Fees in Basis Points (AUM Fees)</h2>
+
+    <div class="not-prose overflow-x-auto my-6">
+      <table class="w-full text-sm border-collapse">
+        <thead class="bg-slate-100">
+          <tr>
+            <th class="px-4 py-2 text-left border border-slate-200">Client Asset Level</th>
+            <th class="px-4 py-2 text-left border border-slate-200">Typical AUM Fee</th>
+            <th class="px-4 py-2 text-left border border-slate-200">In Basis Points</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="border-b border-slate-200"><td class="px-4 py-2 border border-slate-200">Under $500k</td><td class="px-4 py-2 border border-slate-200">1.00–1.25%</td><td class="px-4 py-2 border border-slate-200"><strong>100–125 BPS</strong></td></tr>
+          <tr class="border-b border-slate-200"><td class="px-4 py-2 border border-slate-200">$500k–$1.5M</td><td class="px-4 py-2 border border-slate-200">0.75–1.00%</td><td class="px-4 py-2 border border-slate-200"><strong>75–100 BPS</strong></td></tr>
+          <tr class="border-b border-slate-200"><td class="px-4 py-2 border border-slate-200">$1.5M–$5M</td><td class="px-4 py-2 border border-slate-200">0.50–0.75%</td><td class="px-4 py-2 border border-slate-200"><strong>50–75 BPS</strong></td></tr>
+          <tr class="border-b border-slate-200"><td class="px-4 py-2 border border-slate-200">$5M–$10M</td><td class="px-4 py-2 border border-slate-200">0.40–0.60%</td><td class="px-4 py-2 border border-slate-200"><strong>40–60 BPS</strong></td></tr>
+          <tr class="border-b border-slate-200"><td class="px-4 py-2 border border-slate-200">$10M+</td><td class="px-4 py-2 border border-slate-200">0.30–0.50%</td><td class="px-4 py-2 border border-slate-200"><strong>30–50 BPS</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="not-prose bg-amber-50 border-l-4 border-amber-400 p-4 my-6">
+      <p class="font-medium text-amber-800">Negotiation tip:</p>
+      <p class="text-amber-700 mt-2">
+        A 25 BPS reduction on a $1,000,000 portfolio saves $2,500 per year.
+        Over 10 years with compounding, that difference can exceed $35,000.
+      </p>
+    </div>
+
+    <h2>Hedge Fund Fees: The "2 and 20" Structure</h2>
+    <ul>
+      <li><strong>2% management fee = 200 BPS</strong> on total assets, charged annually</li>
+      <li><strong>20% performance fee</strong> on all profits above the hurdle rate (typically 8%)</li>
+    </ul>
+    <p>
+      On a $1,000,000 investment with a 15% gross return: management fee = $20,000, performance fee = $30,000.
+      The fund captures $50,000 of your $150,000 gain — over 33% of the profit.
+    </p>
+
+    <h2>Robo-Advisors in Basis Points</h2>
+    <div class="not-prose overflow-x-auto my-6">
+      <table class="w-full text-sm border-collapse">
+        <thead class="bg-slate-100">
+          <tr>
+            <th class="px-4 py-2 text-left border border-slate-200">Platform Type</th>
+            <th class="px-4 py-2 text-left border border-slate-200">Typical Fee Range</th>
+            <th class="px-4 py-2 text-left border border-slate-200">In Basis Points</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="border-b border-slate-200"><td class="px-4 py-2 border border-slate-200">DIY brokerage</td><td class="px-4 py-2 border border-slate-200">$0</td><td class="px-4 py-2 border border-slate-200"><strong>0 BPS</strong></td></tr>
+          <tr class="border-b border-slate-200"><td class="px-4 py-2 border border-slate-200">Robo-advisor (basic)</td><td class="px-4 py-2 border border-slate-200">0.20–0.30%</td><td class="px-4 py-2 border border-slate-200"><strong>20–30 BPS</strong></td></tr>
+          <tr class="border-b border-slate-200"><td class="px-4 py-2 border border-slate-200">Hybrid (robo + human)</td><td class="px-4 py-2 border border-slate-200">0.30–0.75%</td><td class="px-4 py-2 border border-slate-200"><strong>30–75 BPS</strong></td></tr>
+          <tr class="border-b border-slate-200"><td class="px-4 py-2 border border-slate-200">Full-service advisor</td><td class="px-4 py-2 border border-slate-200">0.75–1.25%</td><td class="px-4 py-2 border border-slate-200"><strong>75–125 BPS</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2>How to Compare Investment Fees Using Basis Points</h2>
+    <ol>
+      <li><strong>Convert everything to BPS:</strong> Multiply % by 100 (e.g. 0.75% = 75 BPS)</li>
+      <li><strong>Find the total all-in cost:</strong> Add advisor fee + fund expense ratio + platform fees</li>
+      <li><strong>Calculate annual dollar cost:</strong> Portfolio Value × (Total BPS ÷ 10,000)</li>
+      <li><strong>Project 10-year cost:</strong> Use our calculator below to account for compounding</li>
+    </ol>
+
+    <p>
+      Example: $400,000 portfolio at 95 BPS total = $400,000 × 0.0095 = <strong>$3,800/year</strong>.
+      Over 10 years (7% gross return), that's approximately $55,000 in total fee drag.
+    </p>
+
+    <div class="not-prose mt-8">
+      <a
+        href={getLocalizedUrl("/bps-calculators/", locale)}
+        class="inline-flex items-center gap-2 px-6 py-3 bg-sky-600 text-white rounded-lg hover:bg-sky-700 transition-colors"
+      >
+        Try Our Basis Point Calculators &rarr;
+      </a>
+    </div>
+  </article>
+</CalculatorLayout>

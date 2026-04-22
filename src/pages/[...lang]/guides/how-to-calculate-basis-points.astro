@@ -1,0 +1,197 @@
+---
+import CalculatorLayout, {
+  getStaticPaths as getStaticPathsCalc,
+} from "@theme/layouts/CalculatorLayout.astro";
+import {
+  getTranslations,
+  type Locale,
+  getLocalizedUrl,
+} from "@theme/i18n/utils";
+
+export const getStaticPaths = getStaticPathsCalc;
+
+const locale = (Astro.params.lang || "en") as Locale;
+const t = getTranslations(locale);
+
+const pageTitle = "How to Calculate Basis Points: Formulas, Examples & Excel Guide";
+const pageDescription =
+  "Learn how to calculate basis points with simple formulas. Convert BPS to percentage, find BPS between two rates, calculate dollar impact, and use Excel formulas — with worked examples.";
+
+const relatedCalculators = [
+  {
+    name: "BPS to Percentage",
+    url: "/bps-calculators/basis-point-to-percentage/",
+  },
+  {
+    name: "Basis Point Change Calculator",
+    url: "/bps-calculators/basis-point-change-calculator/",
+  },
+  {
+    name: "Basis Point Difference Calculator",
+    url: "/bps-calculators/basis-point-difference-calculator/",
+  },
+];
+
+const faqs = [
+  {
+    question: "How do you calculate basis points from a percentage?",
+    answer:
+      "Multiply the percentage by 100. For example, 0.25% × 100 = 25 basis points. In reverse, divide basis points by 100 to get a percentage: 75 BPS ÷ 100 = 0.75%.",
+  },
+  {
+    question: "How do you calculate basis points between two interest rates?",
+    answer:
+      "Subtract the smaller rate from the larger rate, then multiply by 100. Example: (6.50% − 6.25%) × 100 = 25 basis points.",
+  },
+  {
+    question: "How do you calculate 25 basis points?",
+    answer:
+      "25 basis points equals 0.25%. To find the dollar value on a loan, multiply the loan amount by 0.0025. On a $200,000 loan: $200,000 × 0.0025 = $500 per year.",
+  },
+  {
+    question: "How do I calculate basis points to dollars?",
+    answer:
+      "Use: Dollar Impact = Loan Amount × (BPS ÷ 10,000). For example, 100 basis points on a $500,000 loan = $500,000 × (100 ÷ 10,000) = $5,000 per year.",
+  },
+  {
+    question: "What is the Excel formula for basis points?",
+    answer:
+      "To find BPS between two rates (as decimals): =(A1−B1)×10000. To convert a percentage to BPS: =A1×10000. To convert BPS to percentage: =A1/10000.",
+  },
+];
+---
+
+<CalculatorLayout
+  title={pageTitle}
+  description={pageDescription}
+  calculatorType="guide"
+  relatedCalculators={relatedCalculators}
+  faqs={faqs}
+>
+  <article class="prose prose-slate max-w-none">
+    <h1 class="text-3xl font-bold text-slate-800">{pageTitle}</h1>
+
+    <div class="not-prose bg-sky-50 rounded-xl p-6 my-6">
+      <p class="text-lg text-slate-700">
+        <strong>Core Rule:</strong> 1 basis point = 0.01% = 0.0001. Everything else flows from this.
+      </p>
+    </div>
+
+    <h2>The Core Formula for Basis Points</h2>
+    <p>Two master formulas cover most situations:</p>
+    <ul>
+      <li><strong>BPS from two rates:</strong> BPS = (Rate A − Rate B) × 100 <em>(use percentage values, e.g. 6.50 and 6.25)</em></li>
+      <li><strong>BPS from a single percentage:</strong> BPS = Percentage × 100 <em>(e.g. 0.25% × 100 = 25 BPS)</em></li>
+    </ul>
+
+    <h2>How to Calculate Basis Points from a Percentage</h2>
+    <p><strong>Formula: BPS = Percentage (%) × 100</strong> &nbsp;|&nbsp; Reverse: Percentage = BPS ÷ 100</p>
+
+    <div class="not-prose overflow-x-auto my-6">
+      <table class="w-full text-sm border-collapse">
+        <thead class="bg-slate-100">
+          <tr>
+            <th class="px-4 py-2 text-left border border-slate-200">Percentage</th>
+            <th class="px-4 py-2 text-left border border-slate-200">Calculation</th>
+            <th class="px-4 py-2 text-left border border-slate-200">Basis Points</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="border-b border-slate-200"><td class="px-4 py-2 border border-slate-200">0.01%</td><td class="px-4 py-2 border border-slate-200">0.01 × 100</td><td class="px-4 py-2 border border-slate-200">1 BPS</td></tr>
+          <tr class="border-b border-slate-200"><td class="px-4 py-2 border border-slate-200">0.25%</td><td class="px-4 py-2 border border-slate-200">0.25 × 100</td><td class="px-4 py-2 border border-slate-200">25 BPS</td></tr>
+          <tr class="border-b border-slate-200"><td class="px-4 py-2 border border-slate-200">0.50%</td><td class="px-4 py-2 border border-slate-200">0.50 × 100</td><td class="px-4 py-2 border border-slate-200">50 BPS</td></tr>
+          <tr class="border-b border-slate-200"><td class="px-4 py-2 border border-slate-200">1.00%</td><td class="px-4 py-2 border border-slate-200">1.00 × 100</td><td class="px-4 py-2 border border-slate-200">100 BPS</td></tr>
+          <tr class="border-b border-slate-200"><td class="px-4 py-2 border border-slate-200">2.50%</td><td class="px-4 py-2 border border-slate-200">2.50 × 100</td><td class="px-4 py-2 border border-slate-200">250 BPS</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2>How to Calculate Basis Points Between Two Rates</h2>
+    <p><strong>Formula: BPS = (Rate A − Rate B) × 100</strong></p>
+
+    <div class="not-prose bg-amber-50 border-l-4 border-amber-400 p-4 my-6">
+      <p class="font-medium text-amber-800">Worked Examples:</p>
+      <ul class="text-amber-700 mt-2 space-y-1 list-disc pl-5">
+        <li>Mortgage negotiation: (7.00 − 6.50) × 100 = <strong>50 BPS reduction</strong></li>
+        <li>Fed rate hike: (5.50 − 5.25) × 100 = <strong>25 BPS increase</strong></li>
+        <li>Bond yield spread: (5.85 − 4.20) × 100 = <strong>165 BPS spread</strong></li>
+      </ul>
+    </div>
+
+    <h2>How to Calculate Basis Point Value (Dollar Impact)</h2>
+    <p><strong>Formula: Dollar Impact = Loan Amount × (BPS ÷ 10,000)</strong></p>
+    <p>Example — $300,000 mortgage, 25 BPS change: $300,000 × (25 ÷ 10,000) = <strong>$750 per year</strong> (~$62.50/month).</p>
+
+    <div class="not-prose overflow-x-auto my-6">
+      <table class="w-full text-sm border-collapse">
+        <thead class="bg-slate-100">
+          <tr>
+            <th class="px-4 py-2 text-left border border-slate-200">BPS Change</th>
+            <th class="px-4 py-2 text-left border border-slate-200">% Change</th>
+            <th class="px-4 py-2 text-left border border-slate-200">Annual Impact ($300k loan)</th>
+            <th class="px-4 py-2 text-left border border-slate-200">Monthly Impact</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="border-b border-slate-200"><td class="px-4 py-2 border border-slate-200">10 BPS</td><td class="px-4 py-2 border border-slate-200">0.10%</td><td class="px-4 py-2 border border-slate-200">$300/yr</td><td class="px-4 py-2 border border-slate-200">$25/mo</td></tr>
+          <tr class="border-b border-slate-200"><td class="px-4 py-2 border border-slate-200">25 BPS</td><td class="px-4 py-2 border border-slate-200">0.25%</td><td class="px-4 py-2 border border-slate-200">$750/yr</td><td class="px-4 py-2 border border-slate-200">$62.50/mo</td></tr>
+          <tr class="border-b border-slate-200"><td class="px-4 py-2 border border-slate-200">50 BPS</td><td class="px-4 py-2 border border-slate-200">0.50%</td><td class="px-4 py-2 border border-slate-200">$1,500/yr</td><td class="px-4 py-2 border border-slate-200">$125/mo</td></tr>
+          <tr class="border-b border-slate-200"><td class="px-4 py-2 border border-slate-200">100 BPS</td><td class="px-4 py-2 border border-slate-200">1.00%</td><td class="px-4 py-2 border border-slate-200">$3,000/yr</td><td class="px-4 py-2 border border-slate-200">$250/mo</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2>How to Calculate Basis Points in Excel</h2>
+    <div class="not-prose bg-slate-50 rounded-lg p-6 my-6">
+      <div class="space-y-4">
+        <div>
+          <p class="font-medium text-slate-700 mb-1">BPS between two rates (as decimals)</p>
+          <code class="text-sky-600 bg-sky-50 px-2 py-1 rounded">=(B2-C2)*10000</code>
+        </div>
+        <div>
+          <p class="font-medium text-slate-700 mb-1">Convert percentage to BPS</p>
+          <code class="text-sky-600 bg-sky-50 px-2 py-1 rounded">=B3*10000</code>
+        </div>
+        <div>
+          <p class="font-medium text-slate-700 mb-1">Convert BPS to percentage</p>
+          <code class="text-sky-600 bg-sky-50 px-2 py-1 rounded">=B4/10000</code>
+        </div>
+        <div>
+          <p class="font-medium text-slate-700 mb-1">Dollar impact of BPS on a loan</p>
+          <code class="text-sky-600 bg-sky-50 px-2 py-1 rounded">=B5*(C5/10000)</code>
+          <p class="text-sm text-slate-500 mt-1">B5 = loan amount, C5 = BPS value</p>
+        </div>
+      </div>
+    </div>
+
+    <h2>Quick Reference: All BPS Formulas</h2>
+    <div class="not-prose overflow-x-auto my-6">
+      <table class="w-full text-sm border-collapse">
+        <thead class="bg-slate-100">
+          <tr>
+            <th class="px-4 py-2 text-left border border-slate-200">What to Calculate</th>
+            <th class="px-4 py-2 text-left border border-slate-200">Formula</th>
+            <th class="px-4 py-2 text-left border border-slate-200">Example</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="border-b border-slate-200"><td class="px-4 py-2 border border-slate-200">BPS from two rates</td><td class="px-4 py-2 border border-slate-200">(Rate A − Rate B) × 100</td><td class="px-4 py-2 border border-slate-200">(6.50 − 6.25) × 100 = 25 BPS</td></tr>
+          <tr class="border-b border-slate-200"><td class="px-4 py-2 border border-slate-200">BPS from a percentage</td><td class="px-4 py-2 border border-slate-200">% × 100</td><td class="px-4 py-2 border border-slate-200">0.75% × 100 = 75 BPS</td></tr>
+          <tr class="border-b border-slate-200"><td class="px-4 py-2 border border-slate-200">Percentage from BPS</td><td class="px-4 py-2 border border-slate-200">BPS ÷ 100</td><td class="px-4 py-2 border border-slate-200">50 BPS ÷ 100 = 0.50%</td></tr>
+          <tr class="border-b border-slate-200"><td class="px-4 py-2 border border-slate-200">Dollar impact on loan</td><td class="px-4 py-2 border border-slate-200">Loan × (BPS ÷ 10,000)</td><td class="px-4 py-2 border border-slate-200">$300k × (25÷10,000) = $750/yr</td></tr>
+          <tr class="border-b border-slate-200"><td class="px-4 py-2 border border-slate-200">Commission in dollars</td><td class="px-4 py-2 border border-slate-200">Value × (BPS ÷ 10,000)</td><td class="px-4 py-2 border border-slate-200">$400k × (75÷10,000) = $3,000</td></tr>
+          <tr class="border-b border-slate-200"><td class="px-4 py-2 border border-slate-200">Spread between two rates</td><td class="px-4 py-2 border border-slate-200">(High − Low) × 100</td><td class="px-4 py-2 border border-slate-200">(6.80−4.25) × 100 = 255 BPS</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="not-prose mt-8">
+      <a
+        href={getLocalizedUrl("/bps-calculators/", locale)}
+        class="inline-flex items-center gap-2 px-6 py-3 bg-sky-600 text-white rounded-lg hover:bg-sky-700 transition-colors"
+      >
+        Try Our Basis Point Calculators &rarr;
+      </a>
+    </div>
+  </article>
+</CalculatorLayout>
