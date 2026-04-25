@@ -37,6 +37,37 @@ const {
 
 const siteURL = Astro.url.origin;
 const pageURL = Astro.url.href;
+
+// Breadcrumb: parse URL segments, strip locale prefix for non-English
+const categoryNames: Record<string, string> = {
+  'bps-calculators': 'BPS Calculators',
+  'interest-rate-calculators': 'Interest Rate Calculators',
+  'bond-calculators': 'Bond Calculators',
+  'loan-calculators': 'Loan Calculators',
+  'investment-calculators': 'Investment Calculators',
+  'calculators': 'Calculators',
+};
+const pathSegments = Astro.url.pathname.split('/').filter(Boolean);
+const contentSegments = locale === 'en' ? pathSegments : pathSegments.slice(1);
+const breadcrumbItems: Array<{ "@type": string; position: number; name: string; item: string }> = [
+  { "@type": "ListItem", position: 1, name: "Home", item: siteURL + getLocalizedUrl('/', locale) },
+];
+if (contentSegments[0] && contentSegments[0] in categoryNames) {
+  breadcrumbItems.push({
+    "@type": "ListItem",
+    position: 2,
+    name: categoryNames[contentSegments[0]],
+    item: siteURL + getLocalizedUrl('/' + contentSegments[0] + '/', locale),
+  });
+}
+if (contentSegments.length >= 2) {
+  breadcrumbItems.push({
+    "@type": "ListItem",
+    position: breadcrumbItems.length + 1,
+    name: title,
+    item: pageURL,
+  });
+}
 ---
 
 <Layout title={`${title} | ${t.site_title}`} description={description}>
@@ -88,6 +119,18 @@ const pageURL = Astro.url.href;
       />
     )
   }
+
+  <!-- Breadcrumb Schema -->
+  <script
+    is:inline
+    slot="head"
+    type="application/ld+json"
+    set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      itemListElement: breadcrumbItems,
+    })}
+  />
 
   <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
     <!-- Main Calculator Area -->

@@ -365,7 +365,7 @@
       "sv": "Baspunkt Förändringskalkylator | Baspunktsräknare"
     },
     "description": {
-      "en": "Free Basis Point tool. Calculate with precision at BasisPointCalculator.com.",
+      "en": "Calculate the basis point change between two interest rates or yields. Free basis point change calculator — find rate movements in BPS instantly.",
       "hi": "मुफ्त बेसिस पॉइंट उपकरण। BasisPointCalculator.com पर सटीकता से गणना करें।",
       "es": "Herramienta gratuita de Punto Básico. Calcule con precisión en BasisPointCalculator.com.",
       "ru": "Бесплатный инструмент Базисный Пункт. Рассчитывайте точно на BasisPointCalculator.com.",
@@ -474,7 +474,7 @@
   },
   "/bps-calculators/basis-point-guide/": {
     "title": {
-      "en": "Basis Point — Guide | BasisPoint Calculator",
+      "en": "How Many Basis Points in 1%? — Complete BPS Guide",
       "hi": "बेसिस पॉइंट — गाइड | बेसिस पॉइंट कैलकुलेटर",
       "es": "Punto Básico — Guía | Calculadora de Puntos Básicos",
       "ru": "Базисный Пункт — Руководство | Калькулятор Базисных Пунктов",
@@ -494,7 +494,7 @@
       "sv": "Baspunkt — Guide | Baspunktsräknare"
     },
     "description": {
-      "en": "Free Basis Point tool. Calculate with precision at BasisPointCalculator.com.",
+      "en": "1% equals 100 basis points. Learn how many basis points are in 1%, 0.5%, and other percentages — complete BPS guide with a free conversion table.",
       "hi": "मुफ्त बेसिस पॉइंट उपकरण। BasisPointCalculator.com पर सटीकता से गणना करें।",
       "es": "Herramienta gratuita de Punto Básico. Calcule con precisión en BasisPointCalculator.com.",
       "ru": "Бесплатный инструмент Базисный Пункт. Рассчитывайте точно на BasisPointCalculator.com.",
@@ -513,11 +513,11 @@
       "tr": "Ücretsiz Baz Puan aracı. BasisPointCalculator.com'da hassas hesaplama yapın.",
       "sv": "Gratis Baspunkt-verktyg. Beräkna exakt på BasisPointCalculator.com."
     },
-    "keywords": "what are basis points, basis points explained, bps meaning, basis points definition, basis points guide, bps in finance"
+    "keywords": "how many basis points in 1%, what are basis points, basis points explained, bps meaning, basis points definition, 100 basis points equals 1 percent, bps guide"
   },
   "/bps-calculators/basis-point-to-percentage/": {
     "title": {
-      "en": "Basis Point to Percentage | BasisPoint Calculator",
+      "en": "BPS to Percent Converter — Free Basis Point Calculator",
       "hi": "बेसिस पॉइंट से प्रतिशत | बेसिस पॉइंट कैलकुलेटर",
       "es": "Punto Básico a Porcentaje | Calculadora de Puntos Básicos",
       "ru": "Базисный Пункт в Проценты | Калькулятор Базисных Пунктов",
@@ -537,7 +537,7 @@
       "sv": "Baspunkt till Procent | Baspunktsräknare"
     },
     "description": {
-      "en": "Free Basis Point tool. Calculate with precision at BasisPointCalculator.com.",
+      "en": "Convert basis points to percentage instantly. Enter any BPS value and get the exact percentage — free online BPS to percent converter used by finance professionals.",
       "hi": "मुफ्त बेसिस पॉइंट उपकरण। BasisPointCalculator.com पर सटीकता से गणना करें।",
       "es": "Herramienta gratuita de Punto Básico. Calcule con precisión en BasisPointCalculator.com.",
       "ru": "Бесплатный инструмент Базисный Пункт. Рассчитывайте точно на BasisPointCalculator.com.",
@@ -560,7 +560,7 @@
   },
   "/bps-calculators/basis-point-vs-percentage/": {
     "title": {
-      "en": "Basis Point vs Percentage | BasisPoint Calculator",
+      "en": "Basis Points vs Percentage Points — Key Differences Explained",
       "hi": "बेसिस पॉइंट बनाम प्रतिशत | बेसिस पॉइंट कैलकुलेटर",
       "es": "Punto Básico vs Porcentaje | Calculadora de Puntos Básicos",
       "ru": "Базисный Пункт и Проценты | Калькулятор Базисных Пунктов",
@@ -580,30 +580,30 @@
       "sv": "Baspunkt vs Procent | Baspunktsräknare"
     },
     "description": {
-      "en": "Free Basis Point tool. Calculate with precision at BasisPointCalculator.com.",
-      "hi": "मुफ्त बेसिस पॉइंट उपकरण। BasisPointCalculator.com पर सटीकता से गणना करें।",
-      "es": "Herramienta gratuita de Punto Básico. Calcule con precisión en BasisPointCalculator.com.",
-      "ru": "Бесплатный инструмент Базисный Пункт. Рассчитывайте точно на BasisPointCalculator.com.",
-      "fr": "Outil gratuit Point de Base. Calculez avec précision sur BasisPointCalculator.com.",
-      "de": "Kostenloses Basispunkt-Tool. Berechnen Sie präzise auf BasisPointCalculator.com.",
-      "it": "Strumento gratuito Punto Base. Calcola con precisione su BasisPointCalculator.com.",
-      "pt": "Ferramenta gratuita de Ponto Base. Calcule com precisão no BasisPointCalculator.com.",
-      "bn": "বিনামূল্যে বেসিস পয়েন্ট টুল। BasisPointCalculator.com-এ সঠিকভাবে গণনা করুন।",
-      "ja": "無料のベーシスポイントツール。BasisPointCalculator.comで正確に計算。",
-      "ko": "무료 베이시스 포인트 도구. BasisPointCalculator.com에서 정확하게 계산하세요.",
-      "ms": "Alat Mata Asas percuma. Kira dengan tepat di BasisPointCalculator.com.",
-      "pl": "Darmowe narzędzie Punkt Bazowy. Oblicz dokładnie na BasisPointCalculator.com.",
-      "id": "Alat Basis Poin gratis. Hitung dengan tepat di BasisPointCalculator.com.",
-      "ar": "أداة نقطة الأساس مجانية. احسب بدقة على BasisPointCalculator.com.",
-      "bg": "Безплатен инструмент за Базисна точка. Изчислете точно на BasisPointCalculator.com.",
-      "tr": "Ücretsiz Baz Puan aracı. BasisPointCalculator.com'da hassas hesaplama yapın.",
-      "sv": "Gratis Baspunkt-verktyg. Beräkna exakt på BasisPointCalculator.com."
+      "en": "Basis points and percentage points are not the same. Learn the key difference between BPS and percentage points — with examples from interest rates and bond yields.",
+      "hi": "बेसिस पॉइंट और प्रतिशत पॉइंट अलग-अलग हैं। मुख्य अंतर जानें।",
+      "es": "Los puntos básicos y los puntos porcentuales no son lo mismo. Conozca las diferencias clave.",
+      "ru": "Базисные пункты и процентные пункты — это не одно и то же. Узнайте ключевые различия.",
+      "fr": "Les points de base et les points de pourcentage ne sont pas les mêmes. Apprenez les différences.",
+      "de": "Basispunkte und Prozentpunkte sind nicht dasselbe. Lernen Sie die wichtigsten Unterschiede.",
+      "it": "I punti base e i punti percentuali non sono la stessa cosa. Scopri le differenze chiave.",
+      "pt": "Pontos base e pontos percentuais não são a mesma coisa. Conheça as diferenças.",
+      "bn": "বেসিস পয়েন্ট এবং শতাংশ পয়েন্ট একই নয়। মূল পার্থক্য জানুন।",
+      "ja": "ベーシスポイントとパーセントポイントは同じではありません。主な違いを学びましょう。",
+      "ko": "베이시스 포인트와 퍼센트 포인트는 같지 않습니다. 주요 차이점을 알아보세요.",
+      "ms": "Mata asas dan mata peratusan tidak sama. Ketahui perbezaan utama.",
+      "pl": "Punkty bazowe i punkty procentowe to nie to samo. Poznaj kluczowe różnice.",
+      "id": "Basis poin dan poin persentase tidak sama. Pelajari perbedaan utamanya.",
+      "ar": "نقاط الأساس ونقاط النسبة المئوية ليست متطابقة. تعرف على الاختلافات الرئيسية.",
+      "bg": "Базисните точки и процентните точки не са едно и също. Научете ключовите разлики.",
+      "tr": "Baz puanlar ve yüzde puanlar aynı şey değildir. Temel farklılıkları öğrenin.",
+      "sv": "Baspunkter och procentenheter är inte samma sak. Lär dig de viktigaste skillnaderna."
     },
-    "keywords": "basis point vs percentage, bps vs percent, difference between basis points and percentage, why use basis points, bps percentage comparison"
+    "keywords": "basis points vs percentage points, bps vs percent, difference between basis points and percentage points, why use basis points, bps percentage comparison"
   },
   "/bps-calculators/percentage-to-basis-point/": {
     "title": {
-      "en": "Percentage to Basis Point | BasisPoint Calculator",
+      "en": "Percentage to Basis Points Converter | BasisPoint Calculator",
       "hi": "प्रतिशत से बेसिस पॉइंट | बेसिस पॉइंट कैलकुलेटर",
       "es": "Porcentaje a Punto Básico | Calculadora de Puntos Básicos",
       "ru": "Проценты в Базисный Пункт | Калькулятор Базисных Пунктов",
@@ -623,26 +623,69 @@
       "sv": "Procent till Baspunkt | Baspunktsräknare"
     },
     "description": {
-      "en": "Free Basis Point tool. Calculate with precision at BasisPointCalculator.com.",
-      "hi": "मुफ्त बेसिस पॉइंट उपकरण। BasisPointCalculator.com पर सटीकता से गणना करें।",
-      "es": "Herramienta gratuita de Punto Básico. Calcule con precisión en BasisPointCalculator.com.",
-      "ru": "Бесплатный инструмент Базисный Пункт. Рассчитывайте точно на BasisPointCalculator.com.",
-      "fr": "Outil gratuit Point de Base. Calculez avec précision sur BasisPointCalculator.com.",
-      "de": "Kostenloses Basispunkt-Tool. Berechnen Sie präzise auf BasisPointCalculator.com.",
-      "it": "Strumento gratuito Punto Base. Calcola con precisione su BasisPointCalculator.com.",
-      "pt": "Ferramenta gratuita de Ponto Base. Calcule com precisão no BasisPointCalculator.com.",
-      "bn": "বিনামূল্যে বেসিস পয়েন্ট টুল। BasisPointCalculator.com-এ সঠিকভাবে গণনা করুন।",
-      "ja": "無料のベーシスポイントツール。BasisPointCalculator.comで正確に計算。",
-      "ko": "무료 베이시스 포인트 도구. BasisPointCalculator.com에서 정확하게 계산하세요.",
-      "ms": "Alat Mata Asas percuma. Kira dengan tepat di BasisPointCalculator.com.",
-      "pl": "Darmowe narzędzie Punkt Bazowy. Oblicz dokładnie na BasisPointCalculator.com.",
-      "id": "Alat Basis Poin gratis. Hitung dengan tepat di BasisPointCalculator.com.",
-      "ar": "أداة نقطة الأساس مجانية. احسب بدقة على BasisPointCalculator.com.",
-      "bg": "Безплатен инструмент за Базисна точка. Изчислете точно на BasisPointCalculator.com.",
-      "tr": "Ücretsiz Baz Puan aracı. BasisPointCalculator.com'da hassas hesaplama yapın.",
-      "sv": "Gratis Baspunkt-verktyg. Beräkna exakt på BasisPointCalculator.com."
+      "en": "Convert any percentage to basis points instantly. Enter a rate like 0.5% and get the exact BPS value — free percentage to basis points converter.",
+      "hi": "किसी भी प्रतिशत को बेसिस पॉइंट में तुरंत बदलें। बिनामूल्य प्रतिशत से बेसिस पॉइंट कनवर्टर।",
+      "es": "Convierta cualquier porcentaje a puntos básicos al instante. Conversor gratuito.",
+      "ru": "Мгновенно конвертируйте любой процент в базисные пункты. Бесплатный конвертер.",
+      "fr": "Convertissez instantanément n'importe quel pourcentage en points de base. Convertisseur gratuit.",
+      "de": "Konvertieren Sie jeden Prozentsatz sofort in Basispunkte. Kostenloser Konverter.",
+      "it": "Converti qualsiasi percentuale in punti base istantaneamente. Convertitore gratuito.",
+      "pt": "Converta qualquer porcentagem em pontos base instantaneamente. Conversor gratuito.",
+      "bn": "যেকোনো শতাংশ তাৎক্ষণিকভাবে বেসিস পয়েন্টে রূপান্তর করুন। বিনামূল্যে কনভার্টার।",
+      "ja": "任意のパーセンテージを即座にベーシスポイントに変換。無料コンバーター。",
+      "ko": "모든 백분율을 즉시 베이시스 포인트로 변환. 무료 변환기.",
+      "ms": "Tukar sebarang peratus kepada mata asas dengan serta-merta. Penukar percuma.",
+      "pl": "Natychmiast przelicz dowolny procent na punkty bazowe. Darmowy konwerter.",
+      "id": "Konversi persentase apa pun ke basis poin secara instan. Konverter gratis.",
+      "ar": "حوّل أي نسبة مئوية إلى نقاط أساس فوراً. محول مجاني.",
+      "bg": "Конвертирайте незабавно всеки процент в базисни точки. Безплатен конвертор.",
+      "tr": "Herhangi bir yüzdeyi anında baz puana dönüştürün. Ücretsiz dönüştürücü.",
+      "sv": "Konvertera valfri procentsats till baspunkter direkt. Gratis konverterare."
     },
     "keywords": "percentage to basis points, percent to bps, convert percentage to basis points, percent to bps calculator, % to bps converter"
+  },
+  "/bps-calculators/25-bps-to-percentage/": {
+    "title": {
+      "en": "25 Basis Points in Percentage — What is 25 BPS?",
+      "hi": "25 बेसिस पॉइंट प्रतिशत में | बेसिस पॉइंट कैलकुलेटर",
+      "es": "25 Puntos Básicos en Porcentaje | Calculadora de Puntos Básicos",
+      "ru": "25 базисных пунктов в процентах | Калькулятор Базисных Пунктов",
+      "fr": "25 Points de Base en Pourcentage | Calculateur de Points de Base",
+      "de": "25 Basispunkte in Prozent | Basispunkt-Rechner",
+      "it": "25 Punti Base in Percentuale | Calcolatore Punti Base",
+      "pt": "25 Pontos Base em Porcentagem | Calculadora de Pontos Base",
+      "bn": "25 বেসিস পয়েন্ট শতাংশে | বেসিস পয়েন্ট ক্যালকুলেটর",
+      "ja": "25ベーシスポイントのパーセント | ベーシスポイント計算機",
+      "ko": "25 베이시스 포인트의 백분율 | 베이시스 포인트 계산기",
+      "ms": "25 Mata Asas dalam Peratusan | Kalkulator Mata Asas",
+      "pl": "25 Punktów Bazowych w Procentach | Kalkulator Punktów Bazowych",
+      "id": "25 Basis Poin dalam Persentase | Kalkulator Basis Poin",
+      "ar": "25 نقطة أساس بالنسبة المئوية | حاسبة نقاط الأساس",
+      "bg": "25 базисни точки в проценти | Калкулатор за базисни точки",
+      "tr": "25 Baz Puan Yüzde Olarak | Baz Puan Hesaplayıcı",
+      "sv": "25 Baspunkter i Procent | Baspunktsräknare"
+    },
+    "description": {
+      "en": "25 basis points equals 0.25%. See exactly what 25 BPS means as a percentage, decimal, and dollar amount — with a free 25 basis points calculator.",
+      "hi": "25 बेसिस पॉइंट = 0.25%। जानें 25 BPS को प्रतिशत, दशमलव और रुपये में।",
+      "es": "25 puntos básicos equivalen a 0,25%. Calcule rápidamente con nuestra herramienta gratuita.",
+      "ru": "25 базисных пунктов = 0,25%. Узнайте значение в процентах и десятичных дробях.",
+      "fr": "25 points de base = 0,25%. Calculez instantanément avec notre outil gratuit.",
+      "de": "25 Basispunkte = 0,25%. Berechnen Sie den Wert als Prozentsatz und Dezimalzahl.",
+      "it": "25 punti base = 0,25%. Calcola rapidamente con il nostro strumento gratuito.",
+      "pt": "25 pontos base = 0,25%. Calcule rapidamente com nossa ferramenta gratuita.",
+      "bn": "25 বেসিস পয়েন্ট = 0.25%। বিনামূল্যে ক্যালকুলেটর দিয়ে গণনা করুন।",
+      "ja": "25ベーシスポイント = 0.25%。無料ツールで瞬時に計算。",
+      "ko": "25 베이시스 포인트 = 0.25%. 무료 계산기로 빠르게 계산하세요.",
+      "ms": "25 mata asas = 0.25%. Kira dengan alat percuma kami.",
+      "pl": "25 punktów bazowych = 0,25%. Oblicz szybko z naszym darmowym narzędziem.",
+      "id": "25 basis poin = 0,25%. Hitung dengan alat gratis kami.",
+      "ar": "25 نقطة أساس = 0.25%. احسب فوراً بأداتنا المجانية.",
+      "bg": "25 базисни точки = 0,25%. Изчислете бързо с нашия безплатен инструмент.",
+      "tr": "25 baz puan = %0,25. Ücretsiz aracımızla hızlıca hesaplayın.",
+      "sv": "25 baspunkter = 0,25%. Beräkna snabbt med vårt gratis verktyg."
+    },
+    "keywords": "25 basis points in percentage, 25 bps to percent, what is 25 basis points, 25 bps percentage, 25 basis points calculator"
   },
   "/calculators/": {
     "title": {
