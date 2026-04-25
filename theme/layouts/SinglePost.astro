@@ -1474,21 +1474,86 @@ const dateFormat = new Intl.DateTimeFormat("en-US", {
   }
   @media (max-width: 640px) {
     .sp-hero {
-      padding: 56px 0 32px;
+      padding: 48px 0 28px;
     }
-    .sp-meta {
-      flex-direction: column;
-      gap: 10px;
+    .sp-hero-inner {
+      padding: 0 16px;
     }
-    .sp-bio {
-      flex-direction: column;
+    .sp-grid {
+      padding: 0 16px;
+      margin-top: 24px;
+    }
+    .sp-related {
+      padding: 0 16px;
+    }
+    .sp-featured-img {
+      padding: 0 16px;
+    }
+
+    /* Trust bar — hide separators so items wrap cleanly */
+    .sp-trust-sep {
+      display: none;
+    }
+    .sp-trust-bar {
+      font-size: 11px;
+      padding: 6px 14px;
       text-align: center;
+      gap: 4px;
+    }
+
+    /* Author chip — stack vertically so meta stats don't overflow */
+    .sp-meta {
+      width: 100%;
+    }
+    .sp-author-chip {
+      width: 100%;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 12px;
+    }
+    .sp-author-text {
+      border-right: none;
+      border-bottom: 1px solid #e2e8f0;
+      padding-right: 0;
+      padding-bottom: 10px;
+      width: 100%;
+    }
+    .sp-meta-stats {
+      flex-wrap: wrap;
+      gap: 8px 14px;
+    }
+
+    /* Bio card — fix: target the actual flex container */
+    .sp-bio-inner {
+      flex-direction: column;
       align-items: center;
+      text-align: center;
     }
     .sp-bio-header {
       flex-direction: column;
       gap: 4px;
+      justify-content: center;
     }
+    .sp-bio-links {
+      justify-content: center;
+    }
+
+    /* Prose — slightly smaller font and scrollable tables */
+    .sp-prose {
+      font-size: 16px;
+    }
+    .sp-prose table {
+      display: block;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+    .sp-prose th,
+    .sp-prose td {
+      padding: 10px 14px;
+    }
+
+    /* Related */
     .sp-related-grid {
       grid-template-columns: 1fr;
     }
@@ -1497,10 +1562,12 @@ const dateFormat = new Intl.DateTimeFormat("en-US", {
       gap: 6px;
       align-items: flex-start;
     }
+
+    /* TOC */
     .sp-toc-col {
       flex-direction: column;
     }
-    
+
     .pros-cons-grid {
       grid-template-columns: 1fr !important;
     }
