@@ -1,0 +1,393 @@
+---
+import CalculatorLayout, {
+  getStaticPaths as getStaticPathsCalc,
+} from "@theme/layouts/CalculatorLayout.astro";
+import {
+  getTranslations,
+  type Locale,
+  getLocalizedUrl,
+} from "@theme/i18n/utils";
+
+export const getStaticPaths = getStaticPathsCalc;
+
+const locale = (Astro.params.lang || "en") as Locale;
+const t = getTranslations(locale);
+
+const pageTitle = "25 vs 50 Basis Points: What a Fed Rate Hike Really Costs You";
+const pageDescription =
+  "When the Federal Reserve raises rates by 25 or 50 basis points, what does it actually mean for your mortgage, savings, and loans? Real dollar breakdowns inside.";
+
+const relatedCalculators = [
+  {
+    name: "Mortgage Calculator",
+    url: "/loan-calculators/mortgage-calculator/",
+  },
+  {
+    name: "Loan Payment Calculator",
+    url: "/loan-calculators/loan-payment-calculator/",
+  },
+  {
+    name: "BPS to Percentage",
+    url: "/bps-calculators/basis-point-to-percentage/",
+  },
+  {
+    name: "Basis Point Change Calculator",
+    url: "/bps-calculators/basis-point-change-calculator/",
+  },
+];
+---
+
+<CalculatorLayout
+  title={pageTitle}
+  description={pageDescription}
+  calculatorType="guide"
+  relatedCalculators={relatedCalculators}
+  faqs={[]}
+>
+  <article class="prose prose-slate max-w-none">
+    <h1 class="text-3xl font-bold text-slate-800">{pageTitle}</h1>
+
+    <div class="not-prose bg-sky-50 rounded-xl p-6 my-6">
+      <p class="text-lg text-slate-700">
+        <strong>Quick Answer:</strong> 25 basis points = 0.25%. 50 basis points =
+        0.50%. On a $400,000 mortgage, a 25 bps rate hike adds roughly <strong
+          >$58/month</strong
+        > and over <strong>$20,000</strong> in total interest. A 50 bps hike nearly
+        doubles that impact.
+      </p>
+    </div>
+
+    <p>
+      Every time the Federal Reserve meets, financial headlines are flooded with
+      phrases like "the Fed raised rates by 25 basis points" or "a 50 bps hike
+      is expected." Most people nod along — but what do those basis points
+      actually mean in your bank account? This guide breaks it down with real
+      numbers.
+    </p>
+
+    <h2>What Are 25 Basis Points and 50 Basis Points?</h2>
+    <p>
+      A <strong>basis point (bps)</strong> is one hundredth of a percentage point
+      — so 1 basis point = 0.01%. This unit exists because financial markets move
+      in very small increments, and saying "0.25 percentage points" is more
+      error-prone than saying "25 basis points."
+    </p>
+
+    <div class="not-prose overflow-x-auto my-6">
+      <table class="w-full text-sm">
+        <thead class="bg-slate-100">
+          <tr>
+            <th class="px-4 py-2 text-left">Rate Move</th>
+            <th class="px-4 py-2 text-left">Basis Points</th>
+            <th class="px-4 py-2 text-left">Percentage</th>
+            <th class="px-4 py-2 text-left">Fed Nickname</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="border-b">
+            <td class="px-4 py-2">Quarter-point move</td>
+            <td class="px-4 py-2 font-medium">25 bps</td>
+            <td class="px-4 py-2">0.25%</td>
+            <td class="px-4 py-2">Standard hike/cut</td>
+          </tr>
+          <tr class="border-b">
+            <td class="px-4 py-2">Half-point move</td>
+            <td class="px-4 py-2 font-medium">50 bps</td>
+            <td class="px-4 py-2">0.50%</td>
+            <td class="px-4 py-2">Significant move</td>
+          </tr>
+          <tr class="border-b">
+            <td class="px-4 py-2">Three-quarter point move</td>
+            <td class="px-4 py-2 font-medium">75 bps</td>
+            <td class="px-4 py-2">0.75%</td>
+            <td class="px-4 py-2">Aggressive (rare)</td>
+          </tr>
+          <tr class="border-b">
+            <td class="px-4 py-2">Full point move</td>
+            <td class="px-4 py-2 font-medium">100 bps</td>
+            <td class="px-4 py-2">1.00%</td>
+            <td class="px-4 py-2">Emergency or crisis</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="not-prose bg-amber-50 border-l-4 border-amber-400 p-4 my-6">
+      <p class="font-medium text-amber-800">Why 25 bps is the default increment</p>
+      <p class="text-amber-700 mt-2">
+        The Federal Reserve almost always moves in 25 basis point steps. It
+        signals control and predictability. A 50 bps move sends a stronger
+        message — it means the Fed is in a hurry. A 75 bps move (as seen in
+        2022) is rare and typically reserved for fighting runaway inflation.
+      </p>
+    </div>
+
+    <h2>Impact on Your Mortgage: 25 bps vs 50 bps</h2>
+    <p>
+      This is where basis points stop being abstract and start hitting your
+      wallet. The table below shows the monthly payment and total interest
+      difference on a <strong>$400,000 30-year fixed mortgage</strong> at
+      various rate levels.
+    </p>
+
+    <div class="not-prose overflow-x-auto my-6">
+      <table class="w-full text-sm">
+        <thead class="bg-slate-100">
+          <tr>
+            <th class="px-4 py-2 text-left">Interest Rate</th>
+            <th class="px-4 py-2 text-right">Monthly Payment</th>
+            <th class="px-4 py-2 text-right">Total Interest (30 yr)</th>
+            <th class="px-4 py-2 text-right">vs 6.50% baseline</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="border-b bg-green-50">
+            <td class="px-4 py-2 font-medium">6.50% (baseline)</td>
+            <td class="px-4 py-2 text-right">$2,528</td>
+            <td class="px-4 py-2 text-right">$510,177</td>
+            <td class="px-4 py-2 text-right text-green-600">—</td>
+          </tr>
+          <tr class="border-b">
+            <td class="px-4 py-2">6.75% (+25 bps)</td>
+            <td class="px-4 py-2 text-right">$2,594</td>
+            <td class="px-4 py-2 text-right">$533,767</td>
+            <td class="px-4 py-2 text-right text-orange-600">+$23,590</td>
+          </tr>
+          <tr class="border-b">
+            <td class="px-4 py-2">7.00% (+50 bps)</td>
+            <td class="px-4 py-2 text-right">$2,661</td>
+            <td class="px-4 py-2 text-right">$557,767</td>
+            <td class="px-4 py-2 text-right text-orange-600">+$47,590</td>
+          </tr>
+          <tr class="border-b">
+            <td class="px-4 py-2">7.25% (+75 bps)</td>
+            <td class="px-4 py-2 text-right">$2,729</td>
+            <td class="px-4 py-2 text-right">$582,267</td>
+            <td class="px-4 py-2 text-right text-red-600">+$72,090</td>
+          </tr>
+          <tr class="border-b">
+            <td class="px-4 py-2">7.50% (+100 bps)</td>
+            <td class="px-4 py-2 text-right">$2,797</td>
+            <td class="px-4 py-2 text-right">$607,106</td>
+            <td class="px-4 py-2 text-right text-red-600">+$96,929</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="not-prose bg-red-50 border-l-4 border-red-400 p-4 my-6">
+      <p class="font-medium text-red-800">Key Insight</p>
+      <p class="text-red-700 mt-2">
+        A single 25 bps rate hike adds <strong>$66/month</strong> and nearly
+        <strong>$24,000 in total interest</strong> on a $400,000 mortgage. A 50
+        bps hike doubles that to <strong>$133/month</strong> more and almost
+        <strong>$48,000 extra</strong> over the life of the loan.
+      </p>
+    </div>
+
+    <h2>Impact on Other Loans and Products</h2>
+    <p>
+      Mortgage rates get the headlines, but basis point changes ripple through
+      nearly every financial product you use.
+    </p>
+
+    <div class="not-prose grid grid-cols-1 md:grid-cols-2 gap-4 my-6">
+      <div class="bg-slate-50 rounded-lg p-5">
+        <h4 class="font-semibold text-slate-700 mb-2">Auto Loans</h4>
+        <p class="text-sm text-slate-600">
+          On a $35,000 5-year auto loan, a 25 bps rate hike costs about
+          <strong>$4/month</strong> extra — roughly $240 over the loan term. A
+          50 bps hike doubles that to ~$480 extra total.
+        </p>
+      </div>
+      <div class="bg-slate-50 rounded-lg p-5">
+        <h4 class="font-semibold text-slate-700 mb-2">Personal Loans</h4>
+        <p class="text-sm text-slate-600">
+          A $20,000 personal loan at 3 years sees about $3–5/month increase per
+          25 bps. The impact is modest here because of the short term and
+          smaller balance.
+        </p>
+      </div>
+      <div class="bg-slate-50 rounded-lg p-5">
+        <h4 class="font-semibold text-slate-700 mb-2">HELOCs & Variable Rate Loans</h4>
+        <p class="text-sm text-slate-600">
+          These adjust <strong>immediately</strong> after a Fed rate move.
+          Variable-rate borrowers feel every 25 bps hike in their very next
+          statement — there is no fixed-rate buffer.
+        </p>
+      </div>
+      <div class="bg-slate-50 rounded-lg p-5">
+        <h4 class="font-semibold text-slate-700 mb-2">High-Yield Savings & CDs</h4>
+        <p class="text-sm text-slate-600">
+          Rate hikes work <strong>in your favor</strong> here. A 50 bps Fed
+          hike often means savings accounts and CDs offer 25–50 bps more APY,
+          putting more money in your pocket.
+        </p>
+      </div>
+    </div>
+
+    <h2>25 bps vs 50 bps: Which Is Bigger News?</h2>
+    <p>
+      The Federal Reserve communicates through its rate decisions. The size of
+      the basis point move carries meaning beyond the raw number.
+    </p>
+
+    <div class="not-prose my-6">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="bg-sky-50 rounded-xl p-5 border border-sky-200">
+          <div class="text-3xl font-bold text-sky-700 mb-1">25 bps</div>
+          <div class="text-sm font-medium text-sky-600 mb-3">Quarter-point move</div>
+          <ul class="text-sm text-slate-700 space-y-2">
+            <li>✓ The Fed's default, cautious pace</li>
+            <li>✓ Signals measured, gradual action</li>
+            <li>✓ Markets usually expect this</li>
+            <li>✓ Less shock to borrowing costs</li>
+          </ul>
+        </div>
+        <div class="bg-orange-50 rounded-xl p-5 border border-orange-200">
+          <div class="text-3xl font-bold text-orange-700 mb-1">50 bps</div>
+          <div class="text-sm font-medium text-orange-600 mb-3">Half-point move</div>
+          <ul class="text-sm text-slate-700 space-y-2">
+            <li>⚡ Used when the Fed needs to move fast</li>
+            <li>⚡ Signals urgency — fighting inflation or crisis</li>
+            <li>⚡ Often surprises markets</li>
+            <li>⚡ Mortgage and loan rates jump sharply</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <h2>How Rate Hikes Flow From the Fed to Your Bank</h2>
+    <p>
+      The Federal Reserve sets the <strong>federal funds rate</strong> — the rate
+      banks charge each other for overnight loans. This isn't your mortgage rate
+      directly, but it's the anchor everything else floats from.
+    </p>
+
+    <div class="not-prose bg-slate-50 rounded-lg p-6 my-6">
+      <div class="flex flex-col gap-3">
+        <div class="flex items-center gap-3">
+          <div class="bg-sky-600 text-white rounded-full w-8 h-8 flex items-center justify-center font-bold text-sm shrink-0">1</div>
+          <p class="text-sm text-slate-700"><strong>Fed raises rates by 25 or 50 bps</strong> — announced at FOMC meetings (8 per year)</p>
+        </div>
+        <div class="flex items-center gap-3">
+          <div class="bg-sky-600 text-white rounded-full w-8 h-8 flex items-center justify-center font-bold text-sm shrink-0">2</div>
+          <p class="text-sm text-slate-700"><strong>Prime rate rises</strong> — most banks immediately adjust (Prime = Fed rate + 3%)</p>
+        </div>
+        <div class="flex items-center gap-3">
+          <div class="bg-sky-600 text-white rounded-full w-8 h-8 flex items-center justify-center font-bold text-sm shrink-0">3</div>
+          <p class="text-sm text-slate-700"><strong>Variable-rate products adjust immediately</strong> — HELOCs, credit cards, ARMs</p>
+        </div>
+        <div class="flex items-center gap-3">
+          <div class="bg-sky-600 text-white rounded-full w-8 h-8 flex items-center justify-center font-bold text-sm shrink-0">4</div>
+          <p class="text-sm text-slate-700"><strong>Fixed mortgage rates follow bond markets</strong> — 10-year Treasury yield is the key driver, not the Fed rate directly</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="not-prose bg-amber-50 border-l-4 border-amber-400 p-4 my-6">
+      <p class="font-medium text-amber-800">Important Distinction</p>
+      <p class="text-amber-700 mt-2">
+        Fixed 30-year mortgage rates don't move in lockstep with the Fed. They
+        track the 10-year Treasury yield. Sometimes mortgage rates rise
+        <em>before</em> the Fed acts (markets price it in) and sometimes they
+        fall even as the Fed holds rates steady.
+      </p>
+    </div>
+
+    <h2>Basis Points and Your Savings: The Other Side</h2>
+    <p>
+      While borrowers pay more when basis points go up, savers benefit. Here's
+      what 25 bps and 50 bps mean for a $50,000 savings balance over one year:
+    </p>
+
+    <div class="not-prose overflow-x-auto my-6">
+      <table class="w-full text-sm">
+        <thead class="bg-slate-100">
+          <tr>
+            <th class="px-4 py-2 text-left">APY</th>
+            <th class="px-4 py-2 text-right">Annual Earnings ($50k)</th>
+            <th class="px-4 py-2 text-right">vs 4.50% baseline</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="border-b bg-slate-50">
+            <td class="px-4 py-2 font-medium">4.50% (baseline)</td>
+            <td class="px-4 py-2 text-right">$2,250</td>
+            <td class="px-4 py-2 text-right text-slate-500">—</td>
+          </tr>
+          <tr class="border-b">
+            <td class="px-4 py-2">4.75% (+25 bps)</td>
+            <td class="px-4 py-2 text-right">$2,375</td>
+            <td class="px-4 py-2 text-right text-green-600">+$125/year</td>
+          </tr>
+          <tr class="border-b">
+            <td class="px-4 py-2">5.00% (+50 bps)</td>
+            <td class="px-4 py-2 text-right">$2,500</td>
+            <td class="px-4 py-2 text-right text-green-600">+$250/year</td>
+          </tr>
+          <tr class="border-b">
+            <td class="px-4 py-2">5.25% (+75 bps)</td>
+            <td class="px-4 py-2 text-right">$2,625</td>
+            <td class="px-4 py-2 text-right text-green-600">+$375/year</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2>Frequently Asked Questions</h2>
+
+    <h3>Is 25 bps a big deal?</h3>
+    <p>
+      In isolation, 25 basis points looks small — it's just 0.25%. But on a
+      large loan or over a long time horizon, it translates to thousands of
+      dollars. On a $400,000 30-year mortgage, 25 bps costs over $23,000 in
+      extra interest. And when the Fed delivers multiple 25 bps hikes in a row
+      (as in 2022–2023), the cumulative effect is enormous.
+    </p>
+
+    <h3>Why does the Fed use 25 bps increments?</h3>
+    <p>
+      Using a fixed, small increment allows the Fed to adjust policy precisely
+      and predictably. It sends a clear signal without shocking markets. A 25
+      bps step says "we're adjusting gradually." A 50 bps step says "we need to
+      move faster." Increments also make forward guidance easier — saying "we
+      expect two more 25 bps hikes" is clearer than discussing fractions of a
+      percent.
+    </p>
+
+    <h3>Do rate cuts also happen in 25 or 50 bps steps?</h3>
+    <p>
+      Yes — the same increments apply to cuts. A 25 bps rate cut lowers the
+      federal funds rate by 0.25%. A 50 bps cut (sometimes called an "emergency
+      cut") signals the Fed is acting urgently to stimulate the economy, as seen
+      in early 2020 during the COVID-19 crisis.
+    </p>
+
+    <h3>Does a 50 bps hike mean my mortgage rate goes up 0.50%?</h3>
+    <p>
+      Not immediately, and not exactly. If you have a <strong
+        >fixed-rate mortgage</strong
+      >, your rate doesn't change at all — it's locked in. If you have a <strong
+        >variable-rate loan</strong
+      > or HELOC, your rate often adjusts within one billing cycle. New fixed
+      mortgage rates will generally rise as lenders reprice, but the movement
+      follows Treasury bond markets more than the Fed directly.
+    </p>
+
+    <div class="not-prose mt-8 flex flex-wrap gap-4">
+      <a
+        href={getLocalizedUrl("/loan-calculators/mortgage-calculator/", locale)}
+        class="inline-flex items-center gap-2 px-6 py-3 bg-sky-600 text-white rounded-lg hover:bg-sky-700 transition-colors"
+      >
+        Calculate Your Mortgage Payment →
+      </a>
+      <a
+        href={getLocalizedUrl("/bps-calculators/basis-point-change-calculator/", locale)}
+        class="inline-flex items-center gap-2 px-6 py-3 bg-slate-600 text-white rounded-lg hover:bg-slate-700 transition-colors"
+      >
+        Basis Point Change Calculator →
+      </a>
+    </div>
+  </article>
+</CalculatorLayout>
