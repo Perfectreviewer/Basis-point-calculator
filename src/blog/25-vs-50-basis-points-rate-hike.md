@@ -1,5 +1,5 @@
 ---
-title: "25 vs 50 Basis Points: True Cost of a Fed Rate Hike on Your Mortgage"
+title: "25 vs 50 Basis Points: Fed Rate Hike Impact"
 description: "A 25 basis point Fed rate hike adds $66/month to a $400K mortgage. See how 50 bps doubles the impact — real dollar breakdowns for loans, savings, and more."
 date: 2026-05-08
 author: "Umar Kashif"
