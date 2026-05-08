@@ -1,13 +1,13 @@
 ---
-title: "25 vs 50 Basis Points: What a Fed Rate Hike Really Costs You"
-description: "When the Federal Reserve raises rates by 25 or 50 basis points, what does it actually mean for your mortgage, savings, and loans? Real dollar breakdowns inside."
+title: "25 vs 50 Basis Points: True Cost of a Fed Rate Hike on Your Mortgage"
+description: "A 25 basis point Fed rate hike adds $66/month to a $400K mortgage. See how 50 bps doubles the impact — real dollar breakdowns for loans, savings, and more."
 date: 2026-05-08
 author: "Umar Kashif"
 category: "Guides"
-image: ""
+image: "/uploads/25-vs-50-basis-points-rate-hike.svg"
 status: "published"
 visibility: "public"
-seoKeywords: "25 basis points, 50 basis points, basis points rate hike, what does 25 bps mean, Fed rate hike basis points, basis points mortgage impact, bps interest rate change"
+seoKeywords: "25 basis points, 50 basis points, basis points rate hike, Fed rate hike basis points, what does 25 bps mean, basis points mortgage impact, bps interest rate change, 25 bps vs 50 bps"
 ---
 
 **Quick Answer:** 25 basis points = 0.25%. 50 basis points = 0.50%. On a $400,000 mortgage, a 25 bps rate hike adds roughly **$58/month** and over **$20,000** in total interest. A 50 bps hike nearly doubles that impact.
