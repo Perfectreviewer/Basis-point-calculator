@@ -288,6 +288,29 @@ export const prerender = false;
         flex-shrink: 0;
       }
 
+      /* Toggle password visibility */
+      .toggle-password {
+        position: absolute;
+        right: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        background: none;
+        border: none;
+        cursor: pointer;
+        color: #5a6e8f;
+        padding: 2px;
+        display: flex;
+        align-items: center;
+        transition: color 0.2s;
+      }
+      .toggle-password:hover {
+        color: #3898ec;
+      }
+      .toggle-password svg {
+        width: 18px;
+        height: 18px;
+      }
+
       /* Forgot password */
       .forgot-wrap {
         text-align: center;
@@ -431,6 +454,17 @@ export const prerender = false;
                 ></rect><path d="M7 11V7a5 5 0 0110 0v4"></path></svg
               >
             </span>
+            <button type="button" id="togglePassword" class="toggle-password" aria-label="Toggle password visibility">
+              <svg id="eyeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                <circle cx="12" cy="12" r="3"></circle>
+              </svg>
+              <svg id="eyeOffIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none">
+                <path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94"></path>
+                <path d="M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19"></path>
+                <line x1="1" y1="1" x2="23" y2="23"></line>
+              </svg>
+            </button>
           </div>
         </div>
         <button type="submit" class="btn" id="loginBtn">
@@ -464,6 +498,21 @@ export const prerender = false;
     </div>
 
     <script is:inline>
+      document.getElementById("togglePassword").addEventListener("click", () => {
+        const input = document.getElementById("password");
+        const eyeIcon = document.getElementById("eyeIcon");
+        const eyeOffIcon = document.getElementById("eyeOffIcon");
+        if (input.type === "password") {
+          input.type = "text";
+          eyeIcon.style.display = "none";
+          eyeOffIcon.style.display = "block";
+        } else {
+          input.type = "password";
+          eyeIcon.style.display = "block";
+          eyeOffIcon.style.display = "none";
+        }
+      });
+
       document.getElementById("forgotBtn").addEventListener("click", () => {
         const info = document.getElementById("resetInfo");
         info.classList.toggle("show");
