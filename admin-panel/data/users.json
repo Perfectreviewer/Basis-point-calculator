@@ -3,7 +3,7 @@
     "id": "1",
     "username": "Umar Kashif",
     "email": "admin@example.com",
-    "passwordHash": "f79f91b9ca745a6a44ba753d180de36f:c731cd80da32a32c9d89d5c5d6687bcaead1f377ed3050033d27fade5d7b2462",
+    "passwordHash": "597360c2fcf81e190393bfd3e84ff4e7:9cbfc6839efad742373d80cacd6b223cf42e599858d963edb40a29d2568c9a05",
     "role": "admin",
     "createdAt": "2026-03-02T16:06:54.199Z",
     "lastLogin": "2026-03-02T16:09:05.092Z"
